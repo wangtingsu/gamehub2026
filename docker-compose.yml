@@ -90,7 +90,7 @@ services:
       NEWSLETTER_CRON_SCHEDULE: ${NEWSLETTER_CRON_SCHEDULE:-0 9 * * 1}
     volumes:
       - backend_uploads:/app/uploads
-      - /home/ubuntu/gamehub-2026/frontend-dist:/app/frontend-dist
+      - frontend_dist_data:/app/frontend-dist
     ports:
       - "127.0.0.1:3000:3000"
     depends_on:
@@ -192,8 +192,13 @@ services:
     ports:
       - "8080:80"
     volumes:
-      - /etc/letsencrypt/live/www.gghubs.com/fullchain.pem:/etc/nginx/ssl/fullchain.pem:ro
-      - /etc/letsencrypt/live/www.gghubs.com/privkey.pem:/etc/nginx/ssl/privkey.pem:ro
+      - /etc/letsencrypt/live/gghubs.com/fullchain.pem:/etc/nginx/ssl/fullchain.pem:ro
+      - /etc/letsencrypt/live/gghubs.com/privkey.pem:/etc/nginx/ssl/privkey.pem:ro
+      - frontend_dist_data:/usr/share/nginx/html/server-shared
+    command: >
+      sh -c "cp -r /usr/share/nginx/html/server/* /usr/share/nginx/html/server-shared/;
+             cp /usr/share/nginx/html/assets.json /usr/share/nginx/html/server-shared/;
+             nginx -g 'daemon off;'"
     depends_on:
       - backend
       - admin-backend
@@ -206,6 +211,16 @@ services:
       retries: 3
       start_period: 40s
     restart: unless-stopped
+
+  # 共享数据卷 — 前端 SSR 文件 → 后端
+  frontend-dist-helper:
+    image: busybox
+    container_name: gamehub-ssr-helper
+    volumes:
+      - frontend_dist_data:/data
+    command: chown -R 1001:1001 /data
+    networks:
+      - gamehub-network
 
 # 网络配置
 networks:
@@ -220,4 +235,6 @@ volumes:
   redis_data:
     driver: local
   backend_uploads:
+    driver: local
+  frontend_dist_data:
     driver: local
