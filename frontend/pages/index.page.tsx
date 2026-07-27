@@ -23,6 +23,10 @@ import type { PageContext } from 'vike/types'
  *
  * @returns 包含 HomePage 的 React 元素
  */
+// Vike 配置：服务端路由
+export const clientRouting = false
+export const hydrationCanBeAborted = false
+
 export default function Page() {
   return <HomePage />
 }

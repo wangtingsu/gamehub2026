@@ -21,9 +21,10 @@
  *
  * @returns 返回 null，不渲染任何实际内容
  */
+// Vike 配置：仅服务端路由，禁止客户端路由
+export const clientRouting = false
+export const hydrationCanBeAborted = false
+
 export default function Page() {
-  // 这个组件实际上不会被直接使用
-  // 因为我们在渲染器中直接渲染App组件
-  // 但vite-plugin-ssr需要一个页面组件
   return null
 }
