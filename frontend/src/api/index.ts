@@ -392,6 +392,15 @@ abstract class BaseApiService {
     status: string;
     createdAt: string;
   }>;
+
+  // ==================== AI 历史记录 ====================
+  abstract getAiHistory(type?: string): Promise<any[]>;
+  abstract getAiHistoryDetail(id: string): Promise<any>;
+  abstract saveAiHistory(data: { type: string; title: string; content: any }): Promise<any>;
+  abstract deleteAiHistory(id: string): Promise<void>;
+
+  // ==================== 博客空间内容 ====================
+  abstract getSpaceContent(spaceId: string, params?: any): Promise<any>;
 }
 
 /**
@@ -1929,21 +1938,9 @@ class MockApiService extends BaseApiService {
     console.log('Mock: 删除新闻', id);
   }
 
-  async likeNewsArticle(id: string): Promise<NewsArticle> {
+  async likeNewsArticle(id: string): Promise<{ likes: number; liked: boolean }> {
     console.log(`Mock: 点赞新闻 ${id}`);
-    return {
-      id,
-      title: 'Mock News',
-      summary: 'Mock summary',
-      content: 'Mock content',
-      author: 'Mock Author',
-      publishDate: new Date().toISOString(),
-      category: 'Mock Category',
-      tags: [],
-      imageUrl: '',
-      views: 0,
-      likes: 1,
-    };
+    return { likes: 1, liked: true };
   }
 
   async getReviews(params?: PaginationParams) {
@@ -4219,6 +4216,65 @@ class MockApiService extends BaseApiService {
   async getPrintOrder(id: string): Promise<{ id: string; size: number; material: string; color: string; quantity: number; status: string; createdAt: string }> {
     console.log('Mock: 获取打印订单', id);
     return { id, size: 10, material: 'PLA', color: 'white', quantity: 1, status: 'pending', createdAt: new Date().toISOString() };
+  }
+
+  // ==================== News Pin Stubs ====================
+
+  async pinNewsArticle(id: string): Promise<NewsArticle> {
+    console.log(`Mock: 置顶新闻 ${id}`);
+    return { id, title: 'Pinned News', summary: '', content: '', author: '', publishDate: new Date().toISOString(), category: '', tags: [], imageUrl: '', views: 0, likes: 0 };
+  }
+
+  async unpinNewsArticle(id: string): Promise<NewsArticle> {
+    console.log(`Mock: 取消置顶新闻 ${id}`);
+    return { id, title: 'Unpinned News', summary: '', content: '', author: '', publishDate: new Date().toISOString(), category: '', tags: [], imageUrl: '', views: 0, likes: 0 };
+  }
+
+  // ==================== Blog Space Stubs ====================
+
+  async getBlogSpaces(): Promise<any[]> {
+    console.log('Mock: 获取博客空间列表');
+    return [];
+  }
+
+  async createBlogSpace(data: any): Promise<any> {
+    console.log('Mock: 创建博客空间', data);
+    return { id: 'mock-space-id', ...data };
+  }
+
+  async updateBlogSpace(id: string, data: any): Promise<any> {
+    console.log('Mock: 更新博客空间', id, data);
+    return { id, ...data };
+  }
+
+  async deleteBlogSpace(id: string): Promise<void> {
+    console.log('Mock: 删除博客空间', id);
+  }
+
+  async getSpaceContent(spaceId: string, params?: any): Promise<any> {
+    console.log('Mock: 获取空间内容', spaceId, params);
+    return { articles: [] };
+  }
+
+  // ==================== AI History Stubs ====================
+
+  async getAiHistory(type?: string): Promise<any[]> {
+    console.log('Mock: 获取AI历史记录', type);
+    return [];
+  }
+
+  async getAiHistoryDetail(id: string): Promise<any> {
+    console.log('Mock: 获取AI历史详情', id);
+    return { id, type: 'chat', title: 'Mock Chat', content: [] };
+  }
+
+  async saveAiHistory(data: { type: string; title: string; content: any }): Promise<any> {
+    console.log('Mock: 保存AI历史', data);
+    return { id: 'mock-history-id', ...data };
+  }
+
+  async deleteAiHistory(id: string): Promise<void> {
+    console.log('Mock: 删除AI历史', id);
   }
 }
 

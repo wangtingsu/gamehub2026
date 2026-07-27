@@ -23,7 +23,7 @@ const { Option } = Select;
 const { TabPane } = Tabs;
 const { TextArea } = Input;
 
-type ContentType = 'news' | 'blogs' | 'guides' | 'reviews' | 'community' | 'blogspaces';
+type ContentType = 'news' | 'blogs' | 'guides' | 'reviews' | 'community' | 'blogspaces' | 'categories' | 'templates';
 
 interface ContentStats {
   total: number;
@@ -910,7 +910,7 @@ const Content: React.FC = () => {
             await apiService.createCommunityPost(contentData);
             break;
           case 'blogs':
-            await apiService.createBlogPost(contentData);
+            await apiService.createBlogPost(contentData as any);
             break;
         }
         message.success('Content created successfully');

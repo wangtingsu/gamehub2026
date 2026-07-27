@@ -52,7 +52,7 @@
     "socket.io-client": "^4.8.3",
     "tailwindcss": "^3.3.0",
     "three": "^0.170.0",
-    "vite-plugin-ssr": "^0.4.142",
+    "vike": "^0.4.260",
     "zustand": "^5.0.12"
   },
   "devDependencies": {

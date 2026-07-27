@@ -25,7 +25,7 @@ dayjs.locale('zh-cn');
 
 interface CommentItemProps {
   comment: any;
-  parentType: 'review' | 'news' | 'community_post' | 'guide';
+  parentType: 'review' | 'news' | 'community_post' | 'guide' | 'blog';
   parentId: string;
   allowReplies?: boolean;
   onReplyAdded?: () => void;

@@ -5,9 +5,10 @@ interface BlogEditorProps {
   value?: string;
   onChange?: (value: string) => void;
   height?: number;
+  placeholder?: string;
 }
 
-const BlogEditor: React.FC<BlogEditorProps> = ({ value = '', onChange, height = 400 }) => {
+const BlogEditor: React.FC<BlogEditorProps> = ({ value = '', onChange, height = 400, placeholder }) => {
   return (
     <div data-color-mode="light">
       <MDEditor
@@ -16,7 +17,7 @@ const BlogEditor: React.FC<BlogEditorProps> = ({ value = '', onChange, height = 
         height={height}
         preview="live"
         visibleDragbar={false}
-        textareaProps={{ placeholder: '使用 Markdown 编写，支持拖拽/粘贴上传图片...' }}
+        textareaProps={{ placeholder: placeholder || '使用 Markdown 编写，支持拖拽/粘贴上传图片...' }}
       />
       <div style={{ padding: '8px 12px', background: 'var(--c-card)', borderRadius: '0 0 6px 6px', border: '1px solid var(--c-border)', borderTop: 'none', fontSize: 13, color: 'var(--c-text2)' }}>
         <strong style={{ color: 'var(--c-text)' }}>快捷操作：</strong>

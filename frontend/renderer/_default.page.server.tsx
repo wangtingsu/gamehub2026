@@ -18,7 +18,7 @@ import { QueryClient, dehydrate } from '@tanstack/react-query'
 import { queryKeys } from '../src/api/hooks'
 import apiService from '../src/api/index'
 import i18n from '../src/i18n.server'
-import type { PageContextServer } from 'vite-plugin-ssr/types'
+import type { PageContextServer } from 'vike/types'
 
 /**
  * 服务端渲染环境配置

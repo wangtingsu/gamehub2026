@@ -3,21 +3,17 @@ import { Table, Button, Space, Input, Modal, Form, Select, Tag, message, Popconf
 import type { ColumnsType } from 'antd/es/table';
 import { EditOutlined, DeleteOutlined, EyeOutlined, PlusOutlined, ReloadOutlined } from '@ant-design/icons';
 import { apiService } from '../../../api';
-import { useNewsArticle } from '../../../api/hooks';
-import type { NewsArticle } from '../../../api/types';
+import type { BlogArticle } from '../../../api/types';
 import SEO from '../../../components/SEO';
 import MDEditor from '@uiw/react-md-editor';
 
 const { Search } = Input;
-const { TextArea } = Input;
-
-interface BlogItem extends NewsArticle {}
 
 const Blogs: React.FC = () => {
-  const [blogs, setBlogs] = useState<BlogItem[]>([]);
+  const [blogs, setBlogs] = useState<BlogArticle[]>([]);
   const [loading, setLoading] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
-  const [editing, setEditing] = useState<BlogItem | null>(null);
+  const [editing, setEditing] = useState<BlogArticle | null>(null);
   const [form] = Form.useForm();
   const [searchText, setSearchText] = useState('');
 
@@ -39,14 +35,14 @@ const Blogs: React.FC = () => {
     setModalVisible(true);
   };
 
-  const handleEdit = (blog: BlogItem) => {
+  const handleEdit = (blog: BlogArticle) => {
     setEditing(blog);
     form.setFieldsValue({
       title: blog.title,
       content: blog.content,
       category: blog.category || '博客',
       tags: (blog.tags || []).join(','),
-      coverImageUrl: (blog as any).coverImageUrl || blog.imageUrl || '',
+      coverImageUrl: (blog as any).coverImageUrl || (blog as any).coverImage || '',
     });
     setModalVisible(true);
   };
@@ -78,7 +74,7 @@ const Blogs: React.FC = () => {
     !searchText || b.title?.toLowerCase().includes(searchText.toLowerCase())
   );
 
-  const columns: ColumnsType<BlogItem> = [
+  const columns: ColumnsType<BlogArticle> = [
     { title: '标题', dataIndex: 'title', key: 'title', ellipsis: true,
       render: (t: string) => <span className="font-medium">{t}</span> },
     { title: '作者', dataIndex: 'author', key: 'author', width: 100 },

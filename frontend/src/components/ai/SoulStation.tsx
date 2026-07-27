@@ -143,7 +143,7 @@ const SoulStation: React.FC = () => {
       ];
       const res = await chat(apiMessages);
       setMessages(prev => {
-        const updated = [...prev, { role: 'ai', content: res.reply, timestamp: Date.now() }];
+        const updated: Message[] = [...prev, { role: 'ai', content: res.reply, timestamp: Date.now() }];
         saveHistory(updated);
         return updated;
       });

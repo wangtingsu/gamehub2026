@@ -5,7 +5,8 @@ import { Card, Row, Col, Input, Select, Slider, Button, Rate, Tag, Spin, Empty, 
 import { SearchOutlined, FilterOutlined, DollarOutlined, RocketOutlined, RightOutlined } from '@ant-design/icons';
 import { motion } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
-import { LazyLoadImage } from 'react-lazy-load-image-component';
+import LazyLoadImageComponent from 'react-lazy-load-image-component';
+const { LazyLoadImage } = LazyLoadImageComponent as any;
 import { useGames, usePersonalizedRecommendations } from '../api/hooks';
 import { useDebounce } from '../hooks/useDebounce';
 import SEO from '../components/SEO';

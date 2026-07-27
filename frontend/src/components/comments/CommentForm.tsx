@@ -15,7 +15,7 @@ const { TextArea } = Input;
 /** CommentForm 组件的 props */
 interface CommentFormProps {
   /** 所属父内容类型：评测、新闻、社区帖子、攻略 */
-  parentType: 'review' | 'news' | 'community_post' | 'guide';
+  parentType: 'review' | 'news' | 'community_post' | 'guide' | 'blog';
   /** 所属父内容的 ID */
   parentId: string;
   /** 父评论 ID（用于回复场景，标识回复的目标评论） */

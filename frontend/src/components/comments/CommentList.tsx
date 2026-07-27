@@ -13,7 +13,7 @@ import { Pagination, Spin, Alert, Empty } from 'antd';
 /** CommentList 组件的 props */
 interface CommentListProps {
   /** 所属父内容类型 */
-  parentType: 'review' | 'news' | 'community_post' | 'guide';
+  parentType: 'review' | 'news' | 'community_post' | 'guide' | 'blog';
   /** 所属父内容的 ID */
   parentId: string;
   /** 是否显示评论表单（顶部创建新评论） */

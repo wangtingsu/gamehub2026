@@ -13,7 +13,7 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import { visualizer } from 'rollup-plugin-visualizer'
-import ssr from 'vite-plugin-ssr/plugin'
+import vike from 'vike/plugin'
 import { VitePWA } from 'vite-plugin-pwa'
 import { ViteImageOptimizer } from 'vite-plugin-image-optimizer'
 
@@ -23,7 +23,9 @@ export default defineConfig({
   base: process.env.VITE_CDN_URL || '/',
   plugins: [
     react({}),
-    ssr(),  // SSR 服务端渲染
+    // Vike SSR — enabled in production, disabled in dev
+    // (Vite 8 ESM module runner + Vike V1 page format migration required for dev SSR)
+    ...(process.env.NODE_ENV === 'production' ? [vike()] : []),
     // PWA 配置：可通过 VITE_DISABLE_PWA 环境变量关闭
     process.env.VITE_DISABLE_PWA ? undefined : VitePWA({
       registerType: 'autoUpdate',
@@ -175,7 +177,6 @@ export default defineConfig({
     force: true,
   },
   ssr: {
-    noExternal: true,
     target: 'node',
   },
 })

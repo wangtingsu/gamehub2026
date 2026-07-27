@@ -12,7 +12,7 @@
 
 import React from 'react'
 import HomePage from '../src/pages/HomePage'
-import type { PageContext } from 'vite-plugin-ssr/types'
+import type { PageContext } from 'vike/types'
 
 /**
  * 首页页面组件

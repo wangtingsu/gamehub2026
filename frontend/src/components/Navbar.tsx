@@ -213,7 +213,7 @@ const Navbar = ({ collapsed, isMobile, onToggleSidebar }: NavbarProps) => {
                   <DownOutlined className="text-gray-400 text-xs hidden sm:inline" />
                 </div>
               </Dropdown>
-            )}
+            ) : null}
             {!isAuthenticated ? (
               <button
                 className="btn btn-outline text-sm py-2 px-3 sm:px-4"
@@ -221,7 +221,7 @@ const Navbar = ({ collapsed, isMobile, onToggleSidebar }: NavbarProps) => {
               >
                 {t('auth.login')}
               </button>
-            )}
+            ) : null}
           </div>
         </div>
       </div>

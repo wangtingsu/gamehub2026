@@ -574,7 +574,7 @@ export interface GuideUpdateInput {
  * 父级内容类型
  * 标识评论所属的上层内容类型
  */
-export type ParentType = 'review' | 'news' | 'community_post' | 'guide';
+export type ParentType = 'review' | 'news' | 'community_post' | 'guide' | 'blog';
 
 /**
  * 评论实体

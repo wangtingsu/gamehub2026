@@ -8,7 +8,8 @@ import {
   DollarOutlined,
 } from '@ant-design/icons';
 import { motion } from 'framer-motion';
-import { LazyLoadImage } from 'react-lazy-load-image-component';
+import LazyLoadImageComponent from 'react-lazy-load-image-component';
+const { LazyLoadImage } = LazyLoadImageComponent as any;
 import SEO from '../components/SEO';
 import RecommendedGames from '../components/recommendations/RecommendedGames';
 import { usePersonalizedRecommendations, useGames, useTrendingContent } from '../api/hooks';
