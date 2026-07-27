@@ -1,0 +1,51 @@
+{
+  "title": "游戏库",
+  "subtitle": "探索我们精选的游戏收藏",
+  "searchPlaceholder": "搜索游戏名称或描述...",
+  "filters": {
+    "genre": "游戏类型",
+    "platform": "平台",
+    "priceRange": "价格范围",
+    "minRating": "最低评分",
+    "all": "全部",
+    "reset": "重置筛选"
+  },
+  "gameCard": {
+    "featured": "精选",
+    "discount": "折扣",
+    "rating": "评分",
+    "released": "发布于",
+    "genres": "游戏类型",
+    "platforms": "支持平台",
+    "viewDetails": "查看详情",
+    "addToLibrary": "添加到游戏库",
+    "addToFavorites": "添加到收藏"
+  },
+  "noResults": {
+    "title": "未找到游戏",
+    "description": "尝试调整搜索关键词或筛选条件",
+    "resetButton": "重置筛选条件"
+  },
+  "stats": {
+    "showing": "显示 {{count}} 个游戏",
+    "total": "共 {{total}} 个游戏"
+  },
+  "genres": {
+    "rpg": "角色扮演",
+    "action": "动作",
+    "adventure": "冒险",
+    "strategy": "策略",
+    "sci-fi": "科幻",
+    "fantasy": "奇幻",
+    "soulslike": "魂类",
+    "magic": "魔法"
+  },
+  "platforms": {
+    "pc": "PC",
+    "ps4": "PlayStation 4",
+    "ps5": "PlayStation 5",
+    "xboxOne": "Xbox One",
+    "xboxSeriesX": "Xbox Series X",
+    "switch": "Nintendo Switch"
+  }
+}

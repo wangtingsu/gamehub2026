@@ -1,0 +1,1 @@
+import{a as t}from"./chunk-DPgjZ1PG.js";import{Tn as e}from"./chunk-BcV6V4gx.js";var s=t(e(),1);function n(t=60){const[e,n]=(0,s.useState)(0),r=e>0;return(0,s.useEffect)(()=>{if(e>0){const t=setTimeout(()=>n(e-1),1e3);return()=>clearTimeout(t)}},[e]),{countdown:e,isRunning:r,start:(0,s.useCallback)(()=>{n(t)},[t]),reset:(0,s.useCallback)(()=>{n(0)},[])}}export{n as t};

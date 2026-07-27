@@ -1,0 +1,98 @@
+.games-page {
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.game-card {
+  transition: all 0.3s ease;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  border: 1px solid var(--c-border);
+}
+
+.game-card:hover {
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+  border-color: var(--c-border);
+}
+
+.game-card .ant-card-cover {
+  overflow: hidden;
+}
+
+.game-card .ant-card-cover img {
+  transition: transform 0.3s ease;
+}
+
+.game-card:hover .ant-card-cover img {
+  transform: scale(1.05);
+}
+
+.game-card .ant-card-body {
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.line-clamp-1 {
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 1;
+}
+
+.line-clamp-2 {
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+
+/* 响应式调整 */
+@media (max-width: 768px) {
+  .games-page {
+    padding: 0;
+  }
+
+  .game-card .ant-card-body {
+    padding: 16px;
+  }
+}
+
+/* 虚拟化网格容器 */
+.virtual-grid-container {
+  border-radius: 12px;
+  border: 1px solid var(--c-border);
+  background-color: var(--c-card);
+}
+
+.virtual-grid-container .grid {
+  padding: 24px;
+}
+
+/* 响应式调整 */
+@media (max-width: 640px) {
+  .virtual-grid-container .grid {
+    grid-template-columns: repeat(1, 1fr) !important;
+    padding: 16px;
+  }
+}
+
+@media (min-width: 640px) and (max-width: 768px) {
+  .virtual-grid-container .grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+}
+
+@media (min-width: 768px) and (max-width: 1024px) {
+  .virtual-grid-container .grid {
+    grid-template-columns: repeat(3, 1fr) !important;
+  }
+}
+
+@media (min-width: 1024px) {
+  .virtual-grid-container .grid {
+    grid-template-columns: repeat(4, 1fr) !important;
+  }
+}

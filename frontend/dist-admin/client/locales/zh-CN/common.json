@@ -1,0 +1,880 @@
+{
+  "app": {
+    "name": "GameHub",
+    "slogan": "您的终极游戏社区",
+    "loading": "加载中...",
+    "error": "发生错误",
+    "success": "操作成功",
+    "confirm": "确认",
+    "cancel": "取消",
+    "save": "保存",
+    "edit": "编辑",
+    "delete": "删除",
+    "search": "搜索",
+    "filter": "筛选",
+    "reset": "重置",
+    "viewDetails": "查看详情",
+    "readMore": "阅读更多",
+    "back": "返回",
+    "next": "下一步",
+    "previous": "上一步",
+    "submit": "提交"
+  },
+  "navigation": {
+    "home": "主页",
+    "games": "游戏库",
+    "ai": "AI 助手",
+    "library": "我的游戏库",
+    "news": "新闻中心",
+    "reviews": "游戏评测",
+    "community": "官方社区",
+    "messages": "私信",
+    "achievements": "成就",
+    "about": "关于我们",
+    "admin": "管理后台",
+    "login": "登入",
+    "logout": "退出登录",
+    "profile": "个人资料",
+    "dashboard": "仪表盘",
+    "users": "用户管理",
+    "content": "内容管理",
+    "settings": "系统设置",
+    "blog": "博客",
+    "more": "更多的"
+  },
+  "auth": {
+    "login": "登录",
+    "register": "注册",
+    "email": "邮箱",
+    "password": "密码",
+    "confirmPassword": "确认密码",
+    "username": "用户名",
+    "rememberMe": "记住我",
+    "forgotPassword": "忘记密码？",
+    "resetPassword": "重置密码",
+    "changePassword": "修改密码",
+    "currentPassword": "当前密码",
+    "newPassword": "新密码",
+    "loginSuccess": "登录成功",
+    "logoutSuccess": "退出登录成功",
+    "invalidCredentials": "邮箱或密码错误",
+    "loginPage": {
+      "title": "登录",
+      "subtitle": "欢迎回到 GameHub，请登录您的账户",
+      "emailLogin": "邮箱登录",
+      "phoneLogin": "手机号登录",
+      "emailLabel": "邮箱地址",
+      "emailRequired": "请输入邮箱地址",
+      "emailInvalid": "请输入有效的邮箱地址",
+      "emailPlaceholder": "请输入邮箱地址",
+      "passwordLabel": "密码",
+      "passwordRequired": "请输入密码",
+      "passwordMinLength": "密码至少8个字符",
+      "passwordPlaceholder": "请输入密码",
+      "loggingIn": "登录中...",
+      "loginButton": "登录",
+      "loginFailed": "登录失败",
+      "phoneLabel": "手机号码",
+      "phoneRequired": "请输入手机号码",
+      "phoneInvalid": "请输入正确的手机号码",
+      "codeLabel": "验证码",
+      "codeRequired": "请输入验证码",
+      "codeLength": "验证码为6位数字",
+      "sendCode": "发送验证码",
+      "orUseOther": "或使用其他方式登录",
+      "noAccount": "还没有账号？",
+      "registerNow": "立即注册",
+      "forgotPassword": "忘记密码？",
+      "backToLogin": "返回登录",
+      "backToHomePage": "返回首页",
+      "copyright": "© {{year}} GameHub 版权所有。",
+      "bannerTitle": "欢迎来到 GameHub！",
+      "bannerNoAccount": "还没有账号？",
+      "bannerRegister": "立即注册",
+      "bannerSupport": "，支持手机号、微信、Google、GitHub"
+    },
+    "registerPage": {
+      "title": "注册",
+      "subtitle": "加入 GameHub 社区，开启游戏之旅",
+      "emailRegister": "邮箱注册",
+      "phoneRegister": "手机号注册",
+      "usernameLabel": "用户名",
+      "usernameRequired": "请输入用户名",
+      "usernameMinMax": "用户名长度3-20个字符",
+      "usernamePattern": "用户名只能包含字母、数字和下划线",
+      "emailLabel": "邮箱地址",
+      "emailRequired": "请输入邮箱地址",
+      "emailInvalid": "请输入有效的邮箱地址",
+      "emailPlaceholder": "请输入邮箱地址",
+      "passwordLabel": "密码",
+      "passwordRequired": "请输入密码",
+      "passwordMinLength": "密码至少8个字符",
+      "passwordPattern": "密码需包含大小写字母和数字",
+      "confirmPasswordLabel": "确认密码",
+      "confirmPasswordRequired": "请再次输入密码",
+      "confirmPasswordMismatch": "两次输入的密码不一致",
+      "agreeTerms": "我已阅读并同意",
+      "termsOfService": "服务条款",
+      "privacyPolicy": "和隐私政策",
+      "registering": "注册中...",
+      "registerButton": "创建账号",
+      "registerFailed": "注册失败",
+      "registerSuccess": "注册成功！",
+      "registerSuccessDesc": "您的账号已成功创建，即将跳转至首页...",
+      "goToHome": "返回首页",
+      "viewProfile": "完善个人资料",
+      "phoneLabel": "手机号码",
+      "phoneRequired": "请输入手机号码",
+      "phoneInvalid": "请输入正确的手机号码",
+      "phonePlaceholder": "请输入手机号码",
+      "codeLabel": "验证码",
+      "codeRequired": "请输入验证码",
+      "codeLength": "验证码为6位数字",
+      "sendCode": "发送验证码",
+      "hasAccount": "已有账号？",
+      "loginNow": "立即登录",
+      "backToHomePage": "返回首页",
+      "copyright": "© {{year}} GameHub 版权所有。",
+      "socialDivider": "或使用社交账号快速注册",
+      "socialAutoCreate": "使用社交账号首次登录将自动创建账号",
+      "regionLabel": "地区",
+      "regionPlaceholder": "请选择您所在的地区",
+      "regionChina": "中国大陆",
+      "regionHongKong": "中国香港",
+      "regionTaiwan": "中国台湾",
+      "regionJapan": "日本",
+      "regionKorea": "韩国",
+      "regionNorthAmerica": "北美",
+      "regionEurope": "欧洲",
+      "regionSoutheastAsia": "东南亚",
+      "regionOther": "其他"
+    }
+  },
+  "user": {
+    "role": {
+      "admin": "管理员",
+      "moderator": "版主",
+      "user": "用户",
+      "editor": "编辑"
+    },
+    "status": {
+      "active": "活跃",
+      "inactive": "不活跃",
+      "suspended": "已封禁",
+      "pending": "待审核"
+    },
+    "profile": "个人资料",
+    "settings": "设置",
+    "library": "游戏库",
+    "favorites": "收藏夹",
+    "reviews": "我的评测",
+    "posts": "我的帖子"
+  },
+  "footer": {
+    "categories": {
+      "discover": "发现",
+      "community": "社区",
+      "company": "公司信息",
+      "legal": "法律条款"
+    },
+    "links": {
+      "games": "游戏",
+      "news": "新闻",
+      "reviews": "评测",
+      "topRated": "评分最高",
+      "forums": "论坛",
+      "guides": "指南",
+      "events": "活动",
+      "discord": "Discord",
+      "aboutUs": "关于我们",
+      "careers": "招贤纳士",
+      "press": "媒体中心",
+      "contact": "联系方式",
+      "privacyPolicy": "隐私政策",
+      "termsOfService": "服务条款",
+      "cookiePolicy": "Cookie 政策",
+      "codeOfConduct": "行为准则",
+      "cozyGames": "治愈游戏",
+      "freeGames": "免费游戏",
+      "aiGaming": "AI 游戏"
+    },
+    "brand": {
+      "tagline": "您的终极游戏目的地。与我们的热情社区一起发现、评测和讨论最新游戏。"
+    },
+    "stats": {
+      "online": "在线",
+      "games": "游戏",
+      "reviews": "评测"
+    },
+    "copyright": "© {{year}} GameHub 版权所有。"
+  },
+  "language": {
+    "en": "English",
+    "zh-CN": "中文（简体）",
+    "ja": "日本語",
+    "ko": "한국어",
+    "select": "选择语言"
+  },
+  "date": {
+    "today": "今天",
+    "yesterday": "昨天",
+    "daysAgo": "{{count}}天前",
+    "justNow": "刚刚",
+    "minutesAgo": "{{count}}分钟前",
+    "hoursAgo": "{{count}}小时前"
+  },
+  "seo": {
+    "defaultTitle": "GameHub - 您的终极游戏库管理平台",
+    "defaultDescription": "GameHub 是一个统一的游戏库管理平台，支持多平台游戏集成和管理。发现、整理和分享您的游戏收藏。",
+    "defaultKeywords": "游戏库, 游戏管理, 游戏平台, 视频游戏, 游戏收藏, 游戏中心, 游戏社区",
+    "gamesTitle": "游戏库 | GameHub",
+    "gamesDescription": "浏览我们丰富的游戏库。发现新游戏，追踪您的收藏，探索游戏内容。",
+    "newsTitle": "游戏新闻 | GameHub",
+    "newsDescription": "来自游戏行业的最新游戏新闻、更新和公告。",
+    "reviewsTitle": "游戏评测 | GameHub",
+    "reviewsDescription": "阅读并分享来自游戏社区的游戏评测。",
+    "communityTitle": "社区 | GameHub",
+    "communityDescription": "加入游戏社区。讨论游戏、分享经验并与其他玩家联系。",
+    "aboutTitle": "关于 GameHub",
+    "aboutDescription": "了解更多关于 GameHub 的信息，我们的使命和团队。",
+    "cozyGames": {
+      "title": "2026年最佳治愈游戏推荐 - 放松解压游戏 | GameHub",
+      "description": "发现最受欢迎的治愈系放松游戏。精选农场模拟、生活模拟、休闲建造类游戏推荐。适合减压放松的PC和主机游戏合集。",
+      "keywords": "治愈游戏,放松游戏,解压游戏,农场模拟,生活模拟游戏,星露谷物语类似游戏,休闲游戏,治愈系游戏"
+    },
+    "freeGames": {
+      "title": "免费在线游戏 2026 - 无需下载免费玩 | GameHub",
+      "description": "在GameHub畅玩最佳免费在线游戏。动作、策略、多人和休闲游戏任你选择，无需下载，每日更新。",
+      "keywords": "免费在线游戏,免费游戏无需下载,网页游戏,在线免费游戏,免费玩,免费网页游戏,免费多人游戏"
+    },
+    "aiGaming": {
+      "title": "2026年AI游戏 - AI驱动游戏与智能NPC | GameHub",
+      "description": "探索人工智能如何改变游戏世界。AI NPC、程序生成世界、智能游戏伴侣和AI驱动的游戏工具。",
+      "keywords": "AI游戏,游戏AI,人工智能游戏,AI NPC,程序生成游戏,AI游戏伴侣,智能NPC,AI游戏工具"
+    }
+  },
+  "pages": {
+    "careers": {
+      "title": "招贤纳士",
+      "heroTitle": "加入我们",
+      "heroDescription": "与 GameHub 一起，打造游戏世界的未来。我们正在寻找充满热情的人才，共同为全球玩家创造最佳体验。",
+      "whyJoinTitle": "为什么加入我们",
+      "whyJoinDescription": "在 GameHub，我们相信游戏的力量能够连接世界。我们提供富有竞争力的薪酬、灵活的工作方式，以及一个充满创意和活力的团队环境。",
+      "valuesTitle": "我们的价值观",
+      "value1": "玩家至上 — 一切决策以玩家体验为核心",
+      "value2": "技术创新 — 持续探索前沿技术，推动行业进步",
+      "value3": "开放协作 — 透明沟通，团队合作共赢",
+      "value4": "追求卓越 — 不断超越自我，追求极致品质",
+      "openingsTitle": "正在招聘",
+      "noOpenings": "暂无开放职位，请持续关注",
+      "cta": "查看更多职位"
+    },
+    "press": {
+      "title": "媒体中心",
+      "heroTitle": "媒体与新闻",
+      "heroDescription": "了解 GameHub 的最新动态、产品更新和媒体报道。",
+      "latestNewsTitle": "最新动态",
+      "pressKitTitle": "新闻资料包",
+      "pressKitDescription": "下载 GameHub 的品牌资源、Logo、截图和媒体手册。",
+      "contactTitle": "媒体联系",
+      "contactDescription": "如有媒体采访、合作报道需求，欢迎与我们联系。"
+    },
+    "contact": {
+      "title": "联系我们",
+      "heroTitle": "联系我们",
+      "heroDescription": "我们期待听到您的声音！无论是建议、问题还是合作意向，请随时与我们联系。",
+      "customerServiceTitle": "客服支持",
+      "customerServiceDescription": "如果您在使用过程中遇到任何问题，我们的客服团队将竭诚为您服务。",
+      "cooperationTitle": "商务合作",
+      "cooperationDescription": "如有商务合作、品牌推广等意向，欢迎与我们洽谈。",
+      "emailLabel": "电子邮箱",
+      "phoneLabel": "联系电话",
+      "addressLabel": "公司地址",
+      "addressValue": "中国北京市朝阳区建国路88号"
+    },
+    "legal": {
+      "privacy": {
+        "title": "隐私政策",
+        "lastUpdated": "最后更新日期：2026年1月1日",
+        "sections": [
+          {
+            "title": "信息收集",
+            "content": "在您使用 GameHub 服务时，我们可能会收集以下类型的信息：您注册账户时提供的个人信息（如用户名、电子邮箱地址）；您在使用过程中创建的内容（如游戏评测、评论、帖子）；您的游戏偏好和使用行为数据；设备信息和技术数据。"
+          },
+          {
+            "title": "信息使用",
+            "content": "我们收集的信息用于以下目的：提供、维护和改进 GameHub 平台服务；个性化您的使用体验；与您沟通服务更新和重要通知；分析使用趋势以优化平台功能；保障平台安全和用户权益。"
+          },
+          {
+            "title": "信息共享",
+            "content": "我们承诺不会出售您的个人信息。在以下情况下，我们可能会共享您的信息：获得您的明确同意；法律法规要求；保护 GameHub 用户的权利和安全；与为我们提供服务的可信合作伙伴共享（如云服务提供商），且这些合作伙伴受保密协议约束。"
+          },
+          {
+            "title": "数据安全",
+            "content": "我们采用行业标准的安全措施保护您的个人信息，包括 SSL/TLS 加密传输、数据存储加密、访问控制机制和定期安全审计。但请注意，互联网上的数据传输不能保证完全安全，我们会尽最大努力保护您的信息。"
+          },
+          {
+            "title": "您的权利",
+            "content": "您有权访问、更正或删除您的个人信息。您可以通过账户设置或联系我们的客服来行使这些权利。我们将在合理时间内响应您的请求。您也可以选择退出某些数据收集，但这可能影响部分服务功能。"
+          },
+          {
+            "title": "政策更新",
+            "content": "我们可能会不时更新本隐私政策。重大变更时，我们将通过网站公告或电子邮件通知您。继续使用 GameHub 服务即表示您同意更新后的政策。"
+          }
+        ]
+      },
+      "terms": {
+        "title": "服务条款",
+        "lastUpdated": "最后更新日期：2026年1月1日",
+        "sections": [
+          {
+            "title": "条款接受",
+            "content": "使用 GameHub 平台即表示您同意本服务条款。如果您不同意任何条款，请停止使用我们的服务。我们保留随时修改条款的权利，修改后的条款发布后立即生效。"
+          },
+          {
+            "title": "账户责任",
+            "content": "您有责任保护您的账户信息安全，包括密码的保密性。您对账户下发生的所有活动负责。如发现任何未经授权的账户使用，请立即通知我们。每人仅限注册一个账户。"
+          },
+          {
+            "title": "用户行为",
+            "content": "您同意在使用 GameHub 时遵守所有适用法律法规。禁止发布违法、骚扰、侮辱、诽谤或侵犯他人权利的内容。不得利用平台进行任何形式的欺诈活动或传播恶意软件。"
+          },
+          {
+            "title": "知识产权",
+            "content": "GameHub 平台本身的所有权利归 GameHub 所有。您在平台上发布的内容，您保留所有权，但授予我们在平台上展示和分发这些内容的许可。未经许可不得复制、修改或分发平台内容。"
+          },
+          {
+            "title": "免责声明",
+            "content": "GameHub 平台按\"现状\"提供，不提供任何明示或暗示的保证。我们不对用户发布的内容负责，也不保证服务不会中断或没有错误。在法律允许的最大范围内，我们免除所有责任。"
+          },
+          {
+            "title": "终止条款",
+            "content": "我们保留在您违反任何条款时暂停或终止您账户的权利。您可以随时通过停止使用服务来终止本协议。条款终止后，某些条款（如知识产权、免责声明）将继续有效。"
+          }
+        ]
+      },
+      "cookies": {
+        "title": "Cookie 政策",
+        "lastUpdated": "最后更新日期：2026年1月1日",
+        "sections": [
+          {
+            "title": "什么是 Cookie",
+            "content": "Cookie 是存储在您设备上的小型文本文件，用于记住您的偏好和访问信息。当您访问 GameHub 时，我们可能会在您的设备上放置 Cookie，以提升您的使用体验。"
+          },
+          {
+            "title": "我们使用的 Cookie 类型",
+            "content": "必要型 Cookie：为平台正常运行所必需，无需您的同意。功能型 Cookie：用于记住您的语言偏好和登录状态。分析型 Cookie：帮助我们了解用户如何使用平台，以优化服务。偏好型 Cookie：记录您的个性化设置。"
+          },
+          {
+            "title": "第三方 Cookie",
+            "content": "我们可能允许经过认证的第三方服务提供商（如分析服务）在您的设备上放置 Cookie。这些第三方 Cookie 受其各自的隐私政策管辖。我们不控制这些第三方 Cookie 的使用。"
+          },
+          {
+            "title": "Cookie 管理",
+            "content": "您可以通过浏览器设置控制 Cookie 的使用。大多数浏览器允许您阻止或删除 Cookie。但请注意，禁用某些 Cookie 可能导致平台部分功能无法正常使用。"
+          }
+        ]
+      },
+      "codeOfConduct": {
+        "title": "行为准则",
+        "lastUpdated": "最后更新日期：2026年1月1日",
+        "sections": [
+          {
+            "title": "我们的承诺",
+            "content": "GameHub 致力于为所有用户营造一个友好、包容、尊重的社区环境。我们承诺不论年龄、性别、种族、宗教信仰、性取向或身份认同，确保每个人都能在无骚扰的环境中参与社区活动。"
+          },
+          {
+            "title": "行为标准",
+            "content": "鼓励的行为：尊重他人观点，建设性讨论，分享有用内容，帮助新用户。禁止的行为：人身攻击、骚扰、歧视性言论、发布不当内容、恶意刷屏、泄露他人隐私、冒充他人身份、传播虚假信息。"
+          },
+          {
+            "title": "内容规范",
+            "content": "发布内容必须符合法律法规和公序良俗。禁止发布色情、暴力、恐怖主义、仇恨言论等违法内容。游戏评测应客观公正，不得包含恶意贬低或虚假宣传。转载他人内容需注明出处。"
+          },
+          {
+            "title": "违规处理",
+            "content": "违反行为准则将视情节轻重采取相应措施，包括但不限于：警告、内容删除、功能限制、临时封禁直至永久封禁账号。严重违规行为可能被上报至相关执法机关。"
+          },
+          {
+            "title": "举报机制",
+            "content": "如果您发现任何违反行为准则的情况，请通过举报功能或联系我们的客服团队进行举报。我们承诺认真对待每一起举报，并在合理时间内进行调查和处理。"
+          }
+        ]
+      }
+    },
+    "cozyGame": {
+      "trendingBadge": "🔥 热门趋势：Steam上搜索量增长 675%",
+      "hero": {
+        "title": "2026年最佳治愈游戏推荐",
+        "subtitle": "放松心情，逃离喧嚣，沉浸在宁静的游戏世界。为您精选各个平台的最佳治愈系游戏。"
+      },
+      "categories": {
+        "title": "治愈游戏分类",
+        "farming": "农场模拟",
+        "lifeSim": "生活模拟",
+        "relaxing": "放松解压",
+        "building": "建造休闲"
+      },
+      "popular": {
+        "title": "热门治愈游戏",
+        "viewAll": "浏览全部游戏"
+      },
+      "desc": {
+        "stardew": "经营农场，结交朋友，探索迷人的乡村世界。",
+        "animalCrossing": "打造属于你的岛屿天堂，与可爱的动物朋友一起放松。",
+        "palia": "一款MMO治愈游戏，一起建造、烹饪和探索。",
+        "spiritfarer": "关于放手和继续前行的精美管理游戏。",
+        "hozy": "修复废弃房屋，打造温馨空间，放松身心。",
+        "unpacking": "禅意解谜游戏，通过整理物品体验人生故事。"
+      },
+      "why": {
+        "title": "为什么治愈游戏越来越受欢迎",
+        "content": "治愈游戏热潮在2026年席卷全球，Steam上'治愈'关键词搜索量暴增675%。这些游戏为玩家提供了逃离高压竞技游戏的避风港，以放松的玩法、舒缓的音乐和友好的社区为特色。无论你是种田、装修还是悠闲探索，治愈游戏都把你的身心健康放在首位。",
+        "stats": {
+          "stress": {
+            "value": "68%",
+            "label": "为放松而玩"
+          },
+          "creative": {
+            "value": "52%",
+            "label": "热爱创意玩法"
+          },
+          "community": {
+            "value": "41%",
+            "label": "加入社区"
+          },
+          "accessibility": {
+            "value": "73%",
+            "label": "低压力吸引"
+          }
+        }
+      },
+      "faq": {
+        "title": "常见问题",
+        "q1": "什么是'治愈系游戏'？",
+        "a1": "治愈系游戏注重放松、温和的玩法和积极的情感体验，而非挑战或竞争。常见玩法包括种田、手工、装修、探索和社交，一切都按你自己的节奏进行。",
+        "q2": "新手适合哪些治愈游戏？",
+        "a2": "星露谷物语是最佳入门选择。动物森友会、Unpacking 和 Dorfromantik 也是优秀的入门游戏。",
+        "q3": "可以在电脑上玩治愈游戏吗？",
+        "a3": "大多数治愈游戏可在PC（Steam、itch.io）、Nintendo Switch和现代主机上游玩，许多游戏也支持移动平台。",
+        "q4": "治愈游戏可以多人玩吗？",
+        "a4": "许多治愈游戏支持多人模式。Palia是免费MMO治愈游戏，动物森友会支持岛屿访问，星露谷物语有合作农场模式。"
+      },
+      "cta": {
+        "title": "准备放松一下？",
+        "subtitle": "发现你的下一款最爱治愈游戏",
+        "button": "探索治愈游戏"
+      }
+    },
+    "freeGame": {
+      "hero": {
+        "title": "2026年免费在线游戏",
+        "subtitle": "畅玩最佳免费在线游戏，无需下载，无需注册，即刻开玩。"
+      },
+      "categories": {
+        "title": "按分类浏览",
+        "action": {
+          "name": "动作",
+          "games": [
+            "地铁跑酷",
+            "神庙逃亡",
+            "火柴人钩索"
+          ]
+        },
+        "strategy": {
+          "name": "策略",
+          "games": [
+            "国际象棋",
+            "8球台球",
+            "瘟疫公司"
+          ]
+        },
+        "multiplayer": {
+          "name": "多人",
+          "games": [
+            "细胞吞噬",
+            "贪吃蛇大作战",
+            "蛋蛋突击"
+          ]
+        },
+        "casual": {
+          "name": "休闲",
+          "games": [
+            "糖果传奇",
+            "愤怒的小鸟",
+            "2048"
+          ]
+        }
+      },
+      "top": {
+        "title": "2026年热门免费游戏",
+        "0": {
+          "title": "堡垒之夜",
+          "desc": "结合建造机制的大逃杀游戏，持续更新内容。"
+        },
+        "1": {
+          "title": "英雄联盟",
+          "desc": "全球最受欢迎的MOBA游戏，深度策略玩法。"
+        },
+        "2": {
+          "title": "原神",
+          "desc": "免费开放世界动作RPG，抽卡养成机制。"
+        },
+        "3": {
+          "title": "炉石传说",
+          "desc": "暴雪出品的数字卡牌游戏，定期扩展包。"
+        },
+        "4": {
+          "title": "火箭联盟",
+          "desc": "足球与赛车结合的免费快节奏运动游戏。"
+        },
+        "5": {
+          "title": "失落方舟",
+          "desc": "大型多人在线ARPG，精美的战斗和探索。"
+        }
+      },
+      "why": {
+        "title": "为什么选择免费游戏？",
+        "content": "免费在线游戏从未如此触手可及。无论是网页游戏还是各大平台的免费作品，你都可以在不花一分钱的情况下体验精彩的游戏内容。如今的免费游戏已具备主机级的画质和深度玩法。",
+        "points": {
+          "noCost": {
+            "title": "完全免费",
+            "desc": "无需任何费用"
+          },
+          "noDownload": {
+            "title": "即点即玩",
+            "desc": "无需安装"
+          },
+          "crossPlatform": {
+            "title": "多平台",
+            "desc": "PC、手机、平板均可"
+          },
+          "social": {
+            "title": "社交互动",
+            "desc": "与好友联机"
+          }
+        }
+      },
+      "faq": {
+        "title": "常见问题",
+        "q0": "这些游戏真的免费吗？",
+        "a0": "是的！所有列出的游戏均可免费游玩。部分游戏可能提供可选内购，但核心体验始终免费。",
+        "q1": "需要下载吗？",
+        "a1": "网页游戏完全无需下载。对于堡垒之夜、原神等客户端游戏，需要安装游戏客户端。",
+        "q2": "可以在手机上玩吗？",
+        "a2": "许多免费游戏支持移动端。网页游戏可在任何设备上运行，原神等热门游戏有优秀的手机版本。",
+        "q3": "免费游戏安全吗？",
+        "a3": "GameHub精选的游戏均来自可信发行商和平台。我们精心筛选，确保安全的游戏体验。"
+      },
+      "cta": {
+        "title": "立即开始游戏",
+        "subtitle": "加入数百万玩家，畅玩免费在线游戏",
+        "button": "浏览免费游戏"
+      }
+    },
+    "aiGame": {
+      "hero": {
+        "title": "2026年AI游戏",
+        "subtitle": "探索人工智能如何革新游戏世界——从智能NPC到程序生成的无限宇宙。"
+      },
+      "features": {
+        "title": "AI正在改变游戏",
+        "npc": {
+          "title": "AI NPC",
+          "desc": "能够学习和自然反应的智能角色"
+        },
+        "companion": {
+          "title": "AI伴侣",
+          "desc": "适应你游戏风格的智能伙伴"
+        },
+        "procedural": {
+          "title": "程序世界",
+          "desc": "AI生成的无尽地图和任务"
+        },
+        "assistant": {
+          "title": "AI工具",
+          "desc": "AI驱动的创作和游戏管理工具"
+        }
+      },
+      "tools": {
+        "title": "GameHub AI 工具",
+        "desc": "体验内置AI功能带来的未来游戏体验。",
+        "portrait": "AI角色肖像",
+        "soul": "AI灵魂站",
+        "npc": "AI游戏NPC"
+      },
+      "games": {
+        "title": "AI驱动游戏",
+        "0": {
+          "desc": "AI驱动的NPC，具备动态对话和自适应行为。"
+        },
+        "1": {
+          "desc": "从你的选择中学习并进化的AI伴侣。"
+        },
+        "2": {
+          "desc": "程序生成的无尽世界，拥有独特的生态系统。"
+        },
+        "3": {
+          "desc": "即时生成分支叙事的AI故事系统。"
+        }
+      },
+      "future": {
+        "title": "AI游戏的未来",
+        "content": "到2026年，AI已成为游戏行业最具变革性的力量。从记住你选择的NPC到根据你的游戏风格自动生成的世界，AI正在让游戏变得更加个性化、沉浸式和可重玩。脚本化体验与鲜活世界之间的界限正在模糊。"
+      },
+      "faq": {
+        "title": "常见问题",
+        "q0": "AI在现代游戏中如何应用？",
+        "a0": "AI驱动NPC行为、程序化内容生成、动态难度调整、语音识别和个性化游戏体验。现代游戏中的AI应用涵盖从敌人战术到生成整个世界的各个层面。",
+        "q1": "AI能创造游戏角色吗？",
+        "a1": "可以！AI可以生成独特的角色肖像、声音、个性和背景故事。GameHub的3D角色肖像等工具可以帮你创建AI驱动的游戏角色。",
+        "q2": "什么是AI NPC？",
+        "a2": "AI NPC是由语言模型和行为树驱动的非玩家角色。与传统脚本NPC不同，它们可以进行自然对话、记住过往互动并动态调整行为。",
+        "q3": "AI会取代游戏开发者吗？",
+        "a3": "不会——AI是赋能开发者创造更丰富体验的工具。它自动化重复任务并催生新的游戏形式，但人类的创造力在游戏设计中仍然不可或缺。"
+      },
+      "cta": {
+        "title": "体验AI游戏",
+        "subtitle": "尝试GameHub的AI驱动游戏工具",
+        "button": "探索AI功能"
+      }
+    }
+  },
+  "cozyGame": {
+    "trendingBadge": "🔥 热门趋势：Steam上搜索量增长 675%",
+    "hero": {
+      "title": "2026年最佳治愈游戏推荐",
+      "subtitle": "放松心情，逃离喧嚣，沉浸在宁静的游戏世界。为您精选各个平台的最佳治愈系游戏。"
+    },
+    "categories": {
+      "title": "治愈游戏分类",
+      "farming": "农场模拟",
+      "lifeSim": "生活模拟",
+      "relaxing": "放松解压",
+      "building": "建造休闲"
+    },
+    "popular": {
+      "title": "热门治愈游戏",
+      "viewAll": "浏览全部游戏"
+    },
+    "desc": {
+      "stardew": "经营农场，结交朋友，探索迷人的乡村世界。",
+      "animalCrossing": "打造属于你的岛屿天堂，与可爱的动物朋友一起放松。",
+      "palia": "一款MMO治愈游戏，一起建造、烹饪和探索。",
+      "spiritfarer": "关于放手和继续前行的精美管理游戏。",
+      "hozy": "修复废弃房屋，打造温馨空间，放松身心。",
+      "unpacking": "禅意解谜游戏，通过整理物品体验人生故事。"
+    },
+    "why": {
+      "title": "为什么治愈游戏越来越受欢迎",
+      "content": "治愈游戏热潮在2026年席卷全球，Steam上'治愈'关键词搜索量暴增675%。这些游戏为玩家提供了逃离高压竞技游戏的避风港，以放松的玩法、舒缓的音乐和友好的社区为特色。无论你是种田、装修还是悠闲探索，治愈游戏都把你的身心健康放在首位。",
+      "stats": {
+        "stress": {
+          "value": "68%",
+          "label": "为放松而玩"
+        },
+        "creative": {
+          "value": "52%",
+          "label": "热爱创意玩法"
+        },
+        "community": {
+          "value": "41%",
+          "label": "加入社区"
+        },
+        "accessibility": {
+          "value": "73%",
+          "label": "低压力吸引"
+        }
+      }
+    },
+    "faq": {
+      "title": "常见问题",
+      "q1": "什么是'治愈系游戏'？",
+      "a1": "治愈系游戏注重放松、温和的玩法和积极的情感体验，而非挑战或竞争。常见玩法包括种田、手工、装修、探索和社交，一切都按你自己的节奏进行。",
+      "q2": "新手适合哪些治愈游戏？",
+      "a2": "星露谷物语是最佳入门选择。动物森友会、Unpacking 和 Dorfromantik 也是优秀的入门游戏。",
+      "q3": "可以在电脑上玩治愈游戏吗？",
+      "a3": "大多数治愈游戏可在PC（Steam、itch.io）、Nintendo Switch和现代主机上游玩，许多游戏也支持移动平台。",
+      "q4": "治愈游戏可以多人玩吗？",
+      "a4": "许多治愈游戏支持多人模式。Palia是免费MMO治愈游戏，动物森友会支持岛屿访问，星露谷物语有合作农场模式。"
+    },
+    "cta": {
+      "title": "准备放松一下？",
+      "subtitle": "发现你的下一款最爱治愈游戏",
+      "button": "探索治愈游戏"
+    }
+  },
+  "freeGame": {
+    "hero": {
+      "title": "2026年免费在线游戏",
+      "subtitle": "畅玩最佳免费在线游戏，无需下载，无需注册，即刻开玩。"
+    },
+    "categories": {
+      "title": "按分类浏览",
+      "action": {
+        "name": "动作",
+        "games": [
+          "地铁跑酷",
+          "神庙逃亡",
+          "火柴人钩索"
+        ]
+      },
+      "strategy": {
+        "name": "策略",
+        "games": [
+          "国际象棋",
+          "8球台球",
+          "瘟疫公司"
+        ]
+      },
+      "multiplayer": {
+        "name": "多人",
+        "games": [
+          "细胞吞噬",
+          "贪吃蛇大作战",
+          "蛋蛋突击"
+        ]
+      },
+      "casual": {
+        "name": "休闲",
+        "games": [
+          "糖果传奇",
+          "愤怒的小鸟",
+          "2048"
+        ]
+      }
+    },
+    "top": {
+      "title": "2026年热门免费游戏",
+      "0": {
+        "title": "堡垒之夜",
+        "desc": "结合建造机制的大逃杀游戏，持续更新内容。"
+      },
+      "1": {
+        "title": "英雄联盟",
+        "desc": "全球最受欢迎的MOBA游戏，深度策略玩法。"
+      },
+      "2": {
+        "title": "原神",
+        "desc": "免费开放世界动作RPG，抽卡养成机制。"
+      },
+      "3": {
+        "title": "炉石传说",
+        "desc": "暴雪出品的数字卡牌游戏，定期扩展包。"
+      },
+      "4": {
+        "title": "火箭联盟",
+        "desc": "足球与赛车结合的免费快节奏运动游戏。"
+      },
+      "5": {
+        "title": "失落方舟",
+        "desc": "大型多人在线ARPG，精美的战斗和探索。"
+      }
+    },
+    "why": {
+      "title": "为什么选择免费游戏？",
+      "content": "免费在线游戏从未如此触手可及。无论是网页游戏还是各大平台的免费作品，你都可以在不花一分钱的情况下体验精彩的游戏内容。如今的免费游戏已具备主机级的画质和深度玩法。",
+      "points": {
+        "noCost": {
+          "title": "完全免费",
+          "desc": "无需任何费用"
+        },
+        "noDownload": {
+          "title": "即点即玩",
+          "desc": "无需安装"
+        },
+        "crossPlatform": {
+          "title": "多平台",
+          "desc": "PC、手机、平板均可"
+        },
+        "social": {
+          "title": "社交互动",
+          "desc": "与好友联机"
+        }
+      }
+    },
+    "faq": {
+      "title": "常见问题",
+      "q0": "这些游戏真的免费吗？",
+      "a0": "是的！所有列出的游戏均可免费游玩。部分游戏可能提供可选内购，但核心体验始终免费。",
+      "q1": "需要下载吗？",
+      "a1": "网页游戏完全无需下载。对于堡垒之夜、原神等客户端游戏，需要安装游戏客户端。",
+      "q2": "可以在手机上玩吗？",
+      "a2": "许多免费游戏支持移动端。网页游戏可在任何设备上运行，原神等热门游戏有优秀的手机版本。",
+      "q3": "免费游戏安全吗？",
+      "a3": "GameHub精选的游戏均来自可信发行商和平台。我们精心筛选，确保安全的游戏体验。"
+    },
+    "cta": {
+      "title": "立即开始游戏",
+      "subtitle": "加入数百万玩家，畅玩免费在线游戏",
+      "button": "浏览免费游戏"
+    }
+  },
+  "aiGame": {
+    "hero": {
+      "title": "2026年AI游戏",
+      "subtitle": "探索人工智能如何革新游戏世界——从智能NPC到程序生成的无限宇宙。"
+    },
+    "features": {
+      "title": "AI正在改变游戏",
+      "npc": {
+        "title": "AI NPC",
+        "desc": "能够学习和自然反应的智能角色"
+      },
+      "companion": {
+        "title": "AI伴侣",
+        "desc": "适应你游戏风格的智能伙伴"
+      },
+      "procedural": {
+        "title": "程序世界",
+        "desc": "AI生成的无尽地图和任务"
+      },
+      "assistant": {
+        "title": "AI工具",
+        "desc": "AI驱动的创作和游戏管理工具"
+      }
+    },
+    "tools": {
+      "title": "GameHub AI 工具",
+      "desc": "体验内置AI功能带来的未来游戏体验。",
+      "portrait": "AI角色肖像",
+      "soul": "AI灵魂站",
+      "npc": "AI游戏NPC"
+    },
+    "games": {
+      "title": "AI驱动游戏",
+      "0": {
+        "desc": "AI驱动的NPC，具备动态对话和自适应行为。"
+      },
+      "1": {
+        "desc": "从你的选择中学习并进化的AI伴侣。"
+      },
+      "2": {
+        "desc": "程序生成的无尽世界，拥有独特的生态系统。"
+      },
+      "3": {
+        "desc": "即时生成分支叙事的AI故事系统。"
+      }
+    },
+    "future": {
+      "title": "AI游戏的未来",
+      "content": "到2026年，AI已成为游戏行业最具变革性的力量。从记住你选择的NPC到根据你的游戏风格自动生成的世界，AI正在让游戏变得更加个性化、沉浸式和可重玩。脚本化体验与鲜活世界之间的界限正在模糊。"
+    },
+    "faq": {
+      "title": "常见问题",
+      "q0": "AI在现代游戏中如何应用？",
+      "a0": "AI驱动NPC行为、程序化内容生成、动态难度调整、语音识别和个性化游戏体验。现代游戏中的AI应用涵盖从敌人战术到生成整个世界的各个层面。",
+      "q1": "AI能创造游戏角色吗？",
+      "a1": "可以！AI可以生成独特的角色肖像、声音、个性和背景故事。GameHub的3D角色肖像等工具可以帮你创建AI驱动的游戏角色。",
+      "q2": "什么是AI NPC？",
+      "a2": "AI NPC是由语言模型和行为树驱动的非玩家角色。与传统脚本NPC不同，它们可以进行自然对话、记住过往互动并动态调整行为。",
+      "q3": "AI会取代游戏开发者吗？",
+      "a3": "不会——AI是赋能开发者创造更丰富体验的工具。它自动化重复任务并催生新的游戏形式，但人类的创造力在游戏设计中仍然不可或缺。"
+    },
+    "cta": {
+      "title": "体验AI游戏",
+      "subtitle": "尝试GameHub的AI驱动游戏工具",
+      "button": "探索AI功能"
+    }
+  }
+}

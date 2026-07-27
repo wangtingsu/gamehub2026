@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<!-- ============================================================
+     GameHub 离线页面（Service Worker 离线后备）
+     - 作用：当用户断网时，由 Service Worker 展示此页面
+     - 功能：提示网络断开、提供重试按钮、说明缓存内容可继续浏览
+     - 设计：轻量内联样式，无需加载外部资源
+     ============================================================ -->
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>GameHub - 离线</title>
+  <style>
+    /* 全局重置 */
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: #f0f2f5; color: #333;
+      display: flex; justify-content: center; align-items: center;
+      min-height: 100vh; text-align: center;
+    }
+    .container { padding: 2rem; max-width: 480px; }
+    .icon { font-size: 4rem; margin-bottom: 1rem; color: #1677ff; }
+    h1 { font-size: 1.5rem; margin-bottom: 0.5rem; }
+    p { color: #666; margin-bottom: 1.5rem; line-height: 1.6; }
+    /* 重试按钮样式 */
+    .btn {
+      display: inline-block; padding: 0.75rem 2rem;
+      background: #1677ff; color: #fff; border: none; border-radius: 6px;
+      font-size: 1rem; cursor: pointer; text-decoration: none;
+    }
+    .btn:hover { background: #4096ff; }
+    .hint { font-size: 0.8rem; color: #999; margin-top: 2rem; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <!-- 离线图标：使用 emoji 卫星天线图标表示网络断开 -->
+    <div class="icon">📡</div>
+    <h1>网络连接已断开</h1>
+    <p>当前没有网络连接，部分功能暂不可用。<br/>请检查网络后重试，已缓存的内容仍可正常浏览。</p>
+    <!-- 点击重试按钮刷新页面，尝试重新连接 -->
+    <button class="btn" onclick="window.location.reload()">重试连接</button>
+    <p class="hint">GameHub — 游戏社区平台</p>
+  </div>
+</body>
+</html>

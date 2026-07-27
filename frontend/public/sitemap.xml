@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:xhtml="http://www.w3.org/1999/xhtml">
+  <!--
+    注意：此静态文件仅作为初始爬取的后备。
+    完整的动态 Sitemap（包含游戏、新闻、评测、攻略详情页）
+    由后端 API 在 /sitemap.xml 实时生成。
+    请将此 URL 提交到 Google Search Console：
+    https://www.gghubs.com/sitemap.xml
+  -->
+
+  <!-- 中文首页 -->
+  <url>
+    <loc>https://www.gghubs.com/cn</loc>
+    <changefreq>daily</changefreq>
+    <priority>1.0</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.gghubs.com/en" />
+    <xhtml:link rel="alternate" hreflang="zh-CN" href="https://www.gghubs.com/cn" />
+    <xhtml:link rel="alternate" hreflang="ja" href="https://www.gghubs.com/ja" />
+    <xhtml:link rel="alternate" hreflang="ko" href="https://www.gghubs.com/ko" />
+    <xhtml:link rel="alternate" hreflang="es" href="https://www.gghubs.com/es" />
+    <xhtml:link rel="alternate" hreflang="fr" href="https://www.gghubs.com/fr" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.gghubs.com/en" />
+  </url>
+
+  <!-- 英文首页 -->
+  <url>
+    <loc>https://www.gghubs.com/en</loc>
+    <changefreq>daily</changefreq>
+    <priority>1.0</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.gghubs.com/en" />
+    <xhtml:link rel="alternate" hreflang="zh-CN" href="https://www.gghubs.com/cn" />
+    <xhtml:link rel="alternate" hreflang="ja" href="https://www.gghubs.com/ja" />
+    <xhtml:link rel="alternate" hreflang="ko" href="https://www.gghubs.com/ko" />
+    <xhtml:link rel="alternate" hreflang="es" href="https://www.gghubs.com/es" />
+    <xhtml:link rel="alternate" hreflang="fr" href="https://www.gghubs.com/fr" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.gghubs.com/en" />
+  </url>
+
+  <!-- 游戏库 - 多语言 -->
+  <url>
+    <loc>https://www.gghubs.com/cn/games</loc>
+    <changefreq>daily</changefreq>
+    <priority>0.9</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.gghubs.com/en/games" />
+    <xhtml:link rel="alternate" hreflang="zh-CN" href="https://www.gghubs.com/cn/games" />
+    <xhtml:link rel="alternate" hreflang="ja" href="https://www.gghubs.com/ja/games" />
+    <xhtml:link rel="alternate" hreflang="ko" href="https://www.gghubs.com/ko/games" />
+    <xhtml:link rel="alternate" hreflang="es" href="https://www.gghubs.com/es/games" />
+    <xhtml:link rel="alternate" hreflang="fr" href="https://www.gghubs.com/fr/games" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.gghubs.com/en/games" />
+  </url>
+
+  <!-- 新闻 - 多语言 -->
+  <url>
+    <loc>https://www.gghubs.com/cn/news</loc>
+    <changefreq>daily</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.gghubs.com/en/news" />
+    <xhtml:link rel="alternate" hreflang="zh-CN" href="https://www.gghubs.com/cn/news" />
+    <xhtml:link rel="alternate" hreflang="ja" href="https://www.gghubs.com/ja/news" />
+    <xhtml:link rel="alternate" hreflang="ko" href="https://www.gghubs.com/ko/news" />
+    <xhtml:link rel="alternate" hreflang="es" href="https://www.gghubs.com/es/news" />
+    <xhtml:link rel="alternate" hreflang="fr" href="https://www.gghubs.com/fr/news" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.gghubs.com/en/news" />
+  </url>
+
+  <!-- 社区 - 多语言 -->
+  <url>
+    <loc>https://www.gghubs.com/cn/community</loc>
+    <changefreq>daily</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.gghubs.com/en/community" />
+    <xhtml:link rel="alternate" hreflang="zh-CN" href="https://www.gghubs.com/cn/community" />
+    <xhtml:link rel="alternate" hreflang="ja" href="https://www.gghubs.com/ja/community" />
+    <xhtml:link rel="alternate" hreflang="ko" href="https://www.gghubs.com/ko/community" />
+    <xhtml:link rel="alternate" hreflang="es" href="https://www.gghubs.com/es/community" />
+    <xhtml:link rel="alternate" hreflang="fr" href="https://www.gghubs.com/fr/community" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.gghubs.com/en/community" />
+  </url>
+
+  <!-- 攻略 - 多语言 -->
+  <url>
+    <loc>https://www.gghubs.com/cn/guides</loc>
+    <changefreq>daily</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.gghubs.com/en/guides" />
+    <xhtml:link rel="alternate" hreflang="zh-CN" href="https://www.gghubs.com/cn/guides" />
+    <xhtml:link rel="alternate" hreflang="ja" href="https://www.gghubs.com/ja/guides" />
+    <xhtml:link rel="alternate" hreflang="ko" href="https://www.gghubs.com/ko/guides" />
+    <xhtml:link rel="alternate" hreflang="es" href="https://www.gghubs.com/es/guides" />
+    <xhtml:link rel="alternate" hreflang="fr" href="https://www.gghubs.com/fr/guides" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.gghubs.com/en/guides" />
+  </url>
+
+  <!-- 关于我们 - 多语言 -->
+  <url>
+    <loc>https://www.gghubs.com/cn/about</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.gghubs.com/en/about" />
+    <xhtml:link rel="alternate" hreflang="zh-CN" href="https://www.gghubs.com/cn/about" />
+    <xhtml:link rel="alternate" hreflang="ja" href="https://www.gghubs.com/ja/about" />
+    <xhtml:link rel="alternate" hreflang="ko" href="https://www.gghubs.com/ko/about" />
+    <xhtml:link rel="alternate" hreflang="es" href="https://www.gghubs.com/es/about" />
+    <xhtml:link rel="alternate" hreflang="fr" href="https://www.gghubs.com/fr/about" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.gghubs.com/en/about" />
+  </url>
+
+  <!-- 博客 - 多语言 -->
+  <url>
+    <loc>https://www.gghubs.com/cn/blog</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.6</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.gghubs.com/en/blog" />
+    <xhtml:link rel="alternate" hreflang="zh-CN" href="https://www.gghubs.com/cn/blog" />
+    <xhtml:link rel="alternate" hreflang="ja" href="https://www.gghubs.com/ja/blog" />
+    <xhtml:link rel="alternate" hreflang="ko" href="https://www.gghubs.com/ko/blog" />
+    <xhtml:link rel="alternate" hreflang="es" href="https://www.gghubs.com/es/blog" />
+    <xhtml:link rel="alternate" hreflang="fr" href="https://www.gghubs.com/fr/blog" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.gghubs.com/en/blog" />
+  </url>
+
+  <!-- 在线游戏库 -->
+  <url>
+    <loc>https://www.gghubs.com/cn/library/online</loc>
+    <changefreq>daily</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.gghubs.com/en/library/online" />
+    <xhtml:link rel="alternate" hreflang="zh-CN" href="https://www.gghubs.com/cn/library/online" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.gghubs.com/en/library/online" />
+  </url>
+
+  <!-- 发现页 -->
+  <url>
+    <loc>https://www.gghubs.com/cn/discovery</loc>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.gghubs.com/en/discovery" />
+    <xhtml:link rel="alternate" hreflang="zh-CN" href="https://www.gghubs.com/cn/discovery" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.gghubs.com/en/discovery" />
+  </url>
+
+  <!-- 热门趋势页 -->
+  <url>
+    <loc>https://www.gghubs.com/cn/trending</loc>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.gghubs.com/en/trending" />
+    <xhtml:link rel="alternate" hreflang="zh-CN" href="https://www.gghubs.com/cn/trending" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.gghubs.com/en/trending" />
+  </url>
+
+  <!-- 排行榜 -->
+  <url>
+    <loc>https://www.gghubs.com/cn/leaderboard</loc>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.gghubs.com/en/leaderboard" />
+    <xhtml:link rel="alternate" hreflang="zh-CN" href="https://www.gghubs.com/cn/leaderboard" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.gghubs.com/en/leaderboard" />
+  </url>
+
+</urlset>

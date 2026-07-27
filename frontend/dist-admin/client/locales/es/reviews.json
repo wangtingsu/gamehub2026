@@ -1,0 +1,37 @@
+{
+  "title": "Game Reviews",
+  "subtitle": "Professional, objective, in-depth game reviews to help you make better gaming choices",
+  "searchPlaceholder": "Search game reviews...",
+  "popularTags": "Popular Tags",
+  "allReviews": "All Reviews",
+  "reviewCard": {
+    "readFull": "Read Full Review",
+    "rating": "Rating",
+    "game": "Game",
+    "author": "Author",
+    "published": "Published",
+    "likes": "likes",
+    "comments": "comments",
+    "overallScore": "Overall Score",
+    "gameplay": "Gameplay",
+    "graphics": "Graphics",
+    "story": "Story",
+    "sound": "Sound & Music"
+  },
+  "noResults": {
+    "title": "No relevant reviews found",
+    "description": "Try adjusting search keywords or selecting other tags",
+    "resetButton": "Reset Filters"
+  },
+  "popularReviews": {
+    "title": "Popular Reviews"
+  },
+  "submitReview": {
+    "title": "Share Your Gaming Experience",
+    "description": "Write your unique insights about games to help other players make better choices. Quality reviews will receive platform recommendations and rewards.",
+    "button": "Submit Review Now"
+  },
+  "pagination": {
+    "total": "Total {{total}} reviews"
+  }
+}

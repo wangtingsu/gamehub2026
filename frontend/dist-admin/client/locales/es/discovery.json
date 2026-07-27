@@ -1,0 +1,172 @@
+{
+  "search": {
+    "title": "Buscar",
+    "placeholder": "Buscar juegos, reseñas, noticias, usuarios...",
+    "searching": "Buscando...",
+    "resultsFor": "Resultados para \"{{query}}\"",
+    "resultsCount": "{{count}} resultados encontrados",
+    "noResults": "No se encontraron resultados",
+    "noResultsHint": "Prueba con diferentes palabras clave o filtros",
+    "error": "Error de búsqueda",
+    "filter": "Filtrar",
+    "advancedFilter": "Filtros avanzados",
+    "reset": "Restablecer",
+    "sortBy": {
+      "relevance": "Relevancia",
+      "date": "Fecha",
+      "rating": "Valoración",
+      "popularity": "Popularidad"
+    },
+    "filterLabels": {
+      "genres": "Géneros",
+      "platforms": "Plataformas",
+      "ratingRange": "Rango de valoración",
+      "dateRange": "Fecha de lanzamiento",
+      "tags": "Etiquetas",
+      "sortBy": "Ordenar por"
+    },
+    "genreOptions": {
+      "RPG": "RPG",
+      "Action": "Acción",
+      "Adventure": "Aventura",
+      "Simulation": "Simulación",
+      "Strategy": "Estrategia",
+      "Sports": "Deportes",
+      "Puzzle": "Puzle",
+      "Horror": "Terror",
+      "Shooter": "Disparos",
+      "Fighting": "Lucha",
+      "Racing": "Carreras",
+      "MMO": "MMO"
+    },
+    "platformOptions": {
+      "PC": "PC",
+      "PS5": "PS5",
+      "PS4": "PS4",
+      "Xbox Series X": "Xbox Series X",
+      "Xbox One": "Xbox One",
+      "Nintendo Switch": "Nintendo Switch",
+      "Mobile": "Móvil",
+      "VR": "VR"
+    },
+    "types": {
+      "all": "Todo",
+      "game": "Juegos",
+      "review": "Reseñas",
+      "news": "Noticias",
+      "community_post": "Publicaciones",
+      "user": "Usuarios"
+    },
+    "suggestions": {
+      "title": "Sugerencias",
+      "viewMore": "Ver más",
+      "noSuggestions": "Sin sugerencias"
+    },
+    "pagination": {
+      "total": "{{range[0]}}-{{range[1]}} de {{total}} resultados"
+    },
+    "metaData": {
+      "reviews": "{{count}} reseñas",
+      "likes": "{{count}} me gusta",
+      "comments": "{{count}} comentarios",
+      "views": "{{count}} vistas"
+    },
+    "highlights": {
+      "matchFound": "Coincidencia encontrada"
+    }
+  },
+  "recommendations": {
+    "personalized": "Recomendado para ti",
+    "trending": "Tendencias",
+    "relatedGames": "Juegos similares",
+    "relatedReviews": "Reseñas relacionadas",
+    "relatedNews": "Noticias relacionadas",
+    "usersAlsoLiked": "A los usuarios también les gustó",
+    "noRecommendations": "No hay recomendaciones disponibles",
+    "reasons": {
+      "sameGenre": "Mismo género",
+      "samePlatform": "Misma plataforma",
+      "trending": "Tendencia",
+      "alsoLiked": "A usuarios también les gustó",
+      "personalized": "Basado en tus preferencias",
+      "newRelease": "Nuevo lanzamiento",
+      "highRated": "Bien valorado"
+    },
+    "loading": "Cargando recomendaciones...",
+    "viewMore": "Ver más"
+  },
+  "leaderboard": {
+    "title": "Clasificación",
+    "tabs": {
+      "topRated": "Mejor valorados",
+      "mostReviewed": "Más reseñados",
+      "mostFavorited": "Más favoritos",
+      "mostDiscussed": "Más discutidos"
+    },
+    "columns": {
+      "rank": "Posición",
+      "gameName": "Nombre del juego",
+      "rating": "Valoración",
+      "reviewCount": "Reseñas",
+      "score": "Puntuación",
+      "trend": "Tendencia"
+    },
+    "trends": {
+      "up": "Subiendo",
+      "down": "Bajando",
+      "stable": "Estable"
+    },
+    "noData": "No hay datos de clasificación"
+  },
+  "trends": {
+    "title": "Tendencias",
+    "searchTrends": "Tendencias de búsqueda",
+    "gameTrends": "Tendencias de popularidad",
+    "searchVolumn": "Volumen de búsqueda",
+    "uniqueQueries": "Consultas únicas",
+    "totalSearches": "Búsquedas totales",
+    "period": {
+      "7d": "7 días",
+      "30d": "30 días",
+      "90d": "90 días"
+    },
+    "noData": "No hay datos de tendencias"
+  },
+  "discovery": {
+    "title": "Descubrir",
+    "tabs": {
+      "trends": "Tendencias",
+      "leaderboard": "Clasificación",
+      "reports": "Informes"
+    },
+    "stats": {
+      "totalUsers": "Usuarios totales",
+      "totalGames": "Juegos totales",
+      "totalReviews": "Reseñas totales",
+      "totalPosts": "Publicaciones totales",
+      "dailyNewUsers": "Nuevos usuarios hoy",
+      "dailyNewReviews": "Nuevas reseñas hoy",
+      "dailyNewPosts": "Nuevas publicaciones hoy",
+      "activeUsers7d": "Usuarios activos (7d)",
+      "activeUsers": "Usuarios activos"
+    },
+    "distributions": {
+      "platforms": "Distribución de plataformas",
+      "genres": "Distribución de géneros"
+    },
+    "reports": {
+      "title": "Informes de datos",
+      "communitySummary": "Resumen de la comunidad"
+    }
+  },
+  "resultItem": {
+    "game": "Juego",
+    "review": "Reseña",
+    "news": "Noticia",
+    "post": "Publicación",
+    "user": "Usuario",
+    "gameFor": "Juego: {{name}}",
+    "joined": "Se unió en {{date}}",
+    "unknownType": "Tipo desconocido"
+  }
+}

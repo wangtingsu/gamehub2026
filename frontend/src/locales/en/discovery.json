@@ -1,0 +1,172 @@
+{
+  "search": {
+    "title": "Search",
+    "placeholder": "Search games, reviews, news, users...",
+    "searching": "Searching...",
+    "resultsFor": "Results for \"{{query}}\"",
+    "resultsCount": "{{count}} results found",
+    "noResults": "No results found",
+    "noResultsHint": "Try different keywords or filters",
+    "error": "Search error",
+    "filter": "Filter",
+    "advancedFilter": "Advanced Filters",
+    "reset": "Reset",
+    "sortBy": {
+      "relevance": "Relevance",
+      "date": "Date",
+      "rating": "Rating",
+      "popularity": "Popularity"
+    },
+    "filterLabels": {
+      "genres": "Genres",
+      "platforms": "Platforms",
+      "ratingRange": "Rating Range",
+      "dateRange": "Release Date",
+      "tags": "Tags",
+      "sortBy": "Sort By"
+    },
+    "genreOptions": {
+      "RPG": "RPG",
+      "Action": "Action",
+      "Adventure": "Adventure",
+      "Simulation": "Simulation",
+      "Strategy": "Strategy",
+      "Sports": "Sports",
+      "Puzzle": "Puzzle",
+      "Horror": "Horror",
+      "Shooter": "Shooter",
+      "Fighting": "Fighting",
+      "Racing": "Racing",
+      "MMO": "MMO"
+    },
+    "platformOptions": {
+      "PC": "PC",
+      "PS5": "PS5",
+      "PS4": "PS4",
+      "Xbox Series X": "Xbox Series X",
+      "Xbox One": "Xbox One",
+      "Nintendo Switch": "Nintendo Switch",
+      "Mobile": "Mobile",
+      "VR": "VR"
+    },
+    "types": {
+      "all": "All",
+      "game": "Games",
+      "review": "Reviews",
+      "news": "News",
+      "community_post": "Community Posts",
+      "user": "Users"
+    },
+    "suggestions": {
+      "title": "Suggestions",
+      "viewMore": "View More",
+      "noSuggestions": "No suggestions"
+    },
+    "pagination": {
+      "total": "{{range[0]}}-{{range[1]}} of {{total}} results"
+    },
+    "metaData": {
+      "reviews": "{{count}} reviews",
+      "likes": "{{count}} likes",
+      "comments": "{{count}} comments",
+      "views": "{{count}} views"
+    },
+    "highlights": {
+      "matchFound": "Match found"
+    }
+  },
+  "recommendations": {
+    "personalized": "Recommended for You",
+    "trending": "Trending Now",
+    "relatedGames": "Similar Games",
+    "relatedReviews": "Related Reviews",
+    "relatedNews": "Related News",
+    "usersAlsoLiked": "Users Also Liked",
+    "noRecommendations": "No recommendations available",
+    "reasons": {
+      "sameGenre": "Similar genre",
+      "samePlatform": "Same platform",
+      "trending": "Trending",
+      "alsoLiked": "Users also liked",
+      "personalized": "Based on your preferences",
+      "newRelease": "New release",
+      "highRated": "High rated"
+    },
+    "loading": "Loading recommendations...",
+    "viewMore": "View More"
+  },
+  "leaderboard": {
+    "title": "Leaderboard",
+    "tabs": {
+      "topRated": "Top Rated",
+      "mostReviewed": "Most Reviewed",
+      "mostFavorited": "Most Favorited",
+      "mostDiscussed": "Most Discussed"
+    },
+    "columns": {
+      "rank": "Rank",
+      "gameName": "Game Name",
+      "rating": "Rating",
+      "reviewCount": "Reviews",
+      "score": "Score",
+      "trend": "Trend"
+    },
+    "trends": {
+      "up": "Up",
+      "down": "Down",
+      "stable": "Stable"
+    },
+    "noData": "No leaderboard data"
+  },
+  "trends": {
+    "title": "Trends",
+    "searchTrends": "Search Trends",
+    "gameTrends": "Game Popularity Trends",
+    "searchVolumn": "Search Volume",
+    "uniqueQueries": "Unique Queries",
+    "totalSearches": "Total Searches",
+    "period": {
+      "7d": "7 days",
+      "30d": "30 days",
+      "90d": "90 days"
+    },
+    "noData": "No trend data available"
+  },
+  "discovery": {
+    "title": "Discovery",
+    "tabs": {
+      "trends": "Trends",
+      "leaderboard": "Leaderboard",
+      "reports": "Reports"
+    },
+    "stats": {
+      "totalUsers": "Total Users",
+      "totalGames": "Total Games",
+      "totalReviews": "Total Reviews",
+      "totalPosts": "Total Posts",
+      "dailyNewUsers": "New Users Today",
+      "dailyNewReviews": "New Reviews Today",
+      "dailyNewPosts": "New Posts Today",
+      "activeUsers7d": "7-Day Active Users",
+      "activeUsers": "Active Users"
+    },
+    "distributions": {
+      "platforms": "Platform Distribution",
+      "genres": "Genre Distribution"
+    },
+    "reports": {
+      "title": "Data Reports",
+      "communitySummary": "Community Overview"
+    }
+  },
+  "resultItem": {
+    "game": "Game",
+    "review": "Review",
+    "news": "News",
+    "post": "Post",
+    "user": "User",
+    "gameFor": "Game: {{name}}",
+    "joined": "Joined {{date}}",
+    "unknownType": "Unknown type"
+  }
+}

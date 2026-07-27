@@ -1,0 +1,37 @@
+{
+  "title": "游戏评测",
+  "subtitle": "专业、客观、深度的游戏评测，帮助您做出更好的游戏选择",
+  "searchPlaceholder": "搜索游戏评测...",
+  "popularTags": "热门标签",
+  "allReviews": "全部评测",
+  "reviewCard": {
+    "readFull": "阅读全文",
+    "rating": "评分",
+    "game": "游戏",
+    "author": "作者",
+    "published": "发布于",
+    "likes": "点赞",
+    "comments": "评论",
+    "overallScore": "综合评分",
+    "gameplay": "游戏性",
+    "graphics": "画面表现",
+    "story": "剧情叙事",
+    "sound": "音效音乐"
+  },
+  "noResults": {
+    "title": "未找到相关评测",
+    "description": "尝试调整搜索关键词或选择其他标签",
+    "resetButton": "重置筛选条件"
+  },
+  "popularReviews": {
+    "title": "热门评测"
+  },
+  "submitReview": {
+    "title": "分享你的游戏体验",
+    "description": "写下你对游戏的独特见解，帮助其他玩家做出更好的选择。优质评测将获得平台推荐和奖励。",
+    "button": "立即提交评测"
+  },
+  "pagination": {
+    "total": "共 {{total}} 条评测"
+  }
+}

@@ -1,0 +1,1 @@
+import{b as t}from"../entries/entry-client-routing.BBSfJ_if.js";export default t();

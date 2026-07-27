@@ -1,0 +1,23 @@
+# GameHub 浏览器支持范围
+# 参考: https://github.com/browserslist/browserslist
+
+# 桌面端：最近 2 个版本的现代浏览器
+last 2 Chrome versions
+last 2 Edge versions
+last 2 Firefox versions
+last 2 Safari versions
+
+# 移动端
+last 2 iOS versions
+last 2 ChromeAndroid versions
+last 2 Samsung versions
+
+# 覆盖 HarmonyOS（兼容 Chromium 内核）
+Chrome >= 96
+
+# 排除已死亡浏览器
+not dead
+not IE 11
+not op_mini all
+not android <= 4.4
+not samsung <= 8

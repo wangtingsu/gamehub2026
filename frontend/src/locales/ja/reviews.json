@@ -1,0 +1,37 @@
+{
+  "title": "ゲームレビュー",
+  "subtitle": "プロフェッショナルで客観的、深みのあるゲームレビューが、より良いゲーム選択をサポート",
+  "searchPlaceholder": "ゲームレビューを検索...",
+  "popularTags": "人気タグ",
+  "allReviews": "すべてのレビュー",
+  "reviewCard": {
+    "readFull": "全文を読む",
+    "rating": "評価",
+    "game": "ゲーム",
+    "author": "著者",
+    "published": "公開日",
+    "likes": "いいね",
+    "comments": "コメント",
+    "overallScore": "総合スコア",
+    "gameplay": "ゲームプレイ",
+    "graphics": "グラフィックス",
+    "story": "ストーリー",
+    "sound": "サウンド＆音楽"
+  },
+  "noResults": {
+    "title": "関連レビューが見つかりません",
+    "description": "検索キーワードを調整するか、他のタグを選択してください",
+    "resetButton": "フィルターをリセット"
+  },
+  "popularReviews": {
+    "title": "人気レビュー"
+  },
+  "submitReview": {
+    "title": "あなたのゲーム体験を共有",
+    "description": "ゲームについての独自の洞察を書き、他のプレイヤーがより良い選択をするのを助けましょう。質の高いレビューはプラットフォームの推薦と報酬を受け取ります。",
+    "button": "レビューを投稿する"
+  },
+  "pagination": {
+    "total": "合計{{total}}件のレビュー"
+  }
+}

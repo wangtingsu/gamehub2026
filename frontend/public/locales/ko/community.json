@@ -1,0 +1,62 @@
+{
+  "title": "Gaming Community",
+  "subtitle": "Connect with gamers worldwide, share experiences, find teammates",
+  "searchPlaceholder": "Search community posts...",
+  "allPosts": "All Posts",
+  "postCard": {
+    "joinDiscussion": "Join Discussion",
+    "author": "Author",
+    "published": "Published",
+    "likes": "likes",
+    "comments": "comments"
+  },
+  "sidebar": {
+    "newPost": {
+      "title": "Share Your Gaming Story",
+      "description": "Connect with community players, share tips, find teammates",
+      "button": "Create New Post"
+    },
+    "hotPosts": "Hot Posts",
+    "communityRules": "Community Rules",
+    "rules": [
+      "Respect others, communicate politely",
+      "No advertising or spam",
+      "Comply with laws, no illegal content",
+      "Encourage originality, cite sources for reprints",
+      "Rational discussion, avoid personal attacks"
+    ],
+    "stats": {
+      "title": "Community Statistics",
+      "postsToday": "Posts Today",
+      "onlineUsers": "Online Users",
+      "totalPosts": "Total Posts",
+      "totalUsers": "Total Users"
+    },
+    "activities": {
+      "title": "Community Activities",
+      "weeklyChallenge": {
+        "title": "Weekly Game Challenge",
+        "description": "Weekly new game challenge tasks, complete challenges to earn points and rewards"
+      },
+      "reviewContest": {
+        "title": "Review Contest",
+        "description": "Monthly best game review selection, winners receive generous rewards and platform recommendations"
+      },
+      "offlineMeetup": {
+        "title": "Offline Meetup",
+        "description": "Regular offline gaming meetups, face-to-face communication with local players"
+      },
+      "viewDetails": "View Details",
+      "participate": "Participate Now",
+      "viewSchedule": "View Schedule"
+    }
+  },
+  "noResults": {
+    "title": "No relevant posts found",
+    "description": "Try adjusting search keywords or selecting other categories",
+    "resetButton": "Reset Filters"
+  },
+  "pagination": {
+    "total": "Total {{total}} posts"
+  }
+}

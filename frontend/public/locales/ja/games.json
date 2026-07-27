@@ -1,0 +1,51 @@
+{
+  "title": "ゲームライブラリ",
+  "subtitle": "厳選されたゲームコレクションを探索",
+  "searchPlaceholder": "ゲームタイトルまたは説明を検索...",
+  "filters": {
+    "genre": "ジャンル",
+    "platform": "プラットフォーム",
+    "priceRange": "価格帯",
+    "minRating": "最低評価",
+    "all": "すべて",
+    "reset": "フィルターをリセット"
+  },
+  "gameCard": {
+    "featured": "おすすめ",
+    "discount": "割引",
+    "rating": "評価",
+    "released": "発売日",
+    "genres": "ジャンル",
+    "platforms": "プラットフォーム",
+    "viewDetails": "詳細を見る",
+    "addToLibrary": "ライブラリに追加",
+    "addToFavorites": "お気に入りに追加"
+  },
+  "noResults": {
+    "title": "ゲームが見つかりません",
+    "description": "検索またはフィルター条件を調整してください",
+    "resetButton": "フィルターをリセット"
+  },
+  "stats": {
+    "showing": "{{count}}件のゲームを表示中",
+    "total": "合計{{total}}件のゲーム"
+  },
+  "genres": {
+    "rpg": "RPG",
+    "action": "アクション",
+    "adventure": "アドベンチャー",
+    "strategy": "ストラテジー",
+    "sci-fi": "SF",
+    "fantasy": "ファンタジー",
+    "soulslike": "ソウルライク",
+    "magic": "魔法"
+  },
+  "platforms": {
+    "pc": "PC",
+    "ps4": "PlayStation 4",
+    "ps5": "PlayStation 5",
+    "xboxOne": "Xbox One",
+    "xboxSeriesX": "Xbox Series X",
+    "switch": "Nintendo Switch"
+  }
+}

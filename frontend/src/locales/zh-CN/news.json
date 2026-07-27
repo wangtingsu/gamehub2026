@@ -1,0 +1,37 @@
+{
+  "title": "游戏新闻",
+  "subtitle": "最新游戏资讯、行业动态、发布会信息，一切尽在 GameHub 新闻中心",
+  "searchPlaceholder": "搜索新闻...",
+  "categoryPlaceholder": "选择分类",
+  "allCategories": "全部分类",
+  "newsCard": {
+    "readFull": "阅读全文",
+    "views": "阅读",
+    "likes": "点赞",
+    "author": "作者",
+    "published": "发布于"
+  },
+  "categories": {
+    "gameNews": "游戏新闻",
+    "industryUpdates": "行业动态",
+    "promotions": "促销信息"
+  },
+  "noResults": {
+    "title": "未找到相关新闻",
+    "description": "尝试调整搜索关键词或选择其他分类",
+    "resetButton": "重置筛选条件"
+  },
+  "categoryStats": {
+    "title": "新闻分类",
+    "count": "{{count}} 篇文章"
+  },
+  "subscription": {
+    "title": "订阅最新游戏资讯",
+    "description": "第一时间获取最新游戏新闻、发布会信息和独家报道，不错过任何重要资讯",
+    "placeholder": "输入您的邮箱地址",
+    "button": "订阅"
+  },
+  "pagination": {
+    "total": "共 {{total}} 条新闻"
+  }
+}

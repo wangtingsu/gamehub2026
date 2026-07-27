@@ -1,0 +1,156 @@
+{
+  "layout": {
+    "title": "GameHub 管理后台",
+    "subtitle": "管理面板",
+    "docs": "文档",
+    "breadcrumb": {
+      "dashboard": "仪表盘",
+      "users": "用户管理",
+      "games": "游戏管理",
+      "content": "内容管理"
+    }
+  },
+  "sidebar": {
+    "dashboard": "仪表盘",
+    "users": "用户管理",
+    "games": "游戏管理",
+    "content": "内容管理",
+    "settings": "系统设置",
+    "logout": "退出登录"
+  },
+  "dashboard": {
+    "title": "管理仪表盘",
+    "stats": {
+      "totalUsers": "用户总数",
+      "games": "游戏",
+      "content": "内容",
+      "revenue": "收入"
+    },
+    "popularGames": "热门游戏",
+    "systemStatus": "系统状态",
+    "recentActivities": "最近活动",
+    "quickActions": {
+      "title": "快速操作",
+      "addUser": "添加用户",
+      "addUserDesc": "创建新用户账户",
+      "addGame": "添加游戏",
+      "addGameDesc": "添加新游戏到游戏库",
+      "createNews": "创建新闻",
+      "createNewsDesc": "发布新闻文章",
+      "viewReports": "查看报告",
+      "viewReportsDesc": "财务与分析"
+    }
+  },
+  "users": {
+    "title": "用户管理",
+    "addUser": "添加用户",
+    "searchPlaceholder": "搜索用户...",
+    "columns": {
+      "username": "用户名",
+      "email": "邮箱",
+      "name": "姓名",
+      "role": "角色",
+      "status": "状态",
+      "joinDate": "加入日期",
+      "lastLogin": "最后登录",
+      "gamesOwned": "游戏数",
+      "reviews": "评测数",
+      "actions": "操作"
+    },
+    "filters": {
+      "role": "角色",
+      "status": "状态"
+    },
+    "statusBadge": {
+      "active": "活跃",
+      "inactive": "不活跃",
+      "suspended": "已封禁",
+      "pending": "待审核"
+    }
+  },
+  "games": {
+    "title": "游戏管理",
+    "addGame": "添加游戏",
+    "searchPlaceholder": "搜索游戏...",
+    "columns": {
+      "title": "标题",
+      "description": "描述",
+      "price": "价格",
+      "rating": "评分",
+      "platforms": "平台",
+      "status": "状态",
+      "actions": "操作"
+    },
+    "status": {
+      "active": "活跃",
+      "draft": "草稿",
+      "archived": "已归档"
+    }
+  },
+  "content": {
+    "title": "内容管理",
+    "tabs": {
+      "news": "新闻",
+      "reviews": "评测",
+      "posts": "社区帖子"
+    },
+    "news": {
+      "addNews": "添加新闻",
+      "columns": {
+        "title": "标题",
+        "category": "分类",
+        "author": "作者",
+        "views": "阅读量",
+        "published": "发布时间",
+        "status": "状态",
+        "actions": "操作"
+      }
+    },
+    "reviews": {
+      "columns": {
+        "title": "标题",
+        "game": "游戏",
+        "author": "作者",
+        "rating": "评分",
+        "likes": "点赞数",
+        "status": "状态",
+        "actions": "操作"
+      }
+    },
+    "posts": {
+      "columns": {
+        "title": "标题",
+        "author": "作者",
+        "category": "分类",
+        "likes": "点赞数",
+        "comments": "评论数",
+        "status": "状态",
+        "actions": "操作"
+      }
+    },
+    "status": {
+      "published": "已发布",
+      "draft": "草稿",
+      "pending": "待审核",
+      "rejected": "已拒绝"
+    }
+  },
+  "sidebar": {
+    "analytics": "业务分析",
+    "profiling": "用户画像"
+  },
+  "analytics": {
+    "title": "业务分析",
+    "userGrowth": "用户增长趋势",
+    "gamePopularity": "游戏热度排行",
+    "contentEngagement": "内容参与度",
+    "distribution": "平台/类型分布",
+    "activeUsers": "活跃用户分析"
+  },
+  "profiling": {
+    "title": "用户画像",
+    "tags": "用户标签",
+    "segments": "用户分组",
+    "behavior": "行为分析"
+  }
+}

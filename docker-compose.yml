@@ -1,0 +1,223 @@
+services:
+  # PostgreSQL数据库
+  postgres:
+    image: postgres:16-alpine
+    container_name: gamehub-postgres
+    environment:
+      POSTGRES_USER: ${DB_USER:-gamehub}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-gamehub_password}
+      POSTGRES_DB: ${DB_NAME:-gamehub}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "127.0.0.1:5432:5432"
+    networks:
+      - gamehub-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USER:-gamehub}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    restart: unless-stopped
+
+  # Redis缓存
+  redis:
+    image: redis:7-alpine
+    container_name: gamehub-redis
+    command: redis-server --appendonly yes --requirepass ${REDIS_PASSWORD:-redis_password}
+    volumes:
+      - redis_data:/data
+    ports:
+      - "127.0.0.1:6379:6379"
+    networks:
+      - gamehub-network
+    healthcheck:
+      test: ["CMD", "redis-cli", "-a", "${REDIS_PASSWORD:-redis_password}", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    restart: unless-stopped
+
+  # 后端API服务（公共API，端口3001）
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: gamehub-backend
+    environment:
+      NODE_ENV: production
+      DB_TYPE: postgres
+      DB_HOST: postgres
+      DB_PORT: 5432
+      DB_USER: ${DB_USER:-gamehub}
+      DB_PASSWORD: ${DB_PASSWORD:-gamehub_password}
+      DB_NAME: ${DB_NAME:-gamehub}
+      DB_SSL: "false"
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+      REDIS_PASSWORD: ${REDIS_PASSWORD:-redis_password}
+      REDIS_URL: redis://:${REDIS_PASSWORD:-redis_password}@redis:6379
+      PORT: 3000
+      JWT_SECRET: ${JWT_SECRET:?JWT_SECRET is required}
+      JWT_REFRESH_SECRET: ${JWT_REFRESH_SECRET:-${JWT_SECRET}}
+      CORS_ORIGIN: ${CORS_ORIGIN:-https://www.gghubs.com}
+      API_PREFIX: /api/v1
+      ADMIN_API_PREFIX: /admin-api/v1
+      LOG_LEVEL: info
+      LOG_FORMAT: json
+      ENABLE_CACHING: "true"
+      ENABLE_RATE_LIMIT: "true"
+      UPLOAD_PATH: /app/uploads
+      SENTRY_DSN: ${SENTRY_DSN:-}
+      SITE_URL: https://www.gghubs.com
+      DEEPSEEK_API_KEY: ${DEEPSEEK_API_KEY:-}
+      # 短信服务（腾讯云 SMS）
+      SMS_PROVIDER: ${SMS_PROVIDER:-tencent}
+      SMS_TEST_MODE: ${SMS_TEST_MODE:-false}
+      TENCENT_SECRET_ID: ${TENCENT_SECRET_ID:-}
+      TENCENT_SECRET_KEY: ${TENCENT_SECRET_KEY:-}
+      SMS_SDK_APP_ID: ${SMS_SDK_APP_ID:-}
+      SMS_TEMPLATE_ID: ${SMS_TEMPLATE_ID:-}
+      SMS_SIGN_NAME: ${SMS_SIGN_NAME:-GameHub}
+      # SMTP 邮箱配置（用于发送新闻通讯和验证邮件）
+      SMTP_HOST: ${SMTP_HOST:-smtp.gmail.com}
+      SMTP_PORT: ${SMTP_PORT:-587}
+      SMTP_SECURE: ${SMTP_SECURE:-false}
+      SMTP_USER: ${SMTP_USER:-}
+      SMTP_PASSWORD: ${SMTP_PASSWORD:-}
+      EMAIL_FROM: ${EMAIL_FROM:-noreply@gamehub.com}
+      EMAIL_FROM_NAME: ${EMAIL_FROM_NAME:-GameHub}
+      NEWSLETTER_CRON_SCHEDULE: ${NEWSLETTER_CRON_SCHEDULE:-0 9 * * 1}
+    volumes:
+      - backend_uploads:/app/uploads
+      - /home/ubuntu/gamehub-2026/frontend-dist:/app/frontend-dist
+    ports:
+      - "127.0.0.1:3000:3000"
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    networks:
+      - gamehub-network
+    healthcheck:
+      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:3000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    restart: unless-stopped
+
+  # 管理后台API服务（管理员API，端口3002）
+  admin-backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    command: ["node", "dist/admin-index.js"]
+    container_name: gamehub-admin-backend
+    environment:
+      NODE_ENV: production
+      DB_TYPE: postgres
+      DB_HOST: postgres
+      DB_PORT: 5432
+      DB_USER: ${DB_USER:-gamehub}
+      DB_PASSWORD: ${DB_PASSWORD:-gamehub_password}
+      DB_NAME: ${DB_NAME:-gamehub}
+      DB_SSL: "false"
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+      REDIS_PASSWORD: ${REDIS_PASSWORD:-redis_password}
+      REDIS_URL: redis://:${REDIS_PASSWORD:-redis_password}@redis:6379
+      ADMIN_PORT: 3000
+      ADMIN_USERNAME: ${ADMIN_USERNAME:-admin}
+      ADMIN_PASSWORD: ${ADMIN_PASSWORD:?ADMIN_PASSWORD is required}
+      JWT_SECRET: ${JWT_SECRET:?JWT_SECRET is required}
+      JWT_REFRESH_SECRET: ${JWT_REFRESH_SECRET:-${JWT_SECRET}}
+      CORS_ORIGIN: ${CORS_ORIGIN:-https://www.gghubs.com}
+      SITE_URL: https://www.gghubs.com
+      API_PREFIX: /admin-api/v1
+      LOG_LEVEL: info
+      LOG_FORMAT: json
+      ENABLE_CACHING: "true"
+      ENABLE_RATE_LIMIT: "true"
+      UPLOAD_PATH: /app/uploads
+      # 短信服务（腾讯云 SMS）
+      SMS_PROVIDER: ${SMS_PROVIDER:-tencent}
+      SMS_TEST_MODE: ${SMS_TEST_MODE:-false}
+      TENCENT_SECRET_ID: ${TENCENT_SECRET_ID:-}
+      TENCENT_SECRET_KEY: ${TENCENT_SECRET_KEY:-}
+      SMS_SDK_APP_ID: ${SMS_SDK_APP_ID:-}
+      SMS_TEMPLATE_ID: ${SMS_TEMPLATE_ID:-}
+      SMS_SIGN_NAME: ${SMS_SIGN_NAME:-GameHub}
+      # SMTP 邮箱配置
+      SMTP_HOST: ${SMTP_HOST:-smtp.gmail.com}
+      SMTP_PORT: ${SMTP_PORT:-587}
+      SMTP_SECURE: ${SMTP_SECURE:-false}
+      SMTP_USER: ${SMTP_USER:-}
+      SMTP_PASSWORD: ${SMTP_PASSWORD:-}
+      EMAIL_FROM: ${EMAIL_FROM:-noreply@gamehub.com}
+      EMAIL_FROM_NAME: ${EMAIL_FROM_NAME:-GameHub}
+      NEWSLETTER_CRON_SCHEDULE: ${NEWSLETTER_CRON_SCHEDULE:-0 9 * * 1}
+    volumes:
+      - backend_uploads:/app/uploads
+    ports:
+      - "127.0.0.1:3002:3000"
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    networks:
+      - gamehub-network
+    healthcheck:
+      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:3000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    restart: unless-stopped
+
+  # 前端应用（使用预构建镜像，避免在服务器上执行 npm build）
+  frontend:
+    image: gamehub-2026-frontend
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+      args:
+        VITE_SITE_URL: https://www.gghubs.com
+        # VITE_API_BASE_URL 不设置，浏览器端回退到 window.location.origin + '/api/v1'（通过 nginx 代理）
+    container_name: gamehub-frontend
+    environment:
+      VITE_DISABLE_PWA: "true"
+    ports:
+      - "8080:80"
+    volumes:
+      - /etc/letsencrypt/live/www.gghubs.com/fullchain.pem:/etc/nginx/ssl/fullchain.pem:ro
+      - /etc/letsencrypt/live/www.gghubs.com/privkey.pem:/etc/nginx/ssl/privkey.pem:ro
+    depends_on:
+      - backend
+      - admin-backend
+    networks:
+      - gamehub-network
+    healthcheck:
+      test: ["CMD", "wget", "--no-check-certificate", "-q", "-O", "/dev/null", "http://127.0.0.1/"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    restart: unless-stopped
+
+# 网络配置
+networks:
+  gamehub-network:
+    driver: bridge
+    name: gamehub-network
+
+# 数据卷配置
+volumes:
+  postgres_data:
+    driver: local
+  redis_data:
+    driver: local
+  backend_uploads:
+    driver: local

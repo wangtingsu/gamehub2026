@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<!-- ============================================================
+     GameHub 客户端 Hydration 入口 HTML
+     - 作用：用于 hydrate 构建的独立 HTML 模板
+     - 说明：当 SSR 不可用或降级时，作为客户端 SPA 回退渲染入口
+     - 构建配置：vite.hydrate.config.ts
+     ============================================================ -->
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+  <!-- React 应用挂载根节点，hydrate 模式下在此挂载客户端应用 -->
+  <div id="root"></div>
+</body>
+</html>

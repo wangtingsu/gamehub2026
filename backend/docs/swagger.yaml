@@ -1,0 +1,6416 @@
+openapi: 3.0.3
+info:
+  title: GameHub API
+  description: GameHub游戏社区平台API文档
+  version: 1.0.0
+  contact:
+    name: GameHub开发团队
+    email: dev@gamehub.com
+  license:
+    name: MIT
+    url: https://opensource.org/licenses/MIT
+
+servers:
+  - url: http://localhost:3000/api/v1
+    description: 本地开发服务器
+  - url: https://api.gamehub.example.com/api/v1
+    description: 生产服务器
+
+tags:
+  - name: 认证
+    description: 用户认证相关接口
+  - name: 用户
+    description: 用户管理接口
+  - name: 游戏
+    description: 游戏管理接口
+  - name: 新闻
+    description: 新闻文章接口
+  - name: 评测
+    description: 游戏评测接口
+  - name: 社区
+    description: 社区帖子接口
+  - name: 系统
+    description: 系统健康检查接口
+  - name: 文件上传
+    description: 文件上传相关接口
+  - name: 邮件服务
+    description: 邮件发送和模板管理接口
+  - name: 收藏管理
+    description: 用户收藏游戏管理接口
+  - name: 关注
+    description: 用户关注管理接口
+  - name: 点赞
+    description: 内容点赞接口
+  - name: 通知
+    description: 用户通知管理接口
+  - name: 评论
+    description: 评论管理接口
+  - name: 搜索
+    description: 全局搜索接口
+  - name: 游戏库
+    description: 用户游戏库管理接口
+  - name: 管理
+    description: 管理员后台接口
+  - name: 关于
+    description: 关于页面内容接口
+  - name: 双因素认证
+    description: 双因素认证相关接口
+  - name: OAuth
+    description: OAuth第三方登录相关接口
+  - name: 短信服务
+    description: 短信验证码相关接口
+  - name: 发现
+    description: 内容发现和推荐接口
+  - name: 游戏化
+    description: 用户经验值和积分系统接口
+  - name: 成就
+    description: 成就系统接口
+  - name: 消息
+    description: 用户消息和会话接口
+  - name: 攻略
+    description: 游戏攻略指南接口
+  - name: AI
+    description: AI助手相关接口
+  - name: 3D打印
+    description: 3D打印服务接口
+  - name: 站点地图
+    description: 站点地图和SEO接口
+  - name: 管理员-分析
+    description: 管理员数据分析接口
+  - name: 管理员-用户画像
+    description: 管理员用户画像标签接口
+  - name: 管理员-部署
+    description: 管理员部署管理接口
+  - name: 管理员-备份
+    description: 管理员备份恢复接口
+  - name: 管理员-分类
+    description: 管理员分类管理接口
+  - name: 管理员-模板
+    description: 管理员评测模板接口
+  - name: 管理员-攻略
+    description: 管理员攻略管理接口
+
+paths:
+  /auth/register:
+    post:
+      tags:
+        - 认证
+      summary: 用户注册
+      description: 创建新用户账户
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RegisterRequest'
+      responses:
+        '201':
+          description: 注册成功
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthResponse'
+        '400':
+          description: 请求参数错误
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /auth/login:
+    post:
+      tags:
+        - 认证
+      summary: 用户登录
+      description: 用户登录获取访问令牌
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoginRequest'
+      responses:
+        '200':
+          description: 登录成功
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthResponse'
+        '401':
+          description: 认证失败
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /auth/refresh:
+    post:
+      tags:
+        - 认证
+      summary: 刷新访问令牌
+      description: 使用刷新令牌获取新的访问令牌
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - refreshToken
+              properties:
+                refreshToken:
+                  type: string
+                  description: 刷新令牌
+      responses:
+        '200':
+          description: 令牌刷新成功
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TokenResponse'
+        '401':
+          description: 令牌无效或过期
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /auth/logout:
+    post:
+      tags:
+        - 认证
+      summary: 用户登出
+      description: 用户登出，使令牌失效
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: 登出成功
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessResponse'
+        '401':
+          description: 未授权
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /auth/change-password:
+    post:
+      tags:
+        - 认证
+      summary: 修改密码
+      description: 修改当前登录用户的密码
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - currentPassword
+                - newPassword
+              properties:
+                currentPassword:
+                  type: string
+                  description: 当前密码
+                  example: "oldpassword123"
+                newPassword:
+                  type: string
+                  description: 新密码
+                  minLength: 6
+                  example: "newpassword456"
+      responses:
+        '200':
+          description: 密码修改成功
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessResponse'
+        '400':
+          description: 请求参数错误或密码验证失败
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: 未授权
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /auth/forgot-password:
+    post:
+      tags:
+        - 认证
+      summary: 忘记密码
+      description: 发送密码重置邮件
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - email
+              properties:
+                email:
+                  type: string
+                  format: email
+                  description: 用户邮箱
+                  example: "user@example.com"
+      responses:
+        '200':
+          description: 如果邮箱存在，重置链接已发送
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessResponse'
+        '400':
+          description: 请求参数错误
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /auth/reset-password:
+    post:
+      tags:
+        - 认证
+      summary: 重置密码
+      description: 使用重置令牌重置密码
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - resetToken
+                - newPassword
+              properties:
+                resetToken:
+                  type: string
+                  description: 密码重置令牌
+                  example: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+                newPassword:
+                  type: string
+                  description: 新密码
+                  minLength: 6
+                  example: "newpassword456"
+      responses:
+        '200':
+          description: 密码重置成功
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessResponse'
+        '400':
+          description: 请求参数错误或令牌无效
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /auth/verify-email/{token}:
+    get:
+      tags:
+        - 认证
+      summary: 验证邮箱
+      description: 使用验证令牌验证用户邮箱
+      parameters:
+        - name: token
+          in: path
+          required: true
+          description: 邮箱验证令牌
+          schema:
+            type: string
+      responses:
+        '200':
+          description: 邮箱验证成功
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessResponse'
+        '400':
+          description: 令牌无效或已过期
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /auth/health:
+    get:
+      tags:
+        - 认证
+      summary: 认证服务健康检查
+      description: 检查认证服务健康状态
+      responses:
+        '200':
+          description: 服务健康
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  data:
+                    type: object
+                    properties:
+                      service:
+                        type: string
+                        example: "auth"
+                      status:
+                        type: string
+                        example: "healthy"
+                      timestamp:
+                        type: string
+                        format: date-time
+                        example: "2026-04-21T10:00:00Z"
+                  message:
+                    type: string
+                    example: "认证服务运行正常"
+
+  /auth/me:
+    get:
+      tags:
+        - 认证
+      summary: 获取当前用户信息
+      description: 获取当前登录用户的详细信息
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: 获取成功
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserProfileResponse'
+        '401':
+          description: 未授权
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+    put:
+      tags:
+        - 认证
+      summary: 更新用户信息
+      description: 更新当前登录用户的信息
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateUserRequest'
+      responses:
+        '200':
+          description: 更新成功
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserProfileResponse'
+        '401':
+          description: 未授权
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /auth/login/phone:
+    post:
+      tags:
+        - 认证
+      summary: 手机号登录
+      description: 使用手机号和验证码登录
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - phone
+                - code
+              properties:
+                phone:
+                  type: string
+                  description: 手机号
+                  example: "13800138000"
+                code:
+                  type: string
+                  description: 短信验证码
+                  example: "123456"
+      responses:
+        '200':
+          description: 登录成功
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthResponse'
+        '401':
+          description: 验证码错误
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /auth/register/phone:
+    post:
+      tags:
+        - 认证
+      summary: 手机号注册
+      description: 使用手机号和验证码注册新用户
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - phone
+                - code
+                - username
+                - password
+              properties:
+                phone:
+                  type: string
+                  description: 手机号
+                  example: "13800138000"
+                code:
+                  type: string
+                  description: 短信验证码
+                  example: "123456"
+                username:
+                  type: string
+                  description: 用户名
+                  example: "new_user"
+                password:
+                  type: string
+                  description: 密码
+                  minLength: 6
+                  example: "password123"
+                displayName:
+                  type: string
+                  description: 显示名称
+                  example: "新用户"
+      responses:
+        '201':
+          description: 注册成功
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthResponse'
+        '400':
+          description: 请求参数错误
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /auth/oauth/providers:
+    get:
+      tags:
+        - OAuth
+      summary: 获取OAuth提供商列表
+      description: 获取支持的第三方登录提供商列表
+      responses:
+        '200':
+          description: 获取成功
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  data:
+                    type: object
+                    properties:
+                      providers:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            id:
+                              type: string
+                              example: "google"
+                            name:
+                              type: string
+                              example: "Google"
+                            icon:
+                              type: string
+                              example: "google-circle"
+                            enabled:
+                              type: boolean
+                              example: true
+
+  /auth/oauth/url/{provider}:
+    get:
+      tags:
+        - OAuth
+      summary: 获取OAuth授权URL
+      description: 获取指定提供商的OAuth授权跳转链接
+      parameters:
+        - name: provider
+          in: path
+          required: true
+          description: OAuth提供商名称
+          schema:
+            type: string
+            enum: [google, facebook, twitter, github, discord]
+      responses:
+        '200':
+          description: 获取成功
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  data:
+                    type: object
+                    properties:
+                      url:
+                        type: string
+                        format: uri
+                        example: "https://accounts.google.com/o/oauth2/auth?..."
+
+  /auth/oauth/{provider}/callback:
+    get:
+      tags:
+        - OAuth
+      summary: OAuth回调处理
+      description: 处理OAuth登录回调
+      parameters:
+        - name: provider
+          in: path
+          required: true
+          description: OAuth提供商名称
+          schema:
+            type: string
+        - name: code
+          in: query
+          required: true
+          description: 授权码
+          schema:
+            type: string
+        - name: state
+          in: query
+          description: 状态码（用于CSRF保护）
+          schema:
+            type: string
+      responses:
+        '200':
+          description: 登录成功
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthResponse'
+        '401':
+          description: 认证失败
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /auth/two-factor/status:
+    get:
+      tags:
+        - 双因素认证
+      summary: 获取2FA状态
+      description: 获取当前用户的双因素认证状态
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: 获取成功
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  data:
+                    type: object
+                    properties:
+                      enabled:
+                        type: boolean
+                        example: false
+                      method:
+                        type: string
+                        example: "authenticator"
+                      lastUsedAt:
+                        type: string
+                        format: date-time
+
+  /auth/two-factor/setup:
+    post:
+      tags:
+        - 双因素认证
+      summary: 获取2FA设置信息
+      description: 获取双因素认证设置信息（密钥和二维码）
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: 获取成功
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  data:
+                    type: object
+                    properties:
+                      secret:
+                        type: string
+                        example: "JBSWY3DPEHPK3PXP"
+                      qrCodeUrl:
+                        type: string
+                        format: uri
+                        example: "https://api.qrserver.com/v1/create-qr-code/?data=otpauth://..."
+                      backupCodes:
+                        type: array
+                        items:
+                          type: string
+                        example: ["1234-5678", "8765-4321", "1122-3344"]
+
+  /auth/two-factor/enable:
+    post:
+      tags:
+        - 双因素认证
+      summary: 启用2FA
+      description: 验证并启用双因素认证
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - code
+              properties:
+                code:
+                  type: string
+                  description: 验证码
+                  example: "123456"
+      responses:
+        '200':
+          description: 启用成功
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessResponse'
+        '400':
+          description: 验证码错误
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /auth/two-factor/disable:
+    post:
+      tags:
+        - 双因素认证
+      summary: 禁用2FA
+      description: 禁用双因素认证
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - password
+              properties:
+                password:
+                  type: string
+                  description: 当前密码验证
+                  example: "password123"
+      responses:
+        '200':
+          description: 禁用成功
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessResponse'
+        '400':
+          description: 密码验证失败
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /auth/two-factor/verify:
+    post:
+      tags:
+        - 双因素认证
+      summary: 验证2FA
+      description: 登录时验证双因素认证码
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - partialAuthToken
+                - code
+              properties:
+                partialAuthToken:
+                  type: string
+                  description: 部分认证令牌（登录时获取）
+                  example: "eyJhbGciOiJIUzI1NiIs..."
+                code:
+                  type: string
+                  description: 验证码
+                  example: "123456"
+      responses:
+        '200':
+          description: 验证成功
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthResponse'
+        '401':
+          description: 验证码错误
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /auth/sms/send:
+    post:
+      tags:
+        - 短信服务
+      summary: 发送短信验证码
+      description: 发送短信验证码到指定手机号
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - phone
+              properties:
+                phone:
+                  type: string
+                  description: 手机号
+                  example: "13800138000"
+      responses:
+        '200':
+          description: 发送成功
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessResponse'
+        '429':
+          description: 发送过于频繁
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /auth/sms/verify:
+    post:
+      tags:
+        - 短信服务
+      summary: 验证短信验证码
+      description: 验证手机号和短信验证码
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - phone
+                - code
+              properties:
+                phone:
+                  type: string
+                  description: 手机号
+                  example: "13800138000"
+                code:
+                  type: string
+                  description: 验证码
+                  example: "123456"
+      responses:
+        '200':
+          description: 验证成功
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessResponse'
+        '400':
+          description: 验证码错误
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /users:
+    get:
+      tags:
+        - 用户
+      summary: 获取用户列表（管理员）
+      description: 获取所有用户列表，仅管理员可访问
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: page
+          in: query
+          description: 页码
+          schema:
+            type: integer
+            minimum: 1
+            default: 1
+        - name: limit
+          in: query
+          description: 每页数量
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 100
+            default: 20
+        - name: search
+          in: query
+          description: 搜索关键词（用户名或邮箱）
+          schema:
+            type: string
+      responses:
+        '200':
+          description: 获取成功
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserListResponse'
+        '401':
+          description: 未授权
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '403':
+          description: 权限不足
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /users/{id}:
+    get:
+      tags:
+        - 用户
+      summary: 获取用户详情
+      description: 根据ID获取用户详情
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: 用户ID
+          schema:
+            type: string
+      responses:
+        '200':
+          description: 获取成功
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserDetailResponse'
+        '401':
+          description: 未授权
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: 用户不存在
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+    put:
+      tags:
+        - 用户
+      summary: 更新用户信息（管理员）
+      description: 更新用户信息，仅管理员可访问
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: 用户ID
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateUserAdminRequest'
+      responses:
+        '200':
+          description: 更新成功
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserDetailResponse'
+        '401':
+          description: 未授权
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '403':
+          description: 权限不足
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+    delete:
+      tags:
+        - 用户
+      summary: 删除用户（管理员）
+      description: 删除用户，仅管理员可访问
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: 用户ID
+          schema:
+            type: string
+      responses:
+        '200':
+          description: 删除成功
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessResponse'
+        '401':
+          description: 未授权
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '403':
+          description: 权限不足
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /games:
+    get:
+      tags:
+        - 游戏
+      summary: 获取游戏列表
+      description: 获取游戏列表，支持分页和筛选
+      parameters:
+        - name: page
+          in: query
+          description: 页码
+          schema:
+            type: integer
+            minimum: 1
+            default: 1
+        - name: limit
+          in: query
+          description: 每页数量
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 100
+            default: 20
+        - name: search
+          in: query
+          description: 搜索关键词（游戏标题）
+          schema:
+            type: string
+        - name: genre
+          in: query
+          description: 游戏类型筛选
+          schema:
+            type: string
+        - name: platform
+          in: query
+          description: 平台筛选
+          schema:
+            type: string
+      responses:
+        '200':
+          description: 获取成功
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GameListResponse'
+        '400':
+          description: 请求参数错误
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /games/search:
+    get:
+      tags:
+        - 游戏
+      summary: 搜索游戏
+      description: 搜索游戏，支持关键词和筛选
+      parameters:
+        - name: query
+          in: query
+          required: true
+          description: 搜索关键词
+          schema:
+            type: string
+        - name: page
+          in: query
+          description: 页码
+          schema:
+            type: integer
+            minimum: 1
+            default: 1
+        - name: limit
+          in: query
+          description: 每页数量
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 100
+            default: 20
+        - name: genre
+          in: query
+          description: 游戏类型筛选
+          schema:
+            type: string
+        - name: platform
+          in: query
+          description: 平台筛选
+          schema:
+            type: string
+      responses:
+        '200':
+          description: 搜索成功
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  data:
+                    type: object
+                    properties:
+                      games:
+                        type: array
+                        items:
+                          $ref: '#/components/schemas/Game'
+                      query:
+                        type: string
+                        example: "赛博朋克"
+                      pagination:
+                        $ref: '#/components/schemas/Pagination'
+                  message:
+                    type: string
+                    example: "游戏搜索成功"
+        '400':
+          description: 请求参数错误
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /games/{id}:
+    get:
+      tags:
+        - 游戏
+      summary: 获取游戏详情
+      description: 根据ID或slug获取游戏详情
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: 游戏ID或slug
+          schema:
+            type: string
+      responses:
+        '200':
+          description: 获取成功
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  data:
+                    $ref: '#/components/schemas/Game'
+                  message:
+                    type: string
+                    example: "游戏详情获取成功"
+        '404':
+          description: 游戏不存在
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+    put:
+      tags:
+        - 游戏
+      summary: 更新游戏
+      description: 更新游戏信息（管理员）
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: 游戏ID
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GameUpdateRequest'
+      responses:
+        '200':
+          description: 游戏更新成功
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  data:
+                    $ref: '#/components/schemas/Game'
+                  message:
+                    type: string
+                    example: "游戏更新成功"
+        '400':
+          description: 请求参数错误
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: 未授权
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '403':
+          description: 权限不足
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+    delete:
+      tags:
+        - 游戏
+      summary: 删除游戏
+      description: 删除游戏（管理员）
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: 游戏ID
+          schema:
+            type: string
+      responses:
+        '200':
+          description: 游戏删除成功
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessResponse'
+        '401':
+          description: 未授权
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '403':
+          description: 权限不足
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /games/{id}/reviews:
+    get:
+      tags:
+        - 游戏
+      summary: 获取游戏的评测
+      description: 获取指定游戏的所有评测
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: 游戏ID
+          schema:
+            type: string
+        - name: page
+          in: query
+          description: 页码
+          schema:
+            type: integer
+            minimum: 1
+            default: 1
+        - name: limit
+          in: query
+          description: 每页数量
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 100
+            default: 20
+      responses:
+        '200':
+          description: 获取成功
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  data:
+                    type: object
+                    properties:
+                      gameId:
+                        type: string
+                        example: "123e4567-e89b-12d3-a456-426614174000"
+                      reviews:
+                        type: array
+                        items:
+                          $ref: '#/components/schemas/Review'
+                      pagination:
+                        $ref: '#/components/schemas/Pagination'
+                  message:
+                    type: string
+                    example: "游戏评测获取成功"
+        '400':
+          description: 请求参数错误
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+    post:
+      tags:
+        - 游戏
+      summary: 创建游戏
+      description: 创建新游戏（管理员）
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GameCreateRequest'
+      responses:
+        '201':
+          description: 游戏创建成功
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  data:
+                    $ref: '#/components/schemas/Game'
+                  message:
+                    type: string
+                    example: "游戏创建成功"
+        '400':
+          description: 请求参数错误
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: 未授权
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '403':
+          description: 权限不足
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /health:
+    get:
+      tags:
+        - 系统
+      summary: 健康检查
+      description: 检查API服务健康状态
+      responses:
+        '200':
+          description: 服务健康
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HealthResponse'
+
+  /news:
+    get:
+      tags:
+        - 新闻
+      summary: 获取新闻列表
+      description: 获取新闻列表，支持分页和分类筛选
+      parameters:
+        - name: page
+          in: query
+          description: 页码
+          schema:
+            type: integer
+            minimum: 1
+            default: 1
+        - name: limit
+          in: query
+          description: 每页数量
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 100
+            default: 20
+        - name: category
+          in: query
+          description: 新闻分类筛选
+          schema:
+            type: string
+        - name: published
+          in: query
+          description: 是否只获取已发布的新闻
+          schema:
+            type: boolean
+            default: true
+      responses:
+        '200':
+          description: 获取成功
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NewsListResponse'
+        '400':
+          description: 请求参数错误
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+    post:
+      tags:
+        - 新闻
+      summary: 创建新闻
+      description: 创建新新闻文章（管理员/编辑）
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NewsCreateRequest'
+      responses:
+        '201':
+          description: 创建成功
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  data:
+                    $ref: '#/components/schemas/News'
+                  message:
+                    type: string
+                    example: "新闻创建成功"
+        '400':
+          description: 请求参数错误
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: 未认证
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /news/search:
+    get:
+      tags:
+        - 新闻
+      summary: 搜索新闻
+      description: 搜索新闻文章
+      parameters:
+        - name: query
+          in: query
+          description: 搜索关键词
+          schema:
+            type: string
+        - name: category
+          in: query
+          description: 新闻分类筛选
+          schema:
+            type: string
+        - name: page
+          in: query
+          description: 页码
+          schema:
+            type: integer
+            minimum: 1
+            default: 1
+        - name: limit
+          in: query
+          description: 每页数量
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 100
+            default: 20
+      responses:
+        '200':
+          description: 搜索成功
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NewsSearchResponse'
+        '400':
+          description: 请求参数错误
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /news/{id}:
+    get:
+      tags:
+        - 新闻
+      summary: 获取新闻详情
+      description: 根据ID或slug获取新闻详情
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: 新闻ID或slug
+          schema:
+            type: string
+      responses:
+        '200':
+          description: 获取成功
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  data:
+                    $ref: '#/components/schemas/News'
+                  message:
+                    type: string
+                    example: "新闻详情获取成功"
+        '404':
+          description: 新闻不存在
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+    put:
+      tags:
+        - 新闻
+      summary: 更新新闻
+      description: 更新新闻文章（管理员/编辑）
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: 新闻ID
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NewsUpdateRequest'
+      responses:
+        '200':
+          description: 更新成功
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  data:
+                    $ref: '#/components/schemas/News'
+                  message:
+                    type: string
+                    example: "新闻更新成功"
+        '401':
+          description: 未认证
+        '404':
+          description: 新闻不存在
+    delete:
+      tags:
+        - 新闻
+      summary: 删除新闻
+      description: 删除新闻文章（管理员）
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: 新闻ID
+          schema:
+            type: string
+      responses:
+        '200':
+          description: 删除成功
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  message:
+                    type: string
+                    example: "新闻删除成功"
+        '401':
+          description: 未认证
+        '404':
+          description: 新闻不存在
+    post:
+      tags:
+        - 新闻
+      summary: 点赞新闻
+      description: 点赞新闻文章
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: 新闻ID
+          schema:
+            type: string
+      responses:
+        '200':
+          description: 点赞成功
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  data:
+                    type: object
+                    properties:
+                      likes:
+                        type: integer
+                        example: 56
+                  message:
+                    type: string
+                    example: "点赞成功"
+
+  /news/categories/list:
+    get:
+      tags:
+        - 新闻
+      summary: 获取新闻分类列表
+      description: 获取所有新闻分类
+      responses:
+        '200':
+          description: 获取成功
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  data:
+                    type: object
+                    properties:
+                      categories:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            id:
+                              type: string
+                            name:
+                              type: string
+                            slug:
+                              type: string
+                            count:
+                              type: integer
+
+  /news/{id}/comments:
+    get:
+      tags:
+        - 新闻
+      summary: 获取新闻评论
+      description: 获取新闻文章的评论列表
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: 新闻ID
+          schema:
+            type: string
+        - name: page
+          in: query
+          schema:
+            type: integer
+            default: 1
+        - name: limit
+          in: query
+          schema:
+            type: integer
+            default: 20
+      responses:
+        '200':
+          description: 获取成功
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  data:
+                    type: object
+                    properties:
+                      newsId:
+                        type: string
+                      comments:
+                        type: array
+                        items:
+                          $ref: '#/components/schemas/Comment'
+                      pagination:
+                        $ref: '#/components/schemas/Pagination'
+                  message:
+                    type: string
+                    example: "新闻评论获取成功"
+
+  /reviews:
+    get:
+      tags:
+        - 评测
+      summary: 获取评测列表
+      description: 获取游戏评测列表，支持分页和筛选
+      parameters:
+        - name: page
+          in: query
+          description: 页码
+          schema:
+            type: integer
+            minimum: 1
+            default: 1
+        - name: limit
+          in: query
+          description: 每页数量
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 100
+            default: 20
+        - name: gameId
+          in: query
+          description: 游戏ID筛选
+          schema:
+            type: string
+        - name: featured
+          in: query
+          description: 是否只获取精选评测
+          schema:
+            type: boolean
+      responses:
+        '200':
+          description: 获取成功
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ReviewListResponse'
+        '400':
+          description: 请求参数错误
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /reviews/search:
+    get:
+      tags:
+        - 评测
+      summary: 搜索评测
+      description: 搜索游戏评测
+      parameters:
+        - name: query
+          in: query
+          description: 搜索关键词
+          schema:
+            type: string
+        - name: gameId
+          in: query
+          schema:
+            type: string
+        - name: page
+          in: query
+          schema:
+            type: integer
+            default: 1
+        - name: limit
+          in: query
+          schema:
+            type: integer
+            default: 20
+      responses:
+        '200':
+          description: 搜索成功
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  data:
+                    type: object
+                    properties:
+                      reviews:
+                        type: array
+                        items:
+                          $ref: '#/components/schemas/Review'
+                      query:
+                        type: string
+                      pagination:
+                        $ref: '#/components/schemas/Pagination'
+
+  /reviews/{id}:
+    get:
+      tags:
+        - 评测
+      summary: 获取评测详情
+      description: 获取单个评测的详细信息
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: 获取成功
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  data:
+                    $ref: '#/components/schemas/Review'
+        '404':
+          description: 评测不存在
+    post:
+      tags:
+        - 评测
+      summary: 创建评测
+      description: 创建新的游戏评测
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ReviewCreateRequest'
+      responses:
+        '201':
+          description: 创建成功
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  data:
+                    $ref: '#/components/schemas/Review'
+        '400':
+          description: 请求参数错误
+    put:
+      tags:
+        - 评测
+      summary: 更新评测
+      description: 更新评测（作者或管理员）
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ReviewUpdateRequest'
+      responses:
+        '200':
+          description: 更新成功
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  data:
+                    $ref: '#/components/schemas/Review'
+        '403':
+          description: 权限不足
+        '404':
+          description: 评测不存在
+    delete:
+      tags:
+        - 评测
+      summary: 删除评测
+      description: 删除评测（作者或管理员）
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: 删除成功
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  message:
+                    type: string
+        '403':
+          description: 权限不足
+        '404':
+          description: 评测不存在
+
+  /reviews/{id}/like:
+    post:
+      tags:
+        - 评测
+      summary: 点赞评测
+      description: 点赞游戏评测
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: 点赞成功
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  data:
+                    type: object
+                    properties:
+                      reviewId:
+                        type: string
+                      likes:
+                        type: integer
+                      liked:
+                        type: boolean
+
+  /reviews/{id}/feature:
+    post:
+      tags:
+        - 评测
+      summary: 标记精选评测
+      description: 标记或取消精选评测（管理员）
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                isFeatured:
+                  type: boolean
+                  default: true
+      responses:
+        '200':
+          description: 操作成功
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  data:
+                    $ref: '#/components/schemas/Review'
+
+  /reviews/{id}/comments:
+    get:
+      tags:
+        - 评测
+      summary: 获取评测评论
+      description: 获取评测的评论列表
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: page
+          in: query
+          schema:
+            type: integer
+            default: 1
+        - name: limit
+          in: query
+          schema:
+            type: integer
+            default: 20
+      responses:
+        '200':
+          description: 获取成功
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  data:
+                    type: object
+                    properties:
+                      reviewId:
+                        type: string
+                      comments:
+                        type: array
+                        items:
+                          $ref: '#/components/schemas/Comment'
+                      pagination:
+                        $ref: '#/components/schemas/Pagination'
+
+  /community/posts:
+    get:
+      tags:
+        - 社区
+      summary: 获取社区帖子列表
+      description: 获取社区帖子列表，支持分页和筛选
+      parameters:
+        - name: page
+          in: query
+          schema:
+            type: integer
+            default: 1
+        - name: limit
+          in: query
+          schema:
+            type: integer
+            default: 20
+        - name: category
+          in: query
+          schema:
+            type: string
+        - name: pinned
+          in: query
+          schema:
+            type: boolean
+      responses:
+        '200':
+          description: 获取成功
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  data:
+                    type: object
+                    properties:
+                      posts:
+                        type: array
+                        items:
+                          $ref: '#/components/schemas/CommunityPost'
+                      pagination:
+                        $ref: '#/components/schemas/Pagination'
+    post:
+      tags:
+        - 社区
+      summary: 创建社区帖子
+      description: 创建新的社区帖子
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CommunityPostCreateRequest'
+      responses:
+        '201':
+          description: 创建成功
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  data:
+                    $ref: '#/components/schemas/CommunityPost'
+
+  /community/posts/search:
+    get:
+      tags:
+        - 社区
+      summary: 搜索社区帖子
+      description: 搜索社区帖子
+      parameters:
+        - name: query
+          in: query
+          schema:
+            type: string
+        - name: category
+          in: query
+          schema:
+            type: string
+        - name: page
+          in: query
+          schema:
+            type: integer
+            default: 1
+        - name: limit
+          in: query
+          schema:
+            type: integer
+            default: 20
+      responses:
+        '200':
+          description: 搜索成功
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  data:
+                    type: object
+                    properties:
+                      posts:
+                        type: array
+                        items:
+                          $ref: '#/components/schemas/CommunityPost'
+                      query:
+                        type: string
+                      pagination:
+                        $ref: '#/components/schemas/Pagination'
+
+  /community/posts/{id}:
+    get:
+      tags:
+        - 社区
+      summary: 获取帖子详情
+      description: 获取单个社区帖子的详细信息
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: 获取成功
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  data:
+                    $ref: '#/components/schemas/CommunityPost'
+    put:
+      tags:
+        - 社区
+      summary: 更新帖子
+      description: 更新社区帖子（作者或管理员）
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CommunityPostUpdateRequest'
+      responses:
+        '200':
+          description: 更新成功
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  data:
+                    $ref: '#/components/schemas/CommunityPost'
+        '403':
+          description: 权限不足或帖子已锁定
+    delete:
+      tags:
+        - 社区
+      summary: 删除帖子
+      description: 删除社区帖子（作者或管理员）
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: 删除成功
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  message:
+                    type: string
+
+  /community/posts/{id}/like:
+    post:
+      tags:
+        - 社区
+      summary: 点赞帖子
+      description: 点赞社区帖子
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: 点赞成功
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  data:
+                    type: object
+                    properties:
+                      postId:
+                        type: string
+                      likes:
+                        type: integer
+                      liked:
+                        type: boolean
+
+  /community/posts/{id}/pin:
+    post:
+      tags:
+        - 社区
+      summary: 置顶帖子
+      description: 置顶或取消置顶帖子（管理员/版主）
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                isPinned:
+                  type: boolean
+                  default: true
+      responses:
+        '200':
+          description: 操作成功
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  data:
+                    $ref: '#/components/schemas/CommunityPost'
+
+  /community/posts/{id}/lock:
+    post:
+      tags:
+        - 社区
+      summary: 锁定帖子
+      description: 锁定或解锁帖子（管理员/版主）
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                isLocked:
+                  type: boolean
+                  default: true
+      responses:
+        '200':
+          description: 操作成功
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  data:
+                    $ref: '#/components/schemas/CommunityPost'
+
+  /community/posts/{id}/comments:
+    get:
+      tags:
+        - 社区
+      summary: 获取帖子评论
+      description: 获取社区帖子的评论列表
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: page
+          in: query
+          schema:
+            type: integer
+            default: 1
+        - name: limit
+          in: query
+          schema:
+            type: integer
+            default: 20
+      responses:
+        '200':
+          description: 获取成功
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  data:
+                    type: object
+                    properties:
+                      postId:
+                        type: string
+                      comments:
+                        type: array
+                        items:
+                          $ref: '#/components/schemas/Comment'
+                      pagination:
+                        $ref: '#/components/schemas/Pagination'
+
+  /community/reviews:
+    get:
+      tags:
+        - 社区
+      summary: 获取社区评测列表
+      description: 获取社区评测列表，支持分页和筛选
+      parameters:
+        - name: page
+          in: query
+          schema:
+            type: integer
+            default: 1
+        - name: limit
+          in: query
+          schema:
+            type: integer
+            default: 20
+        - name: sort
+          in: query
+          schema:
+            type: string
+            enum: [latest, popular, rating]
+      responses:
+        '200':
+          description: 获取成功
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ReviewListResponse'
+    post:
+      tags:
+        - 社区
+      summary: 创建社区评测
+      description: 创建新的社区评测
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ReviewCreateRequest'
+      responses:
+        '201':
+          description: 创建成功
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  data:
+                    $ref: '#/components/schemas/Review'
+
+  /community/reviews/search:
+    get:
+      tags:
+        - 社区
+      summary: 搜索社区评测
+      description: 搜索社区评测
+      parameters:
+        - name: query
+          in: query
+          schema:
+            type: string
+        - name: page
+          in: query
+          schema:
+            type: integer
+            default: 1
+        - name: limit
+          in: query
+          schema:
+            type: integer
+            default: 20
+      responses:
+        '200':
+          description: 搜索成功
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ReviewListResponse'
+
+  /community/reviews/{id}:
+    get:
+      tags:
+        - 社区
+      summary: 获取社区评测详情
+      description: 获取单个社区评测详情
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: 获取成功
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ReviewDetailResponse'
+    put:
+      tags:
+        - 社区
+      summary: 更新社区评测
+      description: 更新社区评测（作者或管理员）
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ReviewUpdateRequest'
+      responses:
+        '200':
+          description: 更新成功
+    delete:
+      tags:
+        - 社区
+      summary: 删除社区评测
+      description: 删除社区评测（作者或管理员）
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: 删除成功
+
+  /community/reviews/{id}/like:
+    post:
+      tags:
+        - 社区
+      summary: 点赞社区评测
+      description: 点赞社区评测
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: 点赞成功
+
+  /community/reviews/{id}/feature:
+    post:
+      tags:
+        - 社区
+      summary: 标记精选评测
+      description: 标记或取消精选评测（管理员）
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                isFeatured:
+                  type: boolean
+                  default: true
+      responses:
+        '200':
+          description: 操作成功
+
+  /community/reviews/{id}/comments:
+    get:
+      tags:
+        - 社区
+      summary: 获取评测评论
+      description: 获取社区评测的评论列表
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: page
+          in: query
+          schema:
+            type: integer
+            default: 1
+        - name: limit
+          in: query
+          schema:
+            type: integer
+            default: 20
+      responses:
+        '200':
+          description: 获取成功
+
+  /community/reviews/templates:
+    get:
+      tags:
+        - 社区
+      summary: 获取评测模板
+      description: 获取可用的评测模板列表
+      responses:
+        '200':
+          description: 获取成功
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  data:
+                    type: object
+                    properties:
+                      templates:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            id:
+                              type: string
+                            name:
+                              type: string
+                            fields:
+                              type: array
+                              items:
+                                type: object
+
+  /community/stats:
+    get:
+      tags:
+        - 社区
+      summary: 社区统计
+      description: 获取社区统计数据
+      responses:
+        '200':
+          description: 获取成功
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  data:
+                    type: object
+                    properties:
+                      totalPosts:
+                        type: integer
+                      totalReviews:
+                        type: integer
+                      totalComments:
+                        type: integer
+                      activeUsers:
+                        type: integer
+
+  /community/comments/{id}:
+    get:
+      tags:
+        - 社区
+      summary: 获取评论详情
+      description: 获取单条评论的详细信息
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: 获取成功
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  data:
+                    $ref: '#/components/schemas/CommentDetail'
+    put:
+      tags:
+        - 社区
+      summary: 更新评论
+      description: 更新评论内容（作者或管理员）
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                content:
+                  type: string
+      responses:
+        '200':
+          description: 更新成功
+        '403':
+          description: 权限不足
+    delete:
+      tags:
+        - 社区
+      summary: 删除评论
+      description: 删除评论（作者或管理员）
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: 删除成功
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  message:
+                    type: string
+
+  /upload/config:
+    get:
+      tags:
+        - 文件上传
+      summary: 获取上传配置
+      description: 获取文件上传的配置信息
+      responses:
+        '200':
+          description: 获取成功
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  data:
+                    type: object
+                    properties:
+                      config:
+                        $ref: '#/components/schemas/UploadConfig'
+                      features:
+                        type: object
+
+  /upload/single:
+    post:
+      tags:
+        - 文件上传
+      summary: 单文件上传
+      description: 上传单个文件
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                file:
+                  type: string
+                  format: binary
+      responses:
+        '201':
+          description: 上传成功
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  data:
+                    type: object
+                    properties:
+                      file:
+                        $ref: '#/components/schemas/FileInfo'
+
+  /upload/multiple:
+    post:
+      tags:
+        - 文件上传
+      summary: 多文件上传
+      description: 同时上传多个文件
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                files:
+                  type: array
+                  items:
+                    type: string
+                    format: binary
+      responses:
+        '201':
+          description: 上传成功
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  data:
+                    type: object
+                    properties:
+                      files:
+                        type: array
+                        items:
+                          $ref: '#/components/schemas/FileInfo'
+                      count:
+                        type: integer
+
+  /upload/image:
+    post:
+      tags:
+        - 文件上传
+      summary: 图片上传
+      description: 专门上传图片文件，可自动优化
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                file:
+                  type: string
+                  format: binary
+      responses:
+        '201':
+          description: 上传成功
+
+  /upload/document:
+    post:
+      tags:
+        - 文件上传
+      summary: 文档上传
+      description: 专门上传文档文件
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                file:
+                  type: string
+                  format: binary
+      responses:
+        '201':
+          description: 上传成功
+
+  /upload/files/{filename}:
+    get:
+      tags:
+        - 文件上传
+      summary: 获取文件信息
+      description: 获取已上传文件的信息
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: filename
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: 获取成功
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  data:
+                    type: object
+                    properties:
+                      file:
+                        $ref: '#/components/schemas/FileInfo'
+        '404':
+          description: 文件不存在
+    delete:
+      tags:
+        - 文件上传
+      summary: 删除文件
+      description: 删除已上传的文件
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: filename
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: 删除成功
+
+  /upload/health:
+    get:
+      tags:
+        - 文件上传
+      summary: 上传服务健康检查
+      description: 检查文件上传服务的运行状态
+      responses:
+        '200':
+          description: 服务正常
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  data:
+                    type: object
+                    properties:
+                      status:
+                        type: string
+                      directories:
+                        type: object
+                      limits:
+                        type: object
+
+  /favorites:
+    get:
+      tags:
+        - 收藏管理
+      summary: 获取收藏列表
+      description: 获取当前用户的收藏列表
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: page
+          in: query
+          schema:
+            type: integer
+        - name: limit
+          in: query
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: 获取成功
+    post:
+      tags:
+        - 收藏管理
+      summary: 添加收藏
+      description: 收藏一个游戏
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                gameId:
+                  type: string
+      responses:
+        '201':
+          description: 收藏成功
+
+  /favorites/count:
+    get:
+      tags:
+        - 收藏管理
+      summary: 获取收藏总数
+      description: 获取当前用户的收藏总数
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: 获取成功
+
+  /favorites/check/{gameId}:
+    get:
+      tags:
+        - 收藏管理
+      summary: 检查收藏状态
+      description: 检查游戏是否已被收藏
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: gameId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: 检查成功
+
+  /favorites/{id}:
+    delete:
+      tags:
+        - 收藏管理
+      summary: 取消收藏
+      description: 取消对某个游戏的收藏
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: 取消收藏成功
+
+  /follow/{userId}:
+    post:
+      tags:
+        - 关注
+      summary: 关注用户
+      description: 关注其他用户
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '201':
+          description: 关注成功
+    delete:
+      tags:
+        - 关注
+      summary: 取消关注
+      description: 取消对其他用户的关注
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: 取消关注成功
+
+  /follow/{userId}/status:
+    get:
+      tags:
+        - 关注
+      summary: 关注状态
+      description: 查看是否已关注某用户
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: 获取成功
+
+  /follow/{userId}/followers:
+    get:
+      tags:
+        - 关注
+      summary: 获取粉丝列表
+      description: 获取用户的粉丝列表
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: page
+          in: query
+          schema:
+            type: integer
+        - name: limit
+          in: query
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: 获取成功
+
+  /follow/{userId}/following:
+    get:
+      tags:
+        - 关注
+      summary: 获取关注列表
+      description: 获取用户关注的用户列表
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: page
+          in: query
+          schema:
+            type: integer
+        - name: limit
+          in: query
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: 获取成功
+
+  /like:
+    post:
+      tags:
+        - 点赞
+      summary: 添加点赞
+      description: 对目标内容添加点赞
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                targetType:
+                  type: string
+                  enum: [review, news, community_post, comment]
+                targetId:
+                  type: string
+      responses:
+        '201':
+          description: 点赞成功
+    delete:
+      tags:
+        - 点赞
+      summary: 取消点赞
+      description: 取消对目标内容的点赞
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                targetType:
+                  type: string
+                targetId:
+                  type: string
+      responses:
+        '200':
+          description: 取消点赞成功
+
+  /like/status:
+    get:
+      tags:
+        - 点赞
+      summary: 点赞状态
+      description: 检查是否已点赞
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: targetType
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: targetId
+          in: query
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: 获取成功
+
+  /comments:
+    get:
+      tags:
+        - 评论
+      summary: 获取评论列表
+      description: 获取全局评论列表，支持分页和筛选
+      parameters:
+        - name: page
+          in: query
+          schema:
+            type: integer
+        - name: limit
+          in: query
+          schema:
+            type: integer
+        - name: parentType
+          in: query
+          schema:
+            type: string
+            enum: [review, news, community_post]
+        - name: parentId
+          in: query
+          schema:
+            type: string
+      responses:
+        '200':
+          description: 获取成功
+    post:
+      tags:
+        - 评论
+      summary: 创建评论
+      description: 创建新评论
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CommentCreateRequest'
+      responses:
+        '201':
+          description: 创建成功
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  data:
+                    $ref: '#/components/schemas/Comment'
+
+  /comments/search:
+    get:
+      tags:
+        - 评论
+      summary: 搜索评论
+      description: 搜索评论内容
+      parameters:
+        - name: query
+          in: query
+          schema:
+            type: string
+        - name: page
+          in: query
+          schema:
+            type: integer
+        - name: limit
+          in: query
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: 搜索成功
+
+  /comments/{id}:
+    get:
+      tags:
+        - 评论
+      summary: 获取评论详情
+      description: 获取单条评论的详细信息
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: 获取成功
+    put:
+      tags:
+        - 评论
+      summary: 更新评论
+      description: 更新评论内容
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                content:
+                  type: string
+      responses:
+        '200':
+          description: 更新成功
+    delete:
+      tags:
+        - 评论
+      summary: 删除评论
+      description: 删除评论
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: 删除成功
+
+  /comments/{id}/like:
+    post:
+      tags:
+        - 评论
+      summary: 点赞评论
+      description: 点赞评论
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: 点赞成功
+
+  /comments/{id}/replies:
+    get:
+      tags:
+        - 评论
+      summary: 获取评论回复
+      description: 获取评论的回复列表
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: page
+          in: query
+          schema:
+            type: integer
+            default: 1
+        - name: limit
+          in: query
+          schema:
+            type: integer
+            default: 20
+      responses:
+        '200':
+          description: 获取成功
+
+  /comments/stats:
+    get:
+      tags:
+        - 评论
+      summary: 评论统计
+      description: 获取评论统计数据
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: 获取成功
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  data:
+                    type: object
+                    properties:
+                      totalComments:
+                        type: integer
+                      todayComments:
+                        type: integer
+                      topCommented:
+                        type: array
+                        items:
+                          type: object
+
+  /favorites/batch-check:
+    post:
+      tags:
+        - 收藏管理
+      summary: 批量检查收藏状态
+      description: 批量检查多个游戏是否已被收藏
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - gameIds
+              properties:
+                gameIds:
+                  type: array
+                  items:
+                    type: string
+      responses:
+        '200':
+          description: 检查成功
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  data:
+                    type: object
+                    properties:
+                      results:
+                        type: object
+                        additionalProperties:
+                          type: boolean
+
+  /favorites/stats:
+    get:
+      tags:
+        - 收藏管理
+      summary: 收藏统计
+      description: 获取收藏统计信息
+      responses:
+        '200':
+          description: 获取成功
+
+  /favorites/ids:
+    get:
+      tags:
+        - 收藏管理
+      summary: 获取收藏ID列表
+      description: 获取当前用户收藏的游戏ID列表
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: 获取成功
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  data:
+                    type: object
+                    properties:
+                      ids:
+                        type: array
+                        items:
+                          type: string
+
+  /favorites/health:
+    get:
+      tags:
+        - 收藏管理
+      summary: 收藏服务健康检查
+      description: 检查收藏服务运行状态
+      responses:
+        '200':
+          description: 服务正常
+
+  /follow/stats:
+    get:
+      tags:
+        - 关注
+      summary: 关注统计
+      description: 获取当前用户的关注统计
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: 获取成功
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  data:
+                    type: object
+                    properties:
+                      followingCount:
+                        type: integer
+                      followersCount:
+                        type: integer
+
+  /follow/mutual/{userId}:
+    get:
+      tags:
+        - 关注
+      summary: 检查是否互相关注
+      description: 检查当前用户与指定用户是否互相关注
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: 获取成功
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  data:
+                    type: object
+                    properties:
+                      isMutual:
+                        type: boolean
+
+  /like/target:
+    get:
+      tags:
+        - 点赞
+      summary: 获取目标点赞列表
+      description: 获取指定目标的所有点赞用户
+      parameters:
+        - name: targetType
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: targetId
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: page
+          in: query
+          schema:
+            type: integer
+            default: 1
+        - name: limit
+          in: query
+          schema:
+            type: integer
+            default: 20
+      responses:
+        '200':
+          description: 获取成功
+
+  /like/user:
+    get:
+      tags:
+        - 点赞
+      summary: 获取用户点赞列表
+      description: 获取指定用户的点赞历史
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: userId
+          in: query
+          schema:
+            type: string
+        - name: page
+          in: query
+          schema:
+            type: integer
+            default: 1
+        - name: limit
+          in: query
+          schema:
+            type: integer
+            default: 20
+      responses:
+        '200':
+          description: 获取成功
+
+  /like/stats:
+    get:
+      tags:
+        - 点赞
+      summary: 点赞统计
+      description: 获取点赞统计数据
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: 获取成功
+
+  /notifications/batch-read:
+    put:
+      tags:
+        - 通知
+      summary: 批量标记已读
+      description: 批量将指定通知标记为已读
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - ids
+              properties:
+                ids:
+                  type: array
+                  items:
+                    type: string
+      responses:
+        '200':
+          description: 操作成功
+
+  /notifications/stats:
+    get:
+      tags:
+        - 通知
+      summary: 通知统计
+      description: 获取通知统计数据（管理员）
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: 获取成功
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  data:
+                    type: object
+                    properties:
+                      total:
+                        type: integer
+                      unread:
+                        type: integer
+                      byType:
+                        type: object
+                        additionalProperties:
+                          type: integer
+
+  /notifications/system:
+    post:
+      tags:
+        - 通知
+      summary: 发送系统通知
+      description: 发送系统通知给用户（管理员）
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - title
+                - message
+              properties:
+                title:
+                  type: string
+                message:
+                  type: string
+                type:
+                  type: string
+                  enum: [system, reminder, update]
+                targetUrl:
+                  type: string
+      responses:
+        '200':
+          description: 发送成功
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessResponse'
+
+  /notifications/marketing:
+    post:
+      tags:
+        - 通知
+      summary: 发送营销通知
+      description: 发送营销通知给用户（管理员）
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - title
+                - message
+              properties:
+                title:
+                  type: string
+                message:
+                  type: string
+                targetUserIds:
+                  type: array
+                  items:
+                    type: string
+                targetUrl:
+                  type: string
+                scheduledAt:
+                  type: string
+                  format: date-time
+      responses:
+        '200':
+          description: 发送成功
+
+  /notifications:
+    get:
+      tags:
+        - 通知
+      summary: 获取通知列表
+      description: 获取当前用户的通知列表
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: page
+          in: query
+          schema:
+            type: integer
+        - name: limit
+          in: query
+          schema:
+            type: integer
+        - name: unreadOnly
+          in: query
+          schema:
+            type: boolean
+      responses:
+        '200':
+          description: 获取成功
+
+  /notifications/unread/count:
+    get:
+      tags:
+        - 通知
+      summary: 获取未读通知数
+      description: 获取当前用户未读通知的数量
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: 获取成功
+
+  /notifications/{id}/read:
+    put:
+      tags:
+        - 通知
+      summary: 标记已读
+      description: 将通知标记为已读
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: 操作成功
+
+  /notifications/read-all:
+    put:
+      tags:
+        - 通知
+      summary: 全部标记已读
+      description: 将所有通知标记为已读
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: 操作成功
+
+  /notifications/{id}:
+    delete:
+      tags:
+        - 通知
+      summary: 删除通知
+      description: 删除指定通知
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: 删除成功
+
+  /search:
+    get:
+      tags:
+        - 搜索
+      summary: 全局搜索
+      description: 在游戏、评测、新闻和社区帖子中搜索
+      parameters:
+        - name: query
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: type
+          in: query
+          schema:
+            type: string
+            enum: [all, games, reviews, news, community]
+        - name: page
+          in: query
+          schema:
+            type: integer
+        - name: limit
+          in: query
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: 搜索成功
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  data:
+                    $ref: '#/components/schemas/SearchResponse'
+
+  /search/suggestions:
+    get:
+      tags:
+        - 搜索
+      summary: 搜索建议
+      description: 获取搜索建议和热门搜索词
+      parameters:
+        - name: query
+          in: query
+          schema:
+            type: string
+      responses:
+        '200':
+          description: 获取成功
+
+  /search/popular:
+    get:
+      tags:
+        - 搜索
+      summary: 热门搜索
+      description: 获取热门搜索关键词
+      responses:
+        '200':
+          description: 获取成功
+
+  /search/trends:
+    get:
+      tags:
+        - 搜索
+      summary: 搜索趋势
+      description: 获取搜索趋势数据
+      responses:
+        '200':
+          description: 获取成功
+
+  /search/history:
+    get:
+      tags:
+        - 搜索
+      summary: 搜索历史
+      description: 获取当前用户的搜索历史
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: page
+          in: query
+          schema:
+            type: integer
+        - name: limit
+          in: query
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: 获取成功
+
+  /search/stats:
+    get:
+      tags:
+        - 搜索
+      summary: 搜索统计
+      description: 获取搜索统计数据（管理员）
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: 获取成功
+
+  /library/stats:
+    get:
+      tags:
+        - 游戏库
+      summary: 游戏库统计
+      description: 获取当前用户游戏库统计信息
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: 获取成功
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  data:
+                    type: object
+                    properties:
+                      totalGames:
+                        type: integer
+                      completedGames:
+                        type: integer
+                      totalPlayTime:
+                        type: integer
+
+  /library/{id}:
+    get:
+      tags:
+        - 游戏库
+      summary: 获取游戏库条目详情
+      description: 获取游戏库中单条记录的详细信息
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: 获取成功
+    put:
+      tags:
+        - 游戏库
+      summary: 更新游戏库条目
+      description: 更新游戏库中的游戏记录
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                status:
+                  type: string
+                  enum: [playing, completed, paused, dropped, wishlist]
+                rating:
+                  type: integer
+                  minimum: 1
+                  maximum: 5
+                notes:
+                  type: string
+      responses:
+        '200':
+          description: 更新成功
+    delete:
+      tags:
+        - 游戏库
+      summary: 删除游戏库条目
+      description: 从游戏库中移除游戏
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: 删除成功
+
+  /library/import:
+    post:
+      tags:
+        - 游戏库
+      summary: 导入游戏库
+      description: 批量导入游戏到游戏库
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                gameIds:
+                  type: array
+                  items:
+                    type: string
+      responses:
+        '200':
+          description: 导入成功
+
+  /library/batch-status:
+    get:
+      tags:
+        - 游戏库
+      summary: 批量获取游戏库状态
+      description: 批量检查多个游戏在游戏库中的状态
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: gameIds
+          in: query
+          required: true
+          schema:
+            type: string
+          description: 逗号分隔的游戏ID列表
+      responses:
+        '200':
+          description: 获取成功
+
+  /library:
+    get:
+      tags:
+        - 游戏库
+      summary: 获取游戏库
+      description: 获取当前用户的游戏库
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: page
+          in: query
+          schema:
+            type: integer
+        - name: limit
+          in: query
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: 获取成功
+
+  /library/check/{gameId}:
+    get:
+      tags:
+        - 游戏库
+      summary: 检查游戏库
+      description: 检查游戏是否在库中
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: gameId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: 检查成功
+
+  /admin/dashboard/stats:
+    get:
+      tags:
+        - 管理
+      summary: 仪表盘统计
+      description: 获取管理员仪表盘统计数据
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: 获取成功
+
+  /admin/users:
+    get:
+      tags:
+        - 管理
+      summary: 用户管理列表
+      description: 管理端获取用户列表
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: page
+          in: query
+          schema:
+            type: integer
+        - name: limit
+          in: query
+          schema:
+            type: integer
+        - name: role
+          in: query
+          schema:
+            type: string
+        - name: status
+          in: query
+          schema:
+            type: string
+      responses:
+        '200':
+          description: 获取成功
+
+  /admin/audit-logs:
+    get:
+      tags:
+        - 管理
+      summary: 审计日志
+      description: 获取操作审计日志
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: page
+          in: query
+          schema:
+            type: integer
+        - name: limit
+          in: query
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: 获取成功
+
+  /about:
+    get:
+      tags:
+        - 关于
+      summary: 获取关于信息
+      description: 获取关于页面内容
+      responses:
+        '200':
+          description: 获取成功
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  data:
+                    type: object
+
+  /about/sections/{key}:
+    put:
+      tags:
+        - 关于
+      summary: 更新关于页面区块
+      description: 更新关于页面的指定区块内容（管理员）
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: key
+          in: path
+          required: true
+          description: 区块键名
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                title:
+                  type: string
+                content:
+                  type: string
+      responses:
+        '200':
+          description: 更新成功
+
+  /admin/login:
+    post:
+      tags:
+        - 管理
+      summary: 管理员登录
+      description: 管理员后台登录
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - email
+                - password
+              properties:
+                email:
+                  type: string
+                  format: email
+                password:
+                  type: string
+      responses:
+        '200':
+          description: 登录成功
+
+  /admin/users/{id}:
+    get:
+      tags:
+        - 管理
+      summary: 获取用户详情（管理端）
+      description: 管理端获取单个用户详细信息
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: 获取成功
+    put:
+      tags:
+        - 管理
+      summary: 更新用户（管理端）
+      description: 管理端更新用户信息
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateUserAdminRequest'
+      responses:
+        '200':
+          description: 更新成功
+    delete:
+      tags:
+        - 管理
+      summary: 删除用户（管理端）
+      description: 管理端删除用户
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: 删除成功
+
+  /admin/users/batch/status:
+    post:
+      tags:
+        - 管理
+      summary: 批量更新用户状态
+      description: 批量启用/禁用用户
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - ids
+                - status
+              properties:
+                ids:
+                  type: array
+                  items:
+                    type: string
+                status:
+                  type: string
+                  enum: [active, inactive, suspended]
+      responses:
+        '200':
+          description: 操作成功
+
+  /admin/users/batch/delete:
+    post:
+      tags:
+        - 管理
+      summary: 批量删除用户
+      description: 批量删除用户
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - ids
+              properties:
+                ids:
+                  type: array
+                  items:
+                    type: string
+      responses:
+        '200':
+          description: 操作成功
+
+  /admin/users/{id}/role:
+    put:
+      tags:
+        - 管理
+      summary: 更新用户角色
+      description: 更新用户角色（管理员）
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - role
+              properties:
+                role:
+                  type: string
+                  enum: [user, admin, moderator]
+      responses:
+        '200':
+          description: 更新成功
+
+  /admin/users/{id}/freeze-comment:
+    put:
+      tags:
+        - 管理
+      summary: 冻结用户评论权限
+      description: 冻结或解冻用户的评论权限
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - frozen
+              properties:
+                frozen:
+                  type: boolean
+      responses:
+        '200':
+          description: 操作成功
+
+  /admin/login-logs:
+    get:
+      tags:
+        - 管理
+      summary: 登录日志
+      description: 获取管理员登录日志
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: page
+          in: query
+          schema:
+            type: integer
+        - name: limit
+          in: query
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: 获取成功
+
+  /admin/settings:
+    get:
+      tags:
+        - 管理
+      summary: 获取系统设置
+      description: 获取系统配置设置
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: 获取成功
+    put:
+      tags:
+        - 管理
+      summary: 更新系统设置
+      description: 更新系统配置设置
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                settings:
+                  type: object
+      responses:
+        '200':
+          description: 更新成功
+
+  /admin/settings/levels:
+    get:
+      tags:
+        - 管理
+      summary: 获取等级配置
+      description: 获取用户等级配置
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: 获取成功
+
+  /admin/analytics/user-growth:
+    get:
+      tags:
+        - 管理员-分析
+      summary: 用户增长统计
+      description: 获取用户增长趋势数据
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: period
+          in: query
+          schema:
+            type: string
+            enum: [daily, weekly, monthly]
+      responses:
+        '200':
+          description: 获取成功
+
+  /admin/analytics/game-popularity:
+    get:
+      tags:
+        - 管理员-分析
+      summary: 游戏热度统计
+      description: 获取游戏热度排行榜
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: 获取成功
+
+  /admin/analytics/content-engagement:
+    get:
+      tags:
+        - 管理员-分析
+      summary: 内容参与度统计
+      description: 获取内容参与度分析
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: 获取成功
+
+  /admin/analytics/dashboard:
+    get:
+      tags:
+        - 管理员-分析
+      summary: 分析仪表盘
+      description: 获取分析仪表盘数据
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: 获取成功
+
+  /admin/profiling/tags:
+    get:
+      tags:
+        - 管理员-用户画像
+      summary: 获取标签列表
+      description: 获取所有用户画像标签
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: 获取成功
+    post:
+      tags:
+        - 管理员-用户画像
+      summary: 创建标签
+      description: 创建新的用户画像标签
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - name
+              properties:
+                name:
+                  type: string
+                category:
+                  type: string
+      responses:
+        '201':
+          description: 创建成功
+
+  /admin/profiling/segments:
+    get:
+      tags:
+        - 管理员-用户画像
+      summary: 获取用户分群
+      description: 获取所有用户分群
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: 获取成功
+    post:
+      tags:
+        - 管理员-用户画像
+      summary: 创建用户分群
+      description: 创建新的用户分群
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - name
+              properties:
+                name:
+                  type: string
+                description:
+                  type: string
+                rules:
+                  type: object
+      responses:
+        '201':
+          description: 创建成功
+
+  /admin/deployments:
+    get:
+      tags:
+        - 管理员-部署
+      summary: 获取部署列表
+      description: 获取所有部署记录
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: 获取成功
+    post:
+      tags:
+        - 管理员-部署
+      summary: 创建部署
+      description: 创建新的部署
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - name
+                - version
+              properties:
+                name:
+                  type: string
+                version:
+                  type: string
+                description:
+                  type: string
+      responses:
+        '201':
+          description: 创建成功
+
+  /admin/backups:
+    get:
+      tags:
+        - 管理员-备份
+      summary: 获取备份列表
+      description: 获取所有备份记录
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: 获取成功
+    post:
+      tags:
+        - 管理员-备份
+      summary: 创建备份
+      description: 创建新的系统备份
+      security:
+        - bearerAuth: []
+      responses:
+        '201':
+          description: 备份创建成功
+
+  /admin/categories:
+    get:
+      tags:
+        - 管理员-分类
+      summary: 获取分类列表
+      description: 获取所有分类
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: 获取成功
+    post:
+      tags:
+        - 管理员-分类
+      summary: 创建分类
+      description: 创建新分类
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - name
+                - type
+              properties:
+                name:
+                  type: string
+                type:
+                  type: string
+                  enum: [game, news, review]
+                slug:
+                  type: string
+      responses:
+        '201':
+          description: 创建成功
+
+  /admin/review-templates:
+    get:
+      tags:
+        - 管理员-模板
+      summary: 获取评测模板列表
+      description: 获取所有评测模板
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: 获取成功
+    post:
+      tags:
+        - 管理员-模板
+      summary: 创建评测模板
+      description: 创建新的评测模板
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - name
+                - fields
+              properties:
+                name:
+                  type: string
+                description:
+                  type: string
+                fields:
+                  type: array
+                  items:
+                    type: object
+      responses:
+        '201':
+          description: 创建成功
+
+  /admin/guides:
+    get:
+      tags:
+        - 管理员-攻略
+      summary: 获取攻略列表（管理端）
+      description: 管理端获取所有攻略
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: 获取成功
+
+  /email/templates:
+    get:
+      tags:
+        - 邮件服务
+      summary: 获取邮件模板列表
+      description: 获取所有邮件模板
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: 获取成功
+    post:
+      tags:
+        - 邮件服务
+      summary: 创建邮件模板
+      description: 创建新的邮件模板
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - name
+                - subject
+                - body
+              properties:
+                name:
+                  type: string
+                subject:
+                  type: string
+                body:
+                  type: string
+                variables:
+                  type: array
+                  items:
+                    type: string
+      responses:
+        '201':
+          description: 创建成功
+
+  /email/send:
+    post:
+      tags:
+        - 邮件服务
+      summary: 发送邮件
+      description: 发送邮件给指定用户
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - to
+                - subject
+                - body
+              properties:
+                to:
+                  type: string
+                subject:
+                  type: string
+                body:
+                  type: string
+                templateId:
+                  type: string
+      responses:
+        '200':
+          description: 发送成功
+
+  /email/logs:
+    get:
+      tags:
+        - 邮件服务
+      summary: 获取邮件发送日志
+      description: 获取邮件发送历史记录
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: page
+          in: query
+          schema:
+            type: integer
+        - name: limit
+          in: query
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: 获取成功
+
+  /discovery/recommendations/personalized:
+    get:
+      tags:
+        - 发现
+      summary: 个性化推荐
+      description: 获取个性化游戏推荐
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: 获取成功
+
+  /discovery/recommendations/trending:
+    get:
+      tags:
+        - 发现
+      summary: 热门推荐
+      description: 获取热门推荐内容
+      responses:
+        '200':
+          description: 获取成功
+
+  /discovery/leaderboard/{type}:
+    get:
+      tags:
+        - 发现
+      summary: 排行榜
+      description: 获取各类排行榜
+      parameters:
+        - name: type
+          in: path
+          required: true
+          schema:
+            type: string
+            enum: [popular, rated, played, reviewed]
+      responses:
+        '200':
+          description: 获取成功
+
+  /gamification/stats:
+    get:
+      tags:
+        - 游戏化
+      summary: 获取游戏化统计
+      description: 获取当前用户的经验值和积分统计
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: 获取成功
+
+  /gamification/xp/history:
+    get:
+      tags:
+        - 游戏化
+      summary: 经验值历史
+      description: 获取经验值变动历史
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: page
+          in: query
+          schema:
+            type: integer
+        - name: limit
+          in: query
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: 获取成功
+
+  /gamification/leaderboard/{type}:
+    get:
+      tags:
+        - 游戏化
+      summary: 游戏化排行榜
+      description: 获取经验值/积分排行榜
+      parameters:
+        - name: type
+          in: path
+          required: true
+          schema:
+            type: string
+            enum: [xp, points, level]
+      responses:
+        '200':
+          description: 获取成功
+
+  /achievements:
+    get:
+      tags:
+        - 成就
+      summary: 获取成就列表
+      description: 获取所有可获得的成就
+      responses:
+        '200':
+          description: 获取成功
+
+  /achievements/user/me:
+    get:
+      tags:
+        - 成就
+      summary: 获取我的成就
+      description: 获取当前用户已获得的成就
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: 获取成功
+
+  /achievements/stats:
+    get:
+      tags:
+        - 成就
+      summary: 成就统计
+      description: 获取成就系统统计数据
+      responses:
+        '200':
+          description: 获取成功
+
+  /messages/conversations:
+    get:
+      tags:
+        - 消息
+      summary: 获取会话列表
+      description: 获取当前用户的私信会话列表
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: 获取成功
+    post:
+      tags:
+        - 消息
+      summary: 创建会话
+      description: 创建新的私信会话
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - participantId
+              properties:
+                participantId:
+                  type: string
+                initialMessage:
+                  type: string
+      responses:
+        '201':
+          description: 创建成功
+
+  /messages/conversations/{id}:
+    get:
+      tags:
+        - 消息
+      summary: 获取会话详情
+      description: 获取私信会话详情及消息列表
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: 获取成功
+
+  /messages/unread-count:
+    get:
+      tags:
+        - 消息
+      summary: 未读消息数
+      description: 获取未读私信数量
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: 获取成功
+
+  /guides:
+    get:
+      tags:
+        - 攻略
+      summary: 获取攻略列表
+      description: 获取游戏攻略指南列表
+      parameters:
+        - name: page
+          in: query
+          schema:
+            type: integer
+        - name: limit
+          in: query
+          schema:
+            type: integer
+        - name: gameId
+          in: query
+          schema:
+            type: string
+      responses:
+        '200':
+          description: 获取成功
+    post:
+      tags:
+        - 攻略
+      summary: 创建攻略
+      description: 创建新的游戏攻略
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - title
+                - content
+                - gameId
+              properties:
+                title:
+                  type: string
+                content:
+                  type: string
+                gameId:
+                  type: string
+      responses:
+        '201':
+          description: 创建成功
+
+  /guides/search:
+    get:
+      tags:
+        - 攻略
+      summary: 搜索攻略
+      description: 搜索游戏攻略
+      parameters:
+        - name: query
+          in: query
+          schema:
+            type: string
+        - name: page
+          in: query
+          schema:
+            type: integer
+        - name: limit
+          in: query
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: 搜索成功
+
+  /guides/{id}:
+    get:
+      tags:
+        - 攻略
+      summary: 获取攻略详情
+      description: 获取单个攻略详情
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: 获取成功
+    put:
+      tags:
+        - 攻略
+      summary: 更新攻略
+      description: 更新攻略内容（作者或管理员）
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                title:
+                  type: string
+                content:
+                  type: string
+      responses:
+        '200':
+          description: 更新成功
+    delete:
+      tags:
+        - 攻略
+      summary: 删除攻略
+      description: 删除攻略（作者或管理员）
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: 删除成功
+
+  /guides/{id}/like:
+    post:
+      tags:
+        - 攻略
+      summary: 点赞攻略
+      description: 点赞攻略指南
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: 点赞成功
+
+  /ai/chat:
+    post:
+      tags:
+        - AI
+      summary: AI聊天
+      description: 与AI助手对话
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - message
+              properties:
+                message:
+                  type: string
+                conversationId:
+                  type: string
+      responses:
+        '200':
+          description: 获取回复
+
+  /ai/generate:
+    post:
+      tags:
+        - AI
+      summary: AI生成内容
+      description: 使用AI生成文本内容
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - prompt
+                - type
+              properties:
+                prompt:
+                  type: string
+                type:
+                  type: string
+                  enum: [review, guide, description, title]
+      responses:
+        '200':
+          description: 生成成功
+
+  /print/order:
+    post:
+      tags:
+        - 3D打印
+      summary: 提交打印订单
+      description: 提交3D打印订单
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - modelData
+              properties:
+                modelData:
+                  type: string
+                  description: Base64编码的模型数据
+                size:
+                  type: number
+                  default: 100
+                material:
+                  type: string
+                  enum: [pla, abs, resin, petg, nylon]
+                  default: pla
+                color:
+                  type: string
+                  default: "#ffffff"
+                quantity:
+                  type: integer
+                  default: 1
+      responses:
+        '201':
+          description: 订单提交成功
+
+  /print/order/{id}:
+    get:
+      tags:
+        - 3D打印
+      summary: 查询打印订单
+      description: 查询3D打印订单状态
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: 获取成功
+
+  /sitemap:
+    get:
+      tags:
+        - 站点地图
+      summary: 获取站点地图
+      description: 获取站点地图JSON数据
+      responses:
+        '200':
+          description: 获取成功
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+  schemas:
+    # 认证相关
+    RegisterRequest:
+      type: object
+      required:
+        - username
+        - email
+        - password
+      properties:
+        username:
+          type: string
+          minLength: 3
+          maxLength: 50
+          example: "john_doe"
+        email:
+          type: string
+          format: email
+          example: "john@example.com"
+        password:
+          type: string
+          minLength: 6
+          example: "password123"
+        displayName:
+          type: string
+          maxLength: 100
+          example: "John Doe"
+        avatarUrl:
+          type: string
+          format: uri
+          example: "https://example.com/avatar.jpg"
+
+    LoginRequest:
+      type: object
+      required:
+        - email
+        - password
+      properties:
+        email:
+          type: string
+          format: email
+          example: "john@example.com"
+        password:
+          type: string
+          example: "password123"
+
+    AuthResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: true
+        data:
+          type: object
+          properties:
+            user:
+              $ref: '#/components/schemas/User'
+            tokens:
+              $ref: '#/components/schemas/AuthTokens'
+        message:
+          type: string
+          example: "登录成功"
+
+    TokenResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: true
+        data:
+          $ref: '#/components/schemas/AuthTokens'
+        message:
+          type: string
+          example: "令牌刷新成功"
+
+    AuthTokens:
+      type: object
+      properties:
+        accessToken:
+          type: string
+          description: 访问令牌
+          example: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+        refreshToken:
+          type: string
+          description: 刷新令牌
+          example: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+        expiresIn:
+          type: integer
+          description: 过期时间（秒）
+          example: 3600
+
+    # 用户相关
+    User:
+      type: object
+      properties:
+        id:
+          type: string
+          example: "123e4567-e89b-12d3-a456-426614174000"
+        username:
+          type: string
+          example: "john_doe"
+        email:
+          type: string
+          format: email
+          example: "john@example.com"
+        displayName:
+          type: string
+          example: "John Doe"
+        avatarUrl:
+          type: string
+          format: uri
+          example: "https://example.com/avatar.jpg"
+        role:
+          type: string
+          enum: [user, admin, moderator]
+          example: "user"
+        emailVerified:
+          type: boolean
+          example: true
+        createdAt:
+          type: string
+          format: date-time
+          example: "2026-03-31T10:00:00Z"
+        updatedAt:
+          type: string
+          format: date-time
+          example: "2026-04-15T14:30:00Z"
+
+    UpdateUserRequest:
+      type: object
+      properties:
+        displayName:
+          type: string
+          maxLength: 100
+          example: "John Smith"
+        avatarUrl:
+          type: string
+          format: uri
+          example: "https://example.com/new-avatar.jpg"
+        bio:
+          type: string
+          maxLength: 500
+          example: "游戏爱好者"
+
+    UpdateUserAdminRequest:
+      allOf:
+        - $ref: '#/components/schemas/UpdateUserRequest'
+        - type: object
+          properties:
+            role:
+              type: string
+              enum: [user, admin, moderator]
+              example: "admin"
+            status:
+              type: string
+              enum: [active, inactive, suspended]
+              example: "active"
+
+    UserProfileResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: true
+        data:
+          type: object
+          properties:
+            user:
+              $ref: '#/components/schemas/User'
+        message:
+          type: string
+          example: "用户信息获取成功"
+
+    UserDetailResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: true
+        data:
+          $ref: '#/components/schemas/User'
+        message:
+          type: string
+          example: "用户详情获取成功"
+
+    UserListResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: true
+        data:
+          type: object
+          properties:
+            users:
+              type: array
+              items:
+                $ref: '#/components/schemas/User'
+            pagination:
+              $ref: '#/components/schemas/Pagination'
+        message:
+          type: string
+          example: "用户列表获取成功"
+
+    # 游戏相关
+    Game:
+      type: object
+      properties:
+        id:
+          type: string
+          example: "123e4567-e89b-12d3-a456-426614174000"
+        title:
+          type: string
+          example: "赛博朋克2077"
+        description:
+          type: string
+          example: "一款开放世界动作冒险游戏"
+        releaseDate:
+          type: string
+          format: date
+          example: "2020-12-10"
+        developer:
+          type: string
+          example: "CD Projekt Red"
+        publisher:
+          type: string
+          example: "CD Projekt"
+        genres:
+          type: array
+          items:
+            type: string
+          example: ["角色扮演", "动作", "科幻"]
+        platforms:
+          type: array
+          items:
+            type: string
+          example: ["PC", "PlayStation", "Xbox"]
+        rating:
+          type: number
+          minimum: 0
+          maximum: 5
+          example: 4.5
+        price:
+          type: number
+          minimum: 0
+          example: 298
+        discount:
+          type: number
+          minimum: 0
+          maximum: 100
+          example: 20
+        imageUrl:
+          type: string
+          format: uri
+          example: "https://images.unsplash.com/photo-1550745165-9bc0b252726f"
+        screenshots:
+          type: array
+          items:
+            type: string
+            format: uri
+          example: ["https://images.unsplash.com/photo-1550745165-9bc0b252726f"]
+
+    GameListResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: true
+        data:
+          type: object
+          properties:
+            games:
+              type: array
+              items:
+                $ref: '#/components/schemas/Game'
+            pagination:
+              $ref: '#/components/schemas/Pagination'
+        message:
+          type: string
+          example: "游戏列表获取成功"
+
+    # 通用响应
+    SuccessResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: true
+        message:
+          type: string
+          example: "操作成功"
+
+    ErrorResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: false
+        error:
+          type: string
+          example: "错误描述"
+        code:
+          type: string
+          example: "VALIDATION_ERROR"
+        details:
+          type: array
+          items:
+            type: object
+            properties:
+              field:
+                type: string
+                example: "email"
+              message:
+                type: string
+                example: "邮箱格式不正确"
+
+    HealthResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: true
+        data:
+          type: object
+          properties:
+            status:
+              type: string
+              example: "healthy"
+            timestamp:
+              type: string
+              format: date-time
+              example: "2026-04-17T08:30:00Z"
+            uptime:
+              type: number
+              example: 12345.67
+            environment:
+              type: string
+              example: "development"
+
+    Pagination:
+      type: object
+      properties:
+        page:
+          type: integer
+          example: 1
+        limit:
+          type: integer
+          example: 20
+        total:
+          type: integer
+          example: 100
+        pages:
+          type: integer
+          example: 5
+        hasNext:
+          type: boolean
+          example: true
+        hasPrev:
+          type: boolean
+          example: false
+
+    # 新闻相关
+    News:
+      type: object
+      properties:
+        id:
+          type: string
+          example: "123e4567-e89b-12d3-a456-426614174000"
+        title:
+          type: string
+          example: "《赛博朋克2077》新DLC发布"
+        slug:
+          type: string
+          example: "cyberpunk-2077-new-dlc-release"
+        content:
+          type: string
+          example: "文章内容..."
+        excerpt:
+          type: string
+          example: "文章摘要..."
+        coverImageUrl:
+          type: string
+          format: uri
+          example: "https://images.unsplash.com/photo-1550745165-9bc0b252726f"
+        authorId:
+          type: string
+          example: "123e4567-e89b-12d3-a456-426614174000"
+        category:
+          type: string
+          example: "游戏新闻"
+        tags:
+          type: array
+          items:
+            type: string
+          example: ["赛博朋克", "CD Projekt Red", "DLC"]
+        isPublished:
+          type: boolean
+          example: true
+        publishedAt:
+          type: string
+          format: date-time
+          example: "2026-04-17T10:00:00Z"
+        views:
+          type: integer
+          example: 1234
+        likes:
+          type: integer
+          example: 56
+        comments:
+          type: integer
+          example: 23
+        createdAt:
+          type: string
+          format: date-time
+          example: "2026-04-16T14:30:00Z"
+        updatedAt:
+          type: string
+          format: date-time
+          example: "2026-04-17T09:15:00Z"
+
+    NewsListResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: true
+        data:
+          type: object
+          properties:
+            news:
+              type: array
+              items:
+                $ref: '#/components/schemas/News'
+            pagination:
+              $ref: '#/components/schemas/Pagination'
+        message:
+          type: string
+          example: "新闻列表获取成功"
+
+    NewsSearchResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: true
+        data:
+          type: object
+          properties:
+            news:
+              type: array
+              items:
+                $ref: '#/components/schemas/News'
+            query:
+              type: string
+              example: "赛博朋克"
+            category:
+              type: string
+              example: "游戏新闻"
+            pagination:
+              $ref: '#/components/schemas/Pagination'
+        message:
+          type: string
+          example: "新闻搜索成功"
+
+    # 评测相关
+    Review:
+      type: object
+      properties:
+        id:
+          type: string
+          example: "123e4567-e89b-12d3-a456-426614174000"
+        title:
+          type: string
+          example: "《赛博朋克2077》深度评测"
+        content:
+          type: string
+          example: "评测内容..."
+        rating:
+          type: number
+          minimum: 0
+          maximum: 10
+          example: 9.5
+        gameId:
+          type: string
+          example: "123e4567-e89b-12d3-a456-426614174000"
+        authorId:
+          type: string
+          example: "123e4567-e89b-12d3-a456-426614174000"
+        tags:
+          type: array
+          items:
+            type: string
+          example: ["角色扮演", "开放世界", "科幻"]
+        likes:
+          type: integer
+          example: 125
+        comments:
+          type: integer
+          example: 42
+        isFeatured:
+          type: boolean
+          example: true
+        publishedAt:
+          type: string
+          format: date-time
+          example: "2026-04-16T14:30:00Z"
+        createdAt:
+          type: string
+          format: date-time
+          example: "2026-04-15T10:00:00Z"
+        updatedAt:
+          type: string
+          format: date-time
+          example: "2026-04-16T12:15:00Z"
+
+    ReviewListResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: true
+        data:
+          type: object
+          properties:
+            reviews:
+              type: array
+              items:
+                $ref: '#/components/schemas/Review'
+            pagination:
+              $ref: '#/components/schemas/Pagination'
+        message:
+          type: string
+          example: "评测列表获取成功"
+
+    # 社区帖子相关
+    CommunityPost:
+      type: object
+      properties:
+        id:
+          type: string
+        title:
+          type: string
+        content:
+          type: string
+        category:
+          type: string
+        authorId:
+          type: string
+        tags:
+          type: array
+          items:
+            type: string
+        likes:
+          type: integer
+        comments:
+          type: integer
+        isPinned:
+          type: boolean
+        isLocked:
+          type: boolean
+        publishedAt:
+          type: string
+          format: date-time
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+
+    CommunityPostCreateRequest:
+      type: object
+      required:
+        - title
+        - content
+        - category
+      properties:
+        title:
+          type: string
+        content:
+          type: string
+        category:
+          type: string
+        tags:
+          type: array
+          items:
+            type: string
+
+    CommunityPostUpdateRequest:
+      type: object
+      properties:
+        title:
+          type: string
+        content:
+          type: string
+        category:
+          type: string
+        tags:
+          type: array
+          items:
+            type: string
+
+    # 文件上传相关
+    UploadConfig:
+      type: object
+      properties:
+        maxFileSize:
+          type: integer
+        allowedTypes:
+          type: array
+          items:
+            type: string
+        uploadPath:
+          type: string
+        tempPath:
+          type: string
+        cdnEnabled:
+          type: boolean
+
+    FileInfo:
+      type: object
+      properties:
+        id:
+          type: string
+        filename:
+          type: string
+        originalName:
+          type: string
+        mimeType:
+          type: string
+        size:
+          type: integer
+        path:
+          type: string
+        url:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+
+    # 评论相关
+    Comment:
+      type: object
+      properties:
+        id:
+          type: string
+        content:
+          type: string
+        authorId:
+          type: string
+        parentType:
+          type: string
+          enum: [review, news, community_post]
+        parentId:
+          type: string
+        likes:
+          type: integer
+        isEdited:
+          type: boolean
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+
+    CommentDetail:
+      allOf:
+        - $ref: '#/components/schemas/Comment'
+        - type: object
+          properties:
+            author:
+              type: object
+              properties:
+                id:
+                  type: string
+                username:
+                  type: string
+                displayName:
+                  type: string
+                avatarUrl:
+                  type: string
+
+    CommentCreateRequest:
+      type: object
+      required:
+        - content
+        - parentType
+        - parentId
+      properties:
+        content:
+          type: string
+        parentType:
+          type: string
+          enum: [review, news, community_post]
+        parentId:
+          type: string
+
+    # 收藏相关
+    Favorite:
+      type: object
+      properties:
+        id:
+          type: string
+        userId:
+          type: string
+        gameId:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+
+    # 通知相关
+    Notification:
+      type: object
+      properties:
+        id:
+          type: string
+        userId:
+          type: string
+        type:
+          type: string
+        title:
+          type: string
+        content:
+          type: string
+        isRead:
+          type: boolean
+        relatedType:
+          type: string
+        relatedId:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+
+    # 搜索相关
+    SearchResponse:
+      type: object
+      properties:
+        games:
+          type: array
+          items:
+            $ref: '#/components/schemas/Game'
+        reviews:
+          type: array
+          items:
+            $ref: '#/components/schemas/Review'
+        news:
+          type: array
+          items:
+            $ref: '#/components/schemas/News'
+        posts:
+          type: array
+          items:
+            $ref: '#/components/schemas/CommunityPost'
+        pagination:
+          $ref: '#/components/schemas/Pagination'
+
+    # 评测创建/更新请求
+    ReviewCreateRequest:
+      type: object
+      required:
+        - title
+        - content
+        - rating
+        - gameId
+      properties:
+        title:
+          type: string
+        content:
+          type: string
+        rating:
+          type: number
+          minimum: 0
+          maximum: 10
+        gameId:
+          type: string
+        tags:
+          type: array
+          items:
+            type: string
+
+    ReviewUpdateRequest:
+      type: object
+      properties:
+        title:
+          type: string
+        content:
+          type: string
+        rating:
+          type: number
+          minimum: 0
+          maximum: 10
+        tags:
+          type: array
+          items:
+            type: string
+
+    # 新闻创建/更新请求
+    NewsCreateRequest:
+      type: object
+      required:
+        - title
+        - content
+        - category
+      properties:
+        title:
+          type: string
+        content:
+          type: string
+        category:
+          type: string
+        excerpt:
+          type: string
+        coverImageUrl:
+          type: string
+          format: uri
+        tags:
+          type: array
+          items:
+            type: string
+
+    NewsUpdateRequest:
+      type: object
+      properties:
+        title:
+          type: string
+        content:
+          type: string
+        category:
+          type: string
+        excerpt:
+          type: string
+        coverImageUrl:
+          type: string
+          format: uri
+        tags:
+          type: array
+          items:
+            type: string
+
+    # 游戏创建/更新请求
+    GameCreateRequest:
+      type: object
+      required:
+        - title
+        - description
+      properties:
+        title:
+          type: string
+          example: "新游戏"
+        description:
+          type: string
+          example: "游戏描述"
+        releaseDate:
+          type: string
+          format: date
+        developer:
+          type: string
+        publisher:
+          type: string
+        genres:
+          type: array
+          items:
+            type: string
+        platforms:
+          type: array
+          items:
+            type: string
+        price:
+          type: number
+        discount:
+          type: number
+        imageUrl:
+          type: string
+          format: uri
+
+    GameUpdateRequest:
+      type: object
+      properties:
+        title:
+          type: string
+        description:
+          type: string
+        releaseDate:
+          type: string
+          format: date
+        developer:
+          type: string
+        publisher:
+          type: string
+        genres:
+          type: array
+          items:
+            type: string
+        platforms:
+          type: array
+          items:
+            type: string
+        price:
+          type: number
+        discount:
+          type: number
+        imageUrl:
+          type: string
+          format: uri
+
+    # 评测详情响应
+    ReviewDetailResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+        data:
+          $ref: '#/components/schemas/Review'
+        message:
+          type: string
+
+    # 成就相关
+    Achievement:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        description:
+          type: string
+        icon:
+          type: string
+        xpReward:
+          type: integer
+        category:
+          type: string
+        rarity:
+          type: string
+          enum: [common, rare, epic, legendary]
+        unlockedAt:
+          type: string
+          format: date-time
+
+    # 攻略相关
+    Guide:
+      type: object
+      properties:
+        id:
+          type: string
+        title:
+          type: string
+        content:
+          type: string
+        gameId:
+          type: string
+        authorId:
+          type: string
+        likes:
+          type: integer
+        views:
+          type: integer
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+
+    # 消息相关
+    Conversation:
+      type: object
+      properties:
+        id:
+          type: string
+        participantIds:
+          type: array
+          items:
+            type: string
+        lastMessage:
+          $ref: '#/components/schemas/Message'
+        unreadCount:
+          type: integer
+        createdAt:
+          type: string
+          format: date-time
+
+    Message:
+      type: object
+      properties:
+        id:
+          type: string
+        conversationId:
+          type: string
+        senderId:
+          type: string
+        content:
+          type: string
+        readAt:
+          type: string
+          format: date-time
+          nullable: true
+        createdAt:
+          type: string
+          format: date-time
+
+    # 3D打印相关
+    PrintOrder:
+      type: object
+      properties:
+        id:
+          type: string
+        modelData:
+          type: string
+        size:
+          type: number
+        material:
+          type: string
+        color:
+          type: string
+        quantity:
+          type: integer
+        status:
+          type: string
+          enum: [pending, processing, completed, failed]
+        createdAt:
+          type: string
+          format: date-time
+
+    # 游戏化相关
+    GamificationStats:
+      type: object
+      properties:
+        xp:
+          type: integer
+        level:
+          type: integer
+        points:
+          type: integer
+        nextLevelXp:
+          type: integer
+        rank:
+          type: integer
+
+    # 发现相关
+    DiscoveryRecommendation:
+      type: object
+      properties:
+        id:
+          type: string
+        score:
+          type: number
+        reason:
+          type: string
+        game:
+          $ref: '#/components/schemas/Game'

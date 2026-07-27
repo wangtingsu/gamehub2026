@@ -1,0 +1,337 @@
+{
+  "siteName": "GameHub",
+  "siteDescription": "あなたの究極のゲームライブラリ管理プラットフォーム",
+  "navigation": {
+    "home": "ホーム",
+    "games": "ゲーム",
+    "ai": "AI アシスタント",
+    "news": "ニュース",
+    "reviews": "レビュー",
+    "community": "コミュニティ",
+    "about": "会社概要",
+    "admin": "管理",
+    "logout": "ログアウト"
+  },
+  "language": {
+    "en": "英語",
+    "zh-CN": "中国語（簡体）",
+    "ja": "日本語",
+    "ko": "韓国語",
+    "es": "スペイン語",
+    "fr": "フランス語"
+  },
+  "app": {
+    "name": "GameHub",
+    "slogan": "Your Ultimate Gaming Community",
+    "loading": "Loading...",
+    "search": "Search"
+  },
+  "auth": {
+    "login": "ログイン",
+    "register": "登録",
+    "email": "メールアドレス",
+    "password": "パスワード",
+    "confirmPassword": "パスワード（確認）",
+    "username": "ユーザー名",
+    "rememberMe": "ログイン状態を保持する",
+    "forgotPassword": "パスワードをお忘れですか？",
+    "resetPassword": "パスワードをリセット",
+    "changePassword": "パスワードを変更",
+    "currentPassword": "現在のパスワード",
+    "newPassword": "新しいパスワード",
+    "loginSuccess": "ログインしました",
+    "logoutSuccess": "ログアウトしました",
+    "invalidCredentials": "メールアドレスまたはパスワードが無効です",
+    "loginPage": {
+      "title": "ログイン",
+      "subtitle": "GameHubへようこそ、サインインしてください",
+      "emailLogin": "メールログイン",
+      "phoneLogin": "電話番号ログイン",
+      "emailLabel": "メールアドレス",
+      "emailRequired": "メールアドレスを入力してください",
+      "emailInvalid": "有効なメールアドレスを入力してください",
+      "emailPlaceholder": "メールアドレスを入力",
+      "passwordLabel": "パスワード",
+      "passwordRequired": "パスワードを入力してください",
+      "passwordMinLength": "パスワードは8文字以上必要です",
+      "passwordPlaceholder": "パスワードを入力",
+      "loggingIn": "ログイン中...",
+      "loginButton": "サインイン",
+      "loginFailed": "ログインに失敗しました",
+      "phoneLabel": "電話番号",
+      "phoneRequired": "電話番号を入力してください",
+      "phoneInvalid": "有効な電話番号を入力してください",
+      "codeLabel": "認証コード",
+      "codeRequired": "認証コードを入力してください",
+      "codeLength": "認証コードは6桁です",
+      "sendCode": "認証コードを送信",
+      "orUseOther": "または次でサインイン",
+      "noAccount": "アカウントをお持ちでないですか？",
+      "registerNow": "新規登録",
+      "forgotPassword": "パスワードをお忘れですか？",
+      "backToLogin": "ログインに戻る",
+      "backToHomePage": "ホームに戻る",
+      "copyright": "© {{year}} GameHub. All rights reserved.",
+      "bannerTitle": "GameHubへようこそ！",
+      "bannerNoAccount": "アカウントをお持ちでないですか？",
+      "bannerRegister": "新規登録",
+      "bannerSupport": " — 電話、WeChat、Google、GitHubに対応"
+    },
+    "registerPage": {
+      "title": "新規登録",
+      "subtitle": "GameHubコミュニティに参加して旅を始めましょう",
+      "emailRegister": "メール登録",
+      "phoneRegister": "電話番号登録",
+      "usernameLabel": "ユーザー名",
+      "usernameRequired": "ユーザー名を入力してください",
+      "usernameMinMax": "ユーザー名は3〜20文字です",
+      "usernamePattern": "英字、数字、アンダースコアのみ使用可能",
+      "emailLabel": "メールアドレス",
+      "emailRequired": "メールアドレスを入力してください",
+      "emailInvalid": "有効なメールアドレスを入力してください",
+      "emailPlaceholder": "メールアドレスを入力",
+      "passwordLabel": "パスワード",
+      "passwordRequired": "パスワードを入力してください",
+      "passwordMinLength": "パスワードは8文字以上必要です",
+      "passwordPattern": "パスワードは大文字、小文字、数字を含む必要があります",
+      "confirmPasswordLabel": "パスワード（確認）",
+      "confirmPasswordRequired": "パスワードを確認してください",
+      "confirmPasswordMismatch": "パスワードが一致しません",
+      "agreeTerms": "利用規約に同意し、",
+      "termsOfService": "利用規約",
+      "privacyPolicy": "およびプライバシーポリシー",
+      "registering": "登録中...",
+      "registerButton": "アカウント作成",
+      "registerFailed": "登録に失敗しました",
+      "registerSuccess": "登録しました！",
+      "registerSuccessDesc": "アカウントが作成されました。ホームページにリダイレクトします...",
+      "goToHome": "ホームへ",
+      "viewProfile": "プロフィールを完了",
+      "phoneLabel": "電話番号",
+      "phoneRequired": "電話番号を入力してください",
+      "phoneInvalid": "有効な電話番号を入力してください",
+      "phonePlaceholder": "電話番号を入力",
+      "codeLabel": "認証コード",
+      "codeRequired": "認証コードを入力してください",
+      "codeLength": "認証コードは6桁です",
+      "sendCode": "認証コードを送信",
+      "hasAccount": "すでにアカウントをお持ちですか？",
+      "loginNow": "サインイン",
+      "backToHomePage": "ホームに戻る",
+      "copyright": "© {{year}} GameHub. All rights reserved.",
+      "socialDivider": "またはソーシャルアカウントで素早く登録",
+      "socialAutoCreate": "ソーシャルアカウントでの初回ログイン時に自動的にアカウントが作成されます",
+      "regionLabel": "地域",
+      "regionPlaceholder": "地域を選択",
+      "regionChina": "中国",
+      "regionHongKong": "香港",
+      "regionTaiwan": "台湾",
+      "regionJapan": "日本",
+      "regionKorea": "韓国",
+      "regionNorthAmerica": "北米",
+      "regionEurope": "ヨーロッパ",
+      "regionSoutheastAsia": "東南アジア",
+      "regionOther": "その他"
+    }
+  },
+  "footer": {
+    "categories": {
+      "discover": "Discover",
+      "community": "Community",
+      "company": "Company",
+      "legal": "Legal"
+    },
+    "links": {
+      "games": "Games",
+      "news": "News",
+      "reviews": "Reviews",
+      "topRated": "Top Rated",
+      "forums": "Forums",
+      "guides": "Guides",
+      "events": "Events",
+      "discord": "Discord",
+      "aboutUs": "About Us",
+      "careers": "Careers",
+      "press": "Press",
+      "contact": "Contact",
+      "privacyPolicy": "Privacy Policy",
+      "termsOfService": "Terms of Service",
+      "cookiePolicy": "Cookie Policy",
+      "codeOfConduct": "Code of Conduct"
+    },
+    "brand": {
+      "tagline": "Your ultimate gaming destination. Discover, review, and discuss the latest games with our passionate community."
+    },
+    "stats": {
+      "online": "Online",
+      "games": "Games",
+      "reviews": "Reviews"
+    },
+    "copyright": "© {{year}} GameHub. All rights reserved."
+  },
+  "seo": {
+    "defaultTitle": "GameHub - 究極のゲームライブラリ管理プラットフォーム",
+    "defaultDescription": "GameHubは、マルチプラットフォームゲーム統合と管理をサポートする統合ゲームライブラリ管理プラットフォームです。",
+    "defaultKeywords": "ゲームライブラリ, ゲーム管理, ゲーミングプラットフォーム, ビデオゲーム, ゲームコレクション, ゲームハブ, ゲーミングコミュニティ",
+    "gamesTitle": "ゲーム一覧 | GameHub",
+    "gamesDescription": "豊富なゲームライブラリを閲覧。新作ゲームを発見し、コレクションを管理しよう。",
+    "newsTitle": "ゲームニュース | GameHub",
+    "newsDescription": "ゲーム業界の最新ニュース、アップデート、お知らせ。",
+    "reviewsTitle": "ゲームレビュー | GameHub",
+    "reviewsDescription": "ゲームコミュニティのレビューを読んだり共有したりしよう。",
+    "communityTitle": "コミュニティ | GameHub",
+    "communityDescription": "ゲームコミュニティに参加。ゲームについて議論し、経験を共有し、他のゲーマーとつながろう。",
+    "aboutTitle": "GameHubについて",
+    "aboutDescription": "GameHub、私たちのミッション、そしてチームについて詳しく知る。"
+  },
+  "pages": {
+    "careers": {
+      "title": "採用情報",
+      "heroTitle": "私たちのチームに参加しよう",
+      "heroDescription": "GameHubでゲームの未来を共に作りましょう。世界中のプレイヤーに最高の体験を提供するため、情熱あふれる人材を求めています。",
+      "whyJoinTitle": "なぜ私たちに加わるのか",
+      "whyJoinDescription": "GameHubでは、ゲームの力で人々をつなげると信じています。競争力のある報酬、柔軟な働き方、そしてクリエイティブでダイナミックなチーム環境を提供します。",
+      "valuesTitle": "私たちの価値観",
+      "value1": "プレイヤーファースト — すべての判断はプレイヤー体験から",
+      "value2": "技術革新 — 最先端技術の継続的な探求",
+      "value3": "オープンな協力 — 透明なコミュニケーション、チームの成功",
+      "value4": "卓越性 — 限界に挑戦し続ける品質",
+      "openingsTitle": "募集職種",
+      "noOpenings": "現在募集中のポジションはありません",
+      "cta": "すべての求人を見る"
+    },
+    "press": {
+      "title": "メディアセンター",
+      "heroTitle": "プレス＆メディア",
+      "heroDescription": "GameHubの最新ニュース、製品アップデート、メディア掲載情報をご紹介します。",
+      "latestNewsTitle": "最新ニュース",
+      "pressKitTitle": "プレスキット",
+      "pressKitDescription": "GameHubのブランドアセット、ロゴ、スクリーンショット、メディアキットをダウンロード。",
+      "contactTitle": "メディア問い合わせ",
+      "contactDescription": "取材依頼、メディアパートナーシップについてはお問い合わせください。"
+    },
+    "contact": {
+      "title": "お問い合わせ",
+      "heroTitle": "お問い合わせ",
+      "heroDescription": "ご意見、ご質問、パートナーシップのご提案など、お気軽にご連絡ください。",
+      "customerServiceTitle": "カスタマーサポート",
+      "customerServiceDescription": "プラットフォーム利用中に問題が発生した場合は、サポートチームが対応します。",
+      "cooperationTitle": "ビジネス協業",
+      "cooperationDescription": "ビジネスパートナーシップ、ブランドコラボレーションについてはご連絡ください。",
+      "emailLabel": "メールアドレス",
+      "phoneLabel": "電話番号",
+      "addressLabel": "会社住所",
+      "addressValue": "中国北京市朝陽区建国路88号"
+    },
+    "legal": {
+      "privacy": {
+        "title": "プライバシーポリシー",
+        "lastUpdated": "最終更新日：2026年1月1日",
+        "sections": [
+          {
+            "title": "情報収集",
+            "content": "GameHubをご利用いただく際に、以下の情報を収集する場合があります：アカウント登録時に提供される個人情報（ユーザー名、メールアドレスなど）；プラットフォーム利用中に作成されるコンテンツ（ゲームレビュー、コメント、投稿など）；ゲームの嗜好や利用行動データ；デバイス情報および技術データ。"
+          },
+          {
+            "title": "情報の利用",
+            "content": "収集した情報は以下の目的で使用します：GameHubプラットフォームサービスの提供、維持、改善；お客様の体験のパーソナライズ；サービス更新や重要なお知らせの連絡；利用傾向の分析とプラットフォーム機能の最適化；プラットフォームの安全性とユーザー権利の保護。"
+          },
+          {
+            "title": "情報共有",
+            "content": "お客様の個人情報を販売することはありません。以下の状況で情報を共有する場合があります：お客様の明確な同意がある場合；法令により要求される場合；GameHubユーザーの権利と安全を保護するため；秘密保持契約に拘束される信頼できるサービスプロバイダーと共有する場合。"
+          },
+          {
+            "title": "データセキュリティ",
+            "content": "お客様の個人情報を保護するため、業界標準のセキュリティ対策（SSL/TLS暗号化通信、データ保存時の暗号化、アクセス制御メカニズム、定期的なセキュリティ監査）を実施しています。ただし、インターネット上のデータ送信は完全に安全であるとは保証できません。"
+          },
+          {
+            "title": "お客様の権利",
+            "content": "お客様はご自身の個人情報にアクセスし、修正または削除する権利を有します。アカウント設定またはカスタマーサポートへの連絡により、これらの権利を行使できます。合理的な期間内にご依頼に対応いたします。"
+          },
+          {
+            "title": "ポリシーの更新",
+            "content": "本プライバシーポリシーを随時更新することがあります。重要な変更がある場合は、ウェブサイト上の告知またはメールにてお知らせします。GameHubの継続的な利用は、更新されたポリシーへの同意とみなされます。"
+          }
+        ]
+      },
+      "terms": {
+        "title": "利用規約",
+        "lastUpdated": "最終更新日：2026年1月1日",
+        "sections": [
+          {
+            "title": "規約の承諾",
+            "content": "GameHubを利用することにより、本利用規約に同意したものとみなされます。いずれかの条項に同意できない場合は、サービスの利用を停止してください。本規約は予告なく変更される場合があります。"
+          },
+          {
+            "title": "アカウント責任",
+            "content": "お客様はパスワードを含むアカウント情報の機密保持に責任を負います。アカウントで発生するすべての活動について責任があります。不正使用を発見した場合は直ちにご連絡ください。"
+          },
+          {
+            "title": "ユーザー行為",
+            "content": "GameHubの利用に際し、すべての適用法令を遵守することに同意します。違法、嫌がらせ、虐待的、名誉毀損的、または権利侵害となるコンテンツを投稿してはなりません。"
+          },
+          {
+            "title": "知的財産権",
+            "content": "GameHubプラットフォーム自体のすべての権利はGameHubに帰属します。お客様が投稿したコンテンツの所有権はお客様に留保され、プラットフォーム上での表示と配布に関するライセンスを許諾いただきます。"
+          },
+          {
+            "title": "免責事項",
+            "content": "GameHubは「現状のまま」提供され、明示または黙示の保証は一切ありません。ユーザー生成コンテンツについて責任を負わず、中断のないエラーのないサービスを保証しません。"
+          },
+          {
+            "title": "契約終了",
+            "content": "規約違反があった場合、お客様のアカウントを停止または終了する権利を留保します。サービスの利用を中止することにより、いつでも本契約を終了できます。"
+          }
+        ]
+      },
+      "cookies": {
+        "title": "Cookieポリシー",
+        "lastUpdated": "最終更新日：2026年1月1日",
+        "sections": [
+          {
+            "title": "Cookieとは",
+            "content": "Cookieは、お客様のデバイスに保存される小さなテキストファイルで、設定や閲覧情報を記憶します。GameHub閲覧時に、体験を向上させるためCookieを使用する場合があります。"
+          },
+          {
+            "title": "使用するCookieの種類",
+            "content": "必須Cookie：プラットフォームの正常動作に必要、同意は不要。機能Cookie：言語設定やログイン状態を記憶。分析Cookie：利用状況の分析とサービス最適化。設定Cookie：個人設定の保存。"
+          },
+          {
+            "title": "サードパーティCookie",
+            "content": "認定された第三者サービスプロバイダーがお客様のデバイスにCookieを設定することを許可する場合があります。これらは各社のプライバシーポリシーに従います。"
+          },
+          {
+            "title": "Cookie管理",
+            "content": "ブラウザ設定でCookieの使用を制御できます。ほとんどのブラウザでCookieのブロックや削除が可能です。ただし、一部のCookieを無効にすると、プラットフォーム機能が正常に動作しない場合があります。"
+          }
+        ]
+      },
+      "codeOfConduct": {
+        "title": "行動規範",
+        "lastUpdated": "最終更新日：2026年1月1日",
+        "sections": [
+          {
+            "title": "私たちの誓約",
+            "content": "GameHubは、すべてのユーザーにとって友好的で包括的、敬意あるコミュニティ環境を育成することに取り組んでいます。年齢、性別、人種、宗教、性的指向、アイデンティティに関わらず、誰もがハラスメントのない環境で参加できることを誓約します。"
+          },
+          {
+            "title": "行動基準",
+            "content": "推奨される行動：他者の意見を尊重、建設的な議論、有用な情報の共有、新規ユーザーの支援。禁止される行動：個人攻撃、ハラスメント、差別的発言、不適切なコンテンツの投稿、スパム、プライバシー侵害、なりすまし、虚偽情報の拡散。"
+          },
+          {
+            "title": "コンテンツガイドライン",
+            "content": "すべての投稿は法令とコミュニティ基準に準拠する必要があります。ポルノ、暴力、テロ、ヘイトスピーチなどの違法コンテンツは禁止されています。ゲームレビューは客観的かつ公正であるべきです。"
+          },
+          {
+            "title": "違反対応",
+            "content": "行動規範違反には、警告、コンテンツ削除、機能制限、一時停止、アカウント永久停止など、状況に応じた措置を講じます。重大な違反は法執行機関に報告される場合があります。"
+          },
+          {
+            "title": "報告方法",
+            "content": "行動規範違反を発見した場合は、報告機能またはカスタマーサポートまでご連絡ください。すべての報告を真摯に受け止め、合理的な期間内に調査および対応いたします。"
+          }
+        ]
+      }
+    }
+  }
+}

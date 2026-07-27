@@ -1,0 +1,70 @@
+global:
+  scrape_interval: 15s
+  evaluation_interval: 15s
+  external_labels:
+    environment: 'test'
+    project: 'gamehub'
+
+# 告警规则文件
+rule_files:
+  - 'alerts.yml'
+
+# 抓取配置
+scrape_configs:
+  # Prometheus自身监控
+  - job_name: 'prometheus'
+    static_configs:
+      - targets: ['localhost:9090']
+    scrape_interval: 30s
+
+  # 后端API监控
+  - job_name: 'gamehub-backend'
+    static_configs:
+      - targets: ['backend:3000']
+        labels:
+          service: 'backend'
+          environment: 'test'
+    metrics_path: '/metrics'
+    scrape_interval: 15s
+    scrape_timeout: 10s
+
+  # Node.js应用监控（通过prom-client）
+  - job_name: 'node-exporter'
+    static_configs:
+      - targets: ['backend:3000']
+    metrics_path: '/metrics'
+    scrape_interval: 15s
+
+  # Redis监控（通过redis_exporter）
+  # 如果需要Redis监控，可以添加redis_exporter容器
+  # - job_name: 'redis'
+  #   static_configs:
+  #     - targets: ['redis-exporter:9121']
+  #   scrape_interval: 30s
+
+  # PostgreSQL监控（通过postgres_exporter）
+  # - job_name: 'postgres'
+  #   static_configs:
+  #     - targets: ['postgres-exporter:9187']
+  #   scrape_interval: 30s
+
+  # 前端监控（通过web-vitals或自定义端点）
+  # - job_name: 'frontend'
+  #   static_configs:
+  #     - targets: ['frontend:80']
+  #   metrics_path: '/metrics'
+  #   scrape_interval: 30s
+
+# 远程写入配置（可选，用于集中式监控）
+# remote_write:
+#   - url: 'https://prometheus-central.example.com/api/v1/write'
+#     basic_auth:
+#       username: 'username'
+#       password: 'password'
+
+# 远程读取配置（可选）
+# remote_read:
+#   - url: 'https://prometheus-central.example.com/api/v1/read'
+#     basic_auth:
+#       username: 'username'
+#       password: 'password'

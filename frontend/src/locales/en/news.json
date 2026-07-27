@@ -1,0 +1,37 @@
+{
+  "title": "Game News",
+  "subtitle": "Latest gaming news, industry updates, and announcement information, all in GameHub News Center",
+  "searchPlaceholder": "Search news...",
+  "categoryPlaceholder": "Select Category",
+  "allCategories": "All Categories",
+  "newsCard": {
+    "readFull": "Read Full Article",
+    "views": "views",
+    "likes": "likes",
+    "author": "Author",
+    "published": "Published"
+  },
+  "categories": {
+    "gameNews": "Game News",
+    "industryUpdates": "Industry Updates",
+    "promotions": "Promotions"
+  },
+  "noResults": {
+    "title": "No relevant news found",
+    "description": "Try adjusting search keywords or selecting other categories",
+    "resetButton": "Reset Filters"
+  },
+  "categoryStats": {
+    "title": "News Categories",
+    "count": "{{count}} articles"
+  },
+  "subscription": {
+    "title": "Subscribe to Latest Gaming News",
+    "description": "Get the latest game news, announcement information and exclusive reports first-hand, never miss any important updates",
+    "placeholder": "Enter your email address",
+    "button": "Subscribe"
+  },
+  "pagination": {
+    "total": "Total {{total}} articles"
+  }
+}

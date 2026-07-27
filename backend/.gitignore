@@ -1,0 +1,47 @@
+# 依赖目录
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# 构建输出
+dist/
+*.tsbuildinfo
+
+# 环境变量
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# 日志文件
+logs/*.log
+logs/*.log.*
+!logs/.gitkeep
+
+# 运行时数据
+data/*.db
+data/*.db-*
+uploads/
+tmp/
+
+# 编辑器文件
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# 测试覆盖率
+coverage/
+.nyc_output/
+
+# 系统文件
+Thumbs.db
+.DS_Store
+
+# Windows 重定向产物
+nul

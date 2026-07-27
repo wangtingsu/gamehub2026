@@ -1,0 +1,338 @@
+{
+  "siteName": "GameHub",
+  "siteDescription": "Tu plataforma de gestión de biblioteca de juegos definitiva",
+  "navigation": {
+    "home": "Inicio",
+    "games": "Juegos",
+    "ai": "Asistente IA",
+    "news": "Noticias",
+    "reviews": "Reseñas",
+    "community": "Comunidad",
+    "about": "Acerca de",
+    "admin": "Administración",
+    "logout": "Cerrar sesión"
+  },
+  "language": {
+    "en": "Inglés",
+    "zh-CN": "Chino (simplificado)",
+    "ja": "Japonés",
+    "ko": "Coreano",
+    "es": "Español",
+    "fr": "Francés",
+    "select": "Seleccionar idioma"
+  },
+  "app": {
+    "name": "GameHub",
+    "slogan": "Tu destino de juegos definitivo",
+    "loading": "Cargando...",
+    "search": "Buscar"
+  },
+  "auth": {
+    "login": "Iniciar sesión",
+    "register": "Registrarse",
+    "email": "Correo electrónico",
+    "password": "Contraseña",
+    "confirmPassword": "Confirmar contraseña",
+    "username": "Nombre de usuario",
+    "rememberMe": "Recuérdame",
+    "forgotPassword": "¿Olvidaste tu contraseña?",
+    "resetPassword": "Restablecer contraseña",
+    "changePassword": "Cambiar contraseña",
+    "currentPassword": "Contraseña actual",
+    "newPassword": "Nueva contraseña",
+    "loginSuccess": "Inicio de sesión exitoso",
+    "logoutSuccess": "Cierre de sesión exitoso",
+    "invalidCredentials": "Correo electrónico o contraseña inválidos",
+    "loginPage": {
+      "title": "Iniciar sesión",
+      "subtitle": "Bienvenido de nuevo a GameHub, inicia sesión",
+      "emailLogin": "Inicio con correo",
+      "phoneLogin": "Inicio con teléfono",
+      "emailLabel": "Correo electrónico",
+      "emailRequired": "Por favor, ingresa tu correo electrónico",
+      "emailInvalid": "Por favor, ingresa un correo electrónico válido",
+      "emailPlaceholder": "Ingresa tu correo electrónico",
+      "passwordLabel": "Contraseña",
+      "passwordRequired": "Por favor, ingresa tu contraseña",
+      "passwordMinLength": "La contraseña debe tener al menos 8 caracteres",
+      "passwordPlaceholder": "Ingresa tu contraseña",
+      "loggingIn": "Iniciando sesión...",
+      "loginButton": "Iniciar sesión",
+      "loginFailed": "Inicio de sesión fallido",
+      "phoneLabel": "Número de teléfono",
+      "phoneRequired": "Por favor, ingresa tu número de teléfono",
+      "phoneInvalid": "Por favor, ingresa un número de teléfono válido",
+      "codeLabel": "Código de verificación",
+      "codeRequired": "Por favor, ingresa el código de verificación",
+      "codeLength": "El código debe tener 6 dígitos",
+      "sendCode": "Enviar código",
+      "orUseOther": "O inicia sesión con",
+      "noAccount": "¿No tienes una cuenta?",
+      "registerNow": "Regístrate ahora",
+      "forgotPassword": "¿Olvidaste tu contraseña?",
+      "backToLogin": "Volver a inicio de sesión",
+      "backToHomePage": "Volver al inicio",
+      "copyright": "© {{year}} GameHub. Todos los derechos reservados.",
+      "bannerTitle": "¡Bienvenido a GameHub!",
+      "bannerNoAccount": "¿No tienes una cuenta?",
+      "bannerRegister": "Regístrate ahora",
+      "bannerSupport": " — compatible con teléfono, WeChat, Google, GitHub"
+    },
+    "registerPage": {
+      "title": "Registrarse",
+      "subtitle": "Únete a la comunidad de GameHub y comienza tu viaje",
+      "emailRegister": "Registro con correo",
+      "phoneRegister": "Registro con teléfono",
+      "usernameLabel": "Nombre de usuario",
+      "usernameRequired": "Por favor, ingresa un nombre de usuario",
+      "usernameMinMax": "El nombre de usuario debe tener 3-20 caracteres",
+      "usernamePattern": "Solo se permiten letras, números y guiones bajos",
+      "emailLabel": "Correo electrónico",
+      "emailRequired": "Por favor, ingresa tu correo electrónico",
+      "emailInvalid": "Por favor, ingresa un correo electrónico válido",
+      "emailPlaceholder": "Ingresa tu correo electrónico",
+      "passwordLabel": "Contraseña",
+      "passwordRequired": "Por favor, ingresa una contraseña",
+      "passwordMinLength": "La contraseña debe tener al menos 8 caracteres",
+      "passwordPattern": "La contraseña debe contener mayúsculas, minúsculas y números",
+      "confirmPasswordLabel": "Confirmar contraseña",
+      "confirmPasswordRequired": "Por favor, confirma tu contraseña",
+      "confirmPasswordMismatch": "Las contraseñas no coinciden",
+      "agreeTerms": "He leído y acepto los",
+      "termsOfService": "Términos de servicio",
+      "privacyPolicy": "y la Política de privacidad",
+      "registering": "Registrándose...",
+      "registerButton": "Crear cuenta",
+      "registerFailed": "Registro fallido",
+      "registerSuccess": "¡Registro exitoso!",
+      "registerSuccessDesc": "Tu cuenta ha sido creada. Redirigiendo a la página de inicio...",
+      "goToHome": "Ir al inicio",
+      "viewProfile": "Completar perfil",
+      "phoneLabel": "Número de teléfono",
+      "phoneRequired": "Por favor, ingresa tu número de teléfono",
+      "phoneInvalid": "Por favor, ingresa un número de teléfono válido",
+      "phonePlaceholder": "Ingresa tu número de teléfono",
+      "codeLabel": "Código de verificación",
+      "codeRequired": "Por favor, ingresa el código de verificación",
+      "codeLength": "El código debe tener 6 dígitos",
+      "sendCode": "Enviar código",
+      "hasAccount": "¿Ya tienes una cuenta?",
+      "loginNow": "Iniciar sesión",
+      "backToHomePage": "Volver al inicio",
+      "copyright": "© {{year}} GameHub. Todos los derechos reservados.",
+      "socialDivider": "O regístrate rápidamente con cuentas sociales",
+      "socialAutoCreate": "El primer inicio de sesión con una cuenta social creará automáticamente una cuenta",
+      "regionLabel": "Region",
+      "regionPlaceholder": "Selecciona tu region",
+      "regionChina": "China",
+      "regionHongKong": "Hong Kong",
+      "regionTaiwan": "Taiwan",
+      "regionJapan": "Japon",
+      "regionKorea": "Corea",
+      "regionNorthAmerica": "America del Norte",
+      "regionEurope": "Europa",
+      "regionSoutheastAsia": "Sudeste Asiatico",
+      "regionOther": "Otro"
+    }
+  },
+  "footer": {
+    "categories": {
+      "discover": "Descubrir",
+      "community": "Comunidad",
+      "company": "Empresa",
+      "legal": "Legal"
+    },
+    "links": {
+      "games": "Juegos",
+      "news": "Noticias",
+      "reviews": "Reseñas",
+      "topRated": "Mejor valorados",
+      "forums": "Foros",
+      "guides": "Guías",
+      "events": "Eventos",
+      "discord": "Discord",
+      "aboutUs": "Sobre nosotros",
+      "careers": "Empleo",
+      "press": "Prensa",
+      "contact": "Contacto",
+      "privacyPolicy": "Política de privacidad",
+      "termsOfService": "Términos de servicio",
+      "cookiePolicy": "Política de cookies",
+      "codeOfConduct": "Código de conducta"
+    },
+    "brand": {
+      "tagline": "Tu destino de juegos definitivo. Descubre, reseña y discute los últimos juegos con nuestra apasionada comunidad."
+    },
+    "stats": {
+      "online": "En línea",
+      "games": "Juegos",
+      "reviews": "Reseñas"
+    },
+    "copyright": "© {{year}} GameHub. Todos los derechos reservados."
+  },
+  "seo": {
+    "defaultTitle": "GameHub - Tu plataforma de gestión de biblioteca de juegos definitiva",
+    "defaultDescription": "GameHub es una plataforma unificada de gestión de bibliotecas de juegos que admite la integración y gestión de juegos multiplataforma.",
+    "defaultKeywords": "biblioteca de juegos, gestión de juegos, plataforma de juegos, videojuegos, colección de juegos, centro de juegos, comunidad de juegos",
+    "gamesTitle": "Juegos | GameHub",
+    "gamesDescription": "Explora nuestra extensa biblioteca de juegos. Descubre nuevos juegos y gestiona tu colección.",
+    "newsTitle": "Noticias de juegos | GameHub",
+    "newsDescription": "Últimas noticias, actualizaciones y anuncios de la industria del juego.",
+    "reviewsTitle": "Reseñas de juegos | GameHub",
+    "reviewsDescription": "Lee y comparte reseñas de juegos de la comunidad.",
+    "communityTitle": "Comunidad | GameHub",
+    "communityDescription": "Únete a la comunidad de juegos. Discute sobre juegos, comparte experiencias y conéctate con otros jugadores.",
+    "aboutTitle": "Acerca de GameHub",
+    "aboutDescription": "Obtén más información sobre GameHub, nuestra misión y nuestro equipo."
+  },
+  "pages": {
+    "careers": {
+      "title": "Empleo",
+      "heroTitle": "Únete a nuestro equipo",
+      "heroDescription": "Ayúdanos a construir el futuro de los videojuegos en GameHub. Buscamos personas apasionadas para crear la mejor experiencia para jugadores de todo el mundo.",
+      "whyJoinTitle": "Por qué unirte a nosotros",
+      "whyJoinDescription": "En GameHub, creemos en el poder de los videojuegos para conectar personas. Ofrecemos compensación competitiva, horarios flexibles y un entorno de equipo creativo y dinámico.",
+      "valuesTitle": "Nuestros valores",
+      "value1": "Jugadores primero — Cada decisión comienza con la experiencia del jugador",
+      "value2": "Innovación — Exploración continua de tecnología de punta",
+      "value3": "Colaboración abierta — Comunicación transparente, éxito del equipo",
+      "value4": "Excelencia — Superando constantemente los límites de calidad",
+      "openingsTitle": "Ofertas de empleo",
+      "noOpenings": "No hay puestos abiertos en este momento",
+      "cta": "Ver todos los puestos"
+    },
+    "press": {
+      "title": "Centro de prensa",
+      "heroTitle": "Prensa y medios",
+      "heroDescription": "Mantente al día con las últimas noticias, actualizaciones de productos y cobertura mediática sobre GameHub.",
+      "latestNewsTitle": "Últimas noticias",
+      "pressKitTitle": "Kit de prensa",
+      "pressKitDescription": "Descarga los recursos de marca, logotipos, capturas de pantalla y kit de medios de GameHub.",
+      "contactTitle": "Contacto de prensa",
+      "contactDescription": "Para consultas de prensa, entrevistas y asociaciones con medios, contáctanos."
+    },
+    "contact": {
+      "title": "Contacto",
+      "heroTitle": "Ponte en contacto",
+      "heroDescription": "¡Nos encantaría saber de ti! Ya sea que tengas sugerencias, preguntas o ideas de colaboración, no dudes en contactarnos.",
+      "customerServiceTitle": "Atención al cliente",
+      "customerServiceDescription": "Si encuentras algún problema al usar nuestra plataforma, nuestro equipo de soporte está aquí para ayudarte.",
+      "cooperationTitle": "Cooperación comercial",
+      "cooperationDescription": "Para asociaciones comerciales, colaboraciones de marca y otras consultas, contáctanos.",
+      "emailLabel": "Correo electrónico",
+      "phoneLabel": "Teléfono",
+      "addressLabel": "Dirección",
+      "addressValue": "88 Jianguo Road, Distrito Chaoyang, Pekín, China"
+    },
+    "legal": {
+      "privacy": {
+        "title": "Política de privacidad",
+        "lastUpdated": "Última actualización: 1 de enero de 2026",
+        "sections": [
+          {
+            "title": "Información que recopilamos",
+            "content": "Cuando utiliza GameHub, podemos recopilar los siguientes tipos de información: Información personal proporcionada al registrarse (nombre de usuario, dirección de correo electrónico); Contenido que crea mientras utiliza la plataforma (reseñas de juegos, comentarios, publicaciones); Sus preferencias de juego y datos de comportamiento de uso; Información del dispositivo y datos técnicos."
+          },
+          {
+            "title": "Uso de su información",
+            "content": "Utilizamos la información recopilada para los siguientes fines: Proporcionar, mantener y mejorar los servicios de la plataforma GameHub; Personalizar su experiencia; Comunicar actualizaciones de servicio y notificaciones importantes; Analizar tendencias de uso y optimizar las funciones de la plataforma; Garantizar la seguridad de la plataforma y los derechos de los usuarios."
+          },
+          {
+            "title": "Compartir información",
+            "content": "Nos comprometemos a no vender su información personal. Podemos compartir su información en las siguientes circunstancias: Con su consentimiento explícito; Cuando la ley lo requiera; Para proteger los derechos y la seguridad de los usuarios de GameHub; Con proveedores de servicios confiables sujetos a acuerdos de confidencialidad."
+          },
+          {
+            "title": "Seguridad de datos",
+            "content": "Implementamos medidas de seguridad estándar de la industria para proteger su información personal, incluido el cifrado de transmisión SSL/TLS, el cifrado de almacenamiento de datos, los mecanismos de control de acceso y las auditorías de seguridad periódicas. Tenga en cuenta que ninguna transmisión de datos por Internet puede garantizarse como completamente segura."
+          },
+          {
+            "title": "Sus derechos",
+            "content": "Usted tiene derecho a acceder, corregir o eliminar su información personal. Puede ejercer estos derechos a través de la configuración de su cuenta o comunicándose con nuestro equipo de soporte. Responderemos a sus solicitudes dentro de un plazo razonable."
+          },
+          {
+            "title": "Actualizaciones de la política",
+            "content": "Podemos actualizar esta Política de privacidad de vez en cuando. Le notificaremos los cambios importantes a través de anuncios en el sitio web o por correo electrónico. El uso continuado de GameHub constituye la aceptación de la política actualizada."
+          }
+        ]
+      },
+      "terms": {
+        "title": "Términos de servicio",
+        "lastUpdated": "Última actualización: 1 de enero de 2026",
+        "sections": [
+          {
+            "title": "Aceptación de los términos",
+            "content": "Al utilizar GameHub, usted acepta estos Términos de servicio. Si no está de acuerdo con algún término, deje de usar nuestros servicios. Nos reservamos el derecho de modificar estos términos en cualquier momento, y los cambios entran en vigencia inmediatamente después de su publicación."
+          },
+          {
+            "title": "Responsabilidad de la cuenta",
+            "content": "Usted es responsable de mantener la confidencialidad de la información de su cuenta, incluida su contraseña. Usted es totalmente responsable de todas las actividades que ocurran bajo su cuenta. Notifíquenos inmediatamente cualquier uso no autorizado de su cuenta."
+          },
+          {
+            "title": "Conducta del usuario",
+            "content": "Usted acepta cumplir con todas las leyes aplicables al usar GameHub. No puede publicar contenido ilegal, acosador, abusivo, difamatorio o que infrinja los derechos de otros. No puede utilizar la plataforma para ninguna actividad fraudulenta o para distribuir malware."
+          },
+          {
+            "title": "Propiedad intelectual",
+            "content": "Todos los derechos de la plataforma GameHub en sí misma pertenecen a GameHub. Usted conserva la propiedad del contenido que publica en la plataforma, otorgándonos una licencia para mostrarlo y distribuirlo."
+          },
+          {
+            "title": "Descargo de responsabilidad",
+            "content": "GameHub se proporciona \"tal cual\" sin ninguna garantía, expresa o implícita. No somos responsables del contenido generado por el usuario ni garantizamos un servicio ininterrumpido o libre de errores."
+          },
+          {
+            "title": "Terminación",
+            "content": "Nos reservamos el derecho de suspender o terminar su cuenta si viola algún término. Puede rescindir este acuerdo en cualquier momento dejando de usar el servicio."
+          }
+        ]
+      },
+      "cookies": {
+        "title": "Política de cookies",
+        "lastUpdated": "Última actualización: 1 de enero de 2026",
+        "sections": [
+          {
+            "title": "¿Qué son las cookies?",
+            "content": "Las cookies son pequeños archivos de texto almacenados en su dispositivo que recuerdan sus preferencias e información de navegación. Cuando visita GameHub, podemos colocar cookies en su dispositivo para mejorar su experiencia."
+          },
+          {
+            "title": "Tipos de cookies que utilizamos",
+            "content": "Cookies esenciales: Necesarias para el correcto funcionamiento de la plataforma, no se requiere consentimiento. Cookies funcionales: Recuerdan sus preferencias de idioma y estado de inicio de sesión. Cookies analíticas: Nos ayudan a entender cómo los usuarios interactúan con la plataforma. Cookies de preferencia: Almacenan sus configuraciones personalizadas."
+          },
+          {
+            "title": "Cookies de terceros",
+            "content": "Podemos permitir que proveedores de servicios externos autorizados coloquen cookies en su dispositivo. Estas cookies de terceros se rigen por sus respectivas políticas de privacidad."
+          },
+          {
+            "title": "Gestión de cookies",
+            "content": "Puede controlar el uso de cookies a través de la configuración de su navegador. La mayoría de los navegadores le permiten bloquear o eliminar cookies. Sin embargo, deshabilitar ciertas cookies puede impedir que algunas funciones de la plataforma funcionen correctamente."
+          }
+        ]
+      },
+      "codeOfConduct": {
+        "title": "Código de conducta",
+        "lastUpdated": "Última actualización: 1 de enero de 2026",
+        "sections": [
+          {
+            "title": "Nuestro compromiso",
+            "content": "GameHub se compromete a fomentar un entorno comunitario amigable, inclusivo y respetuoso para todos los usuarios. Nos comprometemos a garantizar que todos puedan participar en las actividades comunitarias en un entorno libre de acoso, independientemente de su edad, género, raza, religión, orientación sexual o identidad."
+          },
+          {
+            "title": "Estándares de comportamiento",
+            "content": "Comportamientos fomentados: Respetar los puntos de vista de los demás, participar en discusiones constructivas, compartir contenido útil, ayudar a nuevos usuarios. Comportamientos prohibidos: Ataques personales, acoso, comentarios discriminatorios, publicación de contenido inapropiado, spam, violación de la privacidad de otros, suplantación de identidad, difusión de información falsa."
+          },
+          {
+            "title": "Directrices de contenido",
+            "content": "Todo el contenido debe cumplir con las leyes aplicables y los estándares comunitarios. El contenido prohibido incluye pornografía, violencia, terrorismo, discursos de odio y otro material ilegal. Las reseñas de juegos deben ser objetivas y justas."
+          },
+          {
+            "title": "Aplicación",
+            "content": "Las violaciones del Código de conducta darán lugar a las medidas apropiadas según la gravedad, incluyendo pero no limitándose a: advertencias, eliminación de contenido, restricciones de funciones, suspensión temporal o prohibición permanente de la cuenta."
+          },
+          {
+            "title": "Denuncia",
+            "content": "Si encuentra alguna violación del Código de conducta, infórmela mediante la función de denuncia o poniéndose en contacto con nuestro equipo de soporte. Tomamos cada denuncia en serio e investigaremos y tomaremos medidas dentro de un plazo razonable."
+          }
+        ]
+      }
+    }
+  }
+}

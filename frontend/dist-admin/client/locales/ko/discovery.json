@@ -1,0 +1,172 @@
+{
+  "search": {
+    "title": "검색",
+    "placeholder": "게임, 리뷰, 뉴스, 사용자 검색...",
+    "searching": "검색 중...",
+    "resultsFor": "\"{{query}}\" 검색 결과",
+    "resultsCount": "{{count}}개 결과",
+    "noResults": "결과를 찾을 수 없습니다",
+    "noResultsHint": "다른 키워드나 필터를 시도해보세요",
+    "error": "검색 오류",
+    "filter": "필터",
+    "advancedFilter": "고급 필터",
+    "reset": "초기화",
+    "sortBy": {
+      "relevance": "관련성",
+      "date": "날짜",
+      "rating": "평점",
+      "popularity": "인기"
+    },
+    "filterLabels": {
+      "genres": "장르",
+      "platforms": "플랫폼",
+      "ratingRange": "평점 범위",
+      "dateRange": "출시일",
+      "tags": "태그",
+      "sortBy": "정렬 기준"
+    },
+    "genreOptions": {
+      "RPG": "RPG",
+      "Action": "액션",
+      "Adventure": "어드벤처",
+      "Simulation": "시뮬레이션",
+      "Strategy": "전략",
+      "Sports": "스포츠",
+      "Puzzle": "퍼즐",
+      "Horror": "호러",
+      "Shooter": "슈팅",
+      "Fighting": "격투",
+      "Racing": "레이싱",
+      "MMO": "MMO"
+    },
+    "platformOptions": {
+      "PC": "PC",
+      "PS5": "PS5",
+      "PS4": "PS4",
+      "Xbox Series X": "Xbox Series X",
+      "Xbox One": "Xbox One",
+      "Nintendo Switch": "Nintendo Switch",
+      "Mobile": "모바일",
+      "VR": "VR"
+    },
+    "types": {
+      "all": "전체",
+      "game": "게임",
+      "review": "리뷰",
+      "news": "뉴스",
+      "community_post": "커뮤니티 게시물",
+      "user": "사용자"
+    },
+    "suggestions": {
+      "title": "추천 검색어",
+      "viewMore": "더보기",
+      "noSuggestions": "추천 검색어 없음"
+    },
+    "pagination": {
+      "total": "{{range[0]}}-{{range[1]}} / 전체 {{total}}개"
+    },
+    "metaData": {
+      "reviews": "리뷰 {{count}}개",
+      "likes": "좋아요 {{count}}개",
+      "comments": "댓글 {{count}}개",
+      "views": "조회 {{count}}회"
+    },
+    "highlights": {
+      "matchFound": "일치하는 결과"
+    }
+  },
+  "recommendations": {
+    "personalized": "회원님을 위한 추천",
+    "trending": "트렌딩",
+    "relatedGames": "비슷한 게임",
+    "relatedReviews": "관련 리뷰",
+    "relatedNews": "관련 뉴스",
+    "usersAlsoLiked": "다른 사용자도 좋아함",
+    "noRecommendations": "추천이 없습니다",
+    "reasons": {
+      "sameGenre": "같은 장르",
+      "samePlatform": "같은 플랫폼",
+      "trending": "트렌딩",
+      "alsoLiked": "다른 사용자도 좋아함",
+      "personalized": "회원님의 선호도 기반",
+      "newRelease": "신규 출시",
+      "highRated": "높은 평점"
+    },
+    "loading": "추천 로딩 중...",
+    "viewMore": "더보기"
+  },
+  "leaderboard": {
+    "title": "리더보드",
+    "tabs": {
+      "topRated": "최고 평점",
+      "mostReviewed": "리뷰最多",
+      "mostFavorited": "찜最多",
+      "mostDiscussed": "토론最多"
+    },
+    "columns": {
+      "rank": "순위",
+      "gameName": "게임명",
+      "rating": "평점",
+      "reviewCount": "리뷰 수",
+      "score": "점수",
+      "trend": "추세"
+    },
+    "trends": {
+      "up": "상승",
+      "down": "하락",
+      "stable": "안정"
+    },
+    "noData": "리더보드 데이터가 없습니다"
+  },
+  "trends": {
+    "title": "트렌드",
+    "searchTrends": "검색 트렌드",
+    "gameTrends": "게임 인기 트렌드",
+    "searchVolumn": "검색량",
+    "uniqueQueries": "고유 쿼리",
+    "totalSearches": "총 검색 수",
+    "period": {
+      "7d": "7일",
+      "30d": "30일",
+      "90d": "90일"
+    },
+    "noData": "트렌드 데이터가 없습니다"
+  },
+  "discovery": {
+    "title": "발견",
+    "tabs": {
+      "trends": "트렌드",
+      "leaderboard": "리더보드",
+      "reports": "데이터 리포트"
+    },
+    "stats": {
+      "totalUsers": "총 사용자",
+      "totalGames": "총 게임",
+      "totalReviews": "총 리뷰",
+      "totalPosts": "총 게시물",
+      "dailyNewUsers": "오늘 신규 사용자",
+      "dailyNewReviews": "오늘 신규 리뷰",
+      "dailyNewPosts": "오늘 신규 게시물",
+      "activeUsers7d": "7일 활성 사용자",
+      "activeUsers": "활성 사용자"
+    },
+    "distributions": {
+      "platforms": "플랫폼 분포",
+      "genres": "장르 분포"
+    },
+    "reports": {
+      "title": "데이터 리포트",
+      "communitySummary": "커뮤니티 개요"
+    }
+  },
+  "resultItem": {
+    "game": "게임",
+    "review": "리뷰",
+    "news": "뉴스",
+    "post": "게시물",
+    "user": "사용자",
+    "gameFor": "게임: {{name}}",
+    "joined": "{{date}}에 가입",
+    "unknownType": "알 수 없는 유형"
+  }
+}

@@ -1,0 +1,51 @@
+{
+  "title": "Games Library",
+  "subtitle": "Explore our curated collection of games",
+  "searchPlaceholder": "Search game titles or descriptions...",
+  "filters": {
+    "genre": "Genre",
+    "platform": "Platform",
+    "priceRange": "Price Range",
+    "minRating": "Minimum Rating",
+    "all": "All",
+    "reset": "Reset Filters"
+  },
+  "gameCard": {
+    "featured": "Featured",
+    "discount": "Discount",
+    "rating": "Rating",
+    "released": "Released",
+    "genres": "Genres",
+    "platforms": "Platforms",
+    "viewDetails": "View Details",
+    "addToLibrary": "Add to Library",
+    "addToFavorites": "Add to Favorites"
+  },
+  "noResults": {
+    "title": "No games found",
+    "description": "Try adjusting your search or filter criteria",
+    "resetButton": "Reset Filters"
+  },
+  "stats": {
+    "showing": "Showing {{count}} games",
+    "total": "Total {{total}} games"
+  },
+  "genres": {
+    "rpg": "RPG",
+    "action": "Action",
+    "adventure": "Adventure",
+    "strategy": "Strategy",
+    "sci-fi": "Sci-Fi",
+    "fantasy": "Fantasy",
+    "soulslike": "Souls-like",
+    "magic": "Magic"
+  },
+  "platforms": {
+    "pc": "PC",
+    "ps4": "PlayStation 4",
+    "ps5": "PlayStation 5",
+    "xboxOne": "Xbox One",
+    "xboxSeriesX": "Xbox Series X",
+    "switch": "Nintendo Switch"
+  }
+}

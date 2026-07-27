@@ -1,0 +1,172 @@
+{
+  "search": {
+    "title": "搜索",
+    "placeholder": "搜索游戏、评测、新闻、用户...",
+    "searching": "搜索中...",
+    "resultsFor": "\"{{query}}\" 的搜索结果",
+    "resultsCount": "找到 {{count}} 个结果",
+    "noResults": "未找到相关结果",
+    "noResultsHint": "尝试使用其他关键词或筛选条件",
+    "error": "搜索出错",
+    "filter": "筛选",
+    "advancedFilter": "高级筛选",
+    "reset": "重置",
+    "sortBy": {
+      "relevance": "按相关性",
+      "date": "按时间",
+      "rating": "按评分",
+      "popularity": "按热度"
+    },
+    "filterLabels": {
+      "genres": "游戏类型",
+      "platforms": "平台",
+      "ratingRange": "评分范围",
+      "dateRange": "发布日期",
+      "tags": "标签",
+      "sortBy": "排序方式"
+    },
+    "genreOptions": {
+      "RPG": "RPG",
+      "Action": "动作",
+      "Adventure": "冒险",
+      "Simulation": "模拟",
+      "Strategy": "策略",
+      "Sports": "体育",
+      "Puzzle": "解谜",
+      "Horror": "恐怖",
+      "Shooter": "射击",
+      "Fighting": "格斗",
+      "Racing": "竞速",
+      "MMO": "MMO"
+    },
+    "platformOptions": {
+      "PC": "PC",
+      "PS5": "PS5",
+      "PS4": "PS4",
+      "Xbox Series X": "Xbox Series X",
+      "Xbox One": "Xbox One",
+      "Nintendo Switch": "Nintendo Switch",
+      "Mobile": "手机",
+      "VR": "VR"
+    },
+    "types": {
+      "all": "全部",
+      "game": "游戏",
+      "review": "评测",
+      "news": "新闻",
+      "community_post": "社区帖子",
+      "user": "用户"
+    },
+    "suggestions": {
+      "title": "搜索建议",
+      "viewMore": "查看更多",
+      "noSuggestions": "无建议"
+    },
+    "pagination": {
+      "total": "{{range[0]}}-{{range[1]}} 条，共 {{total}} 条"
+    },
+    "metaData": {
+      "reviews": "{{count}}条评测",
+      "likes": "{{count}}点赞",
+      "comments": "{{count}}评论",
+      "views": "{{count}}浏览"
+    },
+    "highlights": {
+      "matchFound": "匹配结果"
+    }
+  },
+  "recommendations": {
+    "personalized": "为你推荐",
+    "trending": "热门趋势",
+    "relatedGames": "类似游戏",
+    "relatedReviews": "相关评测",
+    "relatedNews": "相关新闻",
+    "usersAlsoLiked": "用户也喜欢",
+    "noRecommendations": "暂无推荐",
+    "reasons": {
+      "sameGenre": "同类型游戏",
+      "samePlatform": "同平台游戏",
+      "trending": "热门推荐",
+      "alsoLiked": "用户也喜欢",
+      "personalized": "根据您的偏好",
+      "newRelease": "新发布",
+      "highRated": "高评分"
+    },
+    "loading": "正在加载推荐...",
+    "viewMore": "查看更多"
+  },
+  "leaderboard": {
+    "title": "排行榜",
+    "tabs": {
+      "topRated": "评分最高",
+      "mostReviewed": "评测最多",
+      "mostFavorited": "收藏最多",
+      "mostDiscussed": "讨论最多"
+    },
+    "columns": {
+      "rank": "排名",
+      "gameName": "游戏名称",
+      "rating": "评分",
+      "reviewCount": "评测数",
+      "score": "综合得分",
+      "trend": "趋势"
+    },
+    "trends": {
+      "up": "上升",
+      "down": "下降",
+      "stable": "持平"
+    },
+    "noData": "暂无排行榜数据"
+  },
+  "trends": {
+    "title": "趋势分析",
+    "searchTrends": "搜索趋势",
+    "gameTrends": "游戏热度趋势",
+    "searchVolumn": "搜索量",
+    "uniqueQueries": "独立查询",
+    "totalSearches": "总搜索次数",
+    "period": {
+      "7d": "近7天",
+      "30d": "近30天",
+      "90d": "近90天"
+    },
+    "noData": "暂无趋势数据"
+  },
+  "discovery": {
+    "title": "发现",
+    "tabs": {
+      "trends": "趋势分析",
+      "leaderboard": "排行榜",
+      "reports": "数据报告"
+    },
+    "stats": {
+      "totalUsers": "总用户数",
+      "totalGames": "游戏总数",
+      "totalReviews": "评测总数",
+      "totalPosts": "帖子总数",
+      "dailyNewUsers": "日新增用户",
+      "dailyNewReviews": "日新增评测",
+      "dailyNewPosts": "日新增帖子",
+      "activeUsers7d": "7日活跃用户",
+      "activeUsers": "活跃用户"
+    },
+    "distributions": {
+      "platforms": "平台分布",
+      "genres": "类型分布"
+    },
+    "reports": {
+      "title": "数据报告",
+      "communitySummary": "社区概览"
+    }
+  },
+  "resultItem": {
+    "game": "游戏",
+    "review": "评测",
+    "news": "新闻",
+    "post": "帖子",
+    "user": "用户",
+    "gameFor": "游戏：{{name}}",
+    "joined": "加入于 {{date}}",
+    "unknownType": "未知类型"
+  }
+}

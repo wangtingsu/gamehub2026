@@ -1,0 +1,37 @@
+{
+  "title": "ゲームニュース",
+  "subtitle": "最新のゲームニュース、業界アップデート、発表情報はすべてGameHubニュースセンターで",
+  "searchPlaceholder": "ニュースを検索...",
+  "categoryPlaceholder": "カテゴリを選択",
+  "allCategories": "すべてのカテゴリ",
+  "newsCard": {
+    "readFull": "全文を読む",
+    "views": "閲覧数",
+    "likes": "いいね",
+    "author": "著者",
+    "published": "公開日"
+  },
+  "categories": {
+    "gameNews": "ゲームニュース",
+    "industryUpdates": "業界アップデート",
+    "promotions": "プロモーション"
+  },
+  "noResults": {
+    "title": "関連ニュースが見つかりません",
+    "description": "検索キーワードを調整するか、他のカテゴリを選択してください",
+    "resetButton": "フィルターをリセット"
+  },
+  "categoryStats": {
+    "title": "ニュースカテゴリ",
+    "count": "{{count}}件の記事"
+  },
+  "subscription": {
+    "title": "最新ゲームニュースを購読",
+    "description": "最新のゲームニュース、発表情報、独占レポートをいち早く入手し、重要なアップデートを見逃さない",
+    "placeholder": "メールアドレスを入力",
+    "button": "購読"
+  },
+  "pagination": {
+    "total": "合計{{total}}件の記事"
+  }
+}

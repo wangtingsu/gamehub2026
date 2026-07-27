@@ -1,0 +1,168 @@
+version: '3.8'
+
+services:
+  # PostgreSQL数据库
+  postgres:
+    image: postgres:16-alpine
+    container_name: gamehub-postgres-test
+    environment:
+      POSTGRES_USER: gamehub
+      POSTGRES_PASSWORD: gamehub_password
+      POSTGRES_DB: gamehub_test
+    volumes:
+      - postgres_data_test:/var/lib/postgresql/data
+      - ./db/init.sql:/docker-entrypoint-initdb.d/init.sql
+    ports:
+      - "5432:5432"
+    networks:
+      - gamehub-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U gamehub"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    restart: unless-stopped
+
+  # Redis缓存
+  redis:
+    image: redis:7-alpine
+    container_name: gamehub-redis-test
+    command: redis-server --appendonly yes --requirepass redis_password
+    volumes:
+      - redis_data_test:/data
+    ports:
+      - "6379:6379"
+    networks:
+      - gamehub-network
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    restart: unless-stopped
+
+  # 后端API服务
+  backend:
+    # build context kept for reference, image takes precedence
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: gamehub-backend-test
+    environment:
+      NODE_ENV: production
+      DATABASE_URL: postgresql://gamehub:gamehub_password@postgres:5432/gamehub_test
+      REDIS_URL: redis://default:redis_password@redis:6379
+      PORT: 3000
+      JWT_SECRET: test_jwt_secret_change_in_production
+      CORS_ORIGIN: http://localhost:5173,http://localhost:4173,http://localhost:3000,http://localhost:80,https://localhost
+      LOG_LEVEL: debug
+    ports:
+      - "3000:3000"
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    networks:
+      - gamehub-network
+    healthcheck:
+      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:3000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    restart: unless-stopped
+
+  # 前端应用
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: gamehub-frontend-test
+    environment:
+      VITE_API_BASE_URL: http://localhost:3000
+      VITE_USE_MOCK: "false"
+      NODE_ENV: production
+    ports:
+      - "80:80"
+      - "443:443"
+      - "443:443/udp"
+    depends_on:
+      - backend
+    networks:
+      - gamehub-network
+    healthcheck:
+      test: ["CMD", "wget", "--no-check-certificate", "-q", "-O", "/dev/null", "https://127.0.0.1/"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    restart: unless-stopped
+
+  # Prometheus监控
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: gamehub-prometheus-test
+    volumes:
+      - ./monitoring/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+      - prometheus_data_test:/prometheus
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
+      - '--web.console.libraries=/etc/prometheus/console_libraries'
+      - '--web.console.templates=/etc/prometheus/console_templates'
+      - '--storage.tsdb.retention.time=7d'
+      - '--web.enable-lifecycle'
+    ports:
+      - "9090:9090"
+    networks:
+      - gamehub-network
+    restart: unless-stopped
+
+  # Grafana仪表板
+  grafana:
+    image: grafana/grafana:latest
+    container_name: gamehub-grafana-test
+    environment:
+      GF_SECURITY_ADMIN_PASSWORD: admin
+      GF_INSTALL_PLUGINS: "grafana-piechart-panel"
+      GF_ANALYTICS_REPORTING_ENABLED: "false"
+    volumes:
+      - grafana_data_test:/var/lib/grafana
+      - ./monitoring/grafana/dashboards:/etc/grafana/provisioning/dashboards
+      - ./monitoring/grafana/datasources:/etc/grafana/provisioning/datasources
+    ports:
+      - "3001:3000"
+    depends_on:
+      - prometheus
+    networks:
+      - gamehub-network
+    restart: unless-stopped
+
+  # 负载测试容器（k6）
+  k6:
+    image: grafana/k6:latest
+    container_name: gamehub-k6-test
+    volumes:
+      - ./scripts/load-test:/scripts
+    networks:
+      - gamehub-network
+    restart: "no"
+    command: ["run", "/scripts/basic.js", "--out", "json=/tmp/test-results.json"]
+
+# 网络配置
+networks:
+  gamehub-network:
+    driver: bridge
+    name: gamehub-test-network
+
+# 数据卷配置
+volumes:
+  postgres_data_test:
+    driver: local
+  redis_data_test:
+    driver: local
+  prometheus_data_test:
+    driver: local
+  grafana_data_test:
+    driver: local

@@ -1,0 +1,23 @@
+<!doctype html>
+<!-- ============================================================
+     GameHub 管理后台入口 HTML
+     - 作用：管理员后台的独立入口页面，与主站点分离构建
+     - 入口：src/admin-entry.tsx（独立的 React 应用挂载点）
+     - 安全：配置 noindex/nofollow 禁止搜索引擎收录
+     ============================================================ -->
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>GameHub 管理后台</title>
+    <!-- 禁止搜索引擎索引管理后台页面，确保安全 -->
+    <meta name="robots" content="noindex, nofollow">
+  </head>
+  <body>
+    <!-- React 应用挂载根节点 -->
+    <div id="root"></div>
+    <!-- 管理后台独立入口脚本，由 Vite 的 admin 构建配置编译 -->
+    <script type="module" src="/src/admin-entry.tsx"></script>
+  </body>
+</html>

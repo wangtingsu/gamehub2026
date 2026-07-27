@@ -1,0 +1,99 @@
+groups:
+  - name: gamehub-backend
+    interval: 30s
+    rules:
+      - alert: HighErrorRate
+        expr: rate(http_request_duration_seconds_count{status=~"5.."}[5m]) / rate(http_request_duration_seconds_count[5m]) > 0.05
+        for: 5m
+        labels:
+          severity: critical
+          team: backend
+        annotations:
+          summary: "API 错误率过高 ({{ $value | humanizePercentage }})"
+          description: "过去5分钟内，后端API 5xx 错误率达到 {{ $value | humanizePercentage }}，超过 5% 阈值。"
+
+      - alert: HighLatency
+        expr: histogram_quantile(0.95, rate(http_request_duration_seconds_bucket[5m])) > 2
+        for: 5m
+        labels:
+          severity: warning
+          team: backend
+        annotations:
+          summary: "API 响应延迟过高 ({{ $value }}s)"
+          description: "P95 响应延迟达到 {{ $value }}s，超过 2s 阈值。"
+
+      - alert: ServiceDown
+        expr: up{job="gamehub-backend"} == 0
+        for: 1m
+        labels:
+          severity: critical
+          team: backend
+        annotations:
+          summary: "后端服务宕机"
+          description: "gamehub-backend 服务已不可达，请立即检查。"
+
+      - alert: HighMemoryUsage
+        expr: nodejs_heap_size_used_bytes / nodejs_heap_size_total_bytes > 0.9
+        for: 5m
+        labels:
+          severity: warning
+          team: backend
+        annotations:
+          summary: "Node.js 堆内存使用率过高 ({{ $value | humanizePercentage }})"
+          description: "堆内存使用率达到 {{ $value | humanizePercentage }}，超过 90% 阈值。"
+
+      - alert: ActiveUsersSurge
+        expr: rate(http_requests_total[5m]) > 1000
+        for: 3m
+        labels:
+          severity: warning
+          team: backend
+        annotations:
+          summary: "请求量激增 ({{ $value | humanize }} req/s)"
+          description: "过去5分钟平均请求速率达到 {{ $value | humanize }} req/s。"
+
+  - name: gamehub-database
+    interval: 60s
+    rules:
+      - alert: DatabaseConnectionHigh
+        expr: db_connections_active > 50
+        for: 5m
+        labels:
+          severity: warning
+          team: backend
+        annotations:
+          summary: "数据库连接数过高 ({{ $value }})"
+          description: "活跃数据库连接数达到 {{ $value }}，超过 50 阈值。"
+
+      - alert: SlowQueryDetected
+        expr: rate(db_query_duration_seconds_count{query_type!~"SELECT.*LIMIT.*"}[5m]) > 0
+        for: 1m
+        labels:
+          severity: info
+          team: backend
+        annotations:
+          summary: "检测到慢查询"
+          description: "存在执行时间超过阈值的数据库查询。"
+
+  - name: gamehub-cache
+    interval: 30s
+    rules:
+      - alert: RedisDown
+        expr: redis_up == 0
+        for: 1m
+        labels:
+          severity: critical
+          team: backend
+        annotations:
+          summary: "Redis 服务宕机"
+          description: "Redis 缓存服务不可达。"
+
+      - alert: LowCacheHitRate
+        expr: rate(cache_hits_total[5m]) / (rate(cache_hits_total[5m]) + rate(cache_misses_total[5m])) < 0.5
+        for: 10m
+        labels:
+          severity: warning
+          team: backend
+        annotations:
+          summary: "缓存命中率过低 ({{ $value | humanizePercentage }})"
+          description: "缓存命中率仅为 {{ $value | humanizePercentage }}，低于 50% 阈值。"

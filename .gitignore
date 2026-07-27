@@ -1,0 +1,27 @@
+node_modules/
+dist/
+.vite/
+*.log
+*.bak
+*.ps1
+*.xls
+tmp/
+tmp.*
+backend/data/gamehub.db*
+backend/data/*.db
+backend/.env
+backend/.env.production
+frontend/.env.production.local
+frontend/.env.development.local
+frontend/.env.test.local
+*.tar.gz
+.DS_Store
+Thumbs.db
+# Windows reserved device names / temp artifacts
+nul
+tmp_*
+frontend-diff.txt
+tmp-frontend-errors.txt
+backend/uploads/image/
+.idea/
+.vscode/

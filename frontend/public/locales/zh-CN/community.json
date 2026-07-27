@@ -1,0 +1,62 @@
+{
+  "title": "游戏社区",
+  "subtitle": "与全球游戏爱好者交流心得、分享经验、寻找队友",
+  "searchPlaceholder": "搜索社区帖子...",
+  "allPosts": "全部帖子",
+  "postCard": {
+    "joinDiscussion": "参与讨论",
+    "author": "作者",
+    "published": "发布于",
+    "likes": "点赞",
+    "comments": "评论"
+  },
+  "sidebar": {
+    "newPost": {
+      "title": "分享你的游戏故事",
+      "description": "与社区玩家交流心得、寻找队友、分享攻略",
+      "button": "发布新帖子"
+    },
+    "hotPosts": "热门帖子",
+    "communityRules": "社区规则",
+    "rules": [
+      "尊重他人，文明交流",
+      "禁止发布广告和垃圾信息",
+      "遵守法律法规，不传播违法内容",
+      "鼓励原创，转载需注明出处",
+      "理性讨论，避免人身攻击"
+    ],
+    "stats": {
+      "title": "社区统计",
+      "postsToday": "今日发帖",
+      "onlineUsers": "在线用户",
+      "totalPosts": "总帖子数",
+      "totalUsers": "总用户数"
+    },
+    "activities": {
+      "title": "社区活动",
+      "weeklyChallenge": {
+        "title": "每周游戏挑战",
+        "description": "每周发布新的游戏挑战任务，完成挑战赢取积分和奖励"
+      },
+      "reviewContest": {
+        "title": "评测大赛",
+        "description": "每月评选最佳游戏评测，获奖者将获得丰厚奖励和平台推荐"
+      },
+      "offlineMeetup": {
+        "title": "线下聚会",
+        "description": "定期组织线下游戏聚会，与同城玩家面对面交流"
+      },
+      "viewDetails": "查看详情",
+      "participate": "立即参与",
+      "viewSchedule": "查看日程"
+    }
+  },
+  "noResults": {
+    "title": "未找到相关帖子",
+    "description": "尝试调整搜索关键词或选择其他分类",
+    "resetButton": "重置筛选条件"
+  },
+  "pagination": {
+    "total": "共 {{total}} 条帖子"
+  }
+}

@@ -1,0 +1,156 @@
+{
+  "layout": {
+    "title": "GameHub Admin",
+    "subtitle": "Management Panel",
+    "docs": "Docs",
+    "breadcrumb": {
+      "dashboard": "Dashboard",
+      "users": "Users",
+      "games": "Games",
+      "content": "Content"
+    }
+  },
+  "sidebar": {
+    "dashboard": "Dashboard",
+    "users": "User Management",
+    "games": "Game Management",
+    "content": "Content Management",
+    "settings": "Settings",
+    "logout": "Logout"
+  },
+  "dashboard": {
+    "title": "Admin Dashboard",
+    "stats": {
+      "totalUsers": "Total Users",
+      "games": "Games",
+      "content": "Content",
+      "revenue": "Revenue"
+    },
+    "popularGames": "Popular Games",
+    "systemStatus": "System Status",
+    "recentActivities": "Recent Activities",
+    "quickActions": {
+      "title": "Quick Actions",
+      "addUser": "Add User",
+      "addUserDesc": "Create new user account",
+      "addGame": "Add Game",
+      "addGameDesc": "Add new game to library",
+      "createNews": "Create News",
+      "createNewsDesc": "Publish news article",
+      "viewReports": "View Reports",
+      "viewReportsDesc": "Financial & analytics"
+    }
+  },
+  "users": {
+    "title": "User Management",
+    "addUser": "Add User",
+    "searchPlaceholder": "Search users...",
+    "columns": {
+      "username": "Username",
+      "email": "Email",
+      "name": "Name",
+      "role": "Role",
+      "status": "Status",
+      "joinDate": "Join Date",
+      "lastLogin": "Last Login",
+      "gamesOwned": "Games",
+      "reviews": "Reviews",
+      "actions": "Actions"
+    },
+    "filters": {
+      "role": "Role",
+      "status": "Status"
+    },
+    "statusBadge": {
+      "active": "Active",
+      "inactive": "Inactive",
+      "suspended": "Suspended",
+      "pending": "Pending"
+    }
+  },
+  "games": {
+    "title": "Game Management",
+    "addGame": "Add Game",
+    "searchPlaceholder": "Search games...",
+    "columns": {
+      "title": "Title",
+      "description": "Description",
+      "price": "Price",
+      "rating": "Rating",
+      "platforms": "Platforms",
+      "status": "Status",
+      "actions": "Actions"
+    },
+    "status": {
+      "active": "Active",
+      "draft": "Draft",
+      "archived": "Archived"
+    }
+  },
+  "content": {
+    "title": "Content Management",
+    "tabs": {
+      "news": "News",
+      "reviews": "Reviews",
+      "posts": "Community Posts"
+    },
+    "news": {
+      "addNews": "Add News",
+      "columns": {
+        "title": "Title",
+        "category": "Category",
+        "author": "Author",
+        "views": "Views",
+        "published": "Published",
+        "status": "Status",
+        "actions": "Actions"
+      }
+    },
+    "reviews": {
+      "columns": {
+        "title": "Title",
+        "game": "Game",
+        "author": "Author",
+        "rating": "Rating",
+        "likes": "Likes",
+        "status": "Status",
+        "actions": "Actions"
+      }
+    },
+    "posts": {
+      "columns": {
+        "title": "Title",
+        "author": "Author",
+        "category": "Category",
+        "likes": "Likes",
+        "comments": "Comments",
+        "status": "Status",
+        "actions": "Actions"
+      }
+    },
+    "status": {
+      "published": "Published",
+      "draft": "Draft",
+      "pending": "Pending Review",
+      "rejected": "Rejected"
+    }
+  },
+  "sidebar": {
+    "analytics": "Analytics",
+    "profiling": "User Profiling"
+  },
+  "analytics": {
+    "title": "Analytics",
+    "userGrowth": "User Growth",
+    "gamePopularity": "Game Popularity",
+    "contentEngagement": "Content Engagement",
+    "distribution": "Platform/Genre Distribution",
+    "activeUsers": "Active Users"
+  },
+  "profiling": {
+    "title": "User Profiling",
+    "tags": "Tags",
+    "segments": "Segments",
+    "behavior": "Behavior Analysis"
+  }
+}

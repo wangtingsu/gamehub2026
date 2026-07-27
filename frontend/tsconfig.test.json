@@ -1,0 +1,18 @@
+{
+  "extends": "./tsconfig.app.json",
+  "compilerOptions": {
+    "verbatimModuleSyntax": false,
+    "esModuleInterop": true,
+    "types": ["vite/client", "node", "jest", "@testing-library/jest-dom"],
+    "jsx": "react-jsx",
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "allowSyntheticDefaultImports": true,
+    "target": "ES2020",
+    "noEmit": true,
+    "isolatedModules": false,
+    "strict": false,
+    "strictNullChecks": false
+  },
+  "include": ["src", "**/*.test.ts", "**/*.test.tsx", "**/*.spec.ts", "**/*.spec.tsx"]
+}

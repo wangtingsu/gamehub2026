@@ -1,0 +1,13 @@
+import Database from 'better-sqlite3';
+const db = new Database('./data/gamehub.db');
+console.log('=== games ===');
+console.log(db.prepare('SELECT id, title FROM games').all());
+console.log('=== reviews (original table) ===');
+console.log(db.prepare('SELECT id, title, game_id FROM reviews LIMIT 3').all());
+console.log('=== guides (original table) ===');
+console.log(db.prepare('SELECT id, title, game_id FROM guides').all());
+console.log('=== blog_articles (space_id, game_id, post_type) ===');
+console.log(db.prepare('SELECT id, title, space_id, game_id, post_type FROM blog_articles').all());
+console.log('=== blog_spaces ===');
+console.log(db.prepare('SELECT id, name, slug, game_id FROM blog_spaces').all());
+db.close();

@@ -1,0 +1,172 @@
+{
+  "search": {
+    "title": "検索",
+    "placeholder": "ゲーム、レビュー、ニュース、ユーザーを検索...",
+    "searching": "検索中...",
+    "resultsFor": "\"{{query}}\" の検索結果",
+    "resultsCount": "{{count}} 件の結果",
+    "noResults": "結果が見つかりません",
+    "noResultsHint": "別のキーワードやフィルターを試してください",
+    "error": "検索エラー",
+    "filter": "フィルター",
+    "advancedFilter": "高度なフィルター",
+    "reset": "リセット",
+    "sortBy": {
+      "relevance": "関連性",
+      "date": "日付",
+      "rating": "評価",
+      "popularity": "人気"
+    },
+    "filterLabels": {
+      "genres": "ジャンル",
+      "platforms": "プラットフォーム",
+      "ratingRange": "評価範囲",
+      "dateRange": "発売日",
+      "tags": "タグ",
+      "sortBy": "並び順"
+    },
+    "genreOptions": {
+      "RPG": "RPG",
+      "Action": "アクション",
+      "Adventure": "アドベンチャー",
+      "Simulation": "シミュレーション",
+      "Strategy": "ストラテジー",
+      "Sports": "スポーツ",
+      "Puzzle": "パズル",
+      "Horror": "ホラー",
+      "Shooter": "シューティング",
+      "Fighting": "格闘",
+      "Racing": "レース",
+      "MMO": "MMO"
+    },
+    "platformOptions": {
+      "PC": "PC",
+      "PS5": "PS5",
+      "PS4": "PS4",
+      "Xbox Series X": "Xbox Series X",
+      "Xbox One": "Xbox One",
+      "Nintendo Switch": "Nintendo Switch",
+      "Mobile": "モバイル",
+      "VR": "VR"
+    },
+    "types": {
+      "all": "すべて",
+      "game": "ゲーム",
+      "review": "レビュー",
+      "news": "ニュース",
+      "community_post": "コミュニティ投稿",
+      "user": "ユーザー"
+    },
+    "suggestions": {
+      "title": "候補",
+      "viewMore": "もっと見る",
+      "noSuggestions": "候補はありません"
+    },
+    "pagination": {
+      "total": "{{range[0]}}-{{range[1]}} / 全{{total}}件"
+    },
+    "metaData": {
+      "reviews": "レビュー{{count}}件",
+      "likes": "いいね{{count}}件",
+      "comments": "コメント{{count}}件",
+      "views": "閲覧{{count}}回"
+    },
+    "highlights": {
+      "matchFound": "一致する結果"
+    }
+  },
+  "recommendations": {
+    "personalized": "あなたへのおすすめ",
+    "trending": "トレンド",
+    "relatedGames": "関連ゲーム",
+    "relatedReviews": "関連レビュー",
+    "relatedNews": "関連ニュース",
+    "usersAlsoLiked": "他のユーザーも好き",
+    "noRecommendations": "おすすめはありません",
+    "reasons": {
+      "sameGenre": "同じジャンル",
+      "samePlatform": "同じプラットフォーム",
+      "trending": "トレンド",
+      "alsoLiked": "他のユーザーも好き",
+      "personalized": "あなたの好みに基づく",
+      "newRelease": "新作リリース",
+      "highRated": "高評価"
+    },
+    "loading": "おすすめを読み込み中...",
+    "viewMore": "もっと見る"
+  },
+  "leaderboard": {
+    "title": "ランキング",
+    "tabs": {
+      "topRated": "高評価",
+      "mostReviewed": "レビュー最多",
+      "mostFavorited": "お気に入り最多",
+      "mostDiscussed": "議論最多"
+    },
+    "columns": {
+      "rank": "順位",
+      "gameName": "ゲーム名",
+      "rating": "評価",
+      "reviewCount": "レビュー数",
+      "score": "スコア",
+      "trend": "トレンド"
+    },
+    "trends": {
+      "up": "上昇",
+      "down": "下降",
+      "stable": "安定"
+    },
+    "noData": "ランキングデータはありません"
+  },
+  "trends": {
+    "title": "トレンド",
+    "searchTrends": "検索トレンド",
+    "gameTrends": "ゲーム人気トレンド",
+    "searchVolumn": "検索ボリューム",
+    "uniqueQueries": "ユニーククエリ",
+    "totalSearches": "総検索数",
+    "period": {
+      "7d": "7日間",
+      "30d": "30日間",
+      "90d": "90日間"
+    },
+    "noData": "トレンドデータはありません"
+  },
+  "discovery": {
+    "title": "発見",
+    "tabs": {
+      "trends": "トレンド",
+      "leaderboard": "ランキング",
+      "reports": "データレポート"
+    },
+    "stats": {
+      "totalUsers": "総ユーザー数",
+      "totalGames": "総ゲーム数",
+      "totalReviews": "総レビュー数",
+      "totalPosts": "総投稿数",
+      "dailyNewUsers": "今日の新規ユーザー",
+      "dailyNewReviews": "今日の新規レビュー",
+      "dailyNewPosts": "今日の新規投稿",
+      "activeUsers7d": "7日間アクティブユーザー",
+      "activeUsers": "アクティブユーザー"
+    },
+    "distributions": {
+      "platforms": "プラットフォーム分布",
+      "genres": "ジャンル分布"
+    },
+    "reports": {
+      "title": "データレポート",
+      "communitySummary": "コミュニティ概要"
+    }
+  },
+  "resultItem": {
+    "game": "ゲーム",
+    "review": "レビュー",
+    "news": "ニュース",
+    "post": "投稿",
+    "user": "ユーザー",
+    "gameFor": "ゲーム: {{name}}",
+    "joined": "{{date}} に参加",
+    "unknownType": "不明なタイプ"
+  }
+}

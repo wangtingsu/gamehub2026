@@ -1,0 +1,337 @@
+{
+  "siteName": "GameHub",
+  "siteDescription": "궁극적인 게임 라이브러리 관리 플랫폼",
+  "navigation": {
+    "home": "홈",
+    "games": "게임",
+    "ai": "AI 어시스턴트",
+    "news": "뉴스",
+    "reviews": "리뷰",
+    "community": "커뮤니티",
+    "about": "회사소개",
+    "admin": "관리자",
+    "logout": "로그아웃"
+  },
+  "language": {
+    "en": "영어",
+    "zh-CN": "중국어(간체)",
+    "ja": "일본어",
+    "ko": "한국어",
+    "es": "스페인어",
+    "fr": "프랑스어"
+  },
+  "app": {
+    "name": "GameHub",
+    "slogan": "Your Ultimate Gaming Community",
+    "loading": "Loading...",
+    "search": "Search"
+  },
+  "auth": {
+    "login": "로그인",
+    "register": "회원가입",
+    "email": "이메일",
+    "password": "비밀번호",
+    "confirmPassword": "비밀번호 확인",
+    "username": "사용자 이름",
+    "rememberMe": "로그인 상태 유지",
+    "forgotPassword": "비밀번호를 잊으셨나요?",
+    "resetPassword": "비밀번호 재설정",
+    "changePassword": "비밀번호 변경",
+    "currentPassword": "현재 비밀번호",
+    "newPassword": "새 비밀번호",
+    "loginSuccess": "로그인 성공",
+    "logoutSuccess": "로그아웃 성공",
+    "invalidCredentials": "이메일 또는 비밀번호가 잘못되었습니다",
+    "loginPage": {
+      "title": "로그인",
+      "subtitle": "GameHub에 다시 오신 것을 환영합니다. 로그인해 주세요",
+      "emailLogin": "이메일 로그인",
+      "phoneLogin": "전화번호 로그인",
+      "emailLabel": "이메일",
+      "emailRequired": "이메일을 입력해주세요",
+      "emailInvalid": "유효한 이메일 주소를 입력해주세요",
+      "emailPlaceholder": "이메일 주소 입력",
+      "passwordLabel": "비밀번호",
+      "passwordRequired": "비밀번호를 입력해주세요",
+      "passwordMinLength": "비밀번호는 최소 8자 이상이어야 합니다",
+      "passwordPlaceholder": "비밀번호 입력",
+      "loggingIn": "로그인 중...",
+      "loginButton": "로그인",
+      "loginFailed": "로그인 실패",
+      "phoneLabel": "전화번호",
+      "phoneRequired": "전화번호를 입력해주세요",
+      "phoneInvalid": "유효한 전화번호를 입력해주세요",
+      "codeLabel": "인증 코드",
+      "codeRequired": "인증 코드를 입력해주세요",
+      "codeLength": "인증 코드는 6자리입니다",
+      "sendCode": "인증 코드 전송",
+      "orUseOther": "또는 다른 방법으로 로그인",
+      "noAccount": "계정이 없으신가요?",
+      "registerNow": "지금 가입하기",
+      "forgotPassword": "비밀번호를 잊으셨나요?",
+      "backToLogin": "로그인으로 돌아가기",
+      "backToHomePage": "홈으로 돌아가기",
+      "copyright": "© {{year}} GameHub. All rights reserved.",
+      "bannerTitle": "GameHub에 오신 것을 환영합니다!",
+      "bannerNoAccount": "계정이 없으신가요?",
+      "bannerRegister": "지금 가입하기",
+      "bannerSupport": " — 전화, WeChat, Google, GitHub 지원"
+    },
+    "registerPage": {
+      "title": "회원가입",
+      "subtitle": "GameHub 커뮤니티에 가입하고 여정을 시작하세요",
+      "emailRegister": "이메일 가입",
+      "phoneRegister": "전화번호 가입",
+      "usernameLabel": "사용자 이름",
+      "usernameRequired": "사용자 이름을 입력해주세요",
+      "usernameMinMax": "사용자 이름은 3-20자여야 합니다",
+      "usernamePattern": "영문, 숫자, 밑줄만 사용 가능",
+      "emailLabel": "이메일",
+      "emailRequired": "이메일을 입력해주세요",
+      "emailInvalid": "유효한 이메일 주소를 입력해주세요",
+      "emailPlaceholder": "이메일 주소 입력",
+      "passwordLabel": "비밀번호",
+      "passwordRequired": "비밀번호를 입력해주세요",
+      "passwordMinLength": "비밀번호는 최소 8자 이상이어야 합니다",
+      "passwordPattern": "비밀번호는 대문자, 소문자 및 숫자를 포함해야 합니다",
+      "confirmPasswordLabel": "비밀번호 확인",
+      "confirmPasswordRequired": "비밀번호를 확인해주세요",
+      "confirmPasswordMismatch": "비밀번호가 일치하지 않습니다",
+      "agreeTerms": "이용약관을 읽고 동의합니다",
+      "termsOfService": "이용약관",
+      "privacyPolicy": "및 개인정보 처리방침",
+      "registering": "가입 중...",
+      "registerButton": "계정 만들기",
+      "registerFailed": "회원가입 실패",
+      "registerSuccess": "회원가입 성공!",
+      "registerSuccessDesc": "계정이 생성되었습니다. 홈페이지로 이동합니다...",
+      "goToHome": "홈으로 가기",
+      "viewProfile": "프로필 작성",
+      "phoneLabel": "전화번호",
+      "phoneRequired": "전화번호를 입력해주세요",
+      "phoneInvalid": "유효한 전화번호를 입력해주세요",
+      "phonePlaceholder": "전화번호 입력",
+      "codeLabel": "인증 코드",
+      "codeRequired": "인증 코드를 입력해주세요",
+      "codeLength": "인증 코드는 6자리입니다",
+      "sendCode": "인증 코드 전송",
+      "hasAccount": "이미 계정이 있으신가요?",
+      "loginNow": "로그인",
+      "backToHomePage": "홈으로 돌아가기",
+      "copyright": "© {{year}} GameHub. All rights reserved.",
+      "socialDivider": "또는 소셜 계정으로 빠르게 가입",
+      "socialAutoCreate": "소셜 계정으로 처음 로그인하면 자동으로 계정이 생성됩니다",
+      "regionLabel": "지역",
+      "regionPlaceholder": "지역 선택",
+      "regionChina": "중국",
+      "regionHongKong": "홍콩",
+      "regionTaiwan": "대만",
+      "regionJapan": "일본",
+      "regionKorea": "한국",
+      "regionNorthAmerica": "북미",
+      "regionEurope": "유럽",
+      "regionSoutheastAsia": "동남아시아",
+      "regionOther": "기타"
+    }
+  },
+  "footer": {
+    "categories": {
+      "discover": "Discover",
+      "community": "Community",
+      "company": "Company",
+      "legal": "Legal"
+    },
+    "links": {
+      "games": "Games",
+      "news": "News",
+      "reviews": "Reviews",
+      "topRated": "Top Rated",
+      "forums": "Forums",
+      "guides": "Guides",
+      "events": "Events",
+      "discord": "Discord",
+      "aboutUs": "About Us",
+      "careers": "Careers",
+      "press": "Press",
+      "contact": "Contact",
+      "privacyPolicy": "Privacy Policy",
+      "termsOfService": "Terms of Service",
+      "cookiePolicy": "Cookie Policy",
+      "codeOfConduct": "Code of Conduct"
+    },
+    "brand": {
+      "tagline": "Your ultimate gaming destination. Discover, review, and discuss the latest games with our passionate community."
+    },
+    "stats": {
+      "online": "Online",
+      "games": "Games",
+      "reviews": "Reviews"
+    },
+    "copyright": "© {{year}} GameHub. All rights reserved."
+  },
+  "seo": {
+    "defaultTitle": "GameHub - 궁극의 게임 라이브러리 관리 플랫폼",
+    "defaultDescription": "GameHub는 멀티 플랫폼 게임 통합 및 관리를 지원하는 통합 게임 라이브러리 관리 플랫폼입니다.",
+    "defaultKeywords": "게임 라이브러리, 게임 관리, 게이밍 플랫폼, 비디오 게임, 게임 컬렉션, 게임 허브, 게이밍 커뮤니티",
+    "gamesTitle": "게임 목록 | GameHub",
+    "gamesDescription": "방대한 게임 라이브러리를 둘러보세요. 새로운 게임을 발견하고 컬렉션을 관리하세요.",
+    "newsTitle": "게임 뉴스 | GameHub",
+    "newsDescription": "게임 업계의 최신 뉴스, 업데이트 및 공지사항.",
+    "reviewsTitle": "게임 리뷰 | GameHub",
+    "reviewsDescription": "게임 커뮤니티의 리뷰를 읽고 공유하세요.",
+    "communityTitle": "커뮤니티 | GameHub",
+    "communityDescription": "게임 커뮤니티에 참여하세요. 게임에 대해 토론하고 경험을 공유하며 다른 게이머들과 소통하세요.",
+    "aboutTitle": "GameHub 소개",
+    "aboutDescription": "GameHub, 우리의 미션 및 팀에 대해 자세히 알아보세요."
+  },
+  "pages": {
+    "careers": {
+      "title": "채용 정보",
+      "heroTitle": "우리 팀에 합류하세요",
+      "heroDescription": "GameHub와 함께 게임의 미래를 만들어가세요. 전 세계 플레이어에게 최고의 경험을 제공하기 위해 열정적인 인재를 찾고 있습니다.",
+      "whyJoinTitle": "왜 우리와 함께해야 하나요",
+      "whyJoinDescription": "GameHub는 게임의 힘이 사람들을 연결한다고 믿습니다. 경쟁력 있는 보상, 유연한 근무 방식, 창의적이고 역동적인 팀 환경을 제공합니다.",
+      "valuesTitle": "우리의 가치관",
+      "value1": "플레이어 우선 — 모든 결정은 플레이어 경험에서 시작됩니다",
+      "value2": "기술 혁신 — 최첨단 기술의 지속적인 탐구",
+      "value3": "열린 협업 — 투명한 소통, 팀의 성공",
+      "value4": "탁월함 — 끊임없이 한계에 도전하는 품질",
+      "openingsTitle": "채용 중",
+      "noOpenings": "현재 모집 중인 포지션이 없습니다",
+      "cta": "모든 채용 공고 보기"
+    },
+    "press": {
+      "title": "미디어 센터",
+      "heroTitle": "미디어 및 뉴스",
+      "heroDescription": "GameHub의 최신 뉴스, 제품 업데이트 및 미디어 보도 정보를 확인하세요.",
+      "latestNewsTitle": "최신 소식",
+      "pressKitTitle": "프레스 키트",
+      "pressKitDescription": "GameHub 브랜드 자산, 로고, 스크린샷 및 미디어 키트를 다운로드하세요.",
+      "contactTitle": "미디어 문의",
+      "contactDescription": "취재 요청 및 미디어 파트너십에 대해 문의하려면 연락주세요."
+    },
+    "contact": {
+      "title": "문의하기",
+      "heroTitle": "연락주세요",
+      "heroDescription": "의견, 질문 또는 파트너십 제안이 있으시면 언제든지 연락주세요.",
+      "customerServiceTitle": "고객 지원",
+      "customerServiceDescription": "플랫폼 사용 중 문제가 발생하면 지원팀이 도와드립니다.",
+      "cooperationTitle": "비즈니스 협업",
+      "cooperationDescription": "비즈니스 파트너십 및 브랜드 협업에 대해 문의하려면 연락주세요.",
+      "emailLabel": "이메일",
+      "phoneLabel": "전화번호",
+      "addressLabel": "회사 주소",
+      "addressValue": "중국 베이징시 차오양구 젠궈로 88호"
+    },
+    "legal": {
+      "privacy": {
+        "title": "개인정보 처리방침",
+        "lastUpdated": "최종 업데이트: 2026년 1월 1일",
+        "sections": [
+          {
+            "title": "수집하는 정보",
+            "content": "GameHub를 이용할 때 다음과 같은 유형의 정보를 수집할 수 있습니다: 계정 등록 시 제공하는 개인정보(사용자 이름, 이메일 주소 등); 플랫폼 이용 중 생성하는 콘텐츠(게임 리뷰, 댓글, 게시물 등); 게임 선호도 및 사용 행동 데이터; 기기 정보 및 기술 데이터."
+          },
+          {
+            "title": "정보의 사용 목적",
+            "content": "수집된 정보는 다음 목적으로 사용됩니다: GameHub 플랫폼 서비스 제공, 유지 및 개선; 맞춤형 사용자 경험 제공; 서비스 업데이트 및 중요 공지 전달; 사용 동향 분석 및 플랫폼 기능 최적화; 플랫폼 보안 및 사용자 권리 보호."
+          },
+          {
+            "title": "정보 공유",
+            "content": "당사는 사용자의 개인정보를 판매하지 않습니다. 다음과 같은 상황에서 정보를 공유할 수 있습니다: 사용자의 명시적 동의를 받은 경우; 법률에 의해 요구되는 경우; GameHub 사용자의 권리와 안전을 보호하기 위해; 비밀유지계약에 구속되는 신뢰할 수 있는 서비스 제공업체와 공유하는 경우."
+          },
+          {
+            "title": "데이터 보안",
+            "content": "당사는 사용자의 개인정보를 보호하기 위해 업계 표준의 보안 조치(SSL/TLS 암호화 전송, 데이터 저장 암호화, 접근 제어 메커니즘, 정기적인 보안 감사)를 시행하고 있습니다. 단, 인터넷을 통한 데이터 전송이 완전히 안전하다고 보장할 수는 없습니다."
+          },
+          {
+            "title": "사용자의 권리",
+            "content": "사용자는 개인정보에 접근, 수정 또는 삭제할 권리가 있습니다. 계정 설정 또는 고객 지원팀에 문의하여 이러한 권리를 행사할 수 있습니다. 합리적인 기간 내에 요청에 응답할 것입니다."
+          },
+          {
+            "title": "정책 업데이트",
+            "content": "당사는 수시로 본 개인정보 처리방침을 업데이트할 수 있습니다. 중요한 변경 사항이 있는 경우 웹사이트 공지 또는 이메일을 통해 알려드릴 것입니다. GameHub를 계속 이용하는 것은 업데이트된 정책에 동의하는 것으로 간주됩니다."
+          }
+        ]
+      },
+      "terms": {
+        "title": "서비스 이용약관",
+        "lastUpdated": "최종 업데이트: 2026년 1월 1일",
+        "sections": [
+          {
+            "title": "약관 동의",
+            "content": "GameHub를 이용함으로써 본 서비스 이용약관에 동의하는 것으로 간주됩니다. 약관에 동의하지 않는 경우 서비스 이용을 중단해 주시기 바랍니다. 당사는 언제든지 본 약관을 수정할 권리가 있으며, 수정된 약관은 게시 즉시 효력이 발생합니다."
+          },
+          {
+            "title": "계정 책임",
+            "content": "사용자는 비밀번호를 포함한 계정 정보의 기밀 유지에 책임이 있습니다. 계정에서 발생하는 모든 활동에 대해 전적인 책임을 집니다. 계정 무단 사용을 발견한 경우 즉시 당사에 알려주시기 바랍니다."
+          },
+          {
+            "title": "사용자 행동",
+            "content": "GameHub 이용 시 모든 관련 법률을 준수하는 데 동의합니다. 불법, 괴롭힘, 학대, 명예훼손 또는 권리 침해 콘텐츠를 게시할 수 없습니다. 플랫폼을 사기 활동이나 악성코드 유포에 이용할 수 없습니다."
+          },
+          {
+            "title": "지식 재산권",
+            "content": "GameHub 플랫폼 자체에 대한 모든 권리는 GameHub에 귀속됩니다. 사용자가 플랫폼에 게시한 콘텐츠의 소유권은 사용자에게 있으며, 당사에 이를 표시하고 배포할 수 있는 라이선스를 부여합니다."
+          },
+          {
+            "title": "면책 조항",
+            "content": "GameHub는 \"있는 그대로\" 제공되며, 명시적이거나 묵시적인 어떠한 보증도 하지 않습니다. 당사는 사용자 생성 콘텐츠에 대해 책임을 지지 않으며 중단 없는 오류 없는 서비스를 보장하지 않습니다."
+          },
+          {
+            "title": "계약 종료",
+            "content": "약관을 위반할 경우 사용자의 계정을 정지 또는 종료할 권리가 있습니다. 서비스 이용을 중단함으로써 언제든지 본 계약을 종료할 수 있습니다."
+          }
+        ]
+      },
+      "cookies": {
+        "title": "쿠키 정책",
+        "lastUpdated": "최종 업데이트: 2026년 1월 1일",
+        "sections": [
+          {
+            "title": "쿠키란?",
+            "content": "쿠키는 사용자의 기기에 저장되는 작은 텍스트 파일로, 사용자의 환경 설정 및 탐색 정보를 기억합니다. GameHub 방문 시 사용자 경험을 향상시키기 위해 쿠키를 사용할 수 있습니다."
+          },
+          {
+            "title": "사용하는 쿠키의 유형",
+            "content": "필수 쿠키: 플랫폼 정상 작동에 필요, 동의 불필요. 기능 쿠키: 언어 설정 및 로그인 상태 기억. 분석 쿠키: 사용자 이용 패턴 이해 및 서비스 최적화. 환경설정 쿠키: 개인 설정 저장."
+          },
+          {
+            "title": "타사 쿠키",
+            "content": "당사는 승인된 타사 서비스 제공업체가 사용자의 기기에 쿠키를 설정하는 것을 허용할 수 있습니다. 이러한 타사 쿠키는 각 업체의 개인정보 처리방침의 적용을 받습니다."
+          },
+          {
+            "title": "쿠키 관리",
+            "content": "브라우저 설정을 통해 쿠키 사용을 제어할 수 있습니다. 대부분의 브라우저에서 쿠키 차단 또는 삭제가 가능합니다. 단, 일부 쿠키를 비활성화하면 플랫폼 기능이 정상적으로 작동하지 않을 수 있습니다."
+          }
+        ]
+      },
+      "codeOfConduct": {
+        "title": "행동 강령",
+        "lastUpdated": "최종 업데이트: 2026년 1월 1일",
+        "sections": [
+          {
+            "title": "우리의 약속",
+            "content": "GameHub는 모든 사용자에게 친근하고 포용적이며 존중하는 커뮤니티 환경을 조성하기 위해 노력합니다. 연령, 성별, 인종, 종교, 성적 지향성 또는 정체성에 관계없이 모든 사람이 괴롭힘 없는 환경에서 커뮤니티 활동에 참여할 수 있도록 보장합니다."
+          },
+          {
+            "title": "행동 기준",
+            "content": "권장되는 행동: 타인의 의견 존중, 건설적인 토론, 유용한 콘텐츠 공유, 신규 사용자 지원. 금지되는 행동: 인신공격, 괴롭힘, 차별적 발언, 부적절한 콘텐츠 게시, 스팸, 타인 프라이버시 침해, 사칭, 허위 정보 유포."
+          },
+          {
+            "title": "콘텐츠 가이드라인",
+            "content": "모든 게시물은 관련 법률 및 커뮤니티 기준을 준수해야 합니다. 음란물, 폭력, 테러, 혐오 발언 등 불법 콘텐츠는 금지됩니다. 게임 리뷰는 객관적이고 공정해야 합니다."
+          },
+          {
+            "title": "위반 조치",
+            "content": "행동 강령 위반에는 경고, 콘텐츠 삭제, 기능 제한, 일시 정지, 계정 영구 정지 등 위반 정도에 따른 적절한 조치가 취해집니다. 중대한 위반은 법 집행 기관에 신고될 수 있습니다."
+          },
+          {
+            "title": "신고 방법",
+            "content": "행동 강령 위반 사항을 발견한 경우 신고 기능을 이용하거나 고객 지원팀에 문의해 주시기 바랍니다. 모든 신고를 진지하게 접수하며 합리적인 기간 내에 조사 및 조치를 취할 것입니다."
+          }
+        ]
+      }
+    }
+  }
+}

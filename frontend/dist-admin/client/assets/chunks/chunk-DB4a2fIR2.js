@@ -1,0 +1,1 @@
+import{a as t}from"./chunk-DPgjZ1PG.js";import{Tn as e}from"./chunk-BcV6V4gx.js";var r=t(e(),1);function o(t,e=300){const[o,s]=(0,r.useState)(t);return(0,r.useEffect)(()=>{const r=setTimeout(()=>{s(t)},e);return()=>{clearTimeout(r)}},[t,e]),o}export{o as t};

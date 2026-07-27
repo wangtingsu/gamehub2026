@@ -1,0 +1,642 @@
+{
+  "app": {
+    "name": "GameHub",
+    "slogan": "Your Ultimate Gaming Community",
+    "loading": "Loading...",
+    "error": "An error occurred",
+    "success": "Operation successful",
+    "confirm": "Confirm",
+    "cancel": "Cancel",
+    "save": "Save",
+    "edit": "Edit",
+    "delete": "Delete",
+    "search": "Search",
+    "filter": "Filter",
+    "reset": "Reset",
+    "viewDetails": "View Details",
+    "readMore": "Read More",
+    "back": "Back",
+    "next": "Next",
+    "previous": "Previous",
+    "submit": "Submit"
+  },
+  "navigation": {
+    "home": "Home",
+    "games": "Games",
+    "ai": "AI Assistant",
+    "library": "My Library",
+    "news": "News",
+    "reviews": "Reviews",
+    "community": "Community",
+    "messages": "Messages",
+    "achievements": "Achievements",
+    "about": "About",
+    "admin": "Admin",
+    "login": "Login",
+    "logout": "Logout",
+    "profile": "Profile",
+    "dashboard": "Dashboard",
+    "users": "Users",
+    "content": "Content",
+    "settings": "Settings",
+    "onlineGames": "Online Games"
+  },
+  "auth": {
+    "login": "Login",
+    "register": "Register",
+    "email": "Email",
+    "password": "Password",
+    "confirmPassword": "Confirm Password",
+    "username": "Username",
+    "rememberMe": "Remember Me",
+    "forgotPassword": "Forgot Password?",
+    "resetPassword": "Reset Password",
+    "changePassword": "Change Password",
+    "currentPassword": "Current Password",
+    "newPassword": "New Password",
+    "loginSuccess": "Login successful",
+    "logoutSuccess": "Logout successful",
+    "invalidCredentials": "Invalid email or password",
+    "loginPage": {
+      "title": "Login",
+      "subtitle": "Welcome back to GameHub, please sign in",
+      "emailLogin": "Email Login",
+      "phoneLogin": "Phone Login",
+      "emailLabel": "Email",
+      "emailRequired": "Please enter your email",
+      "emailInvalid": "Please enter a valid email address",
+      "emailPlaceholder": "Enter your email address",
+      "passwordLabel": "Password",
+      "passwordRequired": "Please enter your password",
+      "passwordMinLength": "Password must be at least 8 characters",
+      "passwordPlaceholder": "Enter your password",
+      "loggingIn": "Signing in...",
+      "loginButton": "Sign In",
+      "loginFailed": "Login failed",
+      "phoneLabel": "Phone Number",
+      "phoneRequired": "Please enter your phone number",
+      "phoneInvalid": "Please enter a valid phone number",
+      "codeLabel": "Verification Code",
+      "codeRequired": "Please enter the verification code",
+      "codeLength": "The code must be 6 digits",
+      "sendCode": "Send Code",
+      "orUseOther": "Or sign in with",
+      "noAccount": "Don't have an account?",
+      "registerNow": "Register Now",
+      "forgotPassword": "Forgot Password?",
+      "backToLogin": "Back to Login",
+      "backToHomePage": "Back to Home",
+      "copyright": "© {{year}} GameHub. All rights reserved.",
+      "bannerTitle": "Welcome to GameHub!",
+      "bannerNoAccount": "Don't have an account?",
+      "bannerRegister": "Register Now",
+      "bannerSupport": " — supports phone, WeChat, Google, GitHub"
+    },
+    "registerPage": {
+      "title": "Register",
+      "subtitle": "Join the GameHub community and start your journey",
+      "emailRegister": "Email Register",
+      "phoneRegister": "Phone Register",
+      "usernameLabel": "Username",
+      "usernameRequired": "Please enter a username",
+      "usernameMinMax": "Username must be 3-20 characters",
+      "usernamePattern": "Only letters, numbers, and underscores allowed",
+      "emailLabel": "Email",
+      "emailRequired": "Please enter your email",
+      "emailInvalid": "Please enter a valid email address",
+      "emailPlaceholder": "Enter your email address",
+      "passwordLabel": "Password",
+      "passwordRequired": "Please enter a password",
+      "passwordMinLength": "Password must be at least 8 characters",
+      "passwordPattern": "Password must contain uppercase, lowercase and numbers",
+      "confirmPasswordLabel": "Confirm Password",
+      "confirmPasswordRequired": "Please confirm your password",
+      "confirmPasswordMismatch": "Passwords do not match",
+      "agreeTerms": "I have read and agree to the",
+      "termsOfService": "Terms of Service",
+      "privacyPolicy": "and Privacy Policy",
+      "registering": "Registering...",
+      "registerButton": "Create Account",
+      "registerFailed": "Registration failed",
+      "registerSuccess": "Registration successful!",
+      "registerSuccessDesc": "Your account has been created. Redirecting to homepage...",
+      "goToHome": "Go to Home",
+      "viewProfile": "Complete Profile",
+      "phoneLabel": "Phone Number",
+      "phoneRequired": "Please enter your phone number",
+      "phoneInvalid": "Please enter a valid phone number",
+      "phonePlaceholder": "Enter your phone number",
+      "codeLabel": "Verification Code",
+      "codeRequired": "Please enter the verification code",
+      "codeLength": "The code must be 6 digits",
+      "sendCode": "Send Code",
+      "hasAccount": "Already have an account?",
+      "loginNow": "Sign In",
+      "backToHomePage": "Back to Home",
+      "copyright": "© {{year}} GameHub. All rights reserved.",
+      "socialDivider": "Or register quickly with social accounts",
+      "socialAutoCreate": "First-time login with a social account will automatically create an account",
+      "regionLabel": "Region",
+      "regionPlaceholder": "Select your region",
+      "regionChina": "China",
+      "regionHongKong": "Hong Kong",
+      "regionTaiwan": "Taiwan",
+      "regionJapan": "Japan",
+      "regionKorea": "Korea",
+      "regionNorthAmerica": "North America",
+      "regionEurope": "Europe",
+      "regionSoutheastAsia": "Southeast Asia",
+      "regionOther": "Other"
+    }
+  },
+  "user": {
+    "role": {
+      "admin": "Administrator",
+      "moderator": "Moderator",
+      "user": "User",
+      "editor": "Editor"
+    },
+    "status": {
+      "active": "Active",
+      "inactive": "Inactive",
+      "suspended": "Suspended",
+      "pending": "Pending"
+    },
+    "profile": "Profile",
+    "settings": "Settings",
+    "library": "Game Library",
+    "favorites": "Favorites",
+    "reviews": "My Reviews",
+    "posts": "My Posts"
+  },
+  "footer": {
+    "categories": {
+      "discover": "Discover",
+      "community": "Community",
+      "company": "Company",
+      "legal": "Legal"
+    },
+    "links": {
+      "games": "Games",
+      "news": "News",
+      "reviews": "Reviews",
+      "topRated": "Top Rated",
+      "cozyGames": "Cozy Games",
+      "freeGames": "Free Games",
+      "aiGaming": "AI Gaming",
+      "forums": "Forums",
+      "guides": "Guides",
+      "events": "Events",
+      "discord": "Discord",
+      "aboutUs": "About Us",
+      "careers": "Careers",
+      "press": "Press",
+      "contact": "Contact",
+      "privacyPolicy": "Privacy Policy",
+      "termsOfService": "Terms of Service",
+      "cookiePolicy": "Cookie Policy",
+      "codeOfConduct": "Code of Conduct"
+    },
+    "brand": {
+      "tagline": "Your ultimate gaming destination. Discover, review, and discuss the latest games with our passionate community."
+    },
+    "stats": {
+      "online": "Online",
+      "games": "Games",
+      "reviews": "Reviews"
+    },
+    "copyright": "© {{year}} GameHub. All rights reserved."
+  },
+  "language": {
+    "en": "English",
+    "zh-CN": "Chinese (Simplified)",
+    "ja": "Japanese",
+    "ko": "Korean",
+    "select": "Select Language"
+  },
+  "date": {
+    "today": "Today",
+    "yesterday": "Yesterday",
+    "daysAgo": "{{count}} days ago",
+    "justNow": "Just now",
+    "minutesAgo": "{{count}} minutes ago",
+    "hoursAgo": "{{count}} hours ago"
+  },
+  "seo": {
+    "defaultTitle": "GameHub - Your Ultimate Game Library Management Platform",
+    "defaultDescription": "GameHub is a unified game library management platform supporting multi-platform game integration and management. Discover, organize, and share your game collection.",
+    "defaultKeywords": "game library, game management, gaming platform, video games, game collection, game hub, gaming community",
+    "gamesTitle": "Games | GameHub",
+    "gamesDescription": "Browse our extensive game library. Discover new games, track your collection, and explore gaming content.",
+    "newsTitle": "Gaming News | GameHub",
+    "newsDescription": "Latest gaming news, updates, and announcements from the gaming industry.",
+    "reviewsTitle": "Game Reviews | GameHub",
+    "reviewsDescription": "Read and share game reviews from the gaming community.",
+    "communityTitle": "Community | GameHub",
+    "communityDescription": "Join the gaming community. Discuss games, share experiences, and connect with other gamers.",
+    "aboutTitle": "About GameHub",
+    "aboutDescription": "Learn more about GameHub, our mission, and our team.",
+    "cozyGames": {
+      "title": "Best Cozy Games 2026 - Relaxing & Calming Games | GameHub",
+      "description": "Discover the best cozy games for relaxation and stress relief. Curated collection of farming sims, life sims, and peaceful builders for PC and console.",
+      "keywords": "cozy games, relaxing games, calming games, farming sims, life simulation games, stardew valley alternatives, peaceful games, unwind gaming"
+    },
+    "freeGames": {
+      "title": "Free Online Games 2026 - Play Free Games No Download | GameHub",
+      "description": "Play the best free online games at GameHub. Browse action, strategy, multiplayer and casual games. No download required. Updated daily.",
+      "keywords": "free online games, free games no download, browser games, online games free, play free games, free browser games, free multiplayer games"
+    },
+    "aiGaming": {
+      "title": "AI in Gaming 2026 - AI-Powered Games & Smart NPCs | GameHub",
+      "description": "Explore how artificial intelligence is transforming gaming in 2026. AI NPCs, procedural worlds, intelligent game companions, and AI-powered gaming tools.",
+      "keywords": "AI gaming, AI in games, artificial intelligence gaming, AI NPC, procedural generation games, AI game companions, smart NPC, AI game tools"
+    }
+  },
+  "pages": {
+    "careers": {
+      "title": "Careers",
+      "heroTitle": "Join Our Team",
+      "heroDescription": "Help us build the future of gaming at GameHub. We're looking for passionate people to create the best experience for players worldwide.",
+      "whyJoinTitle": "Why Join Us",
+      "whyJoinDescription": "At GameHub, we believe in the power of gaming to connect people. We offer competitive compensation, flexible working arrangements, and a creative, dynamic team environment.",
+      "valuesTitle": "Our Values",
+      "value1": "Players First — Every decision starts with the player experience",
+      "value2": "Innovation — Continuously exploring cutting-edge technology",
+      "value3": "Open Collaboration — Transparent communication, team success",
+      "value4": "Excellence — Constantly pushing boundaries for quality",
+      "openingsTitle": "Current Openings",
+      "noOpenings": "No open positions at the moment. Stay tuned!",
+      "cta": "View All Positions"
+    },
+    "press": {
+      "title": "Press Center",
+      "heroTitle": "Press & Media",
+      "heroDescription": "Stay up to date with the latest news, product updates, and media coverage about GameHub.",
+      "latestNewsTitle": "Latest News",
+      "pressKitTitle": "Press Kit",
+      "pressKitDescription": "Download GameHub brand assets, logos, screenshots, and media kit.",
+      "contactTitle": "Media Contact",
+      "contactDescription": "For press inquiries, interview requests, and media partnerships, please contact us."
+    },
+    "contact": {
+      "title": "Contact Us",
+      "heroTitle": "Get in Touch",
+      "heroDescription": "We'd love to hear from you! Whether you have suggestions, questions, or partnership ideas, feel free to reach out.",
+      "customerServiceTitle": "Customer Support",
+      "customerServiceDescription": "If you encounter any issues while using our platform, our support team is here to help.",
+      "cooperationTitle": "Business Cooperation",
+      "cooperationDescription": "For business partnerships, brand collaborations, and other inquiries, please contact us.",
+      "emailLabel": "Email",
+      "phoneLabel": "Phone",
+      "addressLabel": "Address",
+      "addressValue": "88 Jianguo Road, Chaoyang District, Beijing, China"
+    },
+    "legal": {
+      "privacy": {
+        "title": "Privacy Policy",
+        "lastUpdated": "Last Updated: January 1, 2026",
+        "sections": [
+          {
+            "title": "Information We Collect",
+            "content": "When you use GameHub, we may collect the following types of information: Personal information you provide when registering (such as username and email address); Content you create while using the platform (such as game reviews, comments, and posts); Your gaming preferences and usage behavior data; Device information and technical data."
+          },
+          {
+            "title": "How We Use Your Information",
+            "content": "We use the collected information for the following purposes: To provide, maintain, and improve GameHub platform services; To personalize your experience; To communicate service updates and important notices; To analyze usage trends and optimize platform features; To ensure platform security and user rights."
+          },
+          {
+            "title": "Information Sharing",
+            "content": "We do not sell your personal information. We may share your information in the following circumstances: With your explicit consent; When required by law; To protect the rights and safety of GameHub users; With trusted service providers who are bound by confidentiality agreements."
+          },
+          {
+            "title": "Data Security",
+            "content": "We implement industry-standard security measures to protect your personal information, including SSL/TLS encrypted transmission, data storage encryption, access control mechanisms, and regular security audits. Please note that no data transmission over the internet can be guaranteed as completely secure."
+          },
+          {
+            "title": "Your Rights",
+            "content": "You have the right to access, correct, or delete your personal information. You can exercise these rights through your account settings or by contacting our support team. We will respond to your requests within a reasonable timeframe."
+          },
+          {
+            "title": "Policy Updates",
+            "content": "We may update this Privacy Policy from time to time. We will notify you of material changes through website announcements or email. Your continued use of GameHub constitutes acceptance of the updated policy."
+          }
+        ]
+      },
+      "terms": {
+        "title": "Terms of Service",
+        "lastUpdated": "Last Updated: January 1, 2026",
+        "sections": [
+          {
+            "title": "Acceptance of Terms",
+            "content": "By using GameHub, you agree to these Terms of Service. If you do not agree with any term, please stop using our services. We reserve the right to modify these terms at any time, and changes take effect immediately upon posting."
+          },
+          {
+            "title": "Account Responsibility",
+            "content": "You are responsible for maintaining the confidentiality of your account credentials, including your password. You are fully responsible for all activities that occur under your account. Notify us immediately of any unauthorized use of your account."
+          },
+          {
+            "title": "User Conduct",
+            "content": "You agree to comply with all applicable laws when using GameHub. You may not post illegal, harassing, abusive, defamatory, or infringing content. You may not use the platform for any fraudulent activity or to distribute malware."
+          },
+          {
+            "title": "Intellectual Property",
+            "content": "All rights to the GameHub platform itself belong to GameHub. You retain ownership of content you post on the platform, granting us a license to display and distribute it. You may not copy, modify, or distribute platform content without permission."
+          },
+          {
+            "title": "Disclaimer",
+            "content": "GameHub is provided on an \"as is\" basis without any warranties, express or implied. We are not responsible for user-generated content and do not guarantee uninterrupted or error-free service. To the fullest extent permitted by law, we disclaim all liability."
+          },
+          {
+            "title": "Termination",
+            "content": "We reserve the right to suspend or terminate your account if you violate any terms. You may terminate this agreement at any time by ceasing to use the service. Certain provisions will survive termination."
+          }
+        ]
+      },
+      "cookies": {
+        "title": "Cookie Policy",
+        "lastUpdated": "Last Updated: January 1, 2026",
+        "sections": [
+          {
+            "title": "What Are Cookies",
+            "content": "Cookies are small text files stored on your device that remember your preferences and browsing information. When you visit GameHub, we may place cookies on your device to enhance your experience."
+          },
+          {
+            "title": "Types of Cookies We Use",
+            "content": "Essential Cookies: Required for the platform to function properly, no consent needed. Functional Cookies: Remember your language preferences and login status. Analytics Cookies: Help us understand how users interact with the platform. Preference Cookies: Store your personalization settings."
+          },
+          {
+            "title": "Third-Party Cookies",
+            "content": "We may allow authorized third-party service providers to place cookies on your device. These third-party cookies are governed by their respective privacy policies. We do not control the use of these third-party cookies."
+          },
+          {
+            "title": "Cookie Management",
+            "content": "You can control cookie usage through your browser settings. Most browsers allow you to block or delete cookies. However, disabling certain cookies may prevent some platform features from functioning properly."
+          }
+        ]
+      },
+      "codeOfConduct": {
+        "title": "Code of Conduct",
+        "lastUpdated": "Last Updated: January 1, 2026",
+        "sections": [
+          {
+            "title": "Our Pledge",
+            "content": "GameHub is committed to fostering a friendly, inclusive, and respectful community environment for all users. We pledge to ensure everyone can participate in community activities in a harassment-free environment, regardless of age, gender, race, religion, sexual orientation, or identity."
+          },
+          {
+            "title": "Expected Behavior",
+            "content": "Encouraged behaviors: Respect others' viewpoints, engage in constructive discussion, share useful content, help new users. Prohibited behaviors: Personal attacks, harassment, discriminatory言论, posting inappropriate content, spamming, revealing others' privacy, impersonation, spreading misinformation."
+          },
+          {
+            "title": "Content Guidelines",
+            "content": "All content must comply with applicable laws and community standards. Prohibited content includes pornography, violence, terrorism, hate speech, and other illegal material. Game reviews should be objective and fair. Reposted content must credit the original source."
+          },
+          {
+            "title": "Enforcement",
+            "content": "Violations of the Code of Conduct will result in appropriate measures depending on severity, including but not limited to: warnings, content removal, feature restrictions, temporary suspension, or permanent account ban. Serious violations may be reported to law enforcement."
+          },
+          {
+            "title": "Reporting",
+            "content": "If you encounter any violations of the Code of Conduct, please report them using the report function or by contacting our support team. We take every report seriously and will investigate and take action within a reasonable timeframe."
+          }
+        ]
+      }
+    }
+  },
+  "cozyGame": {
+    "trendingBadge": "🔥 Trending: +675% search growth on Steam",
+    "hero": {
+      "title": "Best Cozy Games 2026",
+      "subtitle": "Relax, unwind, and escape into peaceful worlds. Our curated collection of the best cozy games for every platform."
+    },
+    "categories": {
+      "title": "Cozy Game Categories",
+      "farming": "Farming Sims",
+      "lifeSim": "Life Simulation",
+      "relaxing": "Relaxing & Meditative",
+      "building": "Building & Crafting"
+    },
+    "popular": {
+      "title": "Most Popular Cozy Games",
+      "viewAll": "Browse all games"
+    },
+    "desc": {
+      "stardew": "Grow your farm, befriend townsfolk, and discover a charming rural world.",
+      "animalCrossing": "Create your island paradise and relax with adorable animal friends.",
+      "palia": "An MMO cozy game where you build, cook, and explore together.",
+      "spiritfarer": "A beautiful management game about letting go and moving on.",
+      "hozy": "Restore abandoned homes and create cozy spaces in this relaxing game.",
+      "unpacking": "A zen puzzle game about unpacking boxes and building a life."
+    },
+    "why": {
+      "title": "Why Cozy Games Are Taking Over",
+      "content": "The cozy gaming trend has exploded in 2026, with searches for 'cozy' on Steam surging 675%. These games offer a sanctuary from high-stress competitive titles, providing players with relaxing mechanics, soothing soundtracks, and welcoming communities. Whether you're farming, decorating, or exploring at your own pace, cozy games prioritize your wellbeing over winning.",
+      "stats": {
+        "stress": {
+          "value": "68%",
+          "label": "Play to relax"
+        },
+        "creative": {
+          "value": "52%",
+          "label": "Love creativity"
+        },
+        "community": {
+          "value": "41%",
+          "label": "Join communities"
+        },
+        "accessibility": {
+          "value": "73%",
+          "label": "Low-stress appeal"
+        }
+      }
+    },
+    "faq": {
+      "title": "Frequently Asked Questions",
+      "q1": "What defines a 'cozy game'?",
+      "a1": "Cozy games prioritize relaxation, gentle gameplay, and positive emotions over challenge or competition. Common features include farming, crafting, decorating, exploration, and relationship-building — all at your own pace.",
+      "q2": "What are the best cozy games for beginners?",
+      "a2": "Stardew Valley is the perfect starting point. Animal Crossing: New Horizons, Unpacking, and Dorfromantik are also excellent choices with gentle learning curves.",
+      "q3": "Can I play cozy games on PC?",
+      "a3": "Most cozy games are available on PC (Steam, itch.io), Nintendo Switch, and modern consoles. Many are also available on mobile platforms.",
+      "q4": "Are cozy games multiplayer?",
+      "a4": "Many cozy games offer multiplayer modes. Palia is a free MMO cozy game, Animal Crossing supports island visits, and Stardew Valley has co-op farming."
+    },
+    "cta": {
+      "title": "Ready to Relax?",
+      "subtitle": "Discover your next favorite cozy game",
+      "button": "Explore Cozy Games"
+    }
+  },
+  "freeGame": {
+    "hero": {
+      "title": "Free Online Games 2026",
+      "subtitle": "Play the best free online games instantly. No downloads, no sign-ups — just fun."
+    },
+    "categories": {
+      "title": "Browse by Category",
+      "action": {
+        "name": "Action",
+        "games": [
+          "Subway Surfers",
+          "Temple Run",
+          "Stickman Hook"
+        ]
+      },
+      "strategy": {
+        "name": "Strategy",
+        "games": [
+          "Chess",
+          "8 Ball Pool",
+          "Plague Inc."
+        ]
+      },
+      "multiplayer": {
+        "name": "Multiplayer",
+        "games": [
+          "Agar.io",
+          "Slither.io",
+          "Shell Shockers"
+        ]
+      },
+      "casual": {
+        "name": "Casual",
+        "games": [
+          "Candy Crush",
+          "Flappy Bird",
+          "2048"
+        ]
+      }
+    },
+    "top": {
+      "title": "Top Free Games in 2026",
+      "0": {
+        "title": "Fortnite",
+        "desc": "Battle royale with building mechanics and constant content updates."
+      },
+      "1": {
+        "title": "League of Legends",
+        "desc": "The world's most popular MOBA with deep strategic gameplay."
+      },
+      "2": {
+        "title": "Genshin Impact",
+        "desc": "Free-to-play open-world action RPG with gacha mechanics."
+      },
+      "3": {
+        "title": "Hearthstone",
+        "desc": "Blizzard's digital card game with regular expansions."
+      },
+      "4": {
+        "title": "Rocket League",
+        "desc": "Soccer meets driving in this fast-paced free sports game."
+      },
+      "5": {
+        "title": "Lost Ark",
+        "desc": "Massive multiplayer ARPG with stunning combat and exploration."
+      }
+    },
+    "why": {
+      "title": "Why Play Free Games?",
+      "content": "Free online games have never been more accessible. With browser-based games and free-to-play titles on all platforms, you can jump into incredible gaming experiences without spending a penny. Many free games now offer console-quality graphics and deep gameplay.",
+      "points": {
+        "noCost": {
+          "title": "100% Free",
+          "desc": "No upfront costs"
+        },
+        "noDownload": {
+          "title": "Instant Play",
+          "desc": "No installation needed"
+        },
+        "crossPlatform": {
+          "title": "Any Device",
+          "desc": "Play on PC, mobile, tablet"
+        },
+        "social": {
+          "title": "Social",
+          "desc": "Play with friends online"
+        }
+      }
+    },
+    "faq": {
+      "title": "Frequently Asked Questions",
+      "q0": "Are these games really free?",
+      "a0": "Yes! All games listed are completely free to play. Some may offer optional in-game purchases, but the core experience is always free.",
+      "q1": "Do I need to download anything?",
+      "a1": "Browser-based games require no download at all. For free-to-play titles like Fortnite and Genshin Impact, you'll need to install the game client.",
+      "q2": "Can I play on mobile?",
+      "a2": "Many free games support mobile play. Browser games work on any device. Popular titles like Genshin Impact and Rocket League Sideswipe have excellent mobile versions.",
+      "q3": "Are free games safe?",
+      "a3": "All games featured on GameHub are from trusted publishers and platforms. We carefully curate our collection to ensure a safe gaming experience."
+    },
+    "cta": {
+      "title": "Start Playing Now",
+      "subtitle": "Join millions of players enjoying free online games",
+      "button": "Browse Free Games"
+    }
+  },
+  "aiGame": {
+    "hero": {
+      "title": "AI in Gaming 2026",
+      "subtitle": "Discover how artificial intelligence is revolutionizing the gaming world — from smart NPCs to procedurally generated universes."
+    },
+    "features": {
+      "title": "AI Features Transforming Games",
+      "npc": {
+        "title": "AI NPCs",
+        "desc": "Non-player characters that learn and react naturally"
+      },
+      "companion": {
+        "title": "AI Companions",
+        "desc": "Intelligent in-game friends that adapt to your playstyle"
+      },
+      "procedural": {
+        "title": "Procedural Worlds",
+        "desc": "Endless AI-generated landscapes and quests"
+      },
+      "assistant": {
+        "title": "AI Game Tools",
+        "desc": "AI-powered creation and game mastering tools"
+      }
+    },
+    "tools": {
+      "title": "GameHub AI Tools",
+      "desc": "Experience the future of gaming with our built-in AI features.",
+      "portrait": "AI Character Portrait",
+      "soul": "AI Soul Station",
+      "npc": "AI Game NPC"
+    },
+    "games": {
+      "title": "AI-Powered Games",
+      "0": {
+        "desc": "AI-driven NPCs with dynamic dialogue and adaptive behavior."
+      },
+      "1": {
+        "desc": "An AI companion that learns from your choices and evolves."
+      },
+      "2": {
+        "desc": "Procedurally generated infinite worlds with unique ecosystems."
+      },
+      "3": {
+        "desc": "AI storyteller that creates branching narratives on the fly."
+      }
+    },
+    "future": {
+      "title": "The Future of AI Gaming",
+      "content": "By 2026, AI has become the most transformative force in gaming. From NPCs that remember your choices to worlds that generate themselves based on your play style, AI is making games more personal, immersive, and replayable than ever before. The line between scripted experiences and living worlds is blurring."
+    },
+    "faq": {
+      "title": "Frequently Asked Questions",
+      "q0": "How is AI used in modern games?",
+      "a0": "AI powers NPC behavior, procedural content generation, dynamic difficulty adjustment, voice recognition, and personalized gaming experiences. Modern games use AI for everything from enemy tactics to generating entire worlds.",
+      "q1": "Can AI create game characters?",
+      "a1": "Yes! AI can generate unique character portraits, voices, personalities, and backstories. Tools like GameHub's Character Portrait 3D let you create AI-powered game characters.",
+      "q2": "What are AI NPCs?",
+      "a2": "AI NPCs are non-player characters powered by language models and behavior trees. Unlike traditional scripted NPCs, they can hold natural conversations, remember past interactions, and adapt their behavior dynamically.",
+      "q3": "Will AI replace game developers?",
+      "a3": "No — AI is a tool that empowers developers to create richer experiences. It automates repetitive tasks and enables new forms of gameplay, but human creativity remains essential for game design."
+    },
+    "cta": {
+      "title": "Experience AI Gaming",
+      "subtitle": "Try GameHub's AI-powered gaming tools",
+      "button": "Explore AI Features"
+    }
+  }
+}

@@ -1,0 +1,74 @@
+<!doctype html>
+<!-- ============================================================
+     GameHub 主应用入口 HTML
+     - 作用：vite-plugin-ssr 框架的默认 HTML 模板，Web 应用的入口页面
+     - 框架：React + TypeScript + Vite + vite-plugin-ssr (SSR)
+     - 功能：SEO 元数据、PWA 支持、多语言初始化和性能优化
+     ============================================================ -->
+<html lang="en" id="html-root">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+
+    <!-- ========== SEO 基础标签 ========== -->
+    <!-- 基础 meta 标签（页面专属标签由 SEO 组件动态注入） -->
+    <meta name="description" content="GameHub（好游聚）- Discover game reviews, recommendations, guides, and connect with millions of gamers worldwide. Play free online games, read gaming news, and join the community." />
+    <meta name="keywords" content="GameHub, 好游聚, game reviews, game recommendations, online games, free games, gaming community, game guides, 游戏推荐, 游戏评测, 在线游戏, 免费游戏, 游戏社区" />
+
+    <!-- ========== 语言偏好恢复 ========== -->
+    <!-- 在页面渲染前从 localStorage 恢复用户保存的语言设置，避免首屏闪烁 -->
+    <script>
+      (function() {
+        var lang = localStorage.getItem('i18nextLng');
+        if (lang) { document.documentElement.lang = lang; }
+      })();
+    </script>
+
+    <!-- ========== 预连接优化 ========== -->
+    <!-- Preconnect to important origins -->
+    <link rel="preconnect" href="https://www.gghubs.com">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <!-- ========== 关键资源预加载 ========== -->
+    <!-- Preload critical resources -->
+    <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Poppins:wght@400;500;600;700;800&display=swap">
+
+    <!-- ========== 安全策略 ========== -->
+    <!-- Referrer Policy -->
+    <meta name="referrer" content="strict-origin-when-cross-origin" />
+
+    <!-- ========== 主题颜色 ========== -->
+    <!-- Theme Color -->
+    <meta name="theme-color" content="#1a1a2e">
+    <meta name="msapplication-TileColor" content="#1a1a2e">
+    <meta name="msapplication-TileImage" content="/pwa-192.png">
+
+    <!-- ========== PWA / 移动端支持 ========== -->
+    <!-- PWA / Mobile App Capabilities -->
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="format-detection" content="telephone=no">
+
+    <!-- ========== Apple 触摸图标 ========== -->
+    <!-- Apple Touch Icon -->
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+
+    <!-- ========== Open Graph / 社交分享（后备） ========== -->
+    <!-- Facebook / Open Graph (fallsback) -->
+    <meta property="fb:app_id" content="" />
+
+    <!-- ========== PWA Manifest ========== -->
+    <!-- Manifest -->
+    <link rel="manifest" href="/manifest.json">
+  </head>
+  <body>
+    <!-- React 应用挂载根节点，由 vite-plugin-ssr 在 SSR 时注入渲染内容 -->
+    <div id="root"></div>
+    <!-- 主应用入口脚本，由 vite 编译和注入 -->
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>

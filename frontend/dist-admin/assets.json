@@ -1,0 +1,1601 @@
+{
+  "_chunk-B6F5Z-B42.js": {
+    "file": "assets/chunks/chunk-B6F5Z-B42.js",
+    "name": "BlogEditor",
+    "imports": [
+      "_chunk-BcV6V4gx.js",
+      "node_modules/vite-plugin-ssr/dist/esm/client/client-routing-runtime/entry.js"
+    ]
+  },
+  "_chunk-B7KqGxY3.js": {
+    "file": "assets/chunks/chunk-B7KqGxY3.js",
+    "name": "HomePage",
+    "imports": [
+      "_chunk-BcV6V4gx.js",
+      "_chunk-DPgjZ1PG.js",
+      "node_modules/vite-plugin-ssr/dist/esm/client/client-routing-runtime/entry.js",
+      "_chunk-DT64eOQf.js",
+      "_chunk-DZjQoVSL.js",
+      "_chunk-C2Oq4gvu.js",
+      "_chunk-BWR4gg1p.js",
+      "_chunk-BMswvWHS.js",
+      "_chunk-DkOEEqVl.js",
+      "_chunk-BLDagg7f.js"
+    ]
+  },
+  "_chunk-BLDagg7f.js": {
+    "file": "assets/chunks/chunk-BLDagg7f.js",
+    "name": "i18n",
+    "imports": [
+      "_chunk-DT64eOQf.js",
+      "_chunk-C2Oq4gvu.js"
+    ]
+  },
+  "_chunk-BMswvWHS.js": {
+    "file": "assets/chunks/chunk-BMswvWHS.js",
+    "name": "SEOBreadcrumb",
+    "imports": [
+      "_chunk-BcV6V4gx.js",
+      "_chunk-DT64eOQf.js"
+    ]
+  },
+  "_chunk-BWR4gg1p.js": {
+    "file": "assets/chunks/chunk-BWR4gg1p.js",
+    "name": "SEO",
+    "imports": [
+      "_chunk-BcV6V4gx.js",
+      "_chunk-DT64eOQf.js"
+    ]
+  },
+  "_chunk-BcV6V4gx.js": {
+    "file": "assets/chunks/chunk-BcV6V4gx.js",
+    "name": "api",
+    "imports": [
+      "_chunk-DPgjZ1PG.js"
+    ]
+  },
+  "_chunk-C2Oq4gvu.js": {
+    "file": "assets/chunks/chunk-C2Oq4gvu.js",
+    "name": "utils",
+    "imports": [
+      "_chunk-BcV6V4gx.js",
+      "_chunk-DPgjZ1PG.js",
+      "_chunk-DT64eOQf.js"
+    ],
+    "dynamicImports": [
+      "node_modules/vite-plugin-ssr/dist/esm/client/client-routing-runtime/entry.js"
+    ]
+  },
+  "_chunk-C4Ae2Iug.js": {
+    "file": "assets/chunks/chunk-C4Ae2Iug.js",
+    "name": "sentry"
+  },
+  "_chunk-Cq3Ja6zB2.js": {
+    "file": "assets/chunks/chunk-Cq3Ja6zB2.js",
+    "name": "ActionButtons",
+    "imports": [
+      "_chunk-BcV6V4gx.js",
+      "_chunk-DPgjZ1PG.js",
+      "_chunk-DT64eOQf.js",
+      "_chunk-DZjQoVSL.js"
+    ]
+  },
+  "_chunk-DB4a2fIR2.js": {
+    "file": "assets/chunks/chunk-DB4a2fIR2.js",
+    "name": "useDebounce",
+    "imports": [
+      "_chunk-BcV6V4gx.js",
+      "_chunk-DPgjZ1PG.js"
+    ]
+  },
+  "_chunk-DPgjZ1PG.js": {
+    "file": "assets/chunks/chunk-DPgjZ1PG.js",
+    "name": "rolldown-runtime"
+  },
+  "_chunk-DT64eOQf.js": {
+    "file": "assets/chunks/chunk-DT64eOQf.js",
+    "name": "layout",
+    "imports": [
+      "_chunk-BcV6V4gx.js",
+      "_chunk-DPgjZ1PG.js",
+      "_chunk-Nt_sfQ3j.js"
+    ]
+  },
+  "_chunk-DZjQoVSL.js": {
+    "file": "assets/chunks/chunk-DZjQoVSL.js",
+    "name": "ui",
+    "imports": [
+      "_chunk-BcV6V4gx.js",
+      "_chunk-DPgjZ1PG.js",
+      "_chunk-DT64eOQf.js",
+      "_chunk-Nt_sfQ3j.js"
+    ]
+  },
+  "_chunk-DkOEEqVl.js": {
+    "file": "assets/chunks/chunk-DkOEEqVl.js",
+    "name": "RecommendedGames",
+    "imports": [
+      "_chunk-BcV6V4gx.js",
+      "_chunk-DT64eOQf.js",
+      "_chunk-DZjQoVSL.js"
+    ]
+  },
+  "_chunk-DwWs-qM7.js": {
+    "file": "assets/chunks/chunk-DwWs-qM7.js",
+    "name": "useSmsCountdown",
+    "imports": [
+      "_chunk-BcV6V4gx.js",
+      "_chunk-DPgjZ1PG.js"
+    ]
+  },
+  "_chunk-Nt_sfQ3j.js": {
+    "file": "assets/chunks/chunk-Nt_sfQ3j.js",
+    "name": "contexts",
+    "imports": [
+      "_chunk-BcV6V4gx.js",
+      "_chunk-DPgjZ1PG.js"
+    ]
+  },
+  "_chunk-lD-La8AP.js": {
+    "file": "assets/chunks/chunk-lD-La8AP.js",
+    "name": "VirtualGamepad",
+    "imports": [
+      "_chunk-BcV6V4gx.js",
+      "_chunk-DPgjZ1PG.js"
+    ]
+  },
+  "_chunk-pfriNIp42.js": {
+    "file": "assets/chunks/chunk-pfriNIp42.js",
+    "name": "CommentList",
+    "imports": [
+      "_chunk-BcV6V4gx.js",
+      "_chunk-DPgjZ1PG.js",
+      "node_modules/vite-plugin-ssr/dist/esm/client/client-routing-runtime/entry.js",
+      "_chunk-DT64eOQf.js",
+      "_chunk-Nt_sfQ3j.js",
+      "_chunk-DZjQoVSL.js"
+    ]
+  },
+  "node_modules/cross-fetch/dist/browser-ponyfill.js": {
+    "file": "assets/chunks/chunk-BFLhHwCK.js",
+    "name": "browser-ponyfill",
+    "src": "node_modules/cross-fetch/dist/browser-ponyfill.js",
+    "isDynamicEntry": true,
+    "imports": [
+      "node_modules/vite-plugin-ssr/dist/esm/client/client-routing-runtime/entry.js"
+    ]
+  },
+  "node_modules/vite-plugin-ssr/dist/esm/client/client-routing-runtime/entry.js": {
+    "file": "assets/entries/entry-client-routing.BBSfJ_if.js",
+    "name": "entries/entry-client-routing",
+    "src": "node_modules/vite-plugin-ssr/dist/esm/client/client-routing-runtime/entry.js",
+    "isEntry": true,
+    "imports": [
+      "_chunk-BcV6V4gx.js",
+      "_chunk-DPgjZ1PG.js",
+      "_chunk-DT64eOQf.js",
+      "_chunk-Nt_sfQ3j.js",
+      "_chunk-DZjQoVSL.js",
+      "_chunk-C4Ae2Iug.js"
+    ],
+    "css": [
+      "assets/static/entry-client-routing.Bn3rEnwA.css"
+    ]
+  },
+  "node_modules/vite-plugin-ssr/dist/esm/client/server-routing-runtime/entry.js": {
+    "file": "assets/entries/entry-server-routing.D2RzGKes.js",
+    "name": "entries/entry-server-routing",
+    "src": "node_modules/vite-plugin-ssr/dist/esm/client/server-routing-runtime/entry.js",
+    "isEntry": true,
+    "imports": [
+      "node_modules/vite-plugin-ssr/dist/esm/client/client-routing-runtime/entry.js"
+    ]
+  },
+  "pages/_default.page.tsx": {
+    "file": "assets/entries/pages_default.page.DjfxDu_o.js",
+    "name": "entries/pages/_default.page",
+    "src": "pages/_default.page.tsx",
+    "isEntry": true
+  },
+  "pages/index.page.tsx": {
+    "file": "assets/entries/pages_index.page.B5Le6SOf.js",
+    "name": "entries/pages/index.page",
+    "src": "pages/index.page.tsx",
+    "isEntry": true,
+    "imports": [
+      "_chunk-BcV6V4gx.js",
+      "_chunk-DPgjZ1PG.js",
+      "_chunk-B7KqGxY3.js"
+    ]
+  },
+  "renderer/_default.page.client.tsx": {
+    "file": "assets/entries/renderer_default.page.client.ChsUm7sU.js",
+    "name": "entries/renderer/_default.page.client",
+    "src": "renderer/_default.page.client.tsx",
+    "isEntry": true,
+    "imports": [
+      "_chunk-BcV6V4gx.js",
+      "_chunk-DPgjZ1PG.js",
+      "node_modules/vite-plugin-ssr/dist/esm/client/client-routing-runtime/entry.js",
+      "_chunk-DT64eOQf.js",
+      "_chunk-Nt_sfQ3j.js",
+      "_chunk-DZjQoVSL.js",
+      "_chunk-C4Ae2Iug.js",
+      "_chunk-BLDagg7f.js"
+    ],
+    "dynamicImports": [
+      "_chunk-B7KqGxY3.js",
+      "src/pages/GamesPage.tsx",
+      "src/pages/CategoryGamesPage.tsx",
+      "src/pages/GameDetailPage.tsx",
+      "src/pages/GameForumPage.tsx",
+      "src/pages/CommunityForumHubPage.tsx",
+      "src/pages/NewsPage.tsx",
+      "src/pages/CategoryNewsPage.tsx",
+      "src/pages/NewsDetailPage.tsx",
+      "src/pages/ReviewsPage.tsx",
+      "src/pages/ReviewDetailPage.tsx",
+      "src/pages/ReviewNewPage.tsx",
+      "src/pages/PostNewPage.tsx",
+      "src/pages/GuidesPage.tsx",
+      "src/pages/GuideDetailPage.tsx",
+      "src/pages/CommunityPage.tsx",
+      "src/pages/CommunityPostDetailPage.tsx",
+      "src/pages/AboutPage.tsx",
+      "src/pages/CareersPage.tsx",
+      "src/pages/PressPage.tsx",
+      "src/pages/ContactPage.tsx",
+      "src/pages/PrintOrderPage.tsx",
+      "src/pages/BlogPage.tsx",
+      "src/pages/BlogSpacePage.tsx",
+      "src/pages/BlogDetailPage.tsx",
+      "src/pages/BlogNewPage.tsx",
+      "src/pages/BlogEditPage.tsx",
+      "src/pages/MyBlogsPage.tsx",
+      "src/pages/OnlineGamesPage.tsx",
+      "src/pages/GamePlayPage.tsx",
+      "src/pages/LegalPage.tsx",
+      "src/pages/NotFoundPage.tsx",
+      "src/pages/LoginPage.tsx",
+      "src/pages/RegisterPage.tsx",
+      "src/pages/ProfilePage.tsx",
+      "src/pages/ForgotPasswordPage.tsx",
+      "src/pages/ResetPasswordPage.tsx",
+      "src/pages/VerifyEmailPage.tsx",
+      "src/pages/OAuthCallbackPage.tsx",
+      "src/pages/SearchResultsPage.tsx",
+      "src/pages/NotificationsPage.tsx",
+      "src/pages/GameLibraryPage.tsx",
+      "src/pages/DiscoveryPage.tsx",
+      "src/pages/TrendingPage.tsx",
+      "src/pages/LeaderboardPage.tsx",
+      "src/pages/InboxPage.tsx",
+      "src/pages/ConversationPage.tsx",
+      "src/pages/AchievementsPage.tsx",
+      "src/pages/PersonalCenterPage.tsx",
+      "src/pages/AiAssistantPage.tsx",
+      "src/pages/CozyGamesPage.tsx",
+      "src/pages/FreeGamesPage.tsx",
+      "src/pages/AIGamingPage.tsx",
+      "src/components/ai/SoulStation.tsx",
+      "src/components/ai/GameNPC.tsx",
+      "src/components/ai/GameCompanion.tsx",
+      "src/pages/admin/Dashboard/index.tsx",
+      "src/pages/admin/Users/index.tsx",
+      "src/pages/admin/Games/index.tsx",
+      "src/pages/admin/Content/index.tsx",
+      "src/pages/admin/About/AboutManagement.tsx",
+      "src/pages/admin/Monitoring/index.tsx",
+      "src/pages/admin/AuditLogs/index.tsx",
+      "src/pages/admin/Recommend/index.tsx",
+      "src/pages/admin/ReviewQueue/index.tsx",
+      "src/pages/admin/Settings/index.tsx",
+      "src/pages/admin/Uploads/index.tsx",
+      "src/pages/admin/Email/index.tsx",
+      "src/pages/admin/Analytics/index.tsx",
+      "src/pages/admin/Profiling/index.tsx",
+      "src/pages/admin/Deployments/index.tsx",
+      "src/pages/admin/Backups/index.tsx",
+      "src/pages/admin/Notifications/index.tsx",
+      "src/pages/admin/Login/index.tsx",
+      "src/pages/admin/components/AdminLayout.tsx"
+    ]
+  },
+  "renderer/_default.page.server.tsx?extractAssets&lang.tsx": {
+    "file": "assets/entries/renderer_default.page.server.extractAssets.D4VpAbIO.js",
+    "name": "entries/renderer/_default.page.server.tsx_extractAssets_lang",
+    "src": "renderer/_default.page.server.tsx?extractAssets&lang.tsx",
+    "isEntry": true
+  },
+  "src/components/ai/GameCompanion.tsx": {
+    "file": "assets/chunks/chunk-BvtMeJYb.js",
+    "name": "GameCompanion",
+    "src": "src/components/ai/GameCompanion.tsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "_chunk-BcV6V4gx.js",
+      "_chunk-DPgjZ1PG.js",
+      "_chunk-DT64eOQf.js",
+      "_chunk-DZjQoVSL.js",
+      "_chunk-C2Oq4gvu.js"
+    ]
+  },
+  "src/components/ai/GameNPC.tsx": {
+    "file": "assets/chunks/chunk-rCs4AYY9.js",
+    "name": "GameNPC",
+    "src": "src/components/ai/GameNPC.tsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "_chunk-BcV6V4gx.js",
+      "_chunk-DPgjZ1PG.js",
+      "_chunk-DT64eOQf.js",
+      "_chunk-DZjQoVSL.js",
+      "_chunk-C2Oq4gvu.js"
+    ]
+  },
+  "src/components/ai/SoulStation.tsx": {
+    "file": "assets/chunks/chunk-BFfw5Chw.js",
+    "name": "SoulStation",
+    "src": "src/components/ai/SoulStation.tsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "_chunk-BcV6V4gx.js",
+      "_chunk-DPgjZ1PG.js",
+      "_chunk-DT64eOQf.js",
+      "_chunk-Nt_sfQ3j.js",
+      "_chunk-DZjQoVSL.js",
+      "_chunk-C2Oq4gvu.js"
+    ]
+  },
+  "src/components/games/ArcheryMaster.tsx": {
+    "file": "assets/chunks/chunk-3vaLRAzP.js",
+    "name": "ArcheryMaster",
+    "src": "src/components/games/ArcheryMaster.tsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "_chunk-BcV6V4gx.js",
+      "_chunk-DPgjZ1PG.js",
+      "_chunk-DT64eOQf.js",
+      "_chunk-DZjQoVSL.js"
+    ]
+  },
+  "src/components/games/BrickBreakerGame.tsx": {
+    "file": "assets/chunks/chunk-cmbC5kHn.js",
+    "name": "BrickBreakerGame",
+    "src": "src/components/games/BrickBreakerGame.tsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "_chunk-BcV6V4gx.js",
+      "_chunk-DPgjZ1PG.js",
+      "_chunk-DT64eOQf.js",
+      "_chunk-DZjQoVSL.js",
+      "_chunk-lD-La8AP.js"
+    ]
+  },
+  "src/components/games/BubbleShooter.tsx": {
+    "file": "assets/chunks/chunk-nIfk4jZf.js",
+    "name": "BubbleShooter",
+    "src": "src/components/games/BubbleShooter.tsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "_chunk-BcV6V4gx.js",
+      "_chunk-DPgjZ1PG.js",
+      "_chunk-DT64eOQf.js",
+      "_chunk-DZjQoVSL.js"
+    ]
+  },
+  "src/components/games/Game2048.tsx": {
+    "file": "assets/chunks/chunk-6DPpq4dC.js",
+    "name": "Game2048",
+    "src": "src/components/games/Game2048.tsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "_chunk-BcV6V4gx.js",
+      "_chunk-DPgjZ1PG.js",
+      "_chunk-DT64eOQf.js",
+      "_chunk-DZjQoVSL.js",
+      "_chunk-lD-La8AP.js"
+    ]
+  },
+  "src/components/games/GobangGame.tsx": {
+    "file": "assets/chunks/chunk-Cri5h05d.js",
+    "name": "GobangGame",
+    "src": "src/components/games/GobangGame.tsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "_chunk-BcV6V4gx.js",
+      "_chunk-DPgjZ1PG.js",
+      "_chunk-DT64eOQf.js",
+      "_chunk-DZjQoVSL.js"
+    ]
+  },
+  "src/components/games/GuandanGame.tsx": {
+    "file": "assets/chunks/chunk-DTI5PBtk.js",
+    "name": "GuandanGame",
+    "src": "src/components/games/GuandanGame.tsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "_chunk-BcV6V4gx.js",
+      "_chunk-DPgjZ1PG.js"
+    ]
+  },
+  "src/components/games/JumpAdventure.tsx": {
+    "file": "assets/chunks/chunk-K3lJJY-N.js",
+    "name": "JumpAdventure",
+    "src": "src/components/games/JumpAdventure.tsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "_chunk-BcV6V4gx.js",
+      "_chunk-DPgjZ1PG.js",
+      "_chunk-DT64eOQf.js",
+      "_chunk-DZjQoVSL.js"
+    ]
+  },
+  "src/components/games/MagicTrampoline.tsx": {
+    "file": "assets/chunks/chunk-Bv4kiWCk.js",
+    "name": "MagicTrampoline",
+    "src": "src/components/games/MagicTrampoline.tsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "_chunk-BcV6V4gx.js",
+      "_chunk-DPgjZ1PG.js",
+      "_chunk-DT64eOQf.js",
+      "_chunk-DZjQoVSL.js",
+      "_chunk-lD-La8AP.js"
+    ]
+  },
+  "src/components/games/MatchThree.tsx": {
+    "file": "assets/chunks/chunk-CBln3QC0.js",
+    "name": "MatchThree",
+    "src": "src/components/games/MatchThree.tsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "_chunk-BcV6V4gx.js",
+      "_chunk-DPgjZ1PG.js",
+      "_chunk-DT64eOQf.js",
+      "_chunk-DZjQoVSL.js"
+    ]
+  },
+  "src/components/games/MemoryGame.tsx": {
+    "file": "assets/chunks/chunk-CUfSiuZ8.js",
+    "name": "MemoryGame",
+    "src": "src/components/games/MemoryGame.tsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "_chunk-BcV6V4gx.js",
+      "_chunk-DPgjZ1PG.js",
+      "_chunk-DT64eOQf.js",
+      "_chunk-DZjQoVSL.js"
+    ]
+  },
+  "src/components/games/MinesweeperGame.tsx": {
+    "file": "assets/chunks/chunk-CaarlubQ.js",
+    "name": "MinesweeperGame",
+    "src": "src/components/games/MinesweeperGame.tsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "_chunk-BcV6V4gx.js",
+      "_chunk-DPgjZ1PG.js",
+      "_chunk-DT64eOQf.js",
+      "_chunk-DZjQoVSL.js"
+    ]
+  },
+  "src/components/games/PongGame.tsx": {
+    "file": "assets/chunks/chunk-DHa7eEXw.js",
+    "name": "PongGame",
+    "src": "src/components/games/PongGame.tsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "_chunk-BcV6V4gx.js",
+      "_chunk-DPgjZ1PG.js",
+      "_chunk-DT64eOQf.js",
+      "_chunk-DZjQoVSL.js",
+      "_chunk-lD-La8AP.js"
+    ]
+  },
+  "src/components/games/SlidingPuzzle.tsx": {
+    "file": "assets/chunks/chunk-DdfTtNMp2.js",
+    "name": "SlidingPuzzle",
+    "src": "src/components/games/SlidingPuzzle.tsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "_chunk-BcV6V4gx.js",
+      "_chunk-DPgjZ1PG.js",
+      "_chunk-DT64eOQf.js",
+      "_chunk-DZjQoVSL.js"
+    ]
+  },
+  "src/components/games/SnakeGame.tsx": {
+    "file": "assets/chunks/chunk-CFwaKXK_2.js",
+    "name": "SnakeGame",
+    "src": "src/components/games/SnakeGame.tsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "_chunk-BcV6V4gx.js",
+      "_chunk-DPgjZ1PG.js",
+      "_chunk-DT64eOQf.js",
+      "_chunk-DZjQoVSL.js",
+      "_chunk-lD-La8AP.js"
+    ]
+  },
+  "src/components/games/SpaceShooter.tsx": {
+    "file": "assets/chunks/chunk-BAAE6zNv2.js",
+    "name": "SpaceShooter",
+    "src": "src/components/games/SpaceShooter.tsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "_chunk-BcV6V4gx.js",
+      "_chunk-DPgjZ1PG.js",
+      "_chunk-DT64eOQf.js",
+      "_chunk-DZjQoVSL.js",
+      "_chunk-lD-La8AP.js"
+    ]
+  },
+  "src/components/games/SpeedRacer.tsx": {
+    "file": "assets/chunks/chunk-BfjYiz402.js",
+    "name": "SpeedRacer",
+    "src": "src/components/games/SpeedRacer.tsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "_chunk-BcV6V4gx.js",
+      "_chunk-DPgjZ1PG.js",
+      "_chunk-DT64eOQf.js",
+      "_chunk-DZjQoVSL.js"
+    ]
+  },
+  "src/components/games/TankBattle.tsx": {
+    "file": "assets/chunks/chunk-CHshX5np2.js",
+    "name": "TankBattle",
+    "src": "src/components/games/TankBattle.tsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "_chunk-BcV6V4gx.js",
+      "_chunk-DPgjZ1PG.js",
+      "_chunk-DT64eOQf.js",
+      "_chunk-DZjQoVSL.js",
+      "_chunk-lD-La8AP.js"
+    ]
+  },
+  "src/components/games/TetrisGame.tsx": {
+    "file": "assets/chunks/chunk-BXlRrkqL2.js",
+    "name": "TetrisGame",
+    "src": "src/components/games/TetrisGame.tsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "_chunk-BcV6V4gx.js",
+      "_chunk-DPgjZ1PG.js",
+      "_chunk-DT64eOQf.js",
+      "_chunk-DZjQoVSL.js",
+      "_chunk-lD-La8AP.js"
+    ]
+  },
+  "src/components/games/WhackAMole.tsx": {
+    "file": "assets/chunks/chunk-DaHenODl2.js",
+    "name": "WhackAMole",
+    "src": "src/components/games/WhackAMole.tsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "_chunk-BcV6V4gx.js",
+      "_chunk-DPgjZ1PG.js",
+      "_chunk-DT64eOQf.js",
+      "_chunk-DZjQoVSL.js"
+    ]
+  },
+  "src/pages/AIGamingPage.tsx": {
+    "file": "assets/chunks/chunk-C2C8Tin22.js",
+    "name": "AIGamingPage",
+    "src": "src/pages/AIGamingPage.tsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "_chunk-BcV6V4gx.js",
+      "_chunk-DT64eOQf.js",
+      "_chunk-DZjQoVSL.js",
+      "_chunk-BWR4gg1p.js"
+    ]
+  },
+  "src/pages/AboutPage.tsx": {
+    "file": "assets/chunks/chunk-DSyyy7_n2.js",
+    "name": "AboutPage",
+    "src": "src/pages/AboutPage.tsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "_chunk-BcV6V4gx.js",
+      "_chunk-DT64eOQf.js",
+      "_chunk-DZjQoVSL.js",
+      "_chunk-BWR4gg1p.js"
+    ]
+  },
+  "src/pages/AchievementsPage.tsx": {
+    "file": "assets/chunks/chunk-IF2WA5pj2.js",
+    "name": "AchievementsPage",
+    "src": "src/pages/AchievementsPage.tsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "_chunk-BcV6V4gx.js",
+      "_chunk-DPgjZ1PG.js",
+      "_chunk-DT64eOQf.js",
+      "_chunk-DZjQoVSL.js",
+      "_chunk-BWR4gg1p.js"
+    ]
+  },
+  "src/pages/AiAssistantPage.tsx": {
+    "file": "assets/chunks/chunk-C_qdQfEa2.js",
+    "name": "AiAssistantPage",
+    "src": "src/pages/AiAssistantPage.tsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "_chunk-BcV6V4gx.js",
+      "_chunk-DT64eOQf.js",
+      "_chunk-DZjQoVSL.js",
+      "_chunk-BWR4gg1p.js"
+    ]
+  },
+  "src/pages/BlogDetailPage.tsx": {
+    "file": "assets/chunks/chunk-C9J1N4kR2.js",
+    "name": "BlogDetailPage",
+    "src": "src/pages/BlogDetailPage.tsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "_chunk-BcV6V4gx.js",
+      "_chunk-DPgjZ1PG.js",
+      "node_modules/vite-plugin-ssr/dist/esm/client/client-routing-runtime/entry.js",
+      "_chunk-DT64eOQf.js",
+      "_chunk-DZjQoVSL.js",
+      "_chunk-pfriNIp42.js",
+      "_chunk-BWR4gg1p.js",
+      "_chunk-BMswvWHS.js"
+    ]
+  },
+  "src/pages/BlogEditPage.tsx": {
+    "file": "assets/chunks/chunk-DBJybSeW2.js",
+    "name": "BlogEditPage",
+    "src": "src/pages/BlogEditPage.tsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "_chunk-BcV6V4gx.js",
+      "_chunk-DPgjZ1PG.js",
+      "_chunk-DT64eOQf.js",
+      "_chunk-Nt_sfQ3j.js",
+      "_chunk-DZjQoVSL.js",
+      "_chunk-BWR4gg1p.js",
+      "_chunk-B6F5Z-B42.js"
+    ]
+  },
+  "src/pages/BlogNewPage.tsx": {
+    "file": "assets/chunks/chunk-Bfsb5cXk2.js",
+    "name": "BlogNewPage",
+    "src": "src/pages/BlogNewPage.tsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "_chunk-BcV6V4gx.js",
+      "_chunk-DPgjZ1PG.js",
+      "_chunk-DT64eOQf.js",
+      "_chunk-Nt_sfQ3j.js",
+      "_chunk-DZjQoVSL.js",
+      "_chunk-BWR4gg1p.js",
+      "_chunk-B6F5Z-B42.js"
+    ]
+  },
+  "src/pages/BlogPage.tsx": {
+    "file": "assets/chunks/chunk-CLedy15c2.js",
+    "name": "BlogPage",
+    "src": "src/pages/BlogPage.tsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "_chunk-BcV6V4gx.js",
+      "_chunk-DPgjZ1PG.js",
+      "_chunk-DT64eOQf.js",
+      "_chunk-DZjQoVSL.js",
+      "_chunk-BWR4gg1p.js"
+    ],
+    "dynamicImports": [
+      "_chunk-BcV6V4gx.js"
+    ]
+  },
+  "src/pages/BlogSpacePage.tsx": {
+    "file": "assets/chunks/chunk-CXjsAwjz2.js",
+    "name": "BlogSpacePage",
+    "src": "src/pages/BlogSpacePage.tsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "_chunk-BcV6V4gx.js",
+      "_chunk-DPgjZ1PG.js",
+      "_chunk-DT64eOQf.js",
+      "_chunk-DZjQoVSL.js",
+      "_chunk-BWR4gg1p.js"
+    ],
+    "dynamicImports": [
+      "_chunk-BcV6V4gx.js"
+    ]
+  },
+  "src/pages/CareersPage.tsx": {
+    "file": "assets/chunks/chunk-Wi3w_zHR2.js",
+    "name": "CareersPage",
+    "src": "src/pages/CareersPage.tsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "_chunk-BcV6V4gx.js",
+      "_chunk-DT64eOQf.js",
+      "_chunk-DZjQoVSL.js",
+      "_chunk-BWR4gg1p.js"
+    ]
+  },
+  "src/pages/CategoryGamesPage.tsx": {
+    "file": "assets/chunks/chunk-BSF_q8j_2.js",
+    "name": "CategoryGamesPage",
+    "src": "src/pages/CategoryGamesPage.tsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "_chunk-BcV6V4gx.js",
+      "_chunk-DPgjZ1PG.js",
+      "node_modules/vite-plugin-ssr/dist/esm/client/client-routing-runtime/entry.js",
+      "_chunk-DT64eOQf.js",
+      "_chunk-DZjQoVSL.js",
+      "_chunk-C2Oq4gvu.js",
+      "_chunk-BWR4gg1p.js",
+      "_chunk-BMswvWHS.js",
+      "_chunk-DB4a2fIR2.js"
+    ]
+  },
+  "src/pages/CategoryNewsPage.tsx": {
+    "file": "assets/chunks/chunk-DMSQ2V8O2.js",
+    "name": "CategoryNewsPage",
+    "src": "src/pages/CategoryNewsPage.tsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "_chunk-BcV6V4gx.js",
+      "_chunk-DPgjZ1PG.js",
+      "_chunk-DT64eOQf.js",
+      "_chunk-DZjQoVSL.js",
+      "_chunk-C2Oq4gvu.js",
+      "_chunk-BWR4gg1p.js",
+      "_chunk-BMswvWHS.js",
+      "_chunk-DB4a2fIR2.js"
+    ]
+  },
+  "src/pages/CommunityForumHubPage.tsx": {
+    "file": "assets/chunks/chunk-R_Da4H0B2.js",
+    "name": "CommunityForumHubPage",
+    "src": "src/pages/CommunityForumHubPage.tsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "_chunk-BcV6V4gx.js",
+      "_chunk-DPgjZ1PG.js",
+      "_chunk-DT64eOQf.js",
+      "_chunk-DZjQoVSL.js",
+      "_chunk-BWR4gg1p.js"
+    ]
+  },
+  "src/pages/CommunityPage.tsx": {
+    "file": "assets/chunks/chunk-9kXtaZKR2.js",
+    "name": "CommunityPage",
+    "src": "src/pages/CommunityPage.tsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "_chunk-BcV6V4gx.js",
+      "_chunk-DPgjZ1PG.js",
+      "_chunk-DT64eOQf.js",
+      "_chunk-DZjQoVSL.js",
+      "_chunk-BWR4gg1p.js"
+    ]
+  },
+  "src/pages/CommunityPostDetailPage.tsx": {
+    "file": "assets/chunks/chunk-DDsS643b2.js",
+    "name": "CommunityPostDetailPage",
+    "src": "src/pages/CommunityPostDetailPage.tsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "_chunk-BcV6V4gx.js",
+      "_chunk-DT64eOQf.js",
+      "_chunk-DZjQoVSL.js",
+      "_chunk-pfriNIp42.js",
+      "_chunk-BWR4gg1p.js",
+      "_chunk-BMswvWHS.js"
+    ]
+  },
+  "src/pages/ContactPage.tsx": {
+    "file": "assets/chunks/chunk-4Lnm6Vrx2.js",
+    "name": "ContactPage",
+    "src": "src/pages/ContactPage.tsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "_chunk-BcV6V4gx.js",
+      "_chunk-DT64eOQf.js",
+      "_chunk-DZjQoVSL.js",
+      "_chunk-BWR4gg1p.js"
+    ]
+  },
+  "src/pages/ConversationPage.tsx": {
+    "file": "assets/chunks/chunk-DCxUKk07.js",
+    "name": "ConversationPage",
+    "src": "src/pages/ConversationPage.tsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "_chunk-BcV6V4gx.js",
+      "_chunk-DPgjZ1PG.js",
+      "_chunk-DT64eOQf.js",
+      "_chunk-Nt_sfQ3j.js",
+      "_chunk-DZjQoVSL.js",
+      "_chunk-BWR4gg1p.js"
+    ]
+  },
+  "src/pages/CozyGamesPage.tsx": {
+    "file": "assets/chunks/chunk-DnQRzCeS.js",
+    "name": "CozyGamesPage",
+    "src": "src/pages/CozyGamesPage.tsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "_chunk-BcV6V4gx.js",
+      "_chunk-DT64eOQf.js",
+      "_chunk-DZjQoVSL.js",
+      "_chunk-BWR4gg1p.js"
+    ]
+  },
+  "src/pages/DiscoveryPage.tsx": {
+    "file": "assets/chunks/chunk-Bu7_GllD.js",
+    "name": "DiscoveryPage",
+    "src": "src/pages/DiscoveryPage.tsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "_chunk-BcV6V4gx.js",
+      "_chunk-DPgjZ1PG.js",
+      "node_modules/vite-plugin-ssr/dist/esm/client/client-routing-runtime/entry.js",
+      "_chunk-DT64eOQf.js",
+      "_chunk-DZjQoVSL.js",
+      "_chunk-BWR4gg1p.js"
+    ]
+  },
+  "src/pages/ForgotPasswordPage.tsx": {
+    "file": "assets/chunks/chunk-t6suSGax.js",
+    "name": "ForgotPasswordPage",
+    "src": "src/pages/ForgotPasswordPage.tsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "_chunk-BcV6V4gx.js",
+      "_chunk-DPgjZ1PG.js",
+      "_chunk-DT64eOQf.js",
+      "_chunk-Nt_sfQ3j.js",
+      "_chunk-DZjQoVSL.js",
+      "_chunk-BWR4gg1p.js"
+    ]
+  },
+  "src/pages/FreeGamesPage.tsx": {
+    "file": "assets/chunks/chunk-CeACniaz.js",
+    "name": "FreeGamesPage",
+    "src": "src/pages/FreeGamesPage.tsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "_chunk-BcV6V4gx.js",
+      "_chunk-DT64eOQf.js",
+      "_chunk-DZjQoVSL.js",
+      "_chunk-BWR4gg1p.js"
+    ]
+  },
+  "src/pages/GameDetailPage.tsx": {
+    "file": "assets/chunks/chunk-p9qIH-rR.js",
+    "name": "GameDetailPage",
+    "src": "src/pages/GameDetailPage.tsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "_chunk-BcV6V4gx.js",
+      "_chunk-DPgjZ1PG.js",
+      "_chunk-DT64eOQf.js",
+      "_chunk-Nt_sfQ3j.js",
+      "_chunk-DZjQoVSL.js",
+      "_chunk-BWR4gg1p.js",
+      "_chunk-BMswvWHS.js"
+    ]
+  },
+  "src/pages/GameForumPage.tsx": {
+    "file": "assets/chunks/chunk-BLn03nHl.js",
+    "name": "GameForumPage",
+    "src": "src/pages/GameForumPage.tsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "_chunk-BcV6V4gx.js",
+      "_chunk-DPgjZ1PG.js",
+      "_chunk-DT64eOQf.js",
+      "_chunk-DZjQoVSL.js",
+      "_chunk-BWR4gg1p.js"
+    ]
+  },
+  "src/pages/GameLibraryPage.tsx": {
+    "file": "assets/chunks/chunk-CnJHXehc.js",
+    "name": "GameLibraryPage",
+    "src": "src/pages/GameLibraryPage.tsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "_chunk-BcV6V4gx.js",
+      "_chunk-DPgjZ1PG.js",
+      "node_modules/vite-plugin-ssr/dist/esm/client/client-routing-runtime/entry.js",
+      "_chunk-DT64eOQf.js",
+      "_chunk-DZjQoVSL.js",
+      "_chunk-C2Oq4gvu.js",
+      "_chunk-BWR4gg1p.js",
+      "_chunk-DkOEEqVl.js"
+    ]
+  },
+  "src/pages/GamePlayPage.tsx": {
+    "file": "assets/chunks/chunk-I-H5-RFe.js",
+    "name": "GamePlayPage",
+    "src": "src/pages/GamePlayPage.tsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "_chunk-BcV6V4gx.js",
+      "_chunk-DPgjZ1PG.js",
+      "_chunk-DT64eOQf.js",
+      "_chunk-DZjQoVSL.js",
+      "_chunk-BWR4gg1p.js"
+    ],
+    "dynamicImports": [
+      "src/components/games/SnakeGame.tsx",
+      "src/components/games/TetrisGame.tsx",
+      "src/components/games/BrickBreakerGame.tsx",
+      "src/components/games/GobangGame.tsx",
+      "src/components/games/MinesweeperGame.tsx",
+      "src/components/games/Game2048.tsx",
+      "src/components/games/MemoryGame.tsx",
+      "src/components/games/PongGame.tsx",
+      "src/components/games/TankBattle.tsx",
+      "src/components/games/MagicTrampoline.tsx",
+      "src/components/games/SpaceShooter.tsx",
+      "src/components/games/WhackAMole.tsx",
+      "src/components/games/MatchThree.tsx",
+      "src/components/games/SpeedRacer.tsx",
+      "src/components/games/BubbleShooter.tsx",
+      "src/components/games/SlidingPuzzle.tsx",
+      "src/components/games/JumpAdventure.tsx",
+      "src/components/games/ArcheryMaster.tsx",
+      "src/components/games/GuandanGame.tsx"
+    ]
+  },
+  "src/pages/GamesPage.tsx": {
+    "file": "assets/chunks/chunk-DwoMBDph.js",
+    "name": "GamesPage",
+    "src": "src/pages/GamesPage.tsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "_chunk-BcV6V4gx.js",
+      "_chunk-DPgjZ1PG.js",
+      "node_modules/vite-plugin-ssr/dist/esm/client/client-routing-runtime/entry.js",
+      "_chunk-DT64eOQf.js",
+      "_chunk-DZjQoVSL.js",
+      "_chunk-C2Oq4gvu.js",
+      "_chunk-BWR4gg1p.js",
+      "_chunk-DkOEEqVl.js",
+      "_chunk-DB4a2fIR2.js"
+    ],
+    "css": [
+      "assets/static/GamesPage.BEgwbCQP.css"
+    ]
+  },
+  "src/pages/GuideDetailPage.tsx": {
+    "file": "assets/chunks/chunk-BkgbY34Q.js",
+    "name": "GuideDetailPage",
+    "src": "src/pages/GuideDetailPage.tsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "_chunk-BcV6V4gx.js",
+      "_chunk-DPgjZ1PG.js",
+      "_chunk-DT64eOQf.js",
+      "_chunk-DZjQoVSL.js",
+      "_chunk-pfriNIp42.js",
+      "_chunk-BWR4gg1p.js",
+      "_chunk-BMswvWHS.js"
+    ]
+  },
+  "src/pages/GuidesPage.tsx": {
+    "file": "assets/chunks/chunk-BDFCvgDC.js",
+    "name": "GuidesPage",
+    "src": "src/pages/GuidesPage.tsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "_chunk-BcV6V4gx.js",
+      "_chunk-DPgjZ1PG.js",
+      "_chunk-DT64eOQf.js",
+      "_chunk-DZjQoVSL.js",
+      "_chunk-BWR4gg1p.js"
+    ]
+  },
+  "src/pages/HomePage.tsx": {
+    "file": "assets/chunks/chunk-KQhv0aac.js",
+    "name": "HomePage",
+    "src": "src/pages/HomePage.tsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "_chunk-B7KqGxY3.js"
+    ]
+  },
+  "src/pages/InboxPage.tsx": {
+    "file": "assets/chunks/chunk-CJtgDmgE.js",
+    "name": "InboxPage",
+    "src": "src/pages/InboxPage.tsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "_chunk-BcV6V4gx.js",
+      "_chunk-DPgjZ1PG.js",
+      "_chunk-DT64eOQf.js",
+      "_chunk-Nt_sfQ3j.js",
+      "_chunk-DZjQoVSL.js",
+      "_chunk-BWR4gg1p.js"
+    ]
+  },
+  "src/pages/LeaderboardPage.tsx": {
+    "file": "assets/chunks/chunk-Bc1hOTQZ.js",
+    "name": "LeaderboardPage",
+    "src": "src/pages/LeaderboardPage.tsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "_chunk-BcV6V4gx.js",
+      "_chunk-DPgjZ1PG.js",
+      "_chunk-DT64eOQf.js",
+      "_chunk-DZjQoVSL.js",
+      "_chunk-BWR4gg1p.js"
+    ]
+  },
+  "src/pages/LegalPage.tsx": {
+    "file": "assets/chunks/chunk-Coj43xzQ.js",
+    "name": "LegalPage",
+    "src": "src/pages/LegalPage.tsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "_chunk-BcV6V4gx.js",
+      "_chunk-DT64eOQf.js",
+      "_chunk-DZjQoVSL.js",
+      "_chunk-BWR4gg1p.js"
+    ]
+  },
+  "src/pages/LoginPage.tsx": {
+    "file": "assets/chunks/chunk-Bj6dZ23J.js",
+    "name": "LoginPage",
+    "src": "src/pages/LoginPage.tsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "_chunk-BcV6V4gx.js",
+      "_chunk-DPgjZ1PG.js",
+      "_chunk-DT64eOQf.js",
+      "_chunk-DZjQoVSL.js",
+      "_chunk-BWR4gg1p.js",
+      "_chunk-DwWs-qM7.js"
+    ]
+  },
+  "src/pages/MyBlogsPage.tsx": {
+    "file": "assets/chunks/chunk-Dv1ucFF2.js",
+    "name": "MyBlogsPage",
+    "src": "src/pages/MyBlogsPage.tsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "_chunk-BcV6V4gx.js",
+      "_chunk-DPgjZ1PG.js",
+      "_chunk-DT64eOQf.js",
+      "_chunk-Nt_sfQ3j.js",
+      "_chunk-DZjQoVSL.js",
+      "_chunk-BWR4gg1p.js"
+    ]
+  },
+  "src/pages/NewsDetailPage.tsx": {
+    "file": "assets/chunks/chunk-DXzgHBjZ.js",
+    "name": "NewsDetailPage",
+    "src": "src/pages/NewsDetailPage.tsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "_chunk-BcV6V4gx.js",
+      "_chunk-DPgjZ1PG.js",
+      "_chunk-DT64eOQf.js",
+      "_chunk-Nt_sfQ3j.js",
+      "_chunk-DZjQoVSL.js",
+      "_chunk-pfriNIp42.js",
+      "_chunk-BWR4gg1p.js",
+      "_chunk-BMswvWHS.js"
+    ]
+  },
+  "src/pages/NewsPage.tsx": {
+    "file": "assets/chunks/chunk-DHHfowu6.js",
+    "name": "NewsPage",
+    "src": "src/pages/NewsPage.tsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "_chunk-BcV6V4gx.js",
+      "_chunk-DPgjZ1PG.js",
+      "_chunk-DT64eOQf.js",
+      "_chunk-DZjQoVSL.js",
+      "_chunk-BWR4gg1p.js",
+      "_chunk-DB4a2fIR2.js"
+    ]
+  },
+  "src/pages/NotFoundPage.tsx": {
+    "file": "assets/chunks/chunk-Dht9Ey1U.js",
+    "name": "NotFoundPage",
+    "src": "src/pages/NotFoundPage.tsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "_chunk-BcV6V4gx.js",
+      "_chunk-DT64eOQf.js",
+      "_chunk-DZjQoVSL.js",
+      "_chunk-BWR4gg1p.js"
+    ]
+  },
+  "src/pages/NotificationsPage.tsx": {
+    "file": "assets/chunks/chunk-Dn4YRx2n.js",
+    "name": "NotificationsPage",
+    "src": "src/pages/NotificationsPage.tsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "_chunk-BcV6V4gx.js",
+      "_chunk-DPgjZ1PG.js",
+      "_chunk-DT64eOQf.js",
+      "_chunk-DZjQoVSL.js",
+      "_chunk-BWR4gg1p.js"
+    ]
+  },
+  "src/pages/OAuthCallbackPage.tsx": {
+    "file": "assets/chunks/chunk-BrkBp4a7.js",
+    "name": "OAuthCallbackPage",
+    "src": "src/pages/OAuthCallbackPage.tsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "_chunk-BcV6V4gx.js",
+      "_chunk-DPgjZ1PG.js",
+      "_chunk-DT64eOQf.js",
+      "_chunk-DZjQoVSL.js",
+      "_chunk-BWR4gg1p.js"
+    ]
+  },
+  "src/pages/OnlineGamesPage.tsx": {
+    "file": "assets/chunks/chunk-DgHzIqFi.js",
+    "name": "OnlineGamesPage",
+    "src": "src/pages/OnlineGamesPage.tsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "_chunk-BcV6V4gx.js",
+      "_chunk-DPgjZ1PG.js",
+      "_chunk-DT64eOQf.js",
+      "_chunk-DZjQoVSL.js",
+      "_chunk-BWR4gg1p.js"
+    ]
+  },
+  "src/pages/PersonalCenterPage.tsx": {
+    "file": "assets/chunks/chunk-scvmZD9J.js",
+    "name": "PersonalCenterPage",
+    "src": "src/pages/PersonalCenterPage.tsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "_chunk-BcV6V4gx.js",
+      "_chunk-DPgjZ1PG.js",
+      "_chunk-DT64eOQf.js",
+      "_chunk-DZjQoVSL.js",
+      "_chunk-BWR4gg1p.js",
+      "src/pages/AchievementsPage.tsx",
+      "src/pages/GameLibraryPage.tsx",
+      "src/pages/InboxPage.tsx"
+    ]
+  },
+  "src/pages/PostNewPage.tsx": {
+    "file": "assets/chunks/chunk-BjEd6hJg.js",
+    "name": "PostNewPage",
+    "src": "src/pages/PostNewPage.tsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "_chunk-BcV6V4gx.js",
+      "_chunk-DT64eOQf.js",
+      "_chunk-Nt_sfQ3j.js",
+      "_chunk-DZjQoVSL.js",
+      "_chunk-BWR4gg1p.js"
+    ]
+  },
+  "src/pages/PressPage.tsx": {
+    "file": "assets/chunks/chunk-CVI_GRi3.js",
+    "name": "PressPage",
+    "src": "src/pages/PressPage.tsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "_chunk-BcV6V4gx.js",
+      "_chunk-DT64eOQf.js",
+      "_chunk-DZjQoVSL.js",
+      "_chunk-BWR4gg1p.js"
+    ]
+  },
+  "src/pages/PrintOrderPage.tsx": {
+    "file": "assets/chunks/chunk-BwywCCmG.js",
+    "name": "PrintOrderPage",
+    "src": "src/pages/PrintOrderPage.tsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "_chunk-BcV6V4gx.js",
+      "_chunk-DPgjZ1PG.js",
+      "_chunk-DT64eOQf.js",
+      "_chunk-DZjQoVSL.js",
+      "_chunk-BWR4gg1p.js"
+    ]
+  },
+  "src/pages/ProfilePage.tsx": {
+    "file": "assets/chunks/chunk-Cgnh92s_.js",
+    "name": "ProfilePage",
+    "src": "src/pages/ProfilePage.tsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "_chunk-BcV6V4gx.js",
+      "_chunk-DPgjZ1PG.js",
+      "_chunk-DT64eOQf.js",
+      "_chunk-Nt_sfQ3j.js",
+      "_chunk-DZjQoVSL.js",
+      "_chunk-BWR4gg1p.js"
+    ]
+  },
+  "src/pages/RegisterPage.tsx": {
+    "file": "assets/chunks/chunk-DsJxA0AR.js",
+    "name": "RegisterPage",
+    "src": "src/pages/RegisterPage.tsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "_chunk-BcV6V4gx.js",
+      "_chunk-DPgjZ1PG.js",
+      "_chunk-DT64eOQf.js",
+      "_chunk-DZjQoVSL.js",
+      "_chunk-BWR4gg1p.js",
+      "_chunk-DwWs-qM7.js"
+    ]
+  },
+  "src/pages/ResetPasswordPage.tsx": {
+    "file": "assets/chunks/chunk-EFfxMfmw.js",
+    "name": "ResetPasswordPage",
+    "src": "src/pages/ResetPasswordPage.tsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "_chunk-BcV6V4gx.js",
+      "_chunk-DPgjZ1PG.js",
+      "_chunk-DT64eOQf.js",
+      "_chunk-DZjQoVSL.js",
+      "_chunk-BWR4gg1p.js"
+    ]
+  },
+  "src/pages/ReviewDetailPage.tsx": {
+    "file": "assets/chunks/chunk-x2-wjvgf.js",
+    "name": "ReviewDetailPage",
+    "src": "src/pages/ReviewDetailPage.tsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "_chunk-BcV6V4gx.js",
+      "_chunk-DT64eOQf.js",
+      "_chunk-DZjQoVSL.js",
+      "_chunk-pfriNIp42.js",
+      "_chunk-BWR4gg1p.js",
+      "_chunk-BMswvWHS.js"
+    ]
+  },
+  "src/pages/ReviewNewPage.tsx": {
+    "file": "assets/chunks/chunk-Daa7MhQe.js",
+    "name": "ReviewNewPage",
+    "src": "src/pages/ReviewNewPage.tsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "_chunk-BcV6V4gx.js",
+      "_chunk-DPgjZ1PG.js",
+      "_chunk-DT64eOQf.js",
+      "_chunk-Nt_sfQ3j.js",
+      "_chunk-DZjQoVSL.js",
+      "_chunk-BWR4gg1p.js"
+    ]
+  },
+  "src/pages/ReviewsPage.tsx": {
+    "file": "assets/chunks/chunk-BesYPgx6.js",
+    "name": "ReviewsPage",
+    "src": "src/pages/ReviewsPage.tsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "_chunk-BcV6V4gx.js",
+      "_chunk-DPgjZ1PG.js",
+      "_chunk-DT64eOQf.js",
+      "_chunk-DZjQoVSL.js",
+      "_chunk-BWR4gg1p.js"
+    ]
+  },
+  "src/pages/SearchResultsPage.tsx": {
+    "file": "assets/chunks/chunk-DijVaBk2.js",
+    "name": "SearchResultsPage",
+    "src": "src/pages/SearchResultsPage.tsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "_chunk-BcV6V4gx.js",
+      "_chunk-DPgjZ1PG.js",
+      "_chunk-DT64eOQf.js",
+      "_chunk-DZjQoVSL.js",
+      "_chunk-BWR4gg1p.js",
+      "_chunk-BMswvWHS.js"
+    ]
+  },
+  "src/pages/TrendingPage.tsx": {
+    "file": "assets/chunks/chunk-8O04e_ol.js",
+    "name": "TrendingPage",
+    "src": "src/pages/TrendingPage.tsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "_chunk-BcV6V4gx.js",
+      "_chunk-DPgjZ1PG.js",
+      "_chunk-DT64eOQf.js",
+      "_chunk-DZjQoVSL.js",
+      "_chunk-BWR4gg1p.js"
+    ]
+  },
+  "src/pages/VerifyEmailPage.tsx": {
+    "file": "assets/chunks/chunk-knmJF3xw.js",
+    "name": "VerifyEmailPage",
+    "src": "src/pages/VerifyEmailPage.tsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "_chunk-BcV6V4gx.js",
+      "_chunk-DPgjZ1PG.js",
+      "_chunk-DT64eOQf.js",
+      "_chunk-Nt_sfQ3j.js",
+      "_chunk-DZjQoVSL.js",
+      "_chunk-BWR4gg1p.js"
+    ]
+  },
+  "src/pages/admin/About/AboutManagement.tsx": {
+    "file": "assets/chunks/chunk-DIpO1JiU.js",
+    "name": "AboutManagement",
+    "src": "src/pages/admin/About/AboutManagement.tsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "_chunk-BcV6V4gx.js",
+      "_chunk-DPgjZ1PG.js",
+      "_chunk-DT64eOQf.js",
+      "_chunk-Nt_sfQ3j.js",
+      "_chunk-DZjQoVSL.js",
+      "_chunk-BWR4gg1p.js"
+    ]
+  },
+  "src/pages/admin/Analytics/index.tsx": {
+    "file": "assets/chunks/chunk-CMtNlKbn2.js",
+    "name": "Analytics",
+    "src": "src/pages/admin/Analytics/index.tsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "_chunk-BcV6V4gx.js",
+      "_chunk-DPgjZ1PG.js",
+      "node_modules/vite-plugin-ssr/dist/esm/client/client-routing-runtime/entry.js",
+      "_chunk-DT64eOQf.js",
+      "_chunk-DZjQoVSL.js",
+      "_chunk-BWR4gg1p.js"
+    ]
+  },
+  "src/pages/admin/AuditLogs/index.tsx": {
+    "file": "assets/chunks/chunk-CVYWU4gG2.js",
+    "name": "AuditLogs",
+    "src": "src/pages/admin/AuditLogs/index.tsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "_chunk-BcV6V4gx.js",
+      "_chunk-DPgjZ1PG.js",
+      "_chunk-DZjQoVSL.js",
+      "_chunk-BWR4gg1p.js"
+    ]
+  },
+  "src/pages/admin/Backups/index.tsx": {
+    "file": "assets/chunks/chunk-BHAezILA2.js",
+    "name": "Backups",
+    "src": "src/pages/admin/Backups/index.tsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "_chunk-BcV6V4gx.js",
+      "_chunk-DPgjZ1PG.js",
+      "_chunk-DT64eOQf.js",
+      "_chunk-Nt_sfQ3j.js",
+      "_chunk-DZjQoVSL.js",
+      "_chunk-BWR4gg1p.js"
+    ]
+  },
+  "src/pages/admin/Content/index.tsx": {
+    "file": "assets/chunks/chunk-2UCb8rEy2.js",
+    "name": "Content",
+    "src": "src/pages/admin/Content/index.tsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "_chunk-BcV6V4gx.js",
+      "_chunk-DPgjZ1PG.js",
+      "_chunk-DT64eOQf.js",
+      "_chunk-Nt_sfQ3j.js",
+      "_chunk-DZjQoVSL.js",
+      "_chunk-BWR4gg1p.js",
+      "_chunk-B6F5Z-B42.js",
+      "_chunk-Cq3Ja6zB2.js"
+    ]
+  },
+  "src/pages/admin/Dashboard/index.tsx": {
+    "file": "assets/chunks/chunk-Bw_CYH9R2.js",
+    "name": "Dashboard",
+    "src": "src/pages/admin/Dashboard/index.tsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "_chunk-BcV6V4gx.js",
+      "_chunk-DPgjZ1PG.js",
+      "_chunk-DT64eOQf.js",
+      "_chunk-DZjQoVSL.js",
+      "_chunk-BWR4gg1p.js"
+    ]
+  },
+  "src/pages/admin/Deployments/index.tsx": {
+    "file": "assets/chunks/chunk-BDNEiPSL2.js",
+    "name": "Deployments",
+    "src": "src/pages/admin/Deployments/index.tsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "_chunk-BcV6V4gx.js",
+      "_chunk-DPgjZ1PG.js",
+      "_chunk-DT64eOQf.js",
+      "_chunk-Nt_sfQ3j.js",
+      "_chunk-DZjQoVSL.js",
+      "_chunk-BWR4gg1p.js"
+    ]
+  },
+  "src/pages/admin/Email/index.tsx": {
+    "file": "assets/chunks/chunk-CQImKJz_2.js",
+    "name": "Email",
+    "src": "src/pages/admin/Email/index.tsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "_chunk-BcV6V4gx.js",
+      "_chunk-DPgjZ1PG.js",
+      "_chunk-DT64eOQf.js",
+      "_chunk-Nt_sfQ3j.js",
+      "_chunk-DZjQoVSL.js",
+      "_chunk-BWR4gg1p.js"
+    ]
+  },
+  "src/pages/admin/Games/index.tsx": {
+    "file": "assets/chunks/chunk-DtFvFDok2.js",
+    "name": "Games",
+    "src": "src/pages/admin/Games/index.tsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "_chunk-BcV6V4gx.js",
+      "_chunk-DPgjZ1PG.js",
+      "_chunk-DT64eOQf.js",
+      "_chunk-Nt_sfQ3j.js",
+      "_chunk-DZjQoVSL.js",
+      "_chunk-BWR4gg1p.js",
+      "_chunk-Cq3Ja6zB2.js"
+    ]
+  },
+  "src/pages/admin/Login/index.tsx": {
+    "file": "assets/chunks/chunk-D2CkxWr72.js",
+    "name": "Login",
+    "src": "src/pages/admin/Login/index.tsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "_chunk-BcV6V4gx.js",
+      "_chunk-DPgjZ1PG.js",
+      "_chunk-DT64eOQf.js",
+      "_chunk-Nt_sfQ3j.js",
+      "_chunk-DZjQoVSL.js",
+      "_chunk-BWR4gg1p.js"
+    ]
+  },
+  "src/pages/admin/Monitoring/index.tsx": {
+    "file": "assets/chunks/chunk-DVF85t2X2.js",
+    "name": "Monitoring",
+    "src": "src/pages/admin/Monitoring/index.tsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "_chunk-BcV6V4gx.js",
+      "_chunk-DPgjZ1PG.js",
+      "_chunk-DT64eOQf.js",
+      "_chunk-DZjQoVSL.js",
+      "_chunk-BWR4gg1p.js"
+    ]
+  },
+  "src/pages/admin/Notifications/index.tsx": {
+    "file": "assets/chunks/chunk--gC5q-hb2.js",
+    "name": "Notifications",
+    "src": "src/pages/admin/Notifications/index.tsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "_chunk-BcV6V4gx.js",
+      "_chunk-DPgjZ1PG.js",
+      "_chunk-DT64eOQf.js",
+      "_chunk-Nt_sfQ3j.js",
+      "_chunk-DZjQoVSL.js",
+      "_chunk-BWR4gg1p.js"
+    ]
+  },
+  "src/pages/admin/Profiling/index.tsx": {
+    "file": "assets/chunks/chunk-PRl-aP4t2.js",
+    "name": "Profiling",
+    "src": "src/pages/admin/Profiling/index.tsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "_chunk-BcV6V4gx.js",
+      "_chunk-DPgjZ1PG.js",
+      "node_modules/vite-plugin-ssr/dist/esm/client/client-routing-runtime/entry.js",
+      "_chunk-DT64eOQf.js",
+      "_chunk-Nt_sfQ3j.js",
+      "_chunk-DZjQoVSL.js",
+      "_chunk-BWR4gg1p.js"
+    ]
+  },
+  "src/pages/admin/Recommend/index.tsx": {
+    "file": "assets/chunks/chunk-ChMN0SLT2.js",
+    "name": "Recommend",
+    "src": "src/pages/admin/Recommend/index.tsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "_chunk-BcV6V4gx.js",
+      "_chunk-DPgjZ1PG.js",
+      "_chunk-DT64eOQf.js",
+      "_chunk-Nt_sfQ3j.js",
+      "_chunk-DZjQoVSL.js",
+      "_chunk-BWR4gg1p.js"
+    ]
+  },
+  "src/pages/admin/ReviewQueue/index.tsx": {
+    "file": "assets/chunks/chunk-BZBixJXG2.js",
+    "name": "ReviewQueue",
+    "src": "src/pages/admin/ReviewQueue/index.tsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "_chunk-BcV6V4gx.js",
+      "_chunk-DPgjZ1PG.js",
+      "_chunk-DT64eOQf.js",
+      "_chunk-Nt_sfQ3j.js",
+      "_chunk-DZjQoVSL.js",
+      "_chunk-BWR4gg1p.js"
+    ]
+  },
+  "src/pages/admin/Settings/index.tsx": {
+    "file": "assets/chunks/chunk-DfOgSsNj2.js",
+    "name": "Settings",
+    "src": "src/pages/admin/Settings/index.tsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "_chunk-BcV6V4gx.js",
+      "_chunk-DPgjZ1PG.js",
+      "_chunk-DT64eOQf.js",
+      "_chunk-Nt_sfQ3j.js",
+      "_chunk-DZjQoVSL.js",
+      "_chunk-BWR4gg1p.js"
+    ]
+  },
+  "src/pages/admin/Uploads/index.tsx": {
+    "file": "assets/chunks/chunk-I1gKwzZU2.js",
+    "name": "Uploads",
+    "src": "src/pages/admin/Uploads/index.tsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "_chunk-BcV6V4gx.js",
+      "_chunk-DPgjZ1PG.js",
+      "_chunk-DT64eOQf.js",
+      "_chunk-Nt_sfQ3j.js",
+      "_chunk-DZjQoVSL.js",
+      "_chunk-BWR4gg1p.js"
+    ]
+  },
+  "src/pages/admin/Users/index.tsx": {
+    "file": "assets/chunks/chunk-DSGKM3h92.js",
+    "name": "Users",
+    "src": "src/pages/admin/Users/index.tsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "_chunk-BcV6V4gx.js",
+      "_chunk-DPgjZ1PG.js",
+      "_chunk-DT64eOQf.js",
+      "_chunk-Nt_sfQ3j.js",
+      "_chunk-DZjQoVSL.js",
+      "_chunk-BWR4gg1p.js",
+      "_chunk-Cq3Ja6zB2.js"
+    ]
+  },
+  "src/pages/admin/components/AdminLayout.tsx": {
+    "file": "assets/chunks/chunk-DZrZXInW2.js",
+    "name": "AdminLayout",
+    "src": "src/pages/admin/components/AdminLayout.tsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "_chunk-BcV6V4gx.js",
+      "_chunk-DPgjZ1PG.js",
+      "_chunk-DT64eOQf.js",
+      "_chunk-DZjQoVSL.js",
+      "_chunk-BWR4gg1p.js",
+      "src/pages/admin/Login/index.tsx"
+    ]
+  }
+}
