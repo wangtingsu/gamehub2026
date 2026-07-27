@@ -263,6 +263,14 @@ async function render(pageContext: PageContextServer) {
   const dehydratedState = dehydrate(serverQueryClient)
   const isProduction = typeof process !== "undefined" && process.env.NODE_ENV === "production"
 
+  // 序列化 Vike 页面上下文（客户端 hydration 需要）
+  const pageContextSerialized = JSON.stringify({
+    _pageId: (pageContext as any)._pageId,
+    urlPathname: pageContext.urlPathname,
+    routeParams: (pageContext as any).routeParams,
+    Page: undefined, // 不可序列化，由客户端动态加载
+  }).replace(/</g, "\\u003c")
+
   // 根据 URL 获取页面特定的 SEO 元数据
   const pageMeta = getPageMeta(urlPathname, isEn)
 
@@ -318,6 +326,7 @@ async function render(pageContext: PageContextServer) {
   </head>
   <body>
     <div id="root"></div>
+    <script id="vike_pageContext" type="application/json">${pageContextSerialized}<\/script>
     ${clientScript}
     <script>
       window.__DEHYDRATED_STATE__ = ${JSON.stringify(dehydratedState).replace(/</g, "\\u003c")}
