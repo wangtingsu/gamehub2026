@@ -176,6 +176,7 @@ export default defineConfig(({ mode }) => ({
     force: true,
   },
   ssr: {
+    noExternal: true,
     target: 'node',
   },
 }))
