@@ -18,14 +18,13 @@ import { VitePWA } from 'vite-plugin-pwa'
 import { ViteImageOptimizer } from 'vite-plugin-image-optimizer'
 
 // https://vite.dev/config/
-export default defineConfig({
+export default defineConfig(({ mode }) => ({
   // 资源基础路径，可通过 VITE_CDN_URL 环境变量覆盖，用于 CDN 部署
   base: process.env.VITE_CDN_URL || '/',
   plugins: [
     react({}),
-    // Vike SSR — enabled in production, disabled in dev
-    // (Vite 8 ESM module runner + Vike V1 page format migration required for dev SSR)
-    ...(process.env.NODE_ENV === 'production' ? [vike()] : []),
+    // Vike SSR — enabled in production build, disabled in dev
+    ...(mode === 'production' ? [vike()] : []),
     // PWA 配置：可通过 VITE_DISABLE_PWA 环境变量关闭
     process.env.VITE_DISABLE_PWA ? undefined : VitePWA({
       registerType: 'autoUpdate',
@@ -179,4 +178,4 @@ export default defineConfig({
   ssr: {
     target: 'node',
   },
-})
+}))
