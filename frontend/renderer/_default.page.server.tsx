@@ -335,6 +335,7 @@ async function render(pageContext: PageContextServer) {
     <\/script>
   </body>
 </html>`
+    }
   } catch (err) {
     console.error('[SSR-RENDER] render() failed:', err instanceof Error ? err.message : err)
     throw err
