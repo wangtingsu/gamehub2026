@@ -241,6 +241,8 @@ async function prefetchData(queryClient: QueryClient, urlPathname: string) {
  * @returns 包含完整 HTML 文档字符串的对象，供框架返回给客户端
  */
 async function render(pageContext: PageContextServer) {
+  try {
+  console.log('[SSR-RENDER] render() called, url:', pageContext.urlPathname)
   const { urlPathname } = pageContext
 
   // 仅匹配已知语言代码（避免 /oauth、/admin 等路径被误识别为语言）
@@ -333,5 +335,8 @@ async function render(pageContext: PageContextServer) {
     <\/script>
   </body>
 </html>`
+  } catch (err) {
+    console.error('[SSR-RENDER] render() failed:', err instanceof Error ? err.message : err)
+    throw err
   }
 }
