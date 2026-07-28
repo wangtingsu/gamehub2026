@@ -502,7 +502,7 @@ export const verifyEmail = async (verificationToken: string): Promise<void> => {
   // 创建用户
   const result = await execute(
     `INSERT INTO users (username, email, password_hash, display_name, role, email_verified, is_active, created_at, updated_at)
-     VALUES (?, ?, ?, ?, 'user', 1, 1, ?, ?)`,
+     VALUES (?, ?, ?, ?, 'user', TRUE, TRUE, ?, ?)`,
     [reg.username, reg.email, reg.password_hash, reg.username, new Date().toISOString(), new Date().toISOString()]
   );
 
