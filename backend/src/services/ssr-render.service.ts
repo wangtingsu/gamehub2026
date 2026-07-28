@@ -155,8 +155,8 @@ function getHydrateAssets(): { headTags: string; bodyScripts: string } {
       }
     }
 
-    // Hydration manifest 不存在或格式不匹配，降级到 assets.json
-    logger.warn('hydration manifest 不可用，降级到 assets.json')
+    // Hydration manifest 不存在或格式不匹配，使用主构建的 assets.json
+    logger.info('hydration manifest 未找到，使用主构建 assets.json 中的 client entry')
     return getClientEntryAssets()
   } catch (error) {
     logger.error('读取 hydration 资源失败:', error)

@@ -10,6 +10,9 @@ import logger from '../utils/logger';
 import { query } from '../db';
 import type { RecommendationItem } from '../types/discovery-types';
 import { getWeightedRatingSubquery } from './level.service';
+import config from '../config';
+
+const isPostgres = config.database?.type === 'postgres';
 
 /**
  * 获取个性化推荐（基于用户收藏/游戏库/评测历史）
@@ -254,6 +257,10 @@ export const getRelatedContent = async (
  * @returns 热门游戏推荐列表
  */
 export const getTrendingContent = async (limit: number = 10): Promise<RecommendationItem[]> => {
+  const newGameBonus = isPostgres
+    ? `CASE WHEN g.created_at > NOW() - INTERVAL '30 days' THEN 50 ELSE 0 END`
+    : `CASE WHEN g.created_at > datetime('now', '-30 days') THEN 50 ELSE 0 END`;
+
   try {
     const results = await query(
       `SELECT g.id, g.title, g.cover_image_url,
@@ -262,7 +269,7 @@ export const getTrendingContent = async (limit: number = 10): Promise<Recommenda
               (SELECT COUNT(*) FROM reviews WHERE game_id = g.id) as review_count,
               g.created_at,
               (g.views * 0.3 + (SELECT COUNT(*) FROM reviews WHERE game_id = g.id) * 10 * 0.4 +
-               CASE WHEN EXTRACT(EPOCH FROM NOW() - g.created_at) < 30 THEN 50 ELSE 0 END * 0.3) as hot_score
+               ${newGameBonus} * 0.3) as hot_score
        FROM games g
        ORDER BY hot_score DESC
        LIMIT ?`,

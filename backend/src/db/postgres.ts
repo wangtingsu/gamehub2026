@@ -1482,6 +1482,59 @@ export const runMigrations = async (): Promise<void> => {
       `CREATE INDEX IF NOT EXISTS idx_community_posts_game_id ON community_posts(game_id)`,
     ]);
 
+    /**
+     * 迁移 025：补充缺失的列和博客表
+     *
+     * 修复历史遗留问题：
+     * - news 表缺少 is_pinned 列（代码中使用但初始迁移未包含）
+     * - reviews 表缺少 summary / pros / cons 列
+     * - blog_spaces 和 blog_articles 表完全缺失（代码中使用但从未创建）
+     */
+    await apply('025_add_blog_tables_and_fix_news', [
+      `ALTER TABLE news ADD COLUMN IF NOT EXISTS is_pinned BOOLEAN DEFAULT FALSE`,
+      `ALTER TABLE reviews ADD COLUMN IF NOT EXISTS summary TEXT`,
+      `ALTER TABLE reviews ADD COLUMN IF NOT EXISTS pros TEXT`,
+      `ALTER TABLE reviews ADD COLUMN IF NOT EXISTS cons TEXT`,
+      `CREATE TABLE IF NOT EXISTS blog_spaces (
+        id SERIAL PRIMARY KEY,
+        name TEXT NOT NULL,
+        slug TEXT UNIQUE NOT NULL,
+        cover_image_url TEXT,
+        description TEXT,
+        sort_order INTEGER DEFAULT 0,
+        is_active BOOLEAN NOT NULL DEFAULT TRUE,
+        created_at TIMESTAMPTZ DEFAULT NOW(),
+        updated_at TIMESTAMPTZ DEFAULT NOW()
+      )`,
+      `CREATE TABLE IF NOT EXISTS blog_articles (
+        id SERIAL PRIMARY KEY,
+        title TEXT NOT NULL,
+        slug TEXT UNIQUE NOT NULL,
+        content TEXT NOT NULL,
+        excerpt TEXT,
+        cover_image_url TEXT,
+        author_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+        space_id INTEGER NOT NULL REFERENCES blog_spaces(id) ON DELETE CASCADE,
+        category TEXT NOT NULL DEFAULT '博客',
+        tags JSONB DEFAULT '[]',
+        is_published BOOLEAN DEFAULT FALSE,
+        is_pinned BOOLEAN DEFAULT FALSE,
+        published_at TIMESTAMPTZ,
+        views INTEGER DEFAULT 0,
+        likes INTEGER DEFAULT 0,
+        comments INTEGER DEFAULT 0,
+        review_status TEXT NOT NULL DEFAULT 'pending',
+        review_comment TEXT,
+        reviewed_by INTEGER REFERENCES users(id),
+        reviewed_at TIMESTAMPTZ,
+        deleted_at TIMESTAMPTZ,
+        created_at TIMESTAMPTZ DEFAULT NOW(),
+        updated_at TIMESTAMPTZ DEFAULT NOW()
+      )`,
+      `ALTER TABLE email_templates DROP CONSTRAINT IF EXISTS email_templates_name_key`,
+      `ALTER TABLE email_templates ADD CONSTRAINT email_templates_name_key UNIQUE (name)`,
+    ]);
+
     logger.info('PostgreSQL数据库迁移完成');
   } catch (error) {
     logger.error('PostgreSQL数据库迁移失败:', error);
