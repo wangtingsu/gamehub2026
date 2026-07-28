@@ -10,7 +10,7 @@ import react from '@vitejs/plugin-react'
 
 // https://vite.dev/config/
 export default defineConfig({
-  base: '/',
+  base: '/admin/',
   // 强制使用 PostCSS（Tailwind CSS 依赖 PostCSS，Vite 8 默认 Lightning CSS 不支持 @tailwind 指令）
   css: {
     transformer: 'postcss',
