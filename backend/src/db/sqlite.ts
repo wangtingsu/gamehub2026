@@ -185,9 +185,12 @@ export const query = async <T = any>(sql: string, params: any[] = []): Promise<T
     throw new Error('数据库未连接');
   }
 
+  // 将 PostgreSQL 风格的 $N 占位符转换为 SQLite 的 ? 占位符
+  const convertedSql = sql.replace(/\$\d+/g, '?');
+
   const start = Date.now();
   try {
-    const stmt = db.prepare(sql);
+    const stmt = db.prepare(convertedSql);
     const result = params.length > 0 ? stmt.all(...params) : stmt.all();
     const duration = Date.now() - start;
 
@@ -232,9 +235,12 @@ export const execute = async (sql: string, params: any[] = []): Promise<{ change
     throw new Error('数据库未连接');
   }
 
+  // 将 PostgreSQL 风格的 $N 占位符转换为 SQLite 的 ? 占位符
+  const convertedSql = sql.replace(/\$\d+/g, '?');
+
   const start = Date.now();
   try {
-    const stmt = db.prepare(sql);
+    const stmt = db.prepare(convertedSql);
     const result = stmt.run(...params);
     const duration = Date.now() - start;
 
