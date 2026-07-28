@@ -21,6 +21,10 @@ import { ViteImageOptimizer } from 'vite-plugin-image-optimizer'
 export default defineConfig(({ mode }) => ({
   // 资源基础路径，可通过 VITE_CDN_URL 环境变量覆盖，用于 CDN 部署
   base: process.env.VITE_CDN_URL || '/',
+  // 强制使用 PostCSS（Tailwind CSS 依赖 PostCSS，Vite 8 默认 Lightning CSS 不支持 @tailwind 指令）
+  css: {
+    transformer: 'postcss',
+  },
   plugins: [
     react({}),
     // Vike SSR — enabled in production build, disabled in dev
@@ -103,6 +107,7 @@ export default defineConfig(({ mode }) => ({
     minify: 'terser',
     manifest: true,
     sourcemap: process.env.NODE_ENV !== 'production',
+    cssMinify: 'lightningcss',
     rollupOptions: {
       output: {
         // 代码分割策略：将不同模块分离为独立 chunk，优化加载性能
