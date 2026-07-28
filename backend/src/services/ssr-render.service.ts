@@ -80,12 +80,47 @@ function getClientEntryAssets(): { headTags: string; bodyScripts: string } {
     // 在 assets.json 中查找客户端入口（vite-plugin-ssr 的 _default.page.client）
     let entryFile = ''
     const entryCss: string[] = []
+    const seenCss = new Set<string>()
+
+    // 递归收集模块及其依赖的 CSS
+    const collectCss = (moduleKey: string, visited = new Set<string>()) => {
+      if (visited.has(moduleKey)) return
+      visited.add(moduleKey)
+      const mod = manifest[moduleKey]
+      if (!mod) return
+      // 收集此模块的 CSS
+      if (Array.isArray(mod.css)) {
+        for (const css of mod.css) {
+          if (!seenCss.has(css)) {
+            seenCss.add(css)
+            entryCss.push(css)
+          }
+        }
+      }
+      // 递归遍历 imports 和 dynamicImports
+      const deps = [...(mod.imports || []), ...(mod.dynamicImports || [])]
+      for (const dep of deps) {
+        collectCss(dep, visited)
+      }
+    }
+
     for (const [key, value] of Object.entries(manifest)) {
       const entry = value as any
       if (entry.isEntry && key.includes('_default.page.client')) {
         entryFile = entry.file
+        // 收集入口自身的 CSS
         if (Array.isArray(entry.css)) {
-          entryCss.push(...entry.css)
+          for (const css of entry.css) {
+            if (!seenCss.has(css)) {
+              seenCss.add(css)
+              entryCss.push(css)
+            }
+          }
+        }
+        // 遍历依赖树收集所有 CSS
+        const deps = [...(entry.imports || []), ...(entry.dynamicImports || [])]
+        for (const dep of deps) {
+          collectCss(dep)
         }
         break
       }
@@ -169,7 +204,6 @@ function getHydrateAssets(): { headTags: string; bodyScripts: string } {
  */
 function getClientAssets(): { headTags: string; bodyScripts: string } {
   try {
-    /* 每次从磁盘读取，避免缓存过期问题 */
     const possiblePaths = [
       '/app/frontend-dist/assets.json',
       path.join(__dirname, '../../../frontend/dist/assets.json'),
@@ -193,16 +227,44 @@ function getClientAssets(): { headTags: string; bodyScripts: string } {
       return { headTags: '', bodyScripts: '' }
     }
 
-    // 查找 client 入口（server-routing，不导出客户端路由钩子时）
+    // 查找 client 入口
     let entryFile = ''
     const entryCss: string[] = []
+    const seenCss = new Set<string>()
+
+    // 递归收集模块及其依赖的 CSS
+    const collectCss = (moduleKey: string, visited = new Set<string>()) => {
+      if (visited.has(moduleKey)) return
+      visited.add(moduleKey)
+      const mod = manifest[moduleKey]
+      if (!mod) return
+      if (Array.isArray(mod.css)) {
+        for (const css of mod.css) {
+          if (!seenCss.has(css)) {
+            seenCss.add(css)
+            entryCss.push(css)
+          }
+        }
+      }
+      const deps = [...(mod.imports || []), ...(mod.dynamicImports || [])]
+      for (const dep of deps) {
+        collectCss(dep, visited)
+      }
+    }
+
     for (const [key, value] of Object.entries(manifest)) {
       const entry = value as any
       if (entry.isEntry && key.includes('renderer/_default.page.client')) {
         entryFile = entry.file
         logger.info(`getClientAssets: 找到入口 ${entryFile} (来源: ${manifestPath})`)
         if (Array.isArray(entry.css)) {
-          entryCss.push(...entry.css)
+          for (const css of entry.css) {
+            if (!seenCss.has(css)) { seenCss.add(css); entryCss.push(css) }
+          }
+        }
+        const deps = [...(entry.imports || []), ...(entry.dynamicImports || [])]
+        for (const dep of deps) {
+          collectCss(dep)
         }
         break
       }
