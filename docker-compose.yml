@@ -71,6 +71,14 @@ services:
       SENTRY_DSN: ${SENTRY_DSN:-}
       SITE_URL: https://www.gghubs.com
       DEEPSEEK_API_KEY: ${DEEPSEEK_API_KEY:-}
+      # OAuth 社交登录
+      GOOGLE_CLIENT_ID: ${GOOGLE_CLIENT_ID:-}
+      GOOGLE_CLIENT_SECRET: ${GOOGLE_CLIENT_SECRET:-}
+      GOOGLE_CALLBACK_URL: ${GOOGLE_CALLBACK_URL:-https://www.gghubs.com/api/v1/auth/oauth/google/callback}
+      OAUTH_FRONTEND_URL: ${OAUTH_FRONTEND_URL:-https://www.gghubs.com}
+      GITHUB_CLIENT_ID: ${GITHUB_CLIENT_ID:-}
+      GITHUB_CLIENT_SECRET: ${GITHUB_CLIENT_SECRET:-}
+      GITHUB_CALLBACK_URL: ${GITHUB_CALLBACK_URL:-https://www.gghubs.com/api/v1/auth/oauth/github/callback}
       # 短信服务（腾讯云 SMS）
       SMS_PROVIDER: ${SMS_PROVIDER:-tencent}
       SMS_TEST_MODE: ${SMS_TEST_MODE:-false}
@@ -141,6 +149,14 @@ services:
       ENABLE_CACHING: "true"
       ENABLE_RATE_LIMIT: "true"
       UPLOAD_PATH: /app/uploads
+      # OAuth 社交登录
+      GOOGLE_CLIENT_ID: ${GOOGLE_CLIENT_ID:-}
+      GOOGLE_CLIENT_SECRET: ${GOOGLE_CLIENT_SECRET:-}
+      GOOGLE_CALLBACK_URL: ${GOOGLE_CALLBACK_URL:-https://www.gghubs.com/api/v1/auth/oauth/google/callback}
+      OAUTH_FRONTEND_URL: ${OAUTH_FRONTEND_URL:-https://www.gghubs.com}
+      GITHUB_CLIENT_ID: ${GITHUB_CLIENT_ID:-}
+      GITHUB_CLIENT_SECRET: ${GITHUB_CLIENT_SECRET:-}
+      GITHUB_CALLBACK_URL: ${GITHUB_CALLBACK_URL:-https://www.gghubs.com/api/v1/auth/oauth/github/callback}
       # 短信服务（腾讯云 SMS）
       SMS_PROVIDER: ${SMS_PROVIDER:-tencent}
       SMS_TEST_MODE: ${SMS_TEST_MODE:-false}
