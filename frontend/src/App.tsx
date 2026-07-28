@@ -43,6 +43,12 @@ const SafeNavigate = (props: { to: string; replace?: boolean }) => {
   return <Navigate {...props} />;
 };
 
+	const SafeNavigateWithQuery = (props: { to: string; replace?: boolean }) => {
+		if (typeof window === 'undefined') return null;
+		const currentSearch = window.location.search;
+		return <Navigate to={props.to + currentSearch} replace={props.replace} />;
+	};
+
 /**
  * 语言代码到 URL 前缀的映射表
  *
@@ -295,8 +301,8 @@ function App() {
                 <Route path="/" element={<RootRedirect />} />
                 {/* /login 重定向到带语言前缀的登录页 */}
                 <Route path="/login" element={<RootRedirect path="login" />} />
-                {/* /verify-email 重定向到带语言前缀的验证邮箱页 */}
-                <Route path="/verify-email" element={<SafeNavigate to="/cn/verify-email" replace />} />
+                {/* /verify-email 重定向到带语言前缀的验证邮箱页（保留 query 参数） */}
+                <Route path="/verify-email" element={<SafeNavigateWithQuery to="/cn/verify-email" replace />} />
 
                 {/* OAuth 回调页面 */}
                 <Route path="/oauth/callback" element={

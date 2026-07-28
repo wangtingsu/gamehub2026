@@ -46,7 +46,7 @@ import { initSentry } from './monitoring/sentry';
 import session from 'express-session';
 import passport from 'passport';
 import authRoutes from './routes/auth.routes';
-import smsRoutes from './routes/sms.routes';
+// import smsRoutes from './routes/sms.routes'; // 手机短信功能已禁用
 import oauthRoutes from './routes/oauth.routes';
 import userRoutes from './routes/user.routes';
 import gameRoutes from './routes/game.routes';
@@ -301,7 +301,7 @@ app.use(rateLimiters.public);
 
 // API路由
 app.use(`${config.apiPrefix}/auth`, authRoutes);
-app.use(`${config.apiPrefix}/auth`, smsRoutes);
+// app.use(`${config.apiPrefix}/auth`, smsRoutes); // 手机短信功能已禁用
 app.use(`${config.apiPrefix}/auth`, oauthRoutes);
 app.use(`${config.apiPrefix}/users`, userRoutes);
 app.use(`${config.apiPrefix}/games`, gameRoutes);

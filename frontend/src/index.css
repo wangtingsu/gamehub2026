@@ -825,6 +825,10 @@ img, .leaflet-container, .map-container {
 [data-theme] .ant-input-affix-wrapper,
 [data-theme] .ant-input-search .ant-input { background-color: var(--c-input) !important; border-color: var(--c-border) !important; color: var(--c-text) !important; }
 [data-theme] .ant-input::placeholder { color: var(--c-text2) !important; }
+
+/* 表单 help/explain 错误文字区域背景透明 */
+[data-theme] .ant-form-item-explain,
+[data-theme] .ant-form-item-explain-error { background: transparent !important; }
 [data-theme] .ant-select-selector { background-color: var(--c-input) !important; border-color: var(--c-border) !important; color: var(--c-text) !important; }
 
 /* 卡片 */

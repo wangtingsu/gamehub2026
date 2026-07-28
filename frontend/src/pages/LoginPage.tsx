@@ -311,7 +311,7 @@ const LoginPage = () => {
   );
 
   const tabItems = [
-    { key: 'phone', label: t('auth.loginPage.phoneLogin'), children: phoneLoginForm },
+    // { key: 'phone', label: t('auth.loginPage.phoneLogin'), children: phoneLoginForm }, // 手机登录已禁用
     { key: 'email', label: t('auth.loginPage.emailLogin'), children: loginForm },
   ];
 

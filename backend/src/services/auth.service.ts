@@ -107,7 +107,7 @@ export const getUserTokenVersion = async (userId: string): Promise<number> => {
  * @returns 包含用户对象和认证令牌的结果
  * @throws {ConflictError} 用户名或邮箱已存在时抛出
  */
-export const register = async (userData: UserCreateInput): Promise<{ user: User; tokens: AuthTokens }> => {
+export const register = async (userData: UserCreateInput): Promise<{ message: string }> => {
   try {
     // 检查用户名是否已被使用
     const usernameExists = await userModel.usernameExists(userData.username);
@@ -115,43 +115,44 @@ export const register = async (userData: UserCreateInput): Promise<{ user: User;
       throw new ConflictError('用户名已存在');
     }
 
-    // 检查邮箱是否已被使用（若提供了邮箱）
+    // 检查邮箱是否已被使用（用户表和待注册表都要查）
     if (userData.email) {
       const emailExists = await userModel.emailExists(userData.email);
       if (emailExists) {
         throw new ConflictError('邮箱已存在');
       }
+      const pendingEmail = await query('SELECT id FROM pending_registrations WHERE email = ?', [userData.email]);
+      if (pendingEmail.length > 0) {
+        throw new ConflictError('该邮箱已有待验证的注册，请查收邮件或稍后再试');
+      }
     }
 
-    // 创建用户记录（含密码哈希）
-    const user = await userModel.createWithPassword({
-      ...userData,
-      password: userData.password,
-    });
+    // 对密码进行哈希
+    const salt = await bcrypt.genSalt(config.security.bcryptRounds);
+    const passwordHash = await bcrypt.hash(userData.password, salt);
 
-    // 若系统配置了邮箱验证，生成验证令牌并发送验证邮件
-    if (config.features.enableEmailVerification && user.email) {
-      const verificationToken = crypto.randomBytes(32).toString('hex');
-      // 验证令牌 24 小时有效
-      const verificationTokenExpires = new Date(Date.now() + 24 * 3600000).toISOString();
-      await execute(
-        'UPDATE users SET verification_token = ?, verification_token_expires = ? WHERE id = ?',
-        [verificationToken, verificationTokenExpires, user.id]
-      );
+    // 生成验证令牌（24小时有效）
+    const verificationToken = crypto.randomBytes(32).toString('hex');
+    const tokenExpiresAt = new Date(Date.now() + 24 * 3600000).toISOString();
+
+    // 存入待注册表，不创建用户
+    await execute(
+      `INSERT INTO pending_registrations (username, email, password_hash, verification_token, token_expires_at)
+       VALUES (?, ?, ?, ?, ?)`,
+      [userData.username, userData.email, passwordHash, verificationToken, tokenExpiresAt]
+    );
+
+    // 发送验证邮件
+    if (userData.email && config.features.enableEmailVerification) {
       const verificationLink = `${config.siteUrl}/verify-email?token=${verificationToken}`;
-      // 异步发送邮件，不阻塞注册流程
-      emailService.sendVerificationEmail(user.email, verificationLink, user.username)
+      emailService.sendVerificationEmail(userData.email, verificationLink, userData.username)
         .catch(err => logger.error('发送验证邮件失败:', err));
     }
 
-    const tokenVersion = await getUserTokenVersion(user.id);
-    const tokens = generateTokens(user.id, tokenVersion);
+    logger.info('注册请求已暂存，等待邮箱验证', { username: userData.username, email: userData.email });
 
-    logger.info('用户注册成功', { userId: user.id, username: user.username });
-
-    return { user, tokens };
+    return { message: '注册邮件已发送，请查收邮箱完成验证' };
   } catch (error) {
-    // ConflictError 直接向上传播，其他错误统一包装
     if (error instanceof ConflictError) {
       throw error;
     }
@@ -480,32 +481,98 @@ export const resetPassword = async (resetToken: string, newPassword: string): Pr
  * @throws {AuthenticationError} 令牌无效时抛出
  */
 export const verifyEmail = async (verificationToken: string): Promise<void> => {
-  const result = await query(
-    'SELECT id, username, email FROM users WHERE verification_token = ? AND email_verified = 0',
+  // 从待注册表中查找
+  const pending = await query(
+    'SELECT * FROM pending_registrations WHERE verification_token = ?',
     [verificationToken]
   );
 
-  if (result.length === 0) {
+  if (pending.length === 0) {
     throw new AuthenticationError('无效的验证令牌');
   }
 
-  const userId = result[0].id;
-  const username = result[0].username;
-  const email = result[0].email;
+  const reg = pending[0];
 
-  // 更新邮箱验证状态，清除验证令牌
-  await query(
-    'UPDATE users SET email_verified = 1, verification_token = NULL, verification_token_expires = NULL, updated_at = ? WHERE id = ?',
-    [new Date().toISOString(), userId]
+  // 检查令牌是否过期
+  if (new Date(reg.token_expires_at) < new Date()) {
+    await execute('DELETE FROM pending_registrations WHERE id = ?', [reg.id]);
+    throw new AuthenticationError('验证链接已过期，请重新注册');
+  }
+
+  // 创建用户
+  const result = await execute(
+    `INSERT INTO users (username, email, password_hash, display_name, role, email_verified, is_active, created_at, updated_at)
+     VALUES (?, ?, ?, ?, 'user', 1, 1, ?, ?)`,
+    [reg.username, reg.email, reg.password_hash, reg.username, new Date().toISOString(), new Date().toISOString()]
   );
 
+  // 删除待注册记录
+  await execute('DELETE FROM pending_registrations WHERE id = ?', [reg.id]);
+
   // 发送欢迎邮件（异步执行）
-  if (email) {
-    emailService.sendWelcomeEmail(email, username)
+  if (reg.email) {
+    emailService.sendWelcomeEmail(reg.email, reg.username)
       .catch(err => logger.error('发送欢迎邮件失败:', err));
   }
 
-  logger.info('邮箱验证成功', { userId });
+  logger.info('邮箱验证成功，用户已创建', { username: reg.username, email: reg.email, userId: result.lastInsertRowid });
+};
+
+/**
+ * 重新发送邮箱验证邮件
+ *
+ * 根据邮箱地址查找未验证的用户，生成新的验证令牌并发送验证邮件。
+ * 如果用户已存在但令牌未过期，复用现有令牌。
+ *
+ * @param email 用户注册时使用的邮箱地址
+ * @throws {AuthenticationError} 用户不存在或已通过验证时抛出
+ */
+export const resendVerificationEmail = async (email: string): Promise<void> => {
+  if (!config.features.enableEmailVerification) {
+    throw new AuthenticationError('邮箱验证功能未启用');
+  }
+
+  // 查找该邮箱对应的待注册记录
+  const pending = await query(
+    'SELECT id, username, email, verification_token, token_expires_at FROM pending_registrations WHERE email = ?',
+    [email]
+  );
+
+  if (pending.length === 0) {
+    throw new AuthenticationError('未找到该邮箱对应的待验证注册');
+  }
+
+  const record = pending[0];
+  let token: string;
+
+  // 如果已有未过期的令牌，复用；否则生成新令牌
+  if (record.verification_token && record.token_expires_at) {
+    const expiresAt = new Date(record.token_expires_at).getTime();
+    if (expiresAt > Date.now()) {
+      token = record.verification_token;
+    } else {
+      token = crypto.randomBytes(32).toString('hex');
+      await execute(
+        'UPDATE pending_registrations SET verification_token = ?, token_expires_at = ? WHERE id = ?',
+        [token, new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString(), record.id]
+      );
+    }
+  } else {
+    token = crypto.randomBytes(32).toString('hex');
+    await execute(
+      'UPDATE pending_registrations SET verification_token = ?, token_expires_at = ? WHERE id = ?',
+      [token, new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString(), record.id]
+    );
+  }
+
+  // 发送验证邮件
+  if (record.email) {
+    const verificationLink = `${config.siteUrl}/verify-email?token=${token}`;
+    emailService.sendVerificationEmail(record.email, verificationLink, record.username)
+      .catch(err => logger.error('重发验证邮件失败:', err));
+  }
+
+  logger.info('验证邮件已重新发送', { email: record.email });
 };
 
 /**
@@ -692,6 +759,28 @@ const mapUserFromDb = (dbUser: any): User => ({
   version: dbUser.version,
 });
 
+/**
+ * 检查验证令牌是否有效（不消耗令牌，防止邮箱预加载）
+ */
+export const checkVerificationToken = async (token: string): Promise<boolean> => {
+  const pending = await query(
+    'SELECT id, token_expires_at FROM pending_registrations WHERE verification_token = ?',
+    [token]
+  );
+  if (pending.length === 0) return false;
+  return new Date(pending[0].token_expires_at) > new Date();
+};
+
+/**
+ * 检查邮箱是否已被注册
+ */
+export const checkEmailExists = async (email: string): Promise<boolean> => {
+  const users = await query('SELECT id FROM users WHERE email = ?', [email]);
+  if (users.length > 0) return true;
+  const pending = await query('SELECT id FROM pending_registrations WHERE email = ?', [email]);
+  return pending.length > 0;
+};
+
 export default {
   register,
   login,
@@ -704,4 +793,7 @@ export default {
   generatePasswordResetToken,
   resetPassword,
   verifyEmail,
+  resendVerificationEmail,
+  checkVerificationToken,
+  checkEmailExists,
 };

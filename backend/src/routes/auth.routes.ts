@@ -68,22 +68,11 @@ router.post(
   '/register',
   validateRequest(registerSchema),
   asyncHandler(async (req: Request, res: Response) => {
-    const { user, tokens } = await authService.register(req.body);
+    const result = await authService.register(req.body);
 
     res.status(201).json({
       success: true,
-      data: {
-        user: {
-          id: user.id,
-          username: user.username,
-          email: user.email,
-          displayName: user.displayName,
-          avatarUrl: user.avatarUrl,
-          role: user.role,
-        },
-        tokens,
-      },
-      message: '注册成功',
+      message: result.message || '注册邮件已发送，请查收邮箱完成验证',
     });
   })
 );
@@ -133,6 +122,9 @@ router.post(
     });
   })
 );
+
+
+// ====== 以下手机注册/登录路由已禁用（前端已隐藏入口） ======
 
 /**
  * @route POST /api/v1/auth/login/phone
@@ -253,6 +245,7 @@ router.post(
     });
   })
 );
+
 
 /**
  * @route POST /api/v1/auth/refresh
@@ -510,17 +503,8 @@ router.post(
 
 /**
  * @route GET /api/v1/auth/verify-email/:token
- * @desc 验证邮箱地址
+ * @desc 检查验证令牌是否有效（不执行验证，防止邮箱预加载消耗令牌）
  * @access Public
- *
- * 使用邮件中的验证令牌来确认用户邮箱的有效性。
- * 令牌通常包含在注册后发送的验证邮件链接中。
- *
- * @param {string} token - 路径参数，邮箱验证令牌
- *
- * @response 200 - 邮箱验证成功
- * @response 400 - 令牌参数为空
- * @response 401 - 令牌无效或已过期
  */
 router.get(
   '/verify-email/:token',
@@ -528,10 +512,30 @@ router.get(
     const { token } = req.params;
 
     if (!token) {
-      return res.status(400).json({
-        success: false,
-        error: '验证令牌不能为空',
-      });
+      return res.status(400).json({ success: false, error: '验证令牌不能为空' });
+    }
+
+    const valid = await authService.checkVerificationToken(token);
+
+    return res.json({
+      success: true,
+      data: { valid, token },
+    });
+  })
+);
+
+/**
+ * @route POST /api/v1/auth/verify-email
+ * @desc 执行邮箱验证（创建用户）
+ * @access Public
+ */
+router.post(
+  '/verify-email',
+  asyncHandler(async (req: Request, res: Response) => {
+    const { token } = req.body;
+
+    if (!token) {
+      return res.status(400).json({ success: false, error: '验证令牌不能为空' });
     }
 
     await authService.verifyEmail(token);
@@ -540,6 +544,55 @@ router.get(
       success: true,
       message: '邮箱验证成功',
     });
+  })
+);
+
+/**
+ * @route POST /api/v1/auth/resend-verification
+ * @desc 重新发送邮箱验证邮件
+ * @access Public
+ *
+ * @param {string} req.body.email - 用户邮箱地址
+ */
+router.post(
+  '/resend-verification',
+  asyncHandler(async (req: Request, res: Response) => {
+    const { email } = req.body;
+
+    if (!email) {
+      return res.status(400).json({
+        success: false,
+        error: '邮箱地址不能为空',
+      });
+    }
+
+    await authService.resendVerificationEmail(email);
+
+    return res.json({
+      success: true,
+      message: '验证邮件已重新发送，请查收邮箱',
+    });
+  })
+);
+
+/**
+ * @route GET /api/v1/auth/check-email
+ * @desc 检查邮箱是否已被注册
+ * @access Public
+ *
+ * @query {string} email - 要检查的邮箱地址
+ * @response 200 - { available: boolean }
+ */
+router.get(
+  '/check-email',
+  asyncHandler(async (req: Request, res: Response) => {
+    const email = req.query.email as string;
+    if (!email) {
+      return res.status(400).json({ success: false, error: '邮箱地址不能为空' });
+    }
+
+    const users = await authService.checkEmailExists(email);
+    res.json({ success: true, data: { available: !users } });
   })
 );
 

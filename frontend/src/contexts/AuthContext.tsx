@@ -179,23 +179,15 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const register = useCallback(async (credentials: RegisterCredentials) => {
     try {
       setIsLoading(true);
-      const authData = await authService.register(credentials);
-
-      // 保存用户信息和token
-      setUser(authData.user);
-      localStorage.setItem('accessToken', authData.tokens.accessToken);
-      localStorage.setItem('refreshToken', authData.tokens.refreshToken);
-      localStorage.setItem('user', JSON.stringify(authData.user));
-
-      // 设置axios默认头部
-      axios.defaults.headers.common['Authorization'] = `Bearer ${authData.tokens.accessToken}`;
+      // 注册只发送验证邮件，不创建用户，不保存token
+      await authService.register(credentials);
     } catch (error) {
       console.error('注册错误:', error);
       throw error;
     } finally {
       setIsLoading(false);
     }
-  }, [setIsLoading, setUser]);
+  }, [setIsLoading]);
 
   // 手机号登录
   const loginByPhone = useCallback(async (credentials: LoginByPhoneCredentials) => {

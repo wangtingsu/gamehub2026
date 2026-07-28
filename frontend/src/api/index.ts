@@ -301,6 +301,9 @@ abstract class BaseApiService {
 
   // ==================== 邮箱验证 ====================
   abstract verifyEmail(token: string): Promise<void>;
+  abstract checkVerificationToken(token: string): Promise<{ valid: boolean }>;
+  abstract resendVerificationEmail(email: string): Promise<void>;
+  abstract checkEmail(email: string): Promise<{ available: boolean }>;
 
   // ==================== 数据分析方法 ====================
   abstract getUserGrowthTrend(period?: string, days?: number): Promise<UserGrowthPoint[]>;
@@ -1586,7 +1589,19 @@ class RealApiService extends BaseApiService {
 
   // ==================== 邮箱验证 ====================
   async verifyEmail(token: string): Promise<void> {
-    await this.client.get(`/auth/verify-email/${token}`);
+    await this.client.post('/auth/verify-email', { token });
+  }
+
+  async checkVerificationToken(token: string): Promise<{ valid: boolean }> {
+    return this.client.get<{ valid: boolean }>(`/auth/verify-email/${token}`);
+  }
+
+  async resendVerificationEmail(email: string): Promise<void> {
+    await this.client.post('/auth/resend-verification', { email });
+  }
+
+  async checkEmail(email: string): Promise<{ available: boolean }> {
+    return this.client.get<{ available: boolean }>('/auth/check-email', { email });
   }
 
   // ==================== 数据分析方法 ====================
@@ -3580,8 +3595,22 @@ class MockApiService extends BaseApiService {
 
   // ==================== Email verification (Mock) ====================
   async verifyEmail(token: string): Promise<void> {
-    console.log(`Mock: 验证邮箱 token=${token}`);
+    console.log(`Mock: 执行验证邮箱 token=${token}`);
     if (!token) throw new Error('验证令牌不能为空');
+  }
+
+  async checkVerificationToken(token: string): Promise<{ valid: boolean }> {
+    console.log(`Mock: 检查令牌 token=${token}`);
+    return { valid: !!token };
+  }
+
+  async resendVerificationEmail(email: string): Promise<void> {
+    console.log(`Mock: 重新发送验证邮件 to ${email}`);
+  }
+
+  async checkEmail(_email: string): Promise<{ available: boolean }> {
+    console.log(`Mock: 检查邮箱 ${_email}`);
+    return { available: true };
   }
 
   // ==================== Analytics methods (Mock) ====================

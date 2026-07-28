@@ -1,53 +1,97 @@
 import { useState, useEffect } from 'react';
 import { useNavigate, useLocation, Link } from 'react-router-dom';
 import { Button, Result, Typography } from 'antd';
-import { CheckCircleOutlined, WarningOutlined, LoadingOutlined } from '@ant-design/icons';
+import { CheckCircleOutlined, WarningOutlined, LoadingOutlined, MailOutlined } from '@ant-design/icons';
 import SEO from '../components/SEO';
 import apiService from '../api';
 
 const { Text } = Typography;
 
-type VerifyStatus = 'verifying' | 'success' | 'invalid' | 'error';
+type VerifyStatus = 'checking' | 'confirm' | 'verifying' | 'success' | 'invalid' | 'error';
 
 const VerifyEmailPage = () => {
-  const [status, setStatus] = useState<VerifyStatus>('verifying');
+  const [status, setStatus] = useState<VerifyStatus>('checking');
   const [errorMessage, setErrorMessage] = useState('');
+  const [token, setToken] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
 
+  // 从 URL 读取 token 并检查有效性
   useEffect(() => {
     const queryParams = new URLSearchParams(location.search);
-    const token = queryParams.get('token');
+    const t = queryParams.get('token');
 
-    if (!token) {
+    if (!t) {
       setStatus('invalid');
       return;
     }
+    setToken(t);
 
-    const verify = async () => {
-      try {
-        await apiService.verifyEmail(token);
-        setStatus('success');
-      } catch (err: any) {
-        const message = err?.response?.data?.message || err?.message || '邮箱验证失败，请稍后重试';
-        setErrorMessage(message);
-        setStatus('error');
-      }
-    };
-
-    // 延迟一点让用户看到加载状态
-    const timer = setTimeout(verify, 500);
-    return () => clearTimeout(timer);
+    // 检查令牌是否有效（GET 不会消耗令牌）
+    apiService.checkVerificationToken(t)
+      .then(result => {
+        setStatus(result.valid ? 'confirm' : 'invalid');
+      })
+      .catch(() => {
+        setStatus('invalid');
+      });
   }, [location.search]);
+
+  // 用户点击确认按钮，执行验证
+  const handleConfirm = async () => {
+    setIsLoading(true);
+    setStatus('verifying');
+    try {
+      await apiService.verifyEmail(token);
+      setStatus('success');
+      // 3 秒后跳转登录页
+      setTimeout(() => navigate('/login'), 3000);
+    } catch (err: any) {
+      const message = err?.response?.data?.error || err?.message || '邮箱验证失败，请稍后重试';
+      setErrorMessage(message);
+      setStatus('error');
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   const renderContent = () => {
     switch (status) {
+      case 'checking':
+        return (
+          <Result
+            icon={<LoadingOutlined className="text-blue-500 text-6xl" />}
+            title="检查验证链接..."
+            subTitle="请稍候"
+          />
+        );
+      case 'confirm':
+        return (
+          <Result
+            icon={<MailOutlined className="text-blue-400 text-6xl" />}
+            title="验证邮箱"
+            subTitle="点击下方按钮完成账户注册"
+            extra={[
+              <Button
+                type="primary"
+                size="large"
+                key="confirm"
+                loading={isLoading}
+                onClick={handleConfirm}
+                className="w-full h-12"
+              >
+                确认验证，完成注册
+              </Button>,
+            ]}
+          />
+        );
       case 'verifying':
         return (
           <Result
             icon={<LoadingOutlined className="text-blue-500 text-6xl" />}
-            title="验证邮箱中..."
-            subTitle="请稍候，正在验证您的邮箱地址"
+            title="正在完成注册..."
+            subTitle="请稍候"
           />
         );
       case 'success':
@@ -55,8 +99,8 @@ const VerifyEmailPage = () => {
           <Result
             icon={<CheckCircleOutlined className="text-green-500" />}
             status="success"
-            title="邮箱验证成功"
-            subTitle="您的邮箱已成功验证！现在您可以享受 GameHub 的所有功能。"
+            title="注册成功！"
+            subTitle="您的账户已创建成功，即将跳转到登录页..."
             extra={[
               <Button
                 type="primary"
@@ -64,14 +108,7 @@ const VerifyEmailPage = () => {
                 onClick={() => navigate('/login')}
                 className="w-full h-12"
               >
-                前往登录
-              </Button>,
-              <Button
-                key="home"
-                onClick={() => navigate('/')}
-                className="w-full h-12 mt-4"
-              >
-                返回首页
+                立即前往登录
               </Button>,
             ]}
           />
@@ -82,7 +119,7 @@ const VerifyEmailPage = () => {
             icon={<WarningOutlined className="text-yellow-500" />}
             status="warning"
             title="无效的验证链接"
-            subTitle="验证链接无效或已过期，请重新注册或联系客服。"
+            subTitle="验证链接无效或已过期，请重新注册。"
             extra={[
               <Button
                 key="home"

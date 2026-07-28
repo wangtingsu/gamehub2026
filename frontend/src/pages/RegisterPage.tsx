@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useNavigate, useParams, Link } from 'react-router-dom';
-import { Form, Input, Button, Card, Alert, Typography, Divider, Checkbox, Tabs, Spin, Select } from 'antd';
-import { UserOutlined, LockOutlined, MailOutlined, PhoneOutlined, MessageOutlined, CheckCircleOutlined, GoogleOutlined, GithubOutlined, WechatOutlined, GlobalOutlined } from '@ant-design/icons';
+import { Form, Input, Button, Card, Alert, Typography, Divider, Checkbox, Tabs, Spin, Select, message } from 'antd';
+import { UserOutlined, LockOutlined, MailOutlined, PhoneOutlined, MessageOutlined, CheckCircleOutlined, InfoCircleOutlined, LoadingOutlined, GoogleOutlined, GithubOutlined, WechatOutlined, GlobalOutlined } from '@ant-design/icons';
 import { useAuth } from '../contexts/AuthContext';
 import { useTranslation } from 'react-i18next';
 import SEO from '../components/SEO';
@@ -24,6 +24,8 @@ const RegisterPage = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState(false);
+  const [emailChecking, setEmailChecking] = useState(false);
+  const [emailExists, setEmailExists] = useState(false);
   const { countdown, start: startCountdown } = useSmsCountdown();
   const [enabledProviders, setEnabledProviders] = useState<OAuthProvider[]>([]);
   const { t } = useTranslation();
@@ -60,6 +62,28 @@ const RegisterPage = () => {
     );
   }
 
+  // 邮箱失焦检查重复
+  const handleEmailBlur = async (e: React.FocusEvent<HTMLInputElement>) => {
+    const email = e.target.value;
+    if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return;
+    setEmailChecking(true);
+    setEmailExists(false);
+    try {
+      const result = await apiService.checkEmail(email);
+      if (!result.available) {
+        setEmailExists(true);
+        form.setFields([{ name: 'email', errors: [t('auth.registerPage.emailExists')] }]);
+      } else {
+        setEmailExists(false);
+        form.setFields([{ name: 'email', errors: [] }]);
+      }
+    } catch {
+      // 检查失败不阻塞
+    } finally {
+      setEmailChecking(false);
+    }
+  };
+
   // 邮箱注册提交
   const handleEmailRegister = async (values: {
     email: string;
@@ -81,18 +105,13 @@ const RegisterPage = () => {
       }
 
       await register({
-        username: values.email,
+        username: values.username,
         email: values.email,
         password: values.password,
         region: values.region,
       });
 
       setSuccess(true);
-
-      setTimeout(() => {
-        navigate('/', { replace: true });
-      }, 3000);
-
     } catch (err) {
       console.error('注册失败:', err);
       const errorMessage = (err as { response?: { data?: { message?: string } } })?.response?.data?.message ||
@@ -164,37 +183,34 @@ const RegisterPage = () => {
     }
   };
 
+  const [resendingEmail, setResendingEmail] = useState(false);
+  const [resendSent, setResendSent] = useState(false);
+
+  // 重发验证邮件
+  const handleResendVerification = async () => {
+    setResendingEmail(true);
+    try {
+      await apiService.resendVerificationEmail(form.getFieldValue('email'));
+      setResendSent(true);
+      message.success(t('auth.registerPage.resendVerifyEmailSent'));
+    } catch {
+      message.error(t('common.error'));
+    } finally {
+      setResendingEmail(false);
+    }
+  };
+
   // 注册成功页面
   if (success) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-dark-900 p-4">
         <div className="w-full max-w-md">
           <Card className="shadow-xl border border-dark-700 rounded-2xl bg-dark-800 text-center">
-            <div className="mb-6">
-              <CheckCircleOutlined className="text-6xl text-green-500" />
-            </div>
-            <Title level={1} className="mb-4">{t('auth.registerPage.registerSuccess')}</Title>
-            <Paragraph className="text-gray-400 mb-6">
-              {t('auth.registerPage.registerSuccessDesc')}
+            <MailOutlined className="text-6xl text-blue-400 mb-6" />
+            <Title level={2} className="mb-4">{t('auth.registerPage.checkEmailTitle')}</Title>
+            <Paragraph className="text-gray-400">
+              {t('auth.registerPage.checkEmailDesc', { email: form.getFieldValue('email') })}
             </Paragraph>
-            <div className="space-y-4">
-              <Button
-                type="primary"
-                size="large"
-                className="w-full"
-                onClick={() => navigate('/')}
-              >
-                {t('auth.registerPage.goToHome')}
-              </Button>
-              <Button
-                type="default"
-                size="large"
-                className="w-full"
-                onClick={() => navigate(`/${currentLang}/profile`)}
-              >
-                {t('auth.registerPage.viewProfile')}
-              </Button>
-            </div>
           </Card>
         </div>
       </div>
@@ -212,6 +228,23 @@ const RegisterPage = () => {
         initialValues={{ agreeTerms: false }}
       >
         <Form.Item
+          name="username"
+          label={t('auth.registerPage.usernameLabel')}
+          rules={[
+            { required: true, message: t('auth.registerPage.usernameRequired') },
+            { min: 3, max: 20, message: t('auth.registerPage.usernameMinMax') },
+            { pattern: /^[a-zA-Z0-9_]+$/, message: t('auth.registerPage.usernamePattern') },
+          ]}
+          hasFeedback
+        >
+          <Input
+            prefix={<UserOutlined className="text-gray-400" />}
+            placeholder={t('auth.registerPage.usernameLabel')}
+            autoComplete="username"
+          />
+        </Form.Item>
+
+        <Form.Item
           name="email"
           label={t('auth.registerPage.emailLabel')}
           rules={[
@@ -219,11 +252,15 @@ const RegisterPage = () => {
             { type: 'email', message: t('auth.registerPage.emailInvalid') },
           ]}
           hasFeedback
+          validateStatus={emailExists ? 'error' : emailChecking ? 'validating' : undefined}
+          help={emailExists ? t('auth.registerPage.emailExists') : undefined}
         >
           <Input
             prefix={<MailOutlined className="text-gray-400" />}
+            suffix={emailChecking ? <LoadingOutlined className="text-gray-400" /> : null}
             placeholder={t('auth.registerPage.emailPlaceholder')}
             autoComplete="email"
+            onBlur={handleEmailBlur}
           />
         </Form.Item>
 
@@ -454,7 +491,7 @@ const RegisterPage = () => {
   );
 
   const tabItems = [
-    { key: 'phone', label: t('auth.registerPage.phoneRegister'), children: phoneRegisterForm },
+    // { key: 'phone', label: t('auth.registerPage.phoneRegister'), children: phoneRegisterForm }, // 手机注册已禁用
     { key: 'email', label: t('auth.registerPage.emailRegister'), children: emailRegisterForm },
   ];
 
