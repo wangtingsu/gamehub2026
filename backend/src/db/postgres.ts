@@ -1535,6 +1535,91 @@ export const runMigrations = async (): Promise<void> => {
       `ALTER TABLE email_templates ADD CONSTRAINT email_templates_name_key UNIQUE (name)`,
     ]);
 
+    /**
+     * 迁移 026：新闻点赞表
+     */
+    await apply('026_news_likes', [
+      `CREATE TABLE IF NOT EXISTS news_likes (
+        id SERIAL PRIMARY KEY,
+        news_id INTEGER NOT NULL REFERENCES news(id) ON DELETE CASCADE,
+        user_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+        created_at TIMESTAMPTZ DEFAULT NOW(),
+        UNIQUE(news_id, user_id)
+      )`,
+    ]);
+
+    /**
+     * 迁移 027：评论点赞表
+     */
+    await apply('027_comment_likes', [
+      `CREATE TABLE IF NOT EXISTS comment_likes (
+        id SERIAL PRIMARY KEY,
+        comment_id INTEGER NOT NULL REFERENCES comments(id) ON DELETE CASCADE,
+        user_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+        created_at TIMESTAMPTZ DEFAULT NOW(),
+        UNIQUE(comment_id, user_id)
+      )`,
+    ]);
+
+    /**
+     * 迁移 028：AI 对话历史表
+     */
+    await apply('028_ai_history', [
+      `CREATE TABLE IF NOT EXISTS ai_history (
+        id SERIAL PRIMARY KEY,
+        user_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+        type TEXT NOT NULL,
+        title TEXT,
+        content TEXT,
+        created_at TIMESTAMPTZ DEFAULT NOW(),
+        updated_at TIMESTAMPTZ DEFAULT NOW()
+      )`,
+    ]);
+
+    /**
+     * 迁移 029：推荐系统和横幅管理
+     *
+     * 创建 banners、featured_content、user_recommendations 三张表，
+     * 支持首页横幅轮播、编辑精选内容、个性化推荐记录。
+     */
+    await apply('029_recommendations', [
+      `CREATE TABLE IF NOT EXISTS banners (
+        id SERIAL PRIMARY KEY,
+        title TEXT NOT NULL,
+        subtitle TEXT,
+        image_url TEXT NOT NULL,
+        link_url TEXT,
+        sort_order INTEGER DEFAULT 0,
+        is_active BOOLEAN DEFAULT TRUE,
+        position TEXT DEFAULT 'home',
+        created_at TIMESTAMPTZ DEFAULT NOW(),
+        updated_at TIMESTAMPTZ DEFAULT NOW()
+      )`,
+      `CREATE TABLE IF NOT EXISTS featured_content (
+        id SERIAL PRIMARY KEY,
+        content_type TEXT NOT NULL,
+        content_id INTEGER NOT NULL,
+        feature_type TEXT NOT NULL,
+        topic_name TEXT,
+        sort_order INTEGER DEFAULT 0,
+        expires_at TIMESTAMPTZ,
+        created_by INTEGER REFERENCES users(id),
+        created_at TIMESTAMPTZ DEFAULT NOW(),
+        updated_at TIMESTAMPTZ DEFAULT NOW(),
+        UNIQUE(content_type, content_id, feature_type)
+      )`,
+      `CREATE TABLE IF NOT EXISTS user_recommendations (
+        id SERIAL PRIMARY KEY,
+        user_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+        content_type TEXT NOT NULL,
+        content_id INTEGER NOT NULL,
+        score REAL DEFAULT 0,
+        reason TEXT,
+        is_clicked BOOLEAN DEFAULT FALSE,
+        created_at TIMESTAMPTZ DEFAULT NOW()
+      )`,
+    ]);
+
     logger.info('PostgreSQL数据库迁移完成');
   } catch (error) {
     logger.error('PostgreSQL数据库迁移失败:', error);
