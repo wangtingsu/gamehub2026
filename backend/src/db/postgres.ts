@@ -1620,6 +1620,47 @@ export const runMigrations = async (): Promise<void> => {
       )`,
     ]);
 
+    /**
+     * 迁移 030：补全遗漏的表和列（与 SQLite 表结构对齐）
+     *
+     * - blog_favorites / blog_likes 表
+     * - blog_articles / blog_spaces 补充列
+     * - news / users / reviews / guides 补充列
+     */
+    await apply('030_add_blog_social_and_missing_columns', [
+      // blog 社交表
+      `CREATE TABLE IF NOT EXISTS blog_favorites (
+        id SERIAL PRIMARY KEY,
+        user_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+        article_id INTEGER NOT NULL REFERENCES blog_articles(id) ON DELETE CASCADE,
+        created_at TIMESTAMPTZ DEFAULT NOW(),
+        UNIQUE(user_id, article_id)
+      )`,
+      `CREATE TABLE IF NOT EXISTS blog_likes (
+        id SERIAL PRIMARY KEY,
+        user_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+        article_id INTEGER NOT NULL REFERENCES blog_articles(id) ON DELETE CASCADE,
+        created_at TIMESTAMPTZ DEFAULT NOW(),
+        UNIQUE(user_id, article_id)
+      )`,
+      // blog_articles 补充列
+      `ALTER TABLE blog_articles ADD COLUMN IF NOT EXISTS cons TEXT`,
+      `ALTER TABLE blog_articles ADD COLUMN IF NOT EXISTS pros TEXT`,
+      `ALTER TABLE blog_articles ADD COLUMN IF NOT EXISTS rating REAL`,
+      `ALTER TABLE blog_articles ADD COLUMN IF NOT EXISTS game_id INTEGER REFERENCES games(id) ON DELETE SET NULL`,
+      `ALTER TABLE blog_articles ADD COLUMN IF NOT EXISTS post_type TEXT NOT NULL DEFAULT 'blog'`,
+      // blog_spaces 补充列
+      `ALTER TABLE blog_spaces ADD COLUMN IF NOT EXISTS game_id INTEGER REFERENCES games(id) ON DELETE SET NULL`,
+      // news 补充列
+      `ALTER TABLE news ADD COLUMN IF NOT EXISTS game_name TEXT`,
+      // users 补充列
+      `ALTER TABLE users ADD COLUMN IF NOT EXISTS theme_preference TEXT DEFAULT 'dark'`,
+      // reviews 补充列
+      `ALTER TABLE reviews ADD COLUMN IF NOT EXISTS space_id INTEGER REFERENCES blog_spaces(id) ON DELETE SET NULL`,
+      // guides 补充列
+      `ALTER TABLE guides ADD COLUMN IF NOT EXISTS space_id INTEGER REFERENCES blog_spaces(id) ON DELETE SET NULL`,
+    ]);
+
     logger.info('PostgreSQL数据库迁移完成');
   } catch (error) {
     logger.error('PostgreSQL数据库迁移失败:', error);
