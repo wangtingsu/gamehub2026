@@ -107,7 +107,6 @@ export default defineConfig(({ mode }) => ({
     minify: 'terser',
     manifest: true,
     sourcemap: process.env.NODE_ENV !== 'production',
-    cssMinify: 'lightningcss',
     rollupOptions: {
       output: {
         // 代码分割策略：将不同模块分离为独立 chunk，优化加载性能

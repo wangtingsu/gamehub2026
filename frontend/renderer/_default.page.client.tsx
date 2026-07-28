@@ -26,6 +26,7 @@ import { NotificationProvider } from '../src/contexts/NotificationContext'
 import App from '../src/App'
 import { queryClient } from '../src/lib/queryClient'
 import '../src/i18n'
+import '../src/index.css'
 
 const dehydratedState = (window as any).__DEHYDRATED_STATE__
 
