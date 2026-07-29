@@ -275,20 +275,12 @@ const Layout = () => {
       ) : (
         /* ========== 桌面/平板布局：侧栏 + 子导航 + 内容 ========== */
         <>
-          {/* 侧栏 + 子面板容器，鼠标离开时延迟关闭子面板 */}
+          {/* 侧栏 + 子面板容器 */}
           <div
             style={{ display: 'flex', flexShrink: 0 }}
-            onMouseEnter={() => {
-              if (autoCloseTimerRef.current) {
-                clearTimeout(autoCloseTimerRef.current);
-                autoCloseTimerRef.current = null;
-              }
-            }}
             onMouseLeave={() => {
-              autoCloseTimerRef.current = setTimeout(() => {
-                setNavMode('main');
-                setCollapsed(false);
-              }, 300);
+              setNavMode('main');
+              setCollapsed(false);
             }}
           >
             {/* Desktop Sidebar */}
@@ -315,8 +307,8 @@ const Layout = () => {
                 navMode={navMode}
                 onNavModeChange={(mode) => {
                   setNavMode(mode);
-                  if (mode !== 'main') setCollapsed(true);
-                  else setCollapsed(false);
+                  // hover 时不收起侧栏，方便切换子面板
+                  if (mode === 'main') setCollapsed(false);
                 }}
               />
             </AntLayout.Sider>
