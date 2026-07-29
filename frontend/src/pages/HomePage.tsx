@@ -401,6 +401,7 @@ const HomePage = () => {
               title="为你推荐"
               recommendations={personalizedItems || []}
               loading={personalizedLoading}
+              variant="grid"
             />
           </div>
         </section>

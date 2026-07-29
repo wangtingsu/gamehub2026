@@ -14,9 +14,9 @@
  * 仅在移动端布局（屏幕宽度 <= 767px）时由 Layout 组件渲染。
  */
 
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { useNavigate, useLocation, useParams } from 'react-router-dom';
-import { HomeOutlined, AppstoreOutlined, RobotOutlined, TeamOutlined, BarsOutlined, PlayCircleOutlined, UserOutlined, HeartOutlined, ThunderboltOutlined, MessageOutlined, BellOutlined, TrophyOutlined, InfoCircleOutlined, LogoutOutlined, ReadOutlined, CommentOutlined } from '@ant-design/icons';
+import { HomeOutlined, AppstoreOutlined, RobotOutlined, HeartOutlined, BarsOutlined, UserOutlined, ThunderboltOutlined, MessageOutlined, BellOutlined, TrophyOutlined, InfoCircleOutlined, LogoutOutlined, ReadOutlined, CommentOutlined, PlayCircleOutlined, FireOutlined, CompassOutlined, TeamOutlined } from '@ant-design/icons';
 import { Drawer, Avatar } from 'antd';
 import { useTranslation } from 'react-i18next';
 import { useAuth } from '../contexts/AuthContext';
@@ -27,20 +27,16 @@ import { useAuth } from '../contexts/AuthContext';
  * - 'ai': 打开 AI 子功能抽屉
  * - 'more': 打开更多菜单抽屉
  */
-type DrawerType = null | 'ai' | 'more';
+type DrawerType = null | 'recommend' | 'ai' | 'more';
 
 /**
  * 标签页项的类型定义
- *
- * @property key - 标签页的唯一标识
- * @property icon - 图标组件类型
- * @property labelKey - 多语言翻译 key
- * @property path - 点击后跳转的路径（若为空字符串则表示弹出 Drawer）
  */
 interface TabItem {
   key: string;
   icon: React.ComponentType<{ className?: string }>;
-  labelKey: string;
+  label: string;
+  subtitle: string;
   path: string;
 }
 
@@ -51,6 +47,7 @@ interface TabItem {
  */
 const MobileTabBar = () => {
   const [drawerType, setDrawerType] = useState<DrawerType>(null);
+  const [clickedTab, setClickedTab] = useState<string | null>(null);
   const navigate = useNavigate();
   const location = useLocation();
   const { t } = useTranslation();
@@ -59,52 +56,55 @@ const MobileTabBar = () => {
   const currentLang = lang || 'cn';
 
   /**
-   * 底部标签栏配置
-   * 定义 5 个主标签页：首页、游戏、在线、AI（弹出 Drawer）、更多（弹出 Drawer）
-   * AI 和更多标签的 path 为空字符串，点击时打开对应的 Drawer 而非直接跳转
+   * 底部标签栏配置 — 对齐 PC 端 Sidebar 导航结构
+   * 5 个主标签：主页、游戏库、推荐游戏、AI 助手、更多的
    */
   const tabs: TabItem[] = [
-    { key: 'home', icon: HomeOutlined, labelKey: 'navigation.home', path: `/${currentLang}/` },
-    { key: 'games', icon: AppstoreOutlined, labelKey: 'navigation.games', path: `/${currentLang}/games` },
-    { key: 'online', icon: PlayCircleOutlined, labelKey: 'navigation.onlineGames', path: `/${currentLang}/library/online` },
-    { key: 'ai', icon: RobotOutlined, labelKey: 'navigation.ai', path: '' },
-    { key: 'more', icon: BarsOutlined, labelKey: 'navigation.more', path: '' },
+    { key: 'home', icon: HomeOutlined, label: '主页', subtitle: 'Home', path: `/${currentLang}/` },
+    { key: 'games', icon: AppstoreOutlined, label: '游戏库', subtitle: 'Games', path: `/${currentLang}/games` },
+    { key: 'recommend', icon: HeartOutlined, label: '推荐游戏', subtitle: 'Discover', path: '' },
+    { key: 'ai', icon: RobotOutlined, label: 'AI 助手', subtitle: 'AI', path: `/${currentLang}/ai` },
+    { key: 'more', icon: BarsOutlined, label: '更多的', subtitle: 'More', path: '' },
   ];
 
   /**
-   * 各标签页对应的激活路径列表
-   * 当当前 URL 路径匹配某标签的任意子路径时，该标签高亮显示。
-   * 例如："games" 标签在 /games、/discovery、/trending 等路径下均会高亮。
+   * 各标签页对应的激活路径列表 — 对齐 PC 端 Sidebar 的 subPaths
    */
   const tabSubPaths: Record<string, string[]> = {
-    home: [`/${currentLang}`],
-    games: [`/${currentLang}/games`, `/${currentLang}/discovery`, `/${currentLang}/trending`, `/${currentLang}/leaderboard`, `/${currentLang}/library`, `/${currentLang}/reviews`],
-    online: [`/${currentLang}/library/online`, `/${currentLang}/library/play`],
-    ai: [`/${currentLang}/ai`],
-    more: [`/${currentLang}/my`, `/${currentLang}/profile`, `/${currentLang}/messages`, `/${currentLang}/notifications`, `/${currentLang}/achievements`, `/${currentLang}/login`, `/${currentLang}/register`, `/${currentLang}/community-forum`, `/${currentLang}/news`, `/${currentLang}/guides`, `/${currentLang}/about`, `/${currentLang}/blog`, `/${currentLang}/search`],
+    home: [`/${currentLang}/`, `/${currentLang}`],
+    games: [`/${currentLang}/games`, `/${currentLang}/discovery`, `/${currentLang}/trending`, `/${currentLang}/leaderboard`],
+    recommend: [`/${currentLang}/library/online`, `/${currentLang}/library/play`, `/${currentLang}/free-games`, `/${currentLang}/cozy-games`],
+    ai: [`/${currentLang}/ai`, `/${currentLang}/ai/soul`, `/${currentLang}/ai/npc`, `/${currentLang}/ai/companion`],
+    more: [`/${currentLang}/news`, `/${currentLang}/about`, `/${currentLang}/community-forum`, `/${currentLang}/blog`, `/${currentLang}/my`, `/${currentLang}/messages`, `/${currentLang}/notifications`, `/${currentLang}/achievements`, `/${currentLang}/profile`, `/${currentLang}/reviews`, `/${currentLang}/guides`, `/${currentLang}/login`, `/${currentLang}/register`, `/${currentLang}/search`],
   };
 
-  const activeTab = tabs.find((tab) => {
-    const subPaths = tabSubPaths[tab.key] || [];
-    return subPaths.some((sp) => location.pathname === sp || location.pathname.startsWith(sp + '/'));
-  })?.key || 'home';
+  // 直接用当前路径匹配，不依赖变量拼接
+  const activeTab = (() => {
+    const p = location.pathname;
+    // 主页：/、/cn、/cn/
+    if (p === '/' || /^\/[a-z]{2}\/?$/.test(p)) return 'home';
+    // 游戏库
+    if (p.includes('/games') || p.includes('/discovery') || p.includes('/trending') || p.includes('/leaderboard')) return 'games';
+    // 推荐游戏
+    if (p.includes('/library/online') || p.includes('/library/play') || p.includes('/free-games') || p.includes('/cozy-games')) return 'recommend';
+    // AI
+    if (p.includes('/ai')) return 'ai';
+    // 更多
+    if (p.includes('/news') || p.includes('/about') || p.includes('/community-forum') || p.includes('/blog') || p.includes('/my') || p.includes('/messages') || p.includes('/notifications') || p.includes('/achievements') || p.includes('/reviews') || p.includes('/guides') || p.includes('/profile') || p.includes('/login') || p.includes('/register') || p.includes('/search')) return 'more';
+    // 兜底
+    return 'home';
+  })();
 
   /**
    * 标签页点击处理函数
-   * 根据标签类型执行不同操作：
-   * - "ai" 标签：打开 AI 功能 Drawer
-   * - "more" 标签：打开更多菜单 Drawer
-   * - 其他标签：直接导航到对应路径
-   *
-   * @param tab - 被点击的标签页配置项
+   * - recommend / ai / more：弹出 Drawer
+   * - home / games：直接导航
    */
   const handleTabClick = (tab: TabItem) => {
-    if (tab.key === 'ai') {
-      setDrawerType('ai');
-      return;
-    }
-    if (tab.key === 'more') {
-      setDrawerType('more');
+    // 立即更新点击状态，让高亮即时响应
+    setClickedTab(tab.key);
+    if (tab.key === 'recommend' || tab.key === 'more') {
+      setDrawerType(tab.key as DrawerType);
       return;
     }
     navigate(tab.path);
@@ -137,13 +137,21 @@ const MobileTabBar = () => {
       ];
 
   /**
-   * AI 抽屉菜单项列表
-   * 包含 AI 相关功能入口：人物自画像、心灵驿站、游戏百科、命理师
+   * 推荐游戏 Drawer — 对齐 PC 端 recomendSubPaths
+   */
+  const recommendDrawerItems = [
+    { icon: <PlayCircleOutlined />, label: '在线游戏', path: `/${currentLang}/library/online` },
+    { icon: <FireOutlined />, label: '免费游戏', path: `/${currentLang}/free-games` },
+    { icon: <CompassOutlined />, label: '治愈游戏', path: `/${currentLang}/cozy-games` },
+  ];
+
+  /**
+   * AI 抽屉菜单 — 对齐 PC 端 aiSubPaths
    */
   const aiDrawerItems = [
     { icon: <RobotOutlined />, label: 'AI 助手', path: `/${currentLang}/ai` },
     { icon: <CommentOutlined />, label: 'AI 聊天', path: `/${currentLang}/ai/soul` },
-    { icon: <RobotOutlined />, label: '游戏百科', path: `/${currentLang}/ai/npc` },
+    { icon: <TeamOutlined />, label: '游戏百科', path: `/${currentLang}/ai/npc` },
     { icon: <ThunderboltOutlined />, label: '命理师', path: `/${currentLang}/ai/companion` },
   ];
 
@@ -187,21 +195,71 @@ const MobileTabBar = () => {
               <button
                 key={tab.key}
                 onClick={() => handleTabClick(tab)}
-                className={`flex flex-col items-center justify-center gap-0.5 flex-1 h-full transition-colors ${
-                  isActive
-                    ? 'text-primary-400'
-                    : 'text-gray-500 hover:text-gray-300'
-                }`}
+                className="flex flex-col items-center justify-center gap-0.5 flex-1 h-full transition-all duration-200 relative mx-0.5 rounded-xl"
+                style={{
+                  backgroundColor: isActive ? 'rgba(22,119,255,0.15)' : 'transparent',
+                  borderWidth: isActive ? 1 : 0,
+                  borderColor: isActive ? 'rgba(22,119,255,0.3)' : 'transparent',
+                }}
               >
-                <Icon className={`text-xl ${isActive ? 'text-primary-400' : ''}`} />
-                <span className={`text-[10px] leading-none ${isActive ? 'font-medium' : ''}`}>
-                  {t(tab.labelKey)}
+                <Icon style={{
+                  color: isActive ? '#1677ff' : '#6b7280',
+                  fontSize: 20,
+                  fontWeight: isActive ? 'bold' : 'normal',
+                }} />
+                <span style={{
+                  fontSize: 11,
+                  lineHeight: '14px',
+                  fontWeight: isActive ? 700 : 500,
+                  color: isActive ? '#1677ff' : '#6b7280',
+                }}>
+                  {tab.label}
                 </span>
+                <span style={{
+                  fontSize: 9,
+                  lineHeight: '12px',
+                  fontWeight: isActive ? 500 : 400,
+                  color: isActive ? '#93b8ff' : '#4b5563',
+                }}>
+                  {tab.subtitle}
+                </span>
+                {isActive && (
+                  <div
+                    className="absolute top-0 left-4 right-4 h-0.5 rounded-full"
+                    style={{ backgroundColor: '#1677ff' }}
+                  />
+                )}
               </button>
             );
           })}
         </div>
       </div>
+
+      {/* Recommend Drawer */}
+      <Drawer
+        title="推荐游戏"
+        placement="bottom"
+        height="auto"
+        open={drawerType === 'recommend'}
+        onClose={() => setDrawerType(null)}
+        styles={{ body: { padding: '8px 0' } }}
+      >
+        <div className="flex flex-col">
+          {recommendDrawerItems.map((item, idx) => (
+            <button
+              key={idx}
+              onClick={() => {
+                navigate(item.path);
+                setDrawerType(null);
+              }}
+              className="flex items-center gap-3 px-6 py-4 text-sm text-gray-200 hover:bg-dark-700 transition-colors w-full text-left"
+            >
+              <span className="text-lg text-gray-400">{item.icon}</span>
+              <span className="text-base">{item.label}</span>
+            </button>
+          ))}
+        </div>
+      </Drawer>
 
       {/* AI Drawer */}
       <Drawer

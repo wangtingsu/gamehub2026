@@ -56,9 +56,9 @@ const RecommendedGames: React.FC<RecommendedGamesProps> = ({
             ))}
           </div>
         ) : (
-          <div className="flex space-x-4 overflow-x-auto pb-4">
+          <div className="flex gap-4 overflow-x-auto pb-4 pr-4">
             {[1, 2, 3, 4].map((i) => (
-              <Card key={i} loading className="min-w-[220px] w-[220px]" />
+              <Card key={i} loading className="flex-shrink-0 w-[calc(100vw-64px)] sm:w-[260px] md:w-[280px]" />
             ))}
           </div>
         )}
@@ -95,7 +95,7 @@ const RecommendedGames: React.FC<RecommendedGamesProps> = ({
             <Card
               key={`${item.type}-${item.id}`}
               hoverable
-              className="w-full"
+              className="h-full"
               cover={
                 <div className="h-48 bg-gradient-to-br from-primary-100 to-secondary-100 dark:from-gray-700 dark:to-gray-600 flex items-center justify-center overflow-hidden">
                   {item.coverImageUrl ? (
@@ -132,13 +132,13 @@ const RecommendedGames: React.FC<RecommendedGamesProps> = ({
           ))}
         </div>
       ) : (
-        // 横向滚动布局
-        <div className="flex space-x-4 overflow-x-auto pb-4 -mx-2 px-2">
+        // 横向滚动布局：手机一张卡片略窄于屏幕，平板+多张
+        <div className="flex gap-4 overflow-x-auto pb-4 pr-4">
           {displayItems.map((item) => (
             <Card
               key={`${item.type}-${item.id}`}
               hoverable
-              className="w-[220px] sm:w-[260px] md:w-[280px] flex-shrink-0"
+              className="flex-shrink-0 w-[calc(100vw-64px)] sm:w-[260px] md:w-[280px]"
               cover={
                 <div className="h-48 bg-gradient-to-br from-primary-100 to-secondary-100 dark:from-gray-700 dark:to-gray-600 flex items-center justify-center overflow-hidden">
                   {item.coverImageUrl ? (
