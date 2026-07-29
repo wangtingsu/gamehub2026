@@ -38,7 +38,7 @@ dotenv.config();
 // 导入配置
 import config from './config';
 import logger from './utils/logger';
-import { connectDatabase, runMigrations } from './db';
+import { connectDatabase, runMigrations, execute } from './db';
 import { connectRedis } from './services/redis.service';
 import { initSentry } from './monitoring/sentry';
 
@@ -457,6 +457,21 @@ const startServer = async () => {
     } else {
       logger.info('缓存功能已禁用，跳过Redis连接');
     }
+
+    // 定时清理过期的待注册记录（每30分钟）
+    setInterval(async () => {
+      try {
+        const result = await execute(
+          'DELETE FROM pending_registrations WHERE token_expires_at <= ?',
+          [new Date().toISOString()]
+        );
+        if (result.changes > 0) {
+          logger.info(`清理了 ${result.changes} 条过期的待注册记录`);
+        }
+      } catch {
+        // 静默失败
+      }
+    }, 30 * 60 * 1000);
 
     // 启动新闻通讯调度器
     newsletterScheduler.start();
