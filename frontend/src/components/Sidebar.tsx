@@ -350,8 +350,28 @@ const Sidebar = ({ collapsed, onNavigate, onToggleCollapse, navMode, onNavModeCh
         )}
       </div>
 
-      {/* 导航菜单区域 — 使用 Ant Design Menu 组件渲染侧边导航项，支持键盘导航和主题切换 */}
-      <div className="flex-1 overflow-y-auto py-2 scrollbar-thin" onClick={handleBlankClick}>
+      {/* 导航菜单区域 — 鼠标悬停展开子面板，点击导航 */}
+      <div
+        className="flex-1 overflow-y-auto py-2 scrollbar-thin"
+        onClick={handleBlankClick}
+        onMouseOver={(e) => {
+          // 查找鼠标悬停的菜单项，触发对应的子面板
+          const target = (e.target as HTMLElement).closest('.ant-menu-item') as HTMLElement | null;
+          if (!target) return;
+          // antd Menu 在 li 元素上用 data-menu-id 存储 key
+          const menuId = target.getAttribute('data-menu-id');
+          // 仅一级菜单项（游戏库、推荐游戏、AI助手、更多的）触发子面板
+          if (menuId && ['/' + currentLang + '/games', 'recommend', '/' + currentLang + '/ai', 'more'].includes(menuId)) {
+            const modeMap: Record<string, string> = {
+              ['/' + currentLang + '/games']: 'games',
+              'recommend': 'recommend',
+              ['/' + currentLang + '/ai']: 'ai',
+              'more': 'more',
+            };
+            onNavModeChange?.(modeMap[menuId] as 'games' | 'recommend' | 'ai' | 'more');
+          }
+        }}
+      >
         <Menu
           mode="inline"
           selectedKeys={[selectedKey]}

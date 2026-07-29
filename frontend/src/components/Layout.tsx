@@ -275,43 +275,48 @@ const Layout = () => {
       ) : (
         /* ========== 桌面/平板布局：侧栏 + 子导航 + 内容 ========== */
         <>
-          {/* Desktop Sidebar */}
-          <AntLayout.Sider
-            collapsible
-            collapsed={collapsed}
-            onCollapse={setCollapsed}
-            trigger={null}
-            width={338}
-            collapsedWidth={104}
-            theme="dark"
-            className="main-sider"
-            style={{
-              borderRight: '1px solid rgba(51,65,85,0.5)',
-              position: 'sticky',
-              top: 0,
-              height: '100vh',
-              overflow: 'hidden',
-            }}
+          {/* 侧栏 + 子面板容器，鼠标离开时关闭子面板 */}
+          <div
+            style={{ display: 'flex', flexShrink: 0 }}
+            onMouseLeave={() => { setNavMode('main'); setCollapsed(false); }}
           >
-            <Sidebar
+            {/* Desktop Sidebar */}
+            <AntLayout.Sider
+              collapsible
               collapsed={collapsed}
-              onToggleCollapse={() => setCollapsed(!collapsed)}
-              navMode={navMode}
-              onNavModeChange={(mode) => {
-                setNavMode(mode);
-                if (mode !== 'main') setCollapsed(true);
-                else setCollapsed(false);
+              onCollapse={setCollapsed}
+              trigger={null}
+              width={338}
+              collapsedWidth={104}
+              theme="dark"
+              className="main-sider"
+              style={{
+                borderRight: '1px solid rgba(51,65,85,0.5)',
+                position: 'sticky',
+                top: 0,
+                height: '100vh',
+                overflow: 'hidden',
               }}
-            />
-          </AntLayout.Sider>
+            >
+              <Sidebar
+                collapsed={collapsed}
+                onToggleCollapse={() => setCollapsed(!collapsed)}
+                navMode={navMode}
+                onNavModeChange={(mode) => {
+                  setNavMode(mode);
+                  if (mode !== 'main') setCollapsed(true);
+                  else setCollapsed(false);
+                }}
+              />
+            </AntLayout.Sider>
 
-          {/* Desktop Sub-Navigation Panel */}
-          {navMode !== 'main' && (
-            <div
-              className="sub-nav-panel flex flex-col flex-shrink-0"
-              onMouseMove={startAutoCloseTimer}
-              onTouchMove={startAutoCloseTimer}
-              onClick={startAutoCloseTimer}
+            {/* Desktop Sub-Navigation Panel */}
+            {navMode !== 'main' && (
+              <div
+                className="sub-nav-panel flex flex-col flex-shrink-0"
+                onMouseMove={startAutoCloseTimer}
+                onTouchMove={startAutoCloseTimer}
+                onClick={startAutoCloseTimer}
               style={{
                 width: 286,
                 background: 'var(--c-bg)',
@@ -347,6 +352,7 @@ const Layout = () => {
               </div>
             </div>
           )}
+          </div>
 
           {/* Main Content + Footer */}
           <AntLayout className="bg-dark-900">
