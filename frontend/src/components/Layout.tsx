@@ -67,7 +67,7 @@ const { Content } = AntLayout;
  */
 const Layout = () => {
   const { isAdmin } = useAuth();
-  const [collapsed, setCollapsed] = useState(false);
+  const [collapsed, setCollapsed] = useState(true);
   const [isMobile, setIsMobile] = useState(false);
   const [navMode, setNavMode] = useState<'main' | 'games' | 'ai' | 'more' | 'recommend'>('main');
   const skipAutoNav = useRef(false);
@@ -292,7 +292,7 @@ const Layout = () => {
               height: '100vh',
               overflow: 'hidden',
             }}
-            onMouseEnter={() => setCollapsed(false)}
+            onClick={() => { if (collapsed) setCollapsed(false); }}
             onMouseLeave={() => { if (navMode === 'main') setCollapsed(true); }}
           >
             <Sidebar
