@@ -115,6 +115,10 @@ const Sidebar = ({ collapsed, onNavigate, onToggleCollapse, navMode, onNavModeCh
    *   （已登录时显示个人中心和消息子项，未登录时无子菜单）
    * - "更多"菜单项（key 为 'more'）：使用自定义 SVG 渲染九宫格图标
    */
+  const handleItemHover = (mode: 'games' | 'recommend' | 'ai' | 'more') => {
+    onNavModeChange?.(mode);
+  };
+
   const menuItems: MenuProps['items'] = [
     {
       key: `/${currentLang}/`,
@@ -124,17 +128,17 @@ const Sidebar = ({ collapsed, onNavigate, onToggleCollapse, navMode, onNavModeCh
     {
       key: `/${currentLang}/games`,
       icon: <AppstoreOutlined />,
-      label: t('navigation.games', '游戏库'),
+      label: <span onMouseEnter={() => handleItemHover('games')}>{t('navigation.games', '游戏库')}</span>,
     },
     {
       key: 'recommend',
       icon: <HeartOutlined />,
-      label: '推荐游戏',
+      label: <span onMouseEnter={() => handleItemHover('recommend')}>推荐游戏</span>,
     },
     {
       key: `/${currentLang}/ai`,
       icon: <RobotOutlined />,
-      label: t('navigation.ai', 'AI 助手'),
+      label: <span onMouseEnter={() => handleItemHover('ai')}>{t('navigation.ai', 'AI 助手')}</span>,
     },
     {
       key: 'more',
@@ -151,7 +155,7 @@ const Sidebar = ({ collapsed, onNavigate, onToggleCollapse, navMode, onNavModeCh
           <circle cx="19" cy="19" r="1.5" />
         </svg>
       ),
-      label: t('navigation.more', '更多的'),
+      label: <span onMouseEnter={() => handleItemHover('more')}>{t('navigation.more', '更多的')}</span>,
     },
   ];
 
@@ -354,23 +358,6 @@ const Sidebar = ({ collapsed, onNavigate, onToggleCollapse, navMode, onNavModeCh
       <div
         className="flex-1 overflow-y-auto py-2 scrollbar-thin"
         onClick={handleBlankClick}
-        onMouseOver={(e) => {
-          // 查找鼠标悬停的菜单项，触发对应的子面板
-          const target = (e.target as HTMLElement).closest('.ant-menu-item') as HTMLElement | null;
-          if (!target) return;
-          // antd Menu 在 li 元素上用 data-menu-id 存储 key
-          const menuId = target.getAttribute('data-menu-id');
-          // 仅一级菜单项（游戏库、推荐游戏、AI助手、更多的）触发子面板
-          if (menuId && ['/' + currentLang + '/games', 'recommend', '/' + currentLang + '/ai', 'more'].includes(menuId)) {
-            const modeMap: Record<string, string> = {
-              ['/' + currentLang + '/games']: 'games',
-              'recommend': 'recommend',
-              ['/' + currentLang + '/ai']: 'ai',
-              'more': 'more',
-            };
-            onNavModeChange?.(modeMap[menuId] as 'games' | 'recommend' | 'ai' | 'more');
-          }
-        }}
       >
         <Menu
           mode="inline"
