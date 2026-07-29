@@ -418,8 +418,9 @@ button, a, input, select, textarea,
   touch-action: pan-x;
 }
 
-/* 图片和地图等不应触发缩放 */
-img, .leaflet-container, .map-container {
+/* 图片和地图等不应触发缩放（图片改为 pan-y 允许滑动穿透） */
+img { touch-action: pan-y pinch-zoom; }
+.leaflet-container, .map-container {
   touch-action: none;
 }
 
