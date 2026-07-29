@@ -719,7 +719,9 @@ img, .leaflet-container, .map-container {
   .mobile-content {
     min-height: calc(100vh - 56px - 56px); /* 减去顶栏和底栏高度 */
     padding-bottom: 8px;
-    overflow-x: hidden; /* 防止水平滑动导致页面间误切换 */
+    overflow-x: hidden;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
   }
 
   /* 手机端Tab栏固定底部 */
