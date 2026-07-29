@@ -37,7 +37,7 @@ interface SidebarProps {
   collapsed: boolean;
   onNavigate?: () => void;
   onToggleCollapse?: () => void;
-  navMode: 'main' | 'games' | 'ai' | 'more';
+  navMode: 'main' | 'games' | 'ai' | 'more' | 'recommend';
   onNavModeChange: (mode: 'main' | 'games' | 'ai' | 'more') => void;
   /** 点击分类（games/ai/more）时不跳转，只切换导航模式（移动端使用） */
   categoryClickOnly?: boolean;
@@ -127,24 +127,9 @@ const Sidebar = ({ collapsed, onNavigate, onToggleCollapse, navMode, onNavModeCh
       label: t('navigation.games', '游戏库'),
     },
     {
-      key: `/${currentLang}/library/online`,
-      icon: <PlayCircleOutlined />,
-      label: '在线游戏',
-    },
-    {
-      key: `/${currentLang}/free-games`,
+      key: 'recommend',
       icon: <HeartOutlined />,
-      label: '免费游戏',
-    },
-    {
-      key: `/${currentLang}/cozy-games`,
-      icon: <ThunderboltOutlined />,
-      label: '治愈游戏',
-    },
-    {
-      key: `/${currentLang}/community-forum`,
-      icon: <TeamOutlined />,
-      label: '社区论坛',
+      label: '推荐游戏',
     },
     {
       key: `/${currentLang}/ai`,
@@ -178,7 +163,8 @@ const Sidebar = ({ collapsed, onNavigate, onToggleCollapse, navMode, onNavModeCh
    * - aiSubPaths：AI 子页面（AI 头像、AI 灵魂、AI NPC、AI 伴侣等）
    * - moreSubPaths：更多子页面（新闻、关于、博客、社区等）
    */
-  const gameSubPaths = [`/${currentLang}/games`, `/${currentLang}/discovery`, `/${currentLang}/trending`, `/${currentLang}/leaderboard`, `/${currentLang}/library/online`, `/${currentLang}/library/play`, `/${currentLang}/free-games`, `/${currentLang}/cozy-games`];
+  const gameSubPaths = [`/${currentLang}/games`, `/${currentLang}/discovery`, `/${currentLang}/trending`, `/${currentLang}/leaderboard`];
+  const recommendSubPaths = [`/${currentLang}/library/online`, `/${currentLang}/library/play`, `/${currentLang}/free-games`, `/${currentLang}/cozy-games`];
   const aiSubPaths = [`/${currentLang}/ai`, `/${currentLang}/ai/soul`, `/${currentLang}/ai/npc`, `/${currentLang}/ai/companion`];
   const moreSubPaths = [`/${currentLang}/news`, `/${currentLang}/about`, `/${currentLang}/community-forum`];
 
@@ -221,6 +207,7 @@ const Sidebar = ({ collapsed, onNavigate, onToggleCollapse, navMode, onNavModeCh
 
     if (gameSubPaths.some((sp) => path === sp || path.startsWith(sp + '/'))) return `/${currentLang}/games`;
     if (aiSubPaths.some((sp) => path === sp || path.startsWith(sp + '/'))) return `/${currentLang}/ai`;
+    if (recommendSubPaths.some((sp) => path === sp || path.startsWith(sp + '/'))) return 'recommend';
     if (moreSubPaths.some((sp) => path === sp || path.startsWith(sp + '/'))) return 'more';
 
     const found = findKeyInItems(menuItems);
@@ -282,8 +269,8 @@ const Sidebar = ({ collapsed, onNavigate, onToggleCollapse, navMode, onNavModeCh
     // 收缩模式 + 子导航打开时，点击主导航项先关闭子导航
     if (collapsed && navMode !== 'main') {
       onNavModeChange('main');
-      if (key === 'more') {
-        onNavModeChange('more');
+      if (key === 'more' || key === 'recommend') {
+        onNavModeChange(key as 'more' | 'recommend');
       } else {
         navigate(key);
       }
@@ -294,6 +281,10 @@ const Sidebar = ({ collapsed, onNavigate, onToggleCollapse, navMode, onNavModeCh
     if (key === `/${currentLang}/games`) {
       onNavModeChange('games');
       if (categoryClickOnly) return;
+    } else if (key === 'recommend') {
+      onNavModeChange('recommend');
+      if (categoryClickOnly) return;
+      return;
     } else if (key === 'more') {
       onNavModeChange('more');
       if (categoryClickOnly) return;

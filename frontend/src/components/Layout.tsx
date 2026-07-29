@@ -69,7 +69,7 @@ const Layout = () => {
   const { isAdmin } = useAuth();
   const [collapsed, setCollapsed] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
-  const [navMode, setNavMode] = useState<'main' | 'games' | 'ai' | 'more'>('main');
+  const [navMode, setNavMode] = useState<'main' | 'games' | 'ai' | 'more' | 'recommend'>('main');
   const skipAutoNav = useRef(false);
   const { t, i18n } = useTranslation();
   const { lang } = useParams<{ lang: string }>();
@@ -96,6 +96,7 @@ const Layout = () => {
    * 当页面路径匹配时，自动激活对应的子导航面板
    */
   const gameSubPaths = [`/${currentLang}/games`, `/${currentLang}/discovery`, `/${currentLang}/trending`, `/${currentLang}/leaderboard`];
+  const recommendSubPaths = [`/${currentLang}/library/online`, `/${currentLang}/library/play`, `/${currentLang}/free-games`, `/${currentLang}/cozy-games`];
   const moreSubPaths = [`/${currentLang}/news`, `/${currentLang}/about`, `/${currentLang}/community-forum`];
 
   /**
@@ -111,6 +112,8 @@ const Layout = () => {
     const path = location.pathname;
     if (gameSubPaths.some((sp) => path === sp || path.startsWith(sp + '/'))) {
       setNavMode('games');
+    } else if (recommendSubPaths.some((sp) => path === sp || path.startsWith(sp + '/'))) {
+      setNavMode('recommend');
     } else if (moreSubPaths.some((sp) => path === sp || path.startsWith(sp + '/'))) {
       setNavMode('more');
     }
@@ -172,12 +175,15 @@ const Layout = () => {
    */
   const gamesNavItems: MenuProps['items'] = [
     { key: `/${currentLang}/games`, icon: <AppstoreOutlined />, label: t('navigation.allGames', '全部游戏') },
-    { key: `/${currentLang}/library/online`, icon: <PlayCircleOutlined />, label: '在线游戏' },
-    { key: `/${currentLang}/free-games`, icon: <HeartOutlined />, label: '免费游戏' },
-    { key: `/${currentLang}/cozy-games`, icon: <ThunderboltOutlined />, label: '治愈游戏' },
     { key: `/${currentLang}/leaderboard`, icon: <TrophyOutlined />, label: t('navigation.leaderboard', '排行榜') },
     { key: `/${currentLang}/trending`, icon: <FireOutlined />, label: t('navigation.trending', '热门') },
     { key: `/${currentLang}/discovery`, icon: <CompassOutlined />, label: t('navigation.discovery', '发现') },
+  ];
+
+  const recommendNavItems: MenuProps['items'] = [
+    { key: `/${currentLang}/library/online`, icon: <PlayCircleOutlined />, label: '在线游戏' },
+    { key: `/${currentLang}/free-games`, icon: <HeartOutlined />, label: '免费游戏' },
+    { key: `/${currentLang}/cozy-games`, icon: <ThunderboltOutlined />, label: '治愈游戏' },
   ];
 
   /**
@@ -209,6 +215,7 @@ const Layout = () => {
    */
   const navConfig: Record<string, { title: string; items: MenuProps['items'] }> = {
     games: { title: t('navigation.games', '游戏库'), items: gamesNavItems },
+    recommend: { title: '推荐游戏', items: recommendNavItems },
     more: { title: t('navigation.more', '更多的'), items: moreNavItems },
   };
 
