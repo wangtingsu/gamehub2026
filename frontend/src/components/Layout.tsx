@@ -252,7 +252,7 @@ const Layout = () => {
     clearAutoCloseTimer();
     skipAutoNav.current = true;
     setNavMode('main');
-    setCollapsed(false);
+    setCollapsed(true);
     navigate(key);
   };
 
