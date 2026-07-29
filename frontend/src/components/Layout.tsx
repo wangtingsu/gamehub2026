@@ -275,7 +275,7 @@ const Layout = () => {
       ) : (
         /* ========== 桌面/平板布局：侧栏 + 子导航 + 内容 ========== */
         <>
-          {/* Desktop Sidebar — 鼠标悬停展开，离开收起 */}
+          {/* Desktop Sidebar */}
           <AntLayout.Sider
             collapsible
             collapsed={collapsed}
@@ -292,8 +292,6 @@ const Layout = () => {
               height: '100vh',
               overflow: 'hidden',
             }}
-            onMouseEnter={() => setCollapsed(false)}
-            onMouseLeave={() => { setNavMode('main'); setCollapsed(true); }}
           >
             <Sidebar
               collapsed={collapsed}
@@ -350,8 +348,8 @@ const Layout = () => {
             </div>
           )}
 
-          {/* Main Content + Footer */}
-          <AntLayout className="bg-dark-900">
+          {/* Main Content + Footer — 点击内容区关闭子面板 */}
+          <AntLayout className="bg-dark-900" onClick={() => setNavMode('main')}>
             <Content className="bg-dark-900 text-gray-100 main-content">
               <div className="px-8 flex-grow">
                 <Outlet />
