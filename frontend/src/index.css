@@ -388,8 +388,11 @@ img {
 /* ========== 触摸交互优化 ========== */
 
 /* 消除移动端 300ms 点击延迟 */
-html {
+html, body {
   touch-action: manipulation;
+  overflow-x: hidden;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
 }
 
 /* 可交互元素触及区域优化 */
