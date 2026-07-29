@@ -267,7 +267,7 @@ const Layout = () => {
         /* ========== 手机布局：顶部导航 + 内容 + 底部Tab栏 ========== */
         <>
           <MobileHeader />
-          <div className="mobile-content pb-16">
+          <div className="mobile-content pb-20" style={{ paddingBottom: 'calc(80px + env(safe-area-inset-bottom))' }}>
             <Outlet />
           </div>
           <MobileTabBar />
