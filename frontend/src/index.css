@@ -418,10 +418,18 @@ button, a, input, select, textarea,
   touch-action: pan-x;
 }
 
-/* 图片和地图等不应触发缩放（图片改为 pan-y 允许滑动穿透） */
-img { touch-action: pan-y pinch-zoom; }
+/* 地图等不应触发缩放 */
 .leaflet-container, .map-container {
   touch-action: none;
+}
+
+/* 卡片内图片自适应大小 */
+.ant-card-cover img,
+.ant-card .ant-image-img,
+.card img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
 /* 防止双击缩放干扰交互 */
