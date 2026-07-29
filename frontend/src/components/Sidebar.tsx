@@ -115,10 +115,6 @@ const Sidebar = ({ collapsed, onNavigate, onToggleCollapse, navMode, onNavModeCh
    *   （已登录时显示个人中心和消息子项，未登录时无子菜单）
    * - "更多"菜单项（key 为 'more'）：使用自定义 SVG 渲染九宫格图标
    */
-  const handleItemHover = (mode: 'games' | 'recommend' | 'ai' | 'more') => {
-    onNavModeChange?.(mode);
-  };
-
   const menuItems: MenuProps['items'] = [
     {
       key: `/${currentLang}/`,
@@ -128,17 +124,17 @@ const Sidebar = ({ collapsed, onNavigate, onToggleCollapse, navMode, onNavModeCh
     {
       key: `/${currentLang}/games`,
       icon: <AppstoreOutlined />,
-      label: <span onMouseEnter={() => handleItemHover('games')}>{t('navigation.games', '游戏库')}</span>,
+      label: t('navigation.games', '游戏库'),
     },
     {
       key: 'recommend',
       icon: <HeartOutlined />,
-      label: <span onMouseEnter={() => handleItemHover('recommend')}>推荐游戏</span>,
+      label: '推荐游戏',
     },
     {
       key: `/${currentLang}/ai`,
       icon: <RobotOutlined />,
-      label: <span onMouseEnter={() => handleItemHover('ai')}>{t('navigation.ai', 'AI 助手')}</span>,
+      label: t('navigation.ai', 'AI 助手'),
     },
     {
       key: 'more',
@@ -155,7 +151,7 @@ const Sidebar = ({ collapsed, onNavigate, onToggleCollapse, navMode, onNavModeCh
           <circle cx="19" cy="19" r="1.5" />
         </svg>
       ),
-      label: <span onMouseEnter={() => handleItemHover('more')}>{t('navigation.more', '更多的')}</span>,
+      label: t('navigation.more', '更多的'),
     },
   ];
 
@@ -354,11 +350,8 @@ const Sidebar = ({ collapsed, onNavigate, onToggleCollapse, navMode, onNavModeCh
         )}
       </div>
 
-      {/* 导航菜单区域 — 鼠标悬停展开子面板，点击导航 */}
-      <div
-        className="flex-1 overflow-y-auto py-2 scrollbar-thin"
-        onClick={handleBlankClick}
-      >
+      {/* 导航菜单区域 — 使用 Ant Design Menu 组件渲染侧边导航项，支持键盘导航和主题切换 */}
+      <div className="flex-1 overflow-y-auto py-2 scrollbar-thin" onClick={handleBlankClick}>
         <Menu
           mode="inline"
           selectedKeys={[selectedKey]}
