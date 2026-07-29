@@ -275,7 +275,7 @@ const Layout = () => {
       ) : (
         /* ========== 桌面/平板布局：侧栏 + 子导航 + 内容 ========== */
         <>
-          {/* Desktop Sidebar */}
+          {/* Desktop Sidebar — 鼠标悬停展开，离开收起 */}
           <AntLayout.Sider
             collapsible
             collapsed={collapsed}
@@ -292,6 +292,8 @@ const Layout = () => {
               height: '100vh',
               overflow: 'hidden',
             }}
+            onMouseEnter={() => setCollapsed(false)}
+            onMouseLeave={() => { if (navMode === 'main') setCollapsed(true); }}
           >
             <Sidebar
               collapsed={collapsed}
