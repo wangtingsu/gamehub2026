@@ -121,7 +121,9 @@ export const register = async (userData: UserCreateInput): Promise<{ message: st
       if (emailExists) {
         throw new ConflictError('邮箱已存在');
       }
-      const pendingEmail = await query('SELECT id FROM pending_registrations WHERE email = ?', [userData.email]);
+      // 检查是否有未过期的待注册记录，过期的自动清理
+      await execute('DELETE FROM pending_registrations WHERE email = ? AND token_expires_at <= ?', [userData.email, new Date().toISOString()]);
+      const pendingEmail = await query('SELECT id FROM pending_registrations WHERE email = ? AND token_expires_at > ?', [userData.email, new Date().toISOString()]);
       if (pendingEmail.length > 0) {
         throw new ConflictError('该邮箱已有待验证的注册，请查收邮件或稍后再试');
       }
@@ -777,8 +779,15 @@ export const checkVerificationToken = async (token: string): Promise<boolean> =>
 export const checkEmailExists = async (email: string): Promise<boolean> => {
   const users = await query('SELECT id FROM users WHERE email = ?', [email]);
   if (users.length > 0) return true;
-  const pending = await query('SELECT id FROM pending_registrations WHERE email = ?', [email]);
-  return pending.length > 0;
+  // 只查未过期的待注册记录，过期的当作不存在
+  const pending = await query(
+    'SELECT id FROM pending_registrations WHERE email = ? AND token_expires_at > ?',
+    [email, new Date().toISOString()]
+  );
+  if (pending.length > 0) return true;
+  // 清理过期的待注册记录
+  await execute('DELETE FROM pending_registrations WHERE email = ? AND token_expires_at <= ?', [email, new Date().toISOString()]);
+  return false;
 };
 
 export default {
