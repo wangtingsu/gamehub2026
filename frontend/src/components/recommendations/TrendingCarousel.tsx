@@ -54,7 +54,7 @@ const TrendingCarousel: React.FC<TrendingCarouselProps> = ({
             ))}
           </div>
         ) : (
-          <div className="flex gap-4 overflow-x-auto pb-4 pr-4">
+          <div className="flex gap-4 overflow-x-auto pb-4 pr-4" style={{ touchAction: 'pan-y pan-x' }}>
             {[1, 2, 3, 4].map((i) => (
               <Card key={i} loading className="flex-shrink-0 w-[calc(100vw-64px)] sm:w-[260px] md:w-[280px]" />
             ))}
@@ -143,7 +143,7 @@ const TrendingCarousel: React.FC<TrendingCarouselProps> = ({
         </div>
       ) : (
         // 横向滚动布局
-        <div className="flex gap-4 overflow-x-auto pb-4 pr-4">
+        <div className="flex gap-4 overflow-x-auto pb-4 pr-4" style={{ touchAction: 'pan-y pan-x' }}>
           {displayItems.map((item, index) => (
             <Card
               key={`${item.type}-${item.id}`}

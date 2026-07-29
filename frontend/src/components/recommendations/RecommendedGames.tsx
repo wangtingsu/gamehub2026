@@ -56,7 +56,7 @@ const RecommendedGames: React.FC<RecommendedGamesProps> = ({
             ))}
           </div>
         ) : (
-          <div className="flex gap-4 overflow-x-auto pb-4 pr-4">
+          <div className="flex gap-4 overflow-x-auto pb-4 pr-4" style={{ touchAction: 'pan-y pan-x' }}>
             {[1, 2, 3, 4].map((i) => (
               <Card key={i} loading className="flex-shrink-0 w-[calc(100vw-64px)] sm:w-[260px] md:w-[280px]" />
             ))}
@@ -133,7 +133,7 @@ const RecommendedGames: React.FC<RecommendedGamesProps> = ({
         </div>
       ) : (
         // 横向滚动布局：手机一张卡片略窄于屏幕，平板+多张
-        <div className="flex gap-4 overflow-x-auto pb-4 pr-4">
+        <div className="flex gap-4 overflow-x-auto pb-4 pr-4" style={{ touchAction: 'pan-y pan-x' }}>
           {displayItems.map((item) => (
             <Card
               key={`${item.type}-${item.id}`}
