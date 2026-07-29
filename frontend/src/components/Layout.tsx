@@ -293,7 +293,7 @@ const Layout = () => {
               overflow: 'hidden',
             }}
             onMouseEnter={() => setCollapsed(false)}
-            onMouseLeave={() => { if (navMode === 'main') setCollapsed(true); }}
+            onMouseLeave={() => { setNavMode('main'); setCollapsed(true); }}
           >
             <Sidebar
               collapsed={collapsed}
