@@ -1,5 +1,5 @@
 import { useMemo } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { Card, Row, Col, Button, Tag, Rate, Spin, Empty, Typography } from 'antd';
 import {
   RightOutlined,
@@ -41,6 +41,7 @@ const fallbackIndieGames: Game[] = [
 
 const GameLibraryPage = () => {
   const navigate = useNavigate();
+  const { lang } = useParams<{ lang: string }>();
 
   const { data: recommendations, isLoading: recLoading, isError: recError } = usePersonalizedRecommendations(8);
   const { data: allGames = [], isLoading: gamesLoading, isError: gamesError } = useGames();
@@ -108,7 +109,7 @@ const GameLibraryPage = () => {
             )}
           </div>
         }
-        onClick={() => navigate(`/games/${game.id}`)}
+        onClick={() => navigate(`/${lang || 'cn'}/games/${game.id}`)}
       >
         <div className="mb-2">
           <div className="text-sm font-semibold truncate mb-1">{game.title}</div>

@@ -20,6 +20,7 @@ import {
   DatabaseOutlined,
   BellOutlined,
   CheckCircleOutlined,
+  ReadOutlined,
 } from '@ant-design/icons';
 import type { MenuProps } from 'antd';
 
@@ -109,6 +110,11 @@ const Sidebar: React.FC<SidebarProps> = ({ collapsed, allowedMenus }: SidebarPro
       key: '/admin/notifications',
       icon: <BellOutlined />,
       label: '通知管理',
+    },
+    {
+      key: '/admin/blogs',
+      icon: <ReadOutlined />,
+      label: '博客管理',
     },
     {
       key: '/admin/games',

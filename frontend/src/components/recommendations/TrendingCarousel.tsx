@@ -118,7 +118,7 @@ const TrendingCarousel: React.FC<TrendingCarouselProps> = ({
                   )}
                 </div>
               }
-              onClick={() => navigate(`/games/${item.id}`)}
+              onClick={() => navigate(`/${lang || 'cn'}/games/${item.id}`)}
             >
               <Card.Meta
                 title={
@@ -173,7 +173,7 @@ const TrendingCarousel: React.FC<TrendingCarouselProps> = ({
                   )}
                 </div>
               }
-              onClick={() => navigate(`/games/${item.id}`)}
+              onClick={() => navigate(`/${lang || 'cn'}/games/${item.id}`)}
             >
               <Card.Meta
                 title={

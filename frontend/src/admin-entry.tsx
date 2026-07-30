@@ -73,6 +73,7 @@ const AdminLogin = lazy(() => import('./pages/admin/Login'))
 const AdminReviewQueue = lazy(() => import('./pages/admin/ReviewQueue'))
 const AdminRecommend = lazy(() => import('./pages/admin/Recommend'))
 const AdminNotifications = lazy(() => import('./pages/admin/Notifications'))
+const AdminBlogs = lazy(() => import('./pages/admin/Blogs'))
 
 /**
  * 管理后台路由配置组件
@@ -136,6 +137,9 @@ function AdminRoutes() {
         } />
         <Route path="notifications" element={
           <PageSuspense><AdminNotifications /></PageSuspense>
+        } />
+        <Route path="blogs" element={
+          <PageSuspense><AdminBlogs /></PageSuspense>
         } />
         <Route path="content" element={
           <PageSuspense><ContentManagement /></PageSuspense>

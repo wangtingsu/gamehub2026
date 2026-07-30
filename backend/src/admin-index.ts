@@ -109,6 +109,22 @@ app.use(`${config.apiPrefix}/admin`, adminTemplateRoutes);
 app.use(`${config.apiPrefix}/admin`, adminGuideRoutes);
 app.use(`${config.apiPrefix}/admin`, adminReviewRoutes);
 
+// ========== 管理员图片上传（仅需 admin 认证，不走普通用户 auth）==========
+import multer from 'multer';
+const adminUpload = multer({ dest: config.upload.path + '/temp/' });
+app.post(`${config.apiPrefix}/upload/image`, adminAuthenticate, adminUpload.single('file'), async (req: any, res: Response) => {
+  try {
+    if (!req.file?.mimetype.startsWith('image/')) {
+      return res.status(400).json({ success: false, error: '请上传图片文件' });
+    }
+    const { handleUpload } = require('./services/upload.service');
+    const uploaded = await handleUpload(req);
+    res.status(201).json({ success: true, data: { file: uploaded }, message: '图片上传成功' });
+  } catch (e: any) {
+    res.status(500).json({ success: false, error: e.message });
+  }
+});
+
 // ========== 全局管理员认证（后续所有路由均需管理员权限）==========
 app.use(adminAuthenticate);
 

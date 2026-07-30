@@ -110,7 +110,7 @@ const RecommendedGames: React.FC<RecommendedGamesProps> = ({
                   )}
                 </div>
               }
-              onClick={() => navigate(`/games/${item.id}`)}
+              onClick={() => navigate(`/${lang || 'cn'}/games/${item.id}`)}
             >
               <Card.Meta
                 title={
@@ -153,7 +153,7 @@ const RecommendedGames: React.FC<RecommendedGamesProps> = ({
                   )}
                 </div>
               }
-              onClick={() => navigate(`/games/${item.id}`)}
+              onClick={() => navigate(`/${lang || 'cn'}/games/${item.id}`)}
             >
               <Card.Meta
                 title={
