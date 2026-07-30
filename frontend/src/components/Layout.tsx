@@ -251,9 +251,11 @@ const Layout = () => {
   const handleSubNavClick: MenuProps['onClick'] = ({ key }) => {
     clearAutoCloseTimer();
     skipAutoNav.current = true;
+    // 先关闭子面板并收起侧栏
     setNavMode('main');
     setCollapsed(true);
-    navigate(key);
+    // 延迟导航，让关闭动画先执行
+    setTimeout(() => navigate(key), 50);
   };
 
   return (
