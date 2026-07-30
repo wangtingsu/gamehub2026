@@ -120,7 +120,7 @@ const NewsDetailPage = () => {
                     <div><div className="font-bold text-lg">{article.author}</div><Text type="secondary">资深游戏记者</Text></div>
                   </div>
                 </div>
-                <img alt={article.title} src={article.imageUrl} className="w-full h-96 object-cover rounded-lg mb-8" loading="lazy" />
+                <img alt={article.title} src={article.imageUrl} className="w-full object-contain rounded-lg mb-8 mx-auto" loading="lazy" />
                 <div className="prose max-w-none">
                   <Paragraph className="text-lg leading-relaxed mb-6 text-gray-300">{article.summary}</Paragraph>
                   <Divider />
