@@ -65,7 +65,7 @@ promote() {
     echo ""
     echo -e "\e[1;33m⚠ 即将把测试版本提升为正式版本\e[0m"
     echo "   测试: http://43.128.56.249:$TEST_PORT"
-    echo "   正式: https://www.goodgamehubs.com"
+    echo "   正式: https://www.gghubs.com"
     echo -n "确认继续？(yes/no): "
     read -r CONFIRM
     if [ "$CONFIRM" != "yes" ]; then
@@ -92,8 +92,8 @@ promote() {
   docker stop $PROD_CONTAINER && docker rm $PROD_CONTAINER
   docker run -d --name $PROD_CONTAINER --restart unless-stopped \
     -p 80:80 -p 443:443 \
-    -v /etc/letsencrypt/live/www.goodgamehubs.com/fullchain.pem:/etc/nginx/ssl/fullchain.pem:ro \
-    -v /etc/letsencrypt/live/www.goodgamehubs.com/privkey.pem:/etc/nginx/ssl/privkey.pem:ro \
+    -v /etc/letsencrypt/live/www.gghubs.com/fullchain.pem:/etc/nginx/ssl/fullchain.pem:ro \
+    -v /etc/letsencrypt/live/www.gghubs.com/privkey.pem:/etc/nginx/ssl/privkey.pem:ro \
     --network gamehub-network \
     $PROD_IMAGE:latest
 
@@ -101,7 +101,7 @@ promote() {
   sleep 3
   STATUS=$(curl -sk -o /dev/null -w '%{http_code}' https://localhost/ 2>/dev/null || echo "000")
   if [ "$STATUS" = "200" ]; then
-    log "✅ 正式版本发布成功！https://www.goodgamehubs.com"
+    log "✅ 正式版本发布成功！https://www.gghubs.com"
     log "   版本标签: release-$TODAY (第 $(date +%V) 周发布)"
   else
     err "❌ 正式版本异常 (HTTP $STATUS)"
@@ -117,7 +117,7 @@ show_status() {
   docker ps --format 'table {{.Names}}\t{{.Status}}\t{{.Ports}}' | grep gamehub
   echo ""
   echo -e "  \e[1;36m测试:\e[0m  http://43.128.56.249:$TEST_PORT"
-  echo -e "  \e[1;36m正式:\e[0m  https://www.goodgamehubs.com"
+  echo -e "  \e[1;36m正式:\e[0m  https://www.gghubs.com"
   echo ""
   echo "最近发布的正式版本:"
   docker images $PROD_IMAGE --format 'table {{.Tag}}\t{{.CreatedAt}}' | head -6

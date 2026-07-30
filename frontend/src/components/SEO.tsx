@@ -118,7 +118,7 @@ export default function SEO({
   const { t, i18n } = useTranslation();
   const siteName = 'GameHub';
   const siteUrl = import.meta.env.VITE_SITE_URL || 'https://www.gghubs.com';
-  const twitterHandle = import.meta.env.VITE_TWITTER_HANDLE || '@goodgamehubs';
+  const twitterHandle = import.meta.env.VITE_TWITTER_HANDLE || '@gghubsgame';
 
   // Use defaults if not provided
   const pageTitle = title ? `${title} | ${siteName}` : siteName;
