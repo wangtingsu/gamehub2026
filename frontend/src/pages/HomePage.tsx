@@ -266,7 +266,7 @@ const HomePage = () => {
                 {t('home.latestNewsDesc', 'Stay informed with the latest gaming industry news')}
               </Paragraph>
             </div>
-            <Button type="link" onClick={() => navigate('/news')}>
+            <Button type="link" onClick={() => navigate(`/${currentLang}/news`)}>
               {t('home.viewAll', 'View All')} <ArrowRightOutlined />
             </Button>
           </div>
@@ -352,7 +352,7 @@ const HomePage = () => {
                     {t('home.communityDesc', 'Connect with thousands of gamers worldwide. Share reviews, discuss strategies, participate in events, and make new friends who share your passion for gaming.')}
                   </Paragraph>
                   <div className="flex flex-wrap gap-4">
-                    <Button type="primary" size="large" onClick={() => navigate('/community')}>
+                    <Button type="primary" size="large" onClick={() => navigate(`/${currentLang}/community-forum`)}>
                       {t('home.exploreCommunity', 'Explore Community')}
                     </Button>
                     <Button size="large" onClick={() => navigate('/register')}>

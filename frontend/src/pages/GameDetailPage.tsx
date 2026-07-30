@@ -174,7 +174,7 @@ const GameDetailPage = () => {
           type="error"
           showIcon
           action={
-            <Button type="primary" onClick={() => navigate('/games')}>
+            <Button type="primary" onClick={() => navigate(`/${lang}/games`)}>
               返回游戏列表
             </Button>
           }

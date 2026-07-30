@@ -80,7 +80,7 @@ const NewsDetailPage = () => {
     return (
       <div className="min-h-screen flex items-center justify-center p-4">
         <Alert message="加载失败" description={error || '新闻不存在'} type="error" showIcon
-          action={<Button type="primary" onClick={() => navigate('/news')}>返回新闻列表</Button>} />
+          action={<Button type="primary" onClick={() => navigate(`/${lang}/news`)}>返回新闻列表</Button>} />
       </div>
     );
   }
@@ -96,7 +96,7 @@ const NewsDetailPage = () => {
         <div className="min-h-screen bg-dark-900">
           <div className="bg-dark-800 border-b border-dark-700">
             <div className="py-4">
-              <Button icon={<ArrowLeftOutlined />} onClick={() => navigate('/news')} className="mb-4">返回新闻列表</Button>
+              <Button icon={<ArrowLeftOutlined />} onClick={() => navigate(`/${lang}/news`)} className="mb-4">返回新闻列表</Button>
             </div>
           </div>
           <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
