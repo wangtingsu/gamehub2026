@@ -100,46 +100,57 @@ const NewsDetailPage = () => {
             </div>
           </div>
           <div className="mx-auto py-8">
-            <Card className="mb-8 border-0 shadow-lg bg-dark-800">
-              <div className="mb-8">
-                <div className="flex items-center justify-between mb-4">
-                  <Space>
-                    <Tag color="blue" className="text-lg px-4 py-1">{article.category}</Tag>
-                    <Text type="secondary"><CalendarOutlined className="mr-1" />{formatDate(article.publishDate)}</Text>
-                  </Space>
-                  <Space>
-                    <Button type="text" icon={<EyeOutlined />} className="text-gray-500">{article.views.toLocaleString()}</Button>
-                    <Button type="text" icon={liked ? <LikeFilled /> : <LikeOutlined />} className={liked ? 'text-blue-500' : 'text-gray-500'} onClick={handleLike}>{article.likes.toLocaleString()}</Button>
-                    <Button type="text" icon={<ShareAltOutlined />} className="text-gray-500">分享</Button>
-                  </Space>
-                </div>
-                <Title level={1} className="mb-6">{article.title}</Title>
-                <div className="flex items-center justify-between mb-8">
-                  <div className="flex items-center">
-                    <Avatar size={48} icon={<UserOutlined />} style={{ backgroundColor: '#1890ff' }} className="mr-4" />
-                    <div><div className="font-bold text-lg">{article.author}</div><Text type="secondary">资深游戏记者</Text></div>
-                  </div>
-                </div>
-                <img alt={article.title} src={article.imageUrl} className="w-full max-w-2xl min-w-[300px] object-contain rounded-lg mb-8 mx-auto" loading="lazy" />
-                <div className="prose max-w-none">
-                  <Paragraph className="text-lg leading-relaxed mb-6 text-gray-300">{article.summary}</Paragraph>
-                  <Divider />
-                  <div className="text-xl leading-relaxed text-gray-200">
-                    {article.content.split('\n').map((p, i) => <Paragraph key={i} className="mb-6">{p}</Paragraph>)}
-                  </div>
-                </div>
-                <div className="mt-8 pt-8 border-t border-dark-700">
-                  <div className="flex flex-wrap gap-2 mb-4">
-                    {article.tags.map((tag, i) => <Tag key={i} color="geekblue" className="text-lg px-4 py-1">{tag}</Tag>)}
-                  </div>
-                </div>
-              </div>
-            </Card>
             <Row gutter={[32, 32]}>
+              {/* 左侧：文章内容 + 评论 */}
               <Col xs={24} lg={16}>
-                <Card className="mb-8 bg-dark-800 border-dark-700"><CommentList parentType="news" parentId={id || ''} /></Card>
+                <Card className="mb-8 border-0 shadow-lg bg-dark-800">
+                  <div className="mb-8">
+                    <div className="flex items-center justify-between mb-4">
+                      <Space>
+                        <Tag color="blue" className="text-lg px-4 py-1">{article.category}</Tag>
+                        <Text type="secondary"><CalendarOutlined className="mr-1" />{formatDate(article.publishDate)}</Text>
+                      </Space>
+                      <Space>
+                        <Button type="text" icon={<EyeOutlined />} className="text-gray-500">{article.views.toLocaleString()}</Button>
+                        <Button type="text" icon={liked ? <LikeFilled /> : <LikeOutlined />} className={liked ? 'text-blue-500' : 'text-gray-500'} onClick={handleLike}>{article.likes.toLocaleString()}</Button>
+                        <Button type="text" icon={<ShareAltOutlined />} className="text-gray-500">分享</Button>
+                      </Space>
+                    </div>
+                    <Title level={1} className="mb-6">{article.title}</Title>
+                    <div className="flex items-center justify-between mb-8">
+                      <div className="flex items-center">
+                        <Avatar size={48} icon={<UserOutlined />} style={{ backgroundColor: '#1890ff' }} className="mr-4" />
+                        <div><div className="font-bold text-lg">{article.author}</div><Text type="secondary">资深游戏记者</Text></div>
+                      </div>
+                    </div>
+                    <div className="flex justify-center mb-8"><img alt={article.title} src={article.imageUrl} className="max-w-4xl min-w-[500px] object-contain rounded-lg" loading="lazy" /></div>
+                    <div className="prose max-w-none">
+                      <Paragraph className="text-lg leading-relaxed mb-6 text-gray-300">{article.summary}</Paragraph>
+                      <Divider />
+                      <div className="text-xl leading-relaxed text-gray-200">
+                        {article.content.split('\n').map((p, i) => <Paragraph key={i} className="mb-6">{p}</Paragraph>)}
+                      </div>
+                    </div>
+                    <div className="mt-8 pt-8 border-t border-dark-700">
+                      <div className="flex flex-wrap gap-2 mb-4">
+                        {article.tags.map((tag, i) => <Tag key={i} color="geekblue" className="text-lg px-4 py-1">{tag}</Tag>)}
+                      </div>
+                    </div>
+                  </div>
+                </Card>
               </Col>
+              {/* 右侧：相关新闻 + 作者 + 标签 */}
               <Col xs={24} lg={8}>
+                <Card title="相关新闻" className="bg-dark-800 border-dark-700 mb-8">
+                  <List dataSource={relatedNews} renderItem={(item) => (
+                    <List.Item className="!px-3 !py-4 border-b border-dark-700 last:border-b-0 cursor-pointer hover:bg-dark-700 rounded-lg transition-all duration-200" onClick={() => navigate(`/${lang}/news/${item.id}`)}>
+                      <div className="w-full">
+                        <div className="font-medium mb-1 hover:text-blue-600">{item.title}</div>
+                        <div className="flex items-center justify-between text-gray-500 text-sm"><span>{formatDate(item.publishDate)}</span><span><EyeOutlined className="mr-1" />{item.views.toLocaleString()}</span></div>
+                      </div>
+                    </List.Item>
+                  )} />
+                </Card>
                 <Card title="作者信息" className="mb-8 bg-dark-800 border-dark-700">
                   <div className="text-center">
                     <Avatar size={80} icon={<UserOutlined />} style={{ backgroundColor: '#1890ff' }} className="mb-4" />
@@ -148,17 +159,7 @@ const NewsDetailPage = () => {
                     <Paragraph className="text-gray-400 text-sm">专注于游戏行业新闻报道，拥有10年游戏媒体从业经验。</Paragraph>
                   </div>
                 </Card>
-                <Card title="相关新闻" className="bg-dark-800 border-dark-700">
-                  <List dataSource={relatedNews} renderItem={(item) => (
-                    <List.Item className="!px-0 !py-3 border-b border-dark-700 last:border-b-0 cursor-pointer hover:bg-dark-700" onClick={() => navigate(`/${lang}/news/${item.id}`)}>
-                      <div className="w-full">
-                        <div className="font-medium mb-1 hover:text-blue-600">{item.title}</div>
-                        <div className="flex items-center justify-between text-gray-500 text-sm"><span>{formatDate(item.publishDate)}</span><span><EyeOutlined className="mr-1" />{item.views.toLocaleString()}</span></div>
-                      </div>
-                    </List.Item>
-                  )} />
-                </Card>
-                <Card title="热门标签" className="mt-8 bg-dark-800 border-dark-700">
+                <Card title="热门标签" className="bg-dark-800 border-dark-700">
                   <div className="flex flex-wrap gap-2">
                     {['游戏新闻', '行业动态', '新作发布', 'DLC', '特卖', '更新', '评测', '攻略'].map((tag, i) => (
                       <Tag key={i} color={i % 3 === 0 ? 'blue' : i % 3 === 1 ? 'green' : 'purple'}>{tag}</Tag>
