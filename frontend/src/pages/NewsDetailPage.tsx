@@ -150,7 +150,7 @@ const NewsDetailPage = () => {
                 </Card>
                 <Card title="相关新闻" className="bg-dark-800 border-dark-700">
                   <List dataSource={relatedNews} renderItem={(item) => (
-                    <List.Item className="!px-0 !py-3 border-b border-dark-700 last:border-b-0 cursor-pointer hover:bg-dark-700" onClick={() => navigate(`/news/${item.id}`)}>
+                    <List.Item className="!px-0 !py-3 border-b border-dark-700 last:border-b-0 cursor-pointer hover:bg-dark-700" onClick={() => navigate(`/${lang}/news/${item.id}`)}>
                       <div className="w-full">
                         <div className="font-medium mb-1 hover:text-blue-600">{item.title}</div>
                         <div className="flex items-center justify-between text-gray-500 text-sm"><span>{formatDate(item.publishDate)}</span><span><EyeOutlined className="mr-1" />{item.views.toLocaleString()}</span></div>

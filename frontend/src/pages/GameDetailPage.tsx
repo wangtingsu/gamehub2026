@@ -134,7 +134,7 @@ const GameDetailPage = () => {
   const handleToggleFavorite = async () => {
     if (!isAuthenticated) {
       message.warning('请先登录后再收藏游戏');
-      navigate('/login');
+      navigate(`/${lang}/login`);
       return;
     }
 

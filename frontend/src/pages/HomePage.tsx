@@ -355,7 +355,7 @@ const HomePage = () => {
                     <Button type="primary" size="large" onClick={() => navigate(`/${currentLang}/community-forum`)}>
                       {t('home.exploreCommunity', 'Explore Community')}
                     </Button>
-                    <Button size="large" onClick={() => navigate('/register')}>
+                    <Button size="large" onClick={() => navigate(`/${currentLang}/register`)}>
                       {t('home.signUpFree', 'Sign Up Free')}
                     </Button>
                   </div>

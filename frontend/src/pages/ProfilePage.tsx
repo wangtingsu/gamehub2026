@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import {
   Form,
   Input,
@@ -67,6 +67,8 @@ const ProfilePage = () => {
   const [followTab, setFollowTab] = useState<'followers' | 'following'>('followers');
 
   const navigate = useNavigate();
+  const { lang: paramLang } = useParams<{ lang?: string }>();
+  const lang = paramLang || 'cn';
   const { user, isAuthenticated, logout } = useAuth();
   const { data: gamificationStats } = useGamificationStats();
   const { data: followStats } = useFollowStats(user?.id ? String(user.id) : undefined);
@@ -84,7 +86,7 @@ const ProfilePage = () => {
   // 如果未登录，重定向到登录页
   useEffect(() => {
     if (!isAuthenticated) {
-      navigate('/login', { replace: true });
+      navigate(`/${lang}/login`, { replace: true });
     }
   }, [isAuthenticated, navigate]);
 
@@ -377,7 +379,7 @@ const ProfilePage = () => {
                     className="w-full"
                     onClick={() => {
                       logout();
-                      navigate('/login');
+                      navigate(`/${lang}/login`);
                     }}
                   >
                     退出登录

@@ -5,6 +5,7 @@
  * 包含用户登录校验、内容为空校验、Ctrl+Enter 快捷键提交等功能
  */
 import React, { useState, useEffect } from 'react';
+import { useParams, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext';
 import { useCreateComment, useUpdateComment } from '../../api/hooks/comments';
 import { Button, Input, message, Avatar } from 'antd';
@@ -56,6 +57,9 @@ const CommentForm: React.FC<CommentFormProps> = ({
   placeholder = '发表你的评论...',
 }) => {
   const { user } = useAuth();
+  const { lang: paramLang } = useParams<{ lang?: string }>();
+  const lang = paramLang || 'cn';
+  const navigate = useNavigate();
   const [content, setContent] = useState(initialContent);
   const [submitting, setSubmitting] = useState(false);
 
@@ -130,7 +134,7 @@ const CommentForm: React.FC<CommentFormProps> = ({
     return (
       <div className="comment-form-login-prompt p-4 bg-gray-50 rounded-lg text-center">
         <p className="text-gray-600 mb-2">登录后即可发表评论</p>
-        <Button type="primary" href="/login">
+        <Button type="primary" onClick={() => navigate(`/${lang}/login`)}>
           立即登录
         </Button>
       </div>

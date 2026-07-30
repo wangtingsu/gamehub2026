@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
+import { useNavigate, Link, useParams } from 'react-router-dom';
 import { Form, Input, Button, Card, Alert, Typography, Result, message } from 'antd';
 import { MailOutlined, CheckCircleOutlined } from '@ant-design/icons';
 import { useTranslation } from 'react-i18next';
@@ -15,6 +15,8 @@ const ForgotPasswordPage = () => {
   const [emailSent, setEmailSent] = useState(false);
   const { t } = useTranslation();
   const navigate = useNavigate();
+  const { lang: paramLang } = useParams<{ lang?: string }>();
+  const lang = paramLang || 'cn';
 
   const handleSubmit = async (values: { email: string }) => {
     try {
@@ -52,7 +54,7 @@ const ForgotPasswordPage = () => {
               <Button
                 type="primary"
                 key="back"
-                onClick={() => navigate('/login')}
+                onClick={() => navigate(`/${lang}/login`)}
                 className="w-full h-12"
               >
                 {t('auth.forgotPasswordPage.backToLogin')}

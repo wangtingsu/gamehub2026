@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { useNavigate, useSearchParams } from 'react-router-dom';
+import { useNavigate, useSearchParams, useParams } from 'react-router-dom';
 import { Spin, Result, Button } from 'antd';
 import axios from 'axios';
 import SEO from '../components/SEO';
@@ -7,6 +7,8 @@ import SEO from '../components/SEO';
 const OAuthCallbackPage = () => {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
+  const { lang: paramLang } = useParams<{ lang?: string }>();
+  const lang = paramLang || 'cn';
   const [status, setStatus] = useState<'loading' | 'success' | 'error'>('loading');
   const [errorMsg, setErrorMsg] = useState('');
 
@@ -93,7 +95,7 @@ const OAuthCallbackPage = () => {
           title="登录失败"
           subTitle={errorMsg}
           extra={[
-            <Button key="login" type="primary" onClick={() => navigate('/login')}>
+            <Button key="login" type="primary" onClick={() => navigate(`/${lang}/login`)}>
               返回登录页
             </Button>,
             <Button key="home" onClick={() => navigate('/')}>

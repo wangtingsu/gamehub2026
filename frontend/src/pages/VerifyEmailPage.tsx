@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useNavigate, useLocation, Link } from 'react-router-dom';
+import { useNavigate, useLocation, Link, useParams } from 'react-router-dom';
 import { Button, Result, Typography } from 'antd';
 import { CheckCircleOutlined, WarningOutlined, LoadingOutlined, MailOutlined } from '@ant-design/icons';
 import SEO from '../components/SEO';
@@ -16,6 +16,8 @@ const VerifyEmailPage = () => {
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
+  const { lang: paramLang } = useParams<{ lang?: string }>();
+  const lang = paramLang || 'cn';
 
   // 从 URL 读取 token 并检查有效性
   useEffect(() => {
@@ -46,7 +48,7 @@ const VerifyEmailPage = () => {
       await apiService.verifyEmail(token);
       setStatus('success');
       // 3 秒后跳转登录页
-      setTimeout(() => navigate('/login'), 3000);
+      setTimeout(() => navigate(`/${lang}/login`), 3000);
     } catch (err: any) {
       const message = err?.response?.data?.error || err?.message || '邮箱验证失败，请稍后重试';
       setErrorMessage(message);
@@ -105,7 +107,7 @@ const VerifyEmailPage = () => {
               <Button
                 type="primary"
                 key="login"
-                onClick={() => navigate('/login')}
+                onClick={() => navigate(`/${lang}/login`)}
                 className="w-full h-12"
               >
                 立即前往登录

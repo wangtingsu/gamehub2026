@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useNavigate, useLocation, Link } from 'react-router-dom';
+import { useNavigate, useLocation, Link, useParams } from 'react-router-dom';
 import { Form, Input, Button, Card, Alert, Typography, Result } from 'antd';
 import { LockOutlined, CheckCircleOutlined, WarningOutlined } from '@ant-design/icons';
 import { useTranslation } from 'react-i18next';
@@ -17,6 +17,8 @@ const ResetPasswordPage = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const location = useLocation();
+  const { lang: paramLang } = useParams<{ lang?: string }>();
+  const lang = paramLang || 'cn';
 
   // 从URL中提取token
   useEffect(() => {
@@ -97,7 +99,7 @@ const ResetPasswordPage = () => {
               </Button>,
               <Button
                 key="login"
-                onClick={() => navigate('/login')}
+                onClick={() => navigate(`/${lang}/login`)}
                 className="w-full h-12 mt-4"
               >
                 {t('auth.resetPasswordPage.backToLogin')}
@@ -123,7 +125,7 @@ const ResetPasswordPage = () => {
               <Button
                 type="primary"
                 key="login"
-                onClick={() => navigate('/login')}
+                onClick={() => navigate(`/${lang}/login`)}
                 className="w-full h-12"
               >
                 {t('auth.resetPasswordPage.goToLogin')}
