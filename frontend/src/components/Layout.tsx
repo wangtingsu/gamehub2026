@@ -99,25 +99,7 @@ const Layout = () => {
   const recommendSubPaths = [`/${currentLang}/library/online`, `/${currentLang}/library/play`, `/${currentLang}/free-games`, `/${currentLang}/cozy-games`];
   const moreSubPaths = [`/${currentLang}/news`, `/${currentLang}/about`, `/${currentLang}/community-forum`];
 
-  /**
-   * 自动导航模式切换副作用
-   * 监听 location.pathname 变化，根据路径自动匹配并切换到对应的子导航模式。
-   * 若用户手动导航（skipAutoNav 标记为 true），则跳过本次自动切换。
-   */
-  useEffect(() => {
-    if (skipAutoNav.current) {
-      skipAutoNav.current = false;
-      return;
-    }
-    const path = location.pathname;
-    if (gameSubPaths.some((sp) => path === sp || path.startsWith(sp + '/'))) {
-      setNavMode('games');
-    } else if (recommendSubPaths.some((sp) => path === sp || path.startsWith(sp + '/'))) {
-      setNavMode('recommend');
-    } else if (moreSubPaths.some((sp) => path === sp || path.startsWith(sp + '/'))) {
-      setNavMode('more');
-    }
-  }, [location.pathname]);
+  // 不再根据 URL 自动打开子面板，子面板仅通过点击侧栏菜单手动打开
 
   /**
    * 路由切换时自动滚动到页面顶部
