@@ -99,7 +99,7 @@ const NewsDetailPage = () => {
               <Button icon={<ArrowLeftOutlined />} onClick={() => navigate(`/${lang}/news`)} className="mb-4">返回新闻列表</Button>
             </div>
           </div>
-          <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+          <div className="mx-auto py-8">
             <Card className="mb-8 border-0 shadow-lg bg-dark-800">
               <div className="mb-8">
                 <div className="flex items-center justify-between mb-4">
@@ -176,8 +176,8 @@ const NewsDetailPage = () => {
 
 const NewsDetailSkeleton = () => (
   <div className="min-h-screen bg-dark-900">
-    <div className="bg-dark-800 border-b border-dark-700"><div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-4"><Skeleton.Button active size="small" /></div></div>
-    <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <div className="bg-dark-800 border-b border-dark-700"><div className="mx-auto py-4"><Skeleton.Button active size="small" /></div></div>
+    <div className="mx-auto py-8">
       <Card className="mb-8 border-0 shadow-lg bg-dark-800">
         <Skeleton active paragraph={{ rows: 2 }} className="mb-6" />
         <Skeleton active avatar paragraph={{ rows: 1 }} className="mb-8" />
