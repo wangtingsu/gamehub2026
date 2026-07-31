@@ -198,13 +198,13 @@ const Content: React.FC = () => {
           break;
         }
         case 'guides': {
-          const data = await apiService.getGuides({ limit: 200 });
-          setGuides(data);
+          const data = await apiService.getBlogPosts({ limit: 200, postType: 'guide' });
+          setGuides(Array.isArray(data) ? data : []);
           break;
         }
         case 'reviews': {
-          const data = await apiService.getReviews({ limit: 200 });
-          setReviews(data);
+          const data = await apiService.getBlogPosts({ limit: 200, postType: 'review' });
+          setReviews(Array.isArray(data) ? data : []);
           break;
         }
         case 'community': {
@@ -682,8 +682,12 @@ const Content: React.FC = () => {
           setNews(prev => prev.filter(item => String(item.id) !== idStr));
           break;
         case 'reviews':
-          await apiService.deleteReview(idStr);
+          await apiService.deleteBlogPost(idStr);
           setReviews(prev => prev.filter(item => String(item.id) !== idStr));
+          break;
+        case 'guides':
+          await apiService.deleteBlogPost(idStr);
+          setGuides(prev => prev.filter(item => String(item.id) !== idStr));
           break;
         case 'community':
           await apiService.deleteCommunityPost(idStr);
@@ -1133,7 +1137,7 @@ const Content: React.FC = () => {
                       description={`Are you sure you want to delete "${record.title}"?`}
                       onConfirm={async () => {
                         try {
-                          await apiService.deleteGuide(record.id);
+                          await apiService.deleteBlogPost(record.id);
                           message.success('攻略删除成功');
                           setGuides(prev => prev.filter(g => g.id !== record.id));
                         } catch {
