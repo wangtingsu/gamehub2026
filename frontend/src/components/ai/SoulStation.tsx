@@ -187,7 +187,7 @@ const SoulStation: React.FC = () => {
       {/* 心情选择 */}
       <Card size="small" className="mb-4">
         <div className="flex items-center gap-2 flex-wrap">
-          <Text className="mr-2 text-sm text-gray-900 dark:text-white">今天心情：</Text>
+          <Text className="mr-2 text-sm" style={{ color: 'var(--c-text)' }}>今天心情：</Text>
           {MOODS.map((m) => (
             <Tag
               key={m.label}
@@ -204,8 +204,8 @@ const SoulStation: React.FC = () => {
       {/* 游戏选择 */}
       <Card size="small" className="mb-4">
         <Space align="center" wrap>
-          <PlayCircleOutlined className="text-lg" />
-          <Text className="text-sm text-gray-900 dark:text-white">正在玩的游戏：</Text>
+          <PlayCircleOutlined className="text-lg" style={{ color: 'var(--c-text)' }} />
+          <Text className="text-sm" style={{ color: 'var(--c-text)' }}>正在玩的游戏：</Text>
           <Select
             showSearch
             allowClear
