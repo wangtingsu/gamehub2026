@@ -84,7 +84,7 @@ router.delete('/:id', authenticate, authorize('admin'), asyncHandler(async (req:
   res.json({ success: true, message: '博客删除成功' });
 }));
 
-router.get('/space/slug/:slug', optionalAuthenticate, asyncHandler(async (req: Request, res: Response) => {
+router.get('/space/detail/:slug', optionalAuthenticate, asyncHandler(async (req: Request, res: Response) => {
   const detail = await blogService.getSpaceDetail(req.params.slug);
   if (!detail) return res.status(404).json({ success: false, error: '空间不存在' });
   res.json({ success: true, data: detail });
