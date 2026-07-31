@@ -51,14 +51,14 @@ export default defineConfig({
   server: {
     port: 3003,
     host: true,
-    // 开发时代理 /api 请求到管理后台服务（3002 端口）
+    // 开发时代理 /api 到主后端（本地只启动主后端 3001）
     proxy: {
       '/api': {
-        target: 'http://localhost:3002',
+        target: 'http://localhost:3001',
         changeOrigin: true,
       },
       '/uploads': {
-        target: 'http://localhost:3002',
+        target: 'http://localhost:3001',
         changeOrigin: true,
       },
     },

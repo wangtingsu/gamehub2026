@@ -198,13 +198,13 @@ const Content: React.FC = () => {
           break;
         }
         case 'guides': {
-          const data = await apiService.getBlogPosts({ limit: 200, postType: 'guide' });
-          setGuides(Array.isArray(data) ? data : []);
+          const data = await apiService.getGuides({ limit: 200 });
+          setGuides(data);
           break;
         }
         case 'reviews': {
-          const data = await apiService.getBlogPosts({ limit: 200, postType: 'review' });
-          setReviews(Array.isArray(data) ? data : []);
+          const data = await apiService.getReviews({ limit: 200 });
+          setReviews(data);
           break;
         }
         case 'community': {
