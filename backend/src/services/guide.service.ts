@@ -81,7 +81,7 @@ export const getGuides = async (
   let whereClause = '';
   const queryParams: any[] = [];
 
-  const conditions: string[] = ['g.is_published = 1'];
+  const conditions: string[] = ["g.post_type = 'guide'"];
 
   if (filters.gameId) {
     conditions.push('g.game_id = ?');
@@ -94,7 +94,7 @@ export const getGuides = async (
   }
 
   if (filters.featuredOnly !== undefined) {
-    conditions.push('g.is_featured = ?');
+    conditions.push('g.is_pinned = ?');
     queryParams.push(filters.featuredOnly ? 1 : 0);
   }
 
@@ -117,14 +117,14 @@ export const getGuides = async (
     whereClause = `WHERE ${conditions.join(' AND ')}`;
   }
 
-  const countSql = `SELECT COUNT(*) as total FROM guides g ${whereClause}`;
+  const countSql = `SELECT COUNT(*) as total FROM blog_articles g ${whereClause}`;
   const countResult = await query(countSql, queryParams);
   const total = parseInt(countResult[0]?.total || 0);
 
   const dataSql = `
     SELECT g.*, u.username as author_name, u.display_name as author_display_name, u.avatar_url as author_avatar,
            game.title as game_title, game.slug as game_slug, game.cover_image_url as game_cover
-    FROM guides g
+    FROM blog_articles g
     LEFT JOIN users u ON g.author_id = u.id
     LEFT JOIN games game ON g.game_id = game.id
     ${whereClause}

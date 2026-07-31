@@ -99,7 +99,7 @@ export const getReviews = async (
   }
 
   if (filters.featuredOnly !== undefined) {
-    conditions.push(`r.is_featured = ?`);
+    conditions.push(`r.is_pinned = ?`);
     queryParams.push(filters.featuredOnly ? 1 : 0);
   }
 
@@ -117,15 +117,22 @@ export const getReviews = async (
     whereClause = `WHERE ${conditions.join(' AND ')}`;
   }
 
+  // 添加 post_type 筛选（从 blog_articles 统一表读）
+  conditions.push("r.post_type = 'review'");
+
+  if (conditions.length > 0) {
+    whereClause = `WHERE ${conditions.join(' AND ')}`;
+  }
+
   // 先获取总数
-  const countSql = `SELECT COUNT(*) as total FROM reviews r ${whereClause}`;
+  const countSql = `SELECT COUNT(*) as total FROM blog_articles r ${whereClause}`;
   const countResult = await query(countSql, queryParams);
   const total = parseInt(countResult[0]?.total || 0);
 
   // 再获取分页数据（含作者和游戏信息）
   const dataSql = `
     SELECT r.*, u.username as author_name, u.display_name as author_display_name, g.title as game_title
-    FROM reviews r
+    FROM blog_articles r
     LEFT JOIN users u ON r.author_id = u.id
     LEFT JOIN games g ON r.game_id = g.id
     ${whereClause}
@@ -186,7 +193,7 @@ export const searchReviews = async (
   }
 
   if (filters.featuredOnly !== undefined) {
-    conditions.push(`r.is_featured = ?`);
+    conditions.push(`r.is_pinned = ?`);
     queryParams.push(filters.featuredOnly ? 1 : 0);
   }
 

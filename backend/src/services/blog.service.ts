@@ -27,7 +27,7 @@ export const getBlogs = async (params: { page?: number; limit?: number; spaceId?
     if (val !== undefined) { countVals.push(val); mainVals.push(val); }
   };
 
-  if (publishedOnly) { addCond('AND is_published=1'); }
+  if (publishedOnly) { addCond('AND is_published=true'); }
   if (category) { addCond('AND category=?', category); }
   if (postType && postType !== 'blog') { addCond('AND post_type=?', postType); }
   else if (postType === 'blog') { addCond('AND (post_type=? OR post_type IS NULL)', 'blog'); }
