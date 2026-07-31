@@ -649,7 +649,7 @@ class RealApiService extends BaseApiService {
   }
 
   async getSpaceContent(spaceId: string, params?: any) { return this.client.get<any>(`/blogs/space/${spaceId}/content`, params); }
-  async getSpaceDetail(slug: string) { return this.client.get<any>(`/blogs/space/detail/${slug}`); }
+  async getSpaceDetail(slug: string) { return this.client.get<any>('/blogs/space/detail', { slug }); }
   async getSpacePopularArticle(spaceId: string) { return this.client.get<any>(`/blogs/space/${spaceId}/popular`); }
   async getSpaceArticlesByCategory(spaceId: string, postType: string, params?: any) {
     return this.client.get<{ articles: any[]; total: number }>(`/blogs/space/${spaceId}/category/${postType}`, params);

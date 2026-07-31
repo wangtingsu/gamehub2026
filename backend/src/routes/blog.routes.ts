@@ -6,6 +6,15 @@ import blogService from '../services/blog.service';
 
 const router = Router();
 
+// 空间详情（必须放在 :spaceId/content 前面，避免 'detail' 被当作 spaceId）
+router.get('/space/detail', optionalAuthenticate, asyncHandler(async (req: Request, res: Response) => {
+  const slug = req.query.slug as string;
+  if (!slug) return res.status(400).json({ success: false, error: '缺少slug参数' });
+  const detail = await blogService.getSpaceDetail(slug);
+  if (!detail) return res.status(404).json({ success: false, error: '空间不存在' });
+  res.json({ success: true, data: detail });
+}));
+
 // 博客空间内容联合查询（blog_articles + reviews + guides）
 router.get('/space/:spaceId/content', optionalAuthenticate, asyncHandler(async (req: Request, res: Response) => {
   const { page, limit, postType, search } = req.query;
@@ -82,12 +91,6 @@ router.get('/:id/status', authenticate, asyncHandler(async (req: Request, res: R
 router.delete('/:id', authenticate, authorize('admin'), asyncHandler(async (req: Request, res: Response) => {
   await blogService.deleteBlog(req.params.id);
   res.json({ success: true, message: '博客删除成功' });
-}));
-
-router.get('/space/detail/:slug', optionalAuthenticate, asyncHandler(async (req: Request, res: Response) => {
-  const detail = await blogService.getSpaceDetail(req.params.slug);
-  if (!detail) return res.status(404).json({ success: false, error: '空间不存在' });
-  res.json({ success: true, data: detail });
 }));
 
 router.get('/space/:spaceId/popular', optionalAuthenticate, asyncHandler(async (req: Request, res: Response) => {
