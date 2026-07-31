@@ -380,6 +380,20 @@ img {
   background: rgba(148, 163, 184, 0.4);
 }
 
+.space-scroll::-webkit-scrollbar {
+  width: 4px;
+}
+.space-scroll::-webkit-scrollbar-track {
+  background: transparent;
+}
+.space-scroll::-webkit-scrollbar-thumb {
+  background: rgba(148, 163, 184, 0.15);
+  border-radius: 4px;
+}
+.space-scroll::-webkit-scrollbar-thumb:hover {
+  background: rgba(148, 163, 184, 0.3);
+}
+
 /* 移动端 Drawer 侧边栏 */
 .ant-drawer .sidebar-menu.ant-menu-dark {
   background: transparent;

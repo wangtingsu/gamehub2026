@@ -404,6 +404,9 @@ abstract class BaseApiService {
 
   // ==================== 博客空间内容 ====================
   abstract getSpaceContent(spaceId: string, params?: any): Promise<any>;
+  abstract getSpaceDetail(slug: string): Promise<any>;
+  abstract getSpacePopularArticle(spaceId: string): Promise<any>;
+  abstract getSpaceArticlesByCategory(spaceId: string, postType: string, params?: any): Promise<{ articles: any[]; total: number }>;
 }
 
 /**
@@ -646,6 +649,11 @@ class RealApiService extends BaseApiService {
   }
 
   async getSpaceContent(spaceId: string, params?: any) { return this.client.get<any>(`/blogs/space/${spaceId}/content`, params); }
+  async getSpaceDetail(slug: string) { return this.client.get<any>(`/blogs/space/slug/${slug}`); }
+  async getSpacePopularArticle(spaceId: string) { return this.client.get<any>(`/blogs/space/${spaceId}/popular`); }
+  async getSpaceArticlesByCategory(spaceId: string, postType: string, params?: any) {
+    return this.client.get<{ articles: any[]; total: number }>(`/blogs/space/${spaceId}/category/${postType}`, params);
+  }
   async getBlogSpaces() { return this.client.get<any[]>('/blog-spaces'); }
   async createBlogSpace(data: any) { return this.client.post<any>('/blog-spaces', data); }
   async updateBlogSpace(id: string, data: any) { return this.client.put<any>(`/blog-spaces/${id}`, data); }
@@ -4283,6 +4291,21 @@ class MockApiService extends BaseApiService {
   async getSpaceContent(spaceId: string, params?: any): Promise<any> {
     console.log('Mock: 获取空间内容', spaceId, params);
     return { articles: [] };
+  }
+
+  async getSpaceDetail(slug: string): Promise<any> {
+    console.log('Mock: 获取空间详情', slug);
+    return { id: '1', name: 'Mock Space', slug, description: 'Mock space', totalArticles: 0, typeCounts: {} };
+  }
+
+  async getSpacePopularArticle(spaceId: string): Promise<any> {
+    console.log('Mock: 获取热门文章', spaceId);
+    return null;
+  }
+
+  async getSpaceArticlesByCategory(spaceId: string, postType: string, params?: any): Promise<{ articles: any[]; total: number }> {
+    console.log('Mock: 获取分类文章', spaceId, postType, params);
+    return { articles: [], total: 0 };
   }
 
   // ==================== AI History Stubs ====================

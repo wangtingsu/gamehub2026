@@ -84,4 +84,24 @@ router.delete('/:id', authenticate, authorize('admin'), asyncHandler(async (req:
   res.json({ success: true, message: '博客删除成功' });
 }));
 
+router.get('/space/slug/:slug', optionalAuthenticate, asyncHandler(async (req: Request, res: Response) => {
+  const detail = await blogService.getSpaceDetail(req.params.slug);
+  if (!detail) return res.status(404).json({ success: false, error: '空间不存在' });
+  res.json({ success: true, data: detail });
+}));
+
+router.get('/space/:spaceId/popular', optionalAuthenticate, asyncHandler(async (req: Request, res: Response) => {
+  const article = await blogService.getPopularArticle(req.params.spaceId);
+  res.json({ success: true, data: article });
+}));
+
+router.get('/space/:spaceId/category/:postType', optionalAuthenticate, asyncHandler(async (req: Request, res: Response) => {
+  const { page, limit } = req.query;
+  const result = await blogService.getArticlesByPostType(
+    req.params.spaceId, req.params.postType,
+    Number(page) || 1, Number(limit) || 12
+  );
+  res.json({ success: true, data: result });
+}));
+
 export default router;

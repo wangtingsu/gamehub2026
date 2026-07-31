@@ -200,4 +200,50 @@ export const getSpaceContent = async (params: { spaceId: string; postType?: stri
   };
 };
 
-export default { getBlogs, getBlogById, createBlog, updateBlog, deleteBlog, getSpaceContent };
+// ====== 热门文章（综合热度 = views + likes*2 + comments*3）======
+export const getPopularArticle = async (spaceId: string) => {
+  const rows = await query(
+    `SELECT a.*, u.username as author_name, u.display_name as author_display_name
+     FROM blog_articles a LEFT JOIN users u ON a.author_id=u.id
+     WHERE a.space_id=? AND a.is_published=1
+     ORDER BY (a.views + a.likes*2 + a.comments*3) DESC LIMIT 1`, [spaceId]
+  );
+  return rows.length ? mapArticle(rows[0]) : null;
+};
+
+// ====== 按 post_type 分类查询 ======
+export const getArticlesByPostType = async (spaceId: string, postType: string, page = 1, limit = 12) => {
+  const offset = (page - 1) * limit;
+  const [{ total }] = await query(
+    `SELECT COUNT(*) as total FROM blog_articles WHERE space_id=? AND post_type=? AND is_published=1`, [spaceId, postType]
+  ) as any[];
+  const articles = await query(
+    `SELECT a.*, u.username as author_name, u.display_name as author_display_name
+     FROM blog_articles a LEFT JOIN users u ON a.author_id=u.id
+     WHERE a.space_id=? AND a.post_type=? AND a.is_published=1
+     ORDER BY a.likes DESC, a.views DESC LIMIT ? OFFSET ?`,
+    [spaceId, postType, limit, offset]
+  );
+  return { articles: (articles || []).map(mapArticle), total: Number(total), page, limit };
+};
+
+// ====== 空间详情（含各类型文章数量） ======
+export const getSpaceDetail = async (slug: string) => {
+  const spaces = await query('SELECT * FROM blog_spaces WHERE slug=?', [slug]) as any[];
+  if (!spaces.length) return null;
+  const space = spaces[0];
+  const counts = await query(
+    `SELECT post_type, COUNT(*) as cnt FROM blog_articles WHERE space_id=? AND is_published=1 GROUP BY post_type`,
+    [space.id]
+  ) as any[];
+  const typeCounts: Record<string, number> = {};
+  counts.forEach((r: any) => { typeCounts[r.post_type] = r.cnt; });
+  const [{ total }] = await query('SELECT COUNT(*) as total FROM blog_articles WHERE space_id=? AND is_published=1', [space.id]) as any[];
+  return {
+    id: String(space.id), name: space.name, slug: space.slug, coverImageUrl: space.cover_image_url,
+    description: space.description, sortOrder: space.sort_order, isActive: !!space.is_active,
+    totalArticles: Number(total), typeCounts,
+  };
+};
+
+export default { getBlogs, getBlogById, createBlog, updateBlog, deleteBlog, getSpaceContent, getPopularArticle, getArticlesByPostType, getSpaceDetail };

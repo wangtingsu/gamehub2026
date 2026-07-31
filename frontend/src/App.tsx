@@ -114,6 +114,7 @@ const ContactPage = lazy(() => import('./pages/ContactPage'));
 const PrintOrderPage = lazy(() => import('./pages/PrintOrderPage'));
 const BlogPage = lazy(() => import('./pages/BlogPage'));
 const BlogSpacePage = lazy(() => import('./pages/BlogSpacePage'));
+const BlogCategoryPage = lazy(() => import('./pages/BlogCategoryPage'));
 const BlogDetailPage = lazy(() => import('./pages/BlogDetailPage'));
 const BlogNewPage = lazy(() => import('./pages/BlogNewPage'));
 const BlogEditPage = lazy(() => import('./pages/BlogEditPage'));
@@ -630,6 +631,9 @@ function App() {
                   } />
                   <Route path="blog/space/:slug" element={
                     <PageSuspense><BlogSpacePage /></PageSuspense>
+                  } />
+                  <Route path="blog/space/:slug/category/:postType" element={
+                    <PageSuspense><BlogCategoryPage /></PageSuspense>
                   } />
                   <Route path="blog/new" element={
                     <ProtectedRoute requireAdmin={true}>
