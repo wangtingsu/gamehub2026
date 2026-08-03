@@ -489,7 +489,7 @@ function App() {
                       <NewsDetailPage />
                     </PageSuspense>
                   } />
-                  <Route path="community" element={<SafeNavigate to="../community-forum" replace />} />
+                  <Route path="community" element={<PageSuspense><CommunityForumHubPage /></PageSuspense>} />
                   <Route path="game-forums" element={<SafeNavigate to="../community-forum" replace />} />
                   <Route path="community/posts/:id" element={
                     <PageSuspense>

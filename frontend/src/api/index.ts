@@ -67,6 +67,9 @@ abstract class BaseApiService {
   abstract getCommunityPost(id: string): Promise<CommunityPost>;
   abstract getGamePosts(gameId: string, params?: PaginationParams): Promise<CommunityPost[]>;
   abstract getGameForumStats(params?: { page?: number; limit?: number; search?: string }): Promise<{ games: Game[]; total: number; page: number; limit: number }>;
+  abstract followForum(forumType: string, forumId: string, forumName: string): Promise<void>;
+  abstract unfollowForum(forumId: string): Promise<void>;
+  abstract getFollowedForums(): Promise<any[]>;
   abstract createCommunityPost(data: Record<string, unknown>): Promise<CommunityPost>;
   abstract updateCommunityPost(id: string, data: Record<string, unknown>): Promise<CommunityPost>;
   abstract deleteCommunityPost(id: string): Promise<void>;

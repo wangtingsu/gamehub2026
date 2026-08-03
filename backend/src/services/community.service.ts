@@ -314,7 +314,7 @@ export const createCommunityPost = async (authorId: string, postData: CommunityP
         postData.category,
         JSON.stringify(postData.tags || []),
         new Date().toISOString(),
-        'pending',  // 新帖默认待审核状态
+        'approved', // 新帖默认已审核
         postData.gameId || null,
       ]
     );

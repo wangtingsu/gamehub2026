@@ -214,7 +214,6 @@ router.get(
 router.post(
   '/posts',
   authenticate,
-  authorize('admin'),
   asyncHandler(async (req: Request, res: Response) => {
     const postData: CommunityPostCreateInput = req.body;
     const userId = req.user?.id;
@@ -1010,5 +1009,26 @@ router.get(
     res.json({ success: true, data: { posts: parseInt(postCount[0]?.count || '0'), reviews: parseInt(reviewCount[0]?.count || '0'), comments: parseInt(commentCount[0]?.count || '0'), users: parseInt(userCount[0]?.count || '0') }, message: '社区统计获取成功' });
   })
 );
+
+// ====== 论坛关注功能 ======
+router.post('/follow', authenticate, asyncHandler(async (req: Request, res: Response) => {
+  const { forumType, forumId, forumName } = req.body;
+  if (!forumId || !forumName) return res.status(400).json({ success: false, error: '缺少参数' });
+  await execute(
+    'INSERT OR IGNORE INTO user_forum_follows (user_id, forum_type, forum_id, forum_name) VALUES (?,?,?,?)',
+    [req.user!.id, forumType || 'game', forumId, forumName]
+  );
+  res.json({ success: true, message: '关注成功' });
+}));
+
+router.delete('/follow/:forumId', authenticate, asyncHandler(async (req: Request, res: Response) => {
+  await execute('DELETE FROM user_forum_follows WHERE user_id=? AND forum_id=?', [req.user!.id, req.params.forumId]);
+  res.json({ success: true, message: '取消关注' });
+}));
+
+router.get('/followed', authenticate, asyncHandler(async (req: Request, res: Response) => {
+  const rows = await query('SELECT * FROM user_forum_follows WHERE user_id=? ORDER BY created_at DESC LIMIT 20', [req.user!.id]);
+  res.json({ success: true, data: rows });
+}));
 
 export default router;
