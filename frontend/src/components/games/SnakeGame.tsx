@@ -292,31 +292,32 @@ const SnakeGame: React.FC<GameProps> = ({ onScoreChange, onGameOver, onGameStart
    * 滑动距离需超过 20 像素才触发，优先判断水平还是垂直滑动
    */
   useEffect(() => {
-    /** 记录触摸起始位置 */
+    const el = canvasRef.current;
+    if (!el) return;
     const handleTouchStart = (e: TouchEvent) => {
-      touchStartRef.current = { x: e.touches[0].clientX, y: e.touches[0].clientY };
+      if (e.touches.length === 1) {
+        e.preventDefault();
+        touchStartRef.current = { x: e.touches[0].clientX, y: e.touches[0].clientY };
+      }
     };
-    /** 计算触摸结束时的滑动偏移并确定方向 */
     const handleTouchEnd = (e: TouchEvent) => {
       if (!touchStartRef.current) return;
       const dx = e.changedTouches[0].clientX - touchStartRef.current.x;
       const dy = e.changedTouches[0].clientY - touchStartRef.current.y;
       touchStartRef.current = null;
-      // 最小滑动距离阈值（防止误触）
       const minSwipe = 20;
       if (Math.abs(dx) < minSwipe && Math.abs(dy) < minSwipe) return;
-      // 判断滑动方向：水平位移大则左右，垂直位移大则上下
       if (Math.abs(dx) > Math.abs(dy)) {
         changeDirection(dx > 0 ? 'RIGHT' : 'LEFT');
       } else {
         changeDirection(dy > 0 ? 'DOWN' : 'UP');
       }
     };
-    window.addEventListener('touchstart', handleTouchStart, { passive: true });
-    window.addEventListener('touchend', handleTouchEnd, { passive: true });
+    el.addEventListener('touchstart', handleTouchStart, { passive: false });
+    el.addEventListener('touchend', handleTouchEnd);
     return () => {
-      window.removeEventListener('touchstart', handleTouchStart);
-      window.removeEventListener('touchend', handleTouchEnd);
+      el.removeEventListener('touchstart', handleTouchStart);
+      el.removeEventListener('touchend', handleTouchEnd);
     };
   }, [changeDirection]);
 
