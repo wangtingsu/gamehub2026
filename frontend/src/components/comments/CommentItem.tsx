@@ -48,11 +48,10 @@ const CommentItem: React.FC<CommentItemProps> = ({
   const [replyLimit, setReplyLimit] = useState(3);
   const { data: repliesData } = useCommentReplies(comment.id, 1, 100);
   const allReplies = repliesData?.replies || [];
-  // 按点赞降序，相同点赞按时间降序
-  const sortedReplies = [...allReplies].sort((a: any, b: any) => {
-    if (b.likes !== a.likes) return b.likes - a.likes;
-    return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
-  });
+  // 按时间正序排列（早的在上面）
+  const sortedReplies = [...allReplies].sort((a: any, b: any) =>
+    new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
+  );
   const visibleReplies = sortedReplies.slice(0, replyLimit);
   const hasMore = replyLimit < sortedReplies.length;
 
@@ -134,7 +133,10 @@ const CommentItem: React.FC<CommentItemProps> = ({
           )}
         </div>
         <div className="mt-3">
-          <p className="text-gray-800 whitespace-pre-wrap">{comment.content}</p>
+          <p className="text-gray-800 whitespace-pre-wrap">
+            {level > 0 && <span className="text-blue-500 font-medium">回复：</span>}
+            {comment.content}
+          </p>
         </div>
         {renderActions()}
 
