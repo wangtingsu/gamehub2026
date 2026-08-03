@@ -1,12 +1,12 @@
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import {
-  Typography, Card, Row, Col, Tag, Button, Avatar, Divider,
+  Typography, Card, Row, Col, Tag, Button, Divider,
   List, Space, Skeleton, Alert, Input, message,
 } from 'antd';
 import {
   CalendarOutlined, EyeOutlined, LikeOutlined, LikeFilled,
-  ShareAltOutlined, MessageOutlined, UserOutlined,
+  ShareAltOutlined, MessageOutlined,
   SendOutlined, ArrowLeftOutlined,
 } from '@ant-design/icons';
 import { apiService } from '../api';
@@ -118,10 +118,6 @@ const NewsDetailPage = () => {
                     </div>
                     <Title level={1} className="mb-6">{article.title}</Title>
                     <div className="flex items-center justify-between mb-8">
-                      <div className="flex items-center">
-                        <Avatar size={48} icon={<UserOutlined />} style={{ backgroundColor: '#1890ff' }} className="mr-4" />
-                        <div><div className="font-bold text-lg">{article.author}</div><Text type="secondary">资深游戏记者</Text></div>
-                      </div>
                     </div>
                     <div className="flex justify-center mb-8"><img alt={article.title} src={article.imageUrl} className="max-w-4xl min-w-[500px] object-contain rounded-lg" loading="lazy" /></div>
                     <div className="prose max-w-none">
@@ -150,14 +146,6 @@ const NewsDetailPage = () => {
                       </div>
                     </List.Item>
                   )} />
-                </Card>
-                <Card title="作者信息" className="mb-8 bg-dark-800 border-dark-700">
-                  <div className="text-center">
-                    <Avatar size={80} icon={<UserOutlined />} style={{ backgroundColor: '#1890ff' }} className="mb-4" />
-                    <Title level={4} className="mb-2">{article.author}</Title>
-                    <Text type="secondary" className="mb-4 block">资深游戏记者</Text>
-                    <Paragraph className="text-gray-400 text-sm">专注于游戏行业新闻报道，拥有10年游戏媒体从业经验。</Paragraph>
-                  </div>
                 </Card>
                 <Card title="热门标签" className="bg-dark-800 border-dark-700">
                   <div className="flex flex-wrap gap-2">
