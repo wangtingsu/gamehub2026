@@ -141,9 +141,12 @@ export const getCommentReplies = async (
 
   // 按创建时间升序排列（回复按时间线展示）
   const dataSql = `
-    SELECT c.*, u.username, u.display_name, u.avatar_url
+    SELECT c.*, u.username, u.display_name, u.avatar_url,
+           pu.username as parent_username, pu.display_name as parent_display_name
     FROM comments c
     LEFT JOIN users u ON c.author_id = u.id
+    LEFT JOIN comments pc ON c.parent_comment_id = pc.id
+    LEFT JOIN users pu ON pc.author_id = pu.id
     WHERE c.parent_comment_id = ?
     ORDER BY c.created_at ASC
     LIMIT ? OFFSET ?
@@ -158,6 +161,7 @@ export const getCommentReplies = async (
       displayName: row.display_name,
       avatarUrl: row.avatar_url,
     },
+    parentAuthorName: row.parent_display_name || row.parent_username || null,
   }));
 
   logger.debug(`获取评论回复成功，评论ID: ${commentId}，第${page}页，每页${limit}条，共${total}条`);

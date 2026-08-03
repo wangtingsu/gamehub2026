@@ -134,7 +134,9 @@ const CommentItem: React.FC<CommentItemProps> = ({
         </div>
         <div className="mt-3">
           <p className="text-gray-800 whitespace-pre-wrap">
-            {level > 0 && <span className="text-blue-500 font-medium">回复：</span>}
+            {level > 0 && (
+              <span className="text-blue-500 text-xs block mb-1">回复 @{comment.parentAuthorName || comment.parentAuthor?.username || '评论'}</span>
+            )}
             {comment.content}
           </p>
         </div>
