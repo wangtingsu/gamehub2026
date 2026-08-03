@@ -346,7 +346,7 @@ export const createComment = async (authorId: string, commentData: CommentCreate
 
       // 递增父评论的回复计数
       await execute(
-        'UPDATE comments SET reply_count = reply_count + 1 WHERE id = ?',
+        'UPDATE comments SET reply_count = COALESCE(reply_count, 0) + 1 WHERE id = ?',
         [commentData.parentCommentId]
       );
     }
