@@ -145,8 +145,8 @@ const CommentItem: React.FC<CommentItemProps> = ({
           </div>
         )}
 
-        {/* 子回复（仅顶层级显示） */}
-        {level === 0 && visibleReplies.length > 0 && (
+        {/* 子回复（最多嵌套2层） */}
+        {level <= 1 && visibleReplies.length > 0 && (
           <div className="mt-4 space-y-3 border-t border-gray-100 pt-3">
             {visibleReplies.map((reply: any) => (
               <CommentItem key={reply.id} comment={reply} parentType={parentType} parentId={parentId}
