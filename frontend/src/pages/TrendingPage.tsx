@@ -12,10 +12,11 @@ const TrendingPage: React.FC = () => {
   const [limit] = useState<number>(20);
   const { data: trending, isLoading } = useTrendingContent(limit);
 
+  const lang = window.location.pathname.split('/')[1] || 'cn';
   const handleClick = (item: any) => {
-    if (item.type === 'game') navigate(`/games/${item.id}`);
-    else if (item.type === 'review') navigate(`/reviews/${item.id}`);
-    else if (item.type === 'news') navigate(`/news/${item.id}`);
+    if (item.type === 'game') navigate(`/${lang}/games/${item.id}`);
+    else if (item.type === 'review') navigate(`/${lang}/reviews/${item.id}`);
+    else if (item.type === 'news') navigate(`/${lang}/news/${item.id}`);
   };
 
   return (
