@@ -78,14 +78,17 @@ const VirtualGamepad = ({ directions, actions }: VirtualGamepadProps) => {
    * @param fn 要执行的回调函数
    * @returns 事件处理函数
    */
-  const fire = (fn: (() => void) | undefined) =>
-    (e: React.TouchEvent | React.MouseEvent) => {
+  const fire = (fn: (() => void) | undefined) => {
+    let lastFire = 0;
+    return (e: React.TouchEvent | React.MouseEvent) => {
       e.preventDefault();
-      if ('nativeEvent' in e && e.nativeEvent instanceof Event) {
-        e.nativeEvent.stopPropagation();
-      }
+      e.stopPropagation();
+      const now = Date.now();
+      if (now - lastFire < 100) return; // 防止触屏+鼠标双触发
+      lastFire = now;
       fn?.();
     };
+  };
 
   return (
     <div

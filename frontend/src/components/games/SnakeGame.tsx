@@ -253,16 +253,13 @@ const SnakeGame: React.FC<GameProps> = ({ onScoreChange, onGameOver, onGameStart
   useEffect(() => {
     const handleKey = (e: KeyboardEvent) => {
       if (gameRef.current.score === -1) return;
-      e.preventDefault();
       const g = gameRef.current;
-      // 反向映射表：用于禁止 180 度掉头
       const opposite: Record<string, string> = { 'UP': 'DOWN', 'DOWN': 'UP', 'LEFT': 'RIGHT', 'RIGHT': 'LEFT' };
-      // 键盘按键到方向常量的映射
       const keyMap: Record<string, Direction> = { 'ArrowUp': 'UP', 'ArrowDown': 'DOWN', 'ArrowLeft': 'LEFT', 'ArrowRight': 'RIGHT' };
       const dir = keyMap[e.key];
-      // 如果该方向不是当前方向的反向，则允许改变
       if (dir && opposite[dir] !== g.direction) {
-        g.nextDirection = dir; // 设置待生效方向，下次 tick 时应用
+        e.preventDefault();
+        g.nextDirection = dir;
       }
     };
     window.addEventListener('keydown', handleKey);
@@ -349,7 +346,7 @@ const SnakeGame: React.FC<GameProps> = ({ onScoreChange, onGameOver, onGameStart
       {/* 游戏画布 */}
       <canvas
         ref={canvasRef}
-        className="rounded-lg border border-dark-600"
+        className="rounded-lg border border-dark-600 w-full max-w-[400px]"
         width={GRID_SIZE * CELL_SIZE}
         height={GRID_SIZE * CELL_SIZE}
       />
