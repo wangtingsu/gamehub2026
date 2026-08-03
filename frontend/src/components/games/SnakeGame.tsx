@@ -353,13 +353,13 @@ const SnakeGame: React.FC<GameProps> = ({ onScoreChange, onGameOver, onGameStart
       />
       {/* 空闲状态：显示开始按钮 */}
       {gameState === 'idle' && (
-        <Button type="primary" className="mt-4" onClick={startGame}>开始游戏</Button>
+        <Button type="primary" htmlType="button" className="mt-4" onClick={startGame}>开始游戏</Button>
       )}
       {/* 游戏结束：显示最终得分和重新开始按钮 */}
       {gameState === 'over' && (
         <div className="mt-4 text-center">
           <Text className="!text-red-400 !block mb-2">游戏结束! 得分: {score}</Text>
-          <Button type="primary" onClick={startGame}>重新开始</Button>
+          <Button type="primary" htmlType="button" onClick={startGame}>重新开始</Button>
         </div>
       )}
       {/* 游戏进行中：显示操作提示和虚拟方向键（移动端适用） */}

@@ -191,28 +191,6 @@ const GamePlayPage = () => {
     );
   }
 
-  // Mobile fullscreen mode: show only the game board when playing
-  if (isMobile && gameStarted) {
-    return (
-      <div className="fixed inset-0 z-50 bg-dark-900 flex items-center justify-center overflow-auto">
-        <div className="flex flex-col items-center justify-center min-h-screen p-4 pb-20">
-          {GameComponent && (
-            <Suspense fallback={
-              <div className="py-16">
-                <Skeleton active />
-              </div>
-            }>
-              <GameComponent
-                onGameStart={() => setGameStarted(true)}
-                onGameOver={() => setGameStarted(false)}
-              />
-            </Suspense>
-          )}
-        </div>
-      </div>
-    );
-  }
-
   return (
     <div className="min-h-screen bg-dark-900">
       <SEO
