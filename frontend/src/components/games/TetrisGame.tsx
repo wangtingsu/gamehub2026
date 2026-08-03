@@ -187,41 +187,35 @@ const TetrisGame: React.FC<GameProps> = ({ onScoreChange, onGameOver, onGameStar
     draw();
   }, [draw, blockSize]);
 
-  const sideBtn = 'w-14 h-14 sm:w-16 sm:h-16 rounded-xl text-white text-2xl font-bold flex items-center justify-center select-none bg-dark-600/80 active:bg-primary-600/90 border border-dark-500/50 shadow-lg active:shadow-inner transition-all duration-75';
-
-  // 防双触发（touch + mouse）
+  const btnBase = 'w-[18vw] max-w-[64px] aspect-square rounded-xl text-white text-xl font-bold flex items-center justify-center select-none bg-dark-600/80 active:bg-primary-600/90 border border-dark-500/50 shadow-lg transition-all duration-75';
   const lastFireRef = useRef(0);
   const fire = (act: string) => {
     const now = Date.now();
-    if (now - lastFireRef.current < 100) return;
+    if (now - lastFireRef.current < 80) return;
     lastFireRef.current = now;
     doAct(act);
   };
 
-  return (
-    <div className="flex flex-col items-center">
-      <div className="flex items-center justify-between w-full mb-3" style={{ maxWidth: COLS * blockSize + 100 }}>
-        <Title level={4} className="!text-white !mb-0">俄罗斯方块</Title>
-        <Text className="!text-gray-400">得分: {score}</Text>
+  const content = (
+    <div className={`flex flex-col items-center ${gameState === 'playing' ? 'fixed inset-0 z-50 bg-dark-900 pt-4' : ''}`} style={gameState==='playing'?{touchAction:'none'}:undefined}>
+      <div className="flex items-center justify-between w-full px-2 mb-2" style={{ maxWidth: COLS * blockSize + 80 }}>
+        <Title level={4} className="!text-white !mb-0 !text-base sm:!text-lg">俄罗斯方块</Title>
+        <Text className="!text-gray-400 !text-sm">得分: {score}</Text>
       </div>
+      <canvas ref={canvasRef} className="rounded-lg border border-dark-600" width={COLS*blockSize} height={ROWS*blockSize} />
 
-      {/* 游戏区 + 侧边控制按钮 */}
-      <div className="flex gap-3 items-start">
-        <canvas ref={canvasRef} className="rounded-lg border border-dark-600" width={COLS*blockSize} height={ROWS*blockSize} />
-
-        {gameState === 'playing' && (
-          <div className="flex flex-col gap-2 self-center">
-            {/* 旋转 */}
-            <button className={sideBtn} onPointerDown={e=>{e.preventDefault();fire('rotate')}} title="旋转">↻</button>
-            {/* 左 */}
-            <button className={sideBtn} onPointerDown={e=>{e.preventDefault();fire('left')}} title="左移">◀</button>
-            {/* 右 */}
-            <button className={sideBtn} onPointerDown={e=>{e.preventDefault();fire('right')}} title="右移">▶</button>
-            <button className={sideBtn} onPointerDown={e=>{e.preventDefault();fire('down')}} title="加速下落">▼</button>
-            <button className={`${sideBtn} !bg-red-600/60 active:!bg-red-500`} onPointerDown={e=>{e.preventDefault();fire('drop')}} title="直接落下">⏬</button>
+      {gameState === 'playing' && (
+        <>
+          <div className="flex justify-center gap-2 mt-3 px-2 w-full" style={{ maxWidth: COLS * blockSize + 80 }}>
+            <button className={btnBase} onPointerDown={e=>{e.preventDefault();fire('rotate')}}>↻</button>
+            <button className={btnBase} onPointerDown={e=>{e.preventDefault();fire('left')}}>◀</button>
+            <button className={btnBase} onPointerDown={e=>{e.preventDefault();fire('right')}}>▶</button>
+            <button className={btnBase} onPointerDown={e=>{e.preventDefault();fire('down')}}>▼</button>
+            <button className={`${btnBase} !bg-red-600/60 active:!bg-red-500`} onPointerDown={e=>{e.preventDefault();fire('drop')}}>⏬</button>
           </div>
-        )}
-      </div>
+          <Text className="!text-gray-500 !text-xs mt-1">键盘: ← → ↑ ↓ 空格</Text>
+        </>
+      )}
 
       {gameState === 'idle' && <Button type="primary" className="mt-4" onClick={startGame}>开始游戏</Button>}
       {gameState === 'over' && (
@@ -230,11 +224,10 @@ const TetrisGame: React.FC<GameProps> = ({ onScoreChange, onGameOver, onGameStar
           <Button type="primary" onClick={startGame}>重新开始</Button>
         </div>
       )}
-      {gameState === 'playing' && (
-        <Text className="!text-gray-500 !text-xs mt-2">键盘：← → ↑ ↓ 空格 | 或点击右侧按钮</Text>
-      )}
     </div>
   );
+
+  return content;
 };
 
 export default TetrisGame;
