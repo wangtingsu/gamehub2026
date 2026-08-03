@@ -225,9 +225,8 @@ const GamePlayPage = () => {
           </div>
         </div>
 
-        {/* Game Area — 禁止移动端下拉刷新/滑动导航 */}
-        <div className="bg-dark-800 rounded-xl border border-dark-700 p-6 mb-6 flex justify-center"
-          style={{ touchAction: 'none', overscrollBehavior: 'none' }}>
+        {/* Game Area */}
+        <div className="bg-dark-800 rounded-xl border border-dark-700 p-6 mb-6 flex justify-center">
           {GameComponent && (
             <Suspense fallback={
               <div className="py-16">
