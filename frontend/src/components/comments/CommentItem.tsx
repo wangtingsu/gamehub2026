@@ -4,7 +4,7 @@
  * 渲染单条评论及其子评论（回复），支持嵌套层级展示
  * 提供点赞（需登录）、回复、编辑、删除等操作功能
  * 点赞与用户绑定，支持 toggle
- * 回复默认显示 3 条（按点赞降序，相同按时间降序），点击"查看更多"加载 3 条
+ * 回复默认显示 5 条（按点赞降序，相同按时间降序），点击"查看更多"加载 5 条
  */
 import React, { useState } from 'react';
 import { useAuth } from '../../contexts/AuthContext';
@@ -45,7 +45,7 @@ const CommentItem: React.FC<CommentItemProps> = ({
   const likeCommentMutation = useLikeComment();
 
   // 顶层级评论：获取子回复
-  const [replyLimit, setReplyLimit] = useState(3);
+  const [replyLimit, setReplyLimit] = useState(5);
   const { data: repliesData } = useCommentReplies(comment.id, 1, 100);
   const allReplies = repliesData?.replies || [];
   // 按时间正序排列（早的在上面）
@@ -60,7 +60,7 @@ const CommentItem: React.FC<CommentItemProps> = ({
   const isAuthor = !!user && userId === authorId;
   const canEdit = isAuthor || user?.role === 'super_admin' || user?.role === 'admin';
   const canDelete = canEdit;
-  const maxLevel = 3;
+  const maxLevel = 5;
 
   const handleLike = async () => {
     if (!user) { message.info('请先登录后再点赞'); return; }
@@ -132,7 +132,7 @@ const CommentItem: React.FC<CommentItemProps> = ({
             <div className="text-sm text-gray-500">共 {comment.replyCount} 条回复</div>
           )}
         </div>
-        <div className="mt-3">
+        <div className="mt-5">
           <p className="text-gray-800 whitespace-pre-wrap">
             {level > 0 && (
               <span className="text-blue-500 text-xs block mb-1">回复 @{comment.parentAuthorName || comment.parentAuthor?.username || '评论'}</span>
@@ -151,13 +151,13 @@ const CommentItem: React.FC<CommentItemProps> = ({
 
         {/* 子回复（最多嵌套2层） */}
         {level <= 1 && visibleReplies.length > 0 && (
-          <div className="mt-4 space-y-3 border-t border-gray-100 pt-3">
+          <div className="mt-4 space-y-5 border-t border-gray-100 pt-5">
             {visibleReplies.map((reply: any) => (
               <CommentItem key={reply.id} comment={reply} parentType={parentType} parentId={parentId}
                 allowReplies={allowReplies} onReplyAdded={onReplyAdded} onDelete={onDelete} level={level + 1} />
             ))}
             {hasMore && (
-              <Button type="link" size="small" onClick={() => setReplyLimit(replyLimit + 3)}>
+              <Button type="link" size="small" onClick={() => setReplyLimit(replyLimit + 5)}>
                 查看更多回复 ({sortedReplies.length - replyLimit} 条)
               </Button>
             )}
