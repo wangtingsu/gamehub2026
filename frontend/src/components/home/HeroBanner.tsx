@@ -9,7 +9,7 @@ import { useState, useEffect, useCallback, useRef } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Button, Skeleton } from 'antd';
-import { RightOutlined } from '@ant-design/icons';
+import { RightOutlined, LeftOutlined } from '@ant-design/icons';
 import { useBanners } from '../../api/hooks';
 
 interface BannerItem {
@@ -84,6 +84,17 @@ const HeroBanner = () => {
     startAutoPlay(); // 重置计时器
   };
 
+  // 手动切换
+  const handlePrev = () => {
+    setCurrentIndex((prev) => (prev - 1 + banners.length) % banners.length);
+    startAutoPlay();
+  };
+
+  const handleNext = () => {
+    setCurrentIndex((prev) => (prev + 1) % banners.length);
+    startAutoPlay();
+  };
+
   const handleCTAClick = (banner: BannerItem) => {
     if (banner.link_url) {
       if (banner.link_url.startsWith('/')) {
@@ -105,7 +116,7 @@ const HeroBanner = () => {
   const currentBanner = banners[currentIndex];
 
   return (
-    <section className="relative w-full h-[380px] sm:h-[450px] md:h-[520px] overflow-hidden rounded-2xl mb-10">
+    <section className="relative w-full h-[380px] sm:h-[450px] md:h-[520px] overflow-hidden rounded-2xl mb-10 border-2 border-primary-500/60 shadow-[0_0_30px_rgba(59,130,246,0.3)] ring-2 ring-primary-400/30">
       {/* Banner 图片区域 */}
       <AnimatePresence mode="wait">
         <motion.div
@@ -186,6 +197,24 @@ const HeroBanner = () => {
           </AnimatePresence>
         </div>
       </div>
+
+      {/* 左箭头 */}
+      <button
+        onClick={handlePrev}
+        className="absolute left-3 top-1/2 -translate-y-1/2 w-10 h-10 md:w-12 md:h-12 rounded-full bg-white/10 hover:bg-white/25 backdrop-blur-sm flex items-center justify-center transition-all duration-200 group"
+        aria-label="上一张"
+      >
+        <LeftOutlined className="text-white text-lg group-hover:scale-110 transition-transform" />
+      </button>
+
+      {/* 右箭头 */}
+      <button
+        onClick={handleNext}
+        className="absolute right-3 top-1/2 -translate-y-1/2 w-10 h-10 md:w-12 md:h-12 rounded-full bg-white/10 hover:bg-white/25 backdrop-blur-sm flex items-center justify-center transition-all duration-200 group"
+        aria-label="下一张"
+      >
+        <RightOutlined className="text-white text-lg group-hover:scale-110 transition-transform" />
+      </button>
 
       {/* 指示器圆点 */}
       <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex gap-2">

@@ -33,7 +33,7 @@ const HomePage = () => {
   const { t } = useTranslation('home');
 
   return (
-    <div className="home-page bg-dark-900">
+    <div className="home-page bg-dark-900 pt-6">
       {/* SEO 配置 */}
       <SEO
         title={i18n.language?.startsWith("en") ? "GameHub - Game Reviews & Recommendations | Find Your Next Favorite Game" : "GameHub - 专业游戏推荐与评测平台 | 发现你的下一款最爱游戏"}
