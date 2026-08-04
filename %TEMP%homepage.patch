@@ -1,0 +1,1813 @@
+From 103327b128606f726d44be3dcc9a654062ba1f20 Mon Sep 17 00:00:00 2001
+From: wanshan <2647255011@qq.com>
+Date: Tue, 4 Aug 2026 14:03:29 +0800
+Subject: [PATCH] =?UTF-8?q?feat:=20=E9=A6=96=E9=A1=B5=E6=94=B9=E9=80=A0=20?=
+ =?UTF-8?q?-=20=E6=96=B0=E5=A2=9E=E6=BB=9A=E5=8A=A8=E6=A8=AA=E5=B9=85?=
+ =?UTF-8?q?=E3=80=81=E7=B2=BE=E9=80=89=E6=96=87=E7=AB=A0=E3=80=81=E7=83=AD?=
+ =?UTF-8?q?=E9=97=A8=E8=AE=A8=E8=AE=BA=E3=80=81=E5=85=91=E6=8D=A2=E7=A0=81?=
+ =?UTF-8?q?=E3=80=81=E7=83=AD=E9=97=A8=E6=B8=B8=E6=88=8F=E6=8E=A8=E8=8D=90?=
+ =?UTF-8?q?=E6=9D=BF=E5=9D=97?=
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+- 路由拆分: App.tsx index 路由从 GamesPage 切换到新的 HomePage
+- 新增 HeroBanner 全宽轮播组件 (后台 banners 表配置)
+- 新增 FeaturedArticles 精选文章组件 (按热度+时间排序)
+- 新增 HotDiscussions 热门讨论组件 (社区热帖)
+- 新增 HotGameRecommendations 热门游戏推荐组件
+- 新增 RedeemCodeSection 兑换码专区 (复制/登录兑换)
+- 后端: 新增 redeem_codes 数据表迁移 + redeem API 路由
+- 前端 API: 新增 getBanners/getFeatured/getRedeemCodes/redeemCode 等方法
+- i18n: 更新中英文翻译
+---
+ backend/migrations/032_redeem_codes.sql       |  33 ++
+ backend/src/index.ts                          |   2 +
+ backend/src/routes/redeem.routes.ts           | 133 ++++++
+ frontend/src/App.tsx                          |   4 +-
+ frontend/src/api/hooks.ts                     |  47 ++
+ frontend/src/api/index.ts                     |  86 ++++
+ .../src/components/home/FeaturedArticles.tsx  | 156 +++++++
+ frontend/src/components/home/HeroBanner.tsx   | 209 +++++++++
+ .../src/components/home/HotDiscussions.tsx    | 118 +++++
+ .../home/HotGameRecommendations.tsx           | 111 +++++
+ .../src/components/home/RedeemCodeSection.tsx | 191 ++++++++
+ frontend/src/components/home/index.ts         |   5 +
+ frontend/src/locales/en/home.json             |  10 +-
+ frontend/src/locales/zh-CN/home.json          |  10 +-
+ frontend/src/pages/HomePage.tsx               | 435 +++++-------------
+ 15 files changed, 1220 insertions(+), 330 deletions(-)
+ create mode 100644 backend/migrations/032_redeem_codes.sql
+ create mode 100644 backend/src/routes/redeem.routes.ts
+ create mode 100644 frontend/src/components/home/FeaturedArticles.tsx
+ create mode 100644 frontend/src/components/home/HeroBanner.tsx
+ create mode 100644 frontend/src/components/home/HotDiscussions.tsx
+ create mode 100644 frontend/src/components/home/HotGameRecommendations.tsx
+ create mode 100644 frontend/src/components/home/RedeemCodeSection.tsx
+ create mode 100644 frontend/src/components/home/index.ts
+
+diff --git a/backend/migrations/032_redeem_codes.sql b/backend/migrations/032_redeem_codes.sql
+new file mode 100644
+index 0000000..1fa1552
+--- /dev/null
++++ b/backend/migrations/032_redeem_codes.sql
+@@ -0,0 +1,33 @@
++-- 兑换码系统
++CREATE TABLE IF NOT EXISTS redeem_codes (
++  id INTEGER PRIMARY KEY AUTOINCREMENT,
++  code TEXT NOT NULL UNIQUE,
++  title TEXT NOT NULL,
++  description TEXT,
++  game_name TEXT,
++  reward_type TEXT DEFAULT 'discount',  -- discount | free_game | points | item
++  reward_value TEXT,
++  min_order_amount REAL DEFAULT 0,
++  usage_limit INTEGER DEFAULT 0,         -- 0 = 不限
++  used_count INTEGER DEFAULT 0,
++  is_active INTEGER DEFAULT 1,
++  starts_at TEXT,
++  expires_at TEXT,
++  created_by INTEGER REFERENCES users(id),
++  created_at TEXT DEFAULT CURRENT_TIMESTAMP,
++  updated_at TEXT DEFAULT CURRENT_TIMESTAMP
++);
++
++-- 兑换记录
++CREATE TABLE IF NOT EXISTS redeem_logs (
++  id INTEGER PRIMARY KEY AUTOINCREMENT,
++  code_id INTEGER NOT NULL REFERENCES redeem_codes(id) ON DELETE CASCADE,
++  user_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
++  redeemed_at TEXT DEFAULT CURRENT_TIMESTAMP,
++  ip_address TEXT
++);
++
++CREATE INDEX IF NOT EXISTS idx_redeem_codes_code ON redeem_codes(code);
++CREATE INDEX IF NOT EXISTS idx_redeem_codes_active ON redeem_codes(is_active, expires_at);
++CREATE INDEX IF NOT EXISTS idx_redeem_logs_user ON redeem_logs(user_id);
++CREATE INDEX IF NOT EXISTS idx_redeem_logs_code ON redeem_logs(code_id);
+diff --git a/backend/src/index.ts b/backend/src/index.ts
+index a5bef41..3a1df83 100644
+--- a/backend/src/index.ts
++++ b/backend/src/index.ts
+@@ -76,6 +76,7 @@ import blogSpacesRoutes from './routes/blog-spaces.routes';
+ import printRoutes from './routes/print.routes';
+ import newsletterRoutes from './routes/newsletter.routes';
+ import recommendRoutes from './routes/recommend.routes';
++import redeemRoutes from './routes/redeem.routes';
+ import adminRoutes from './routes/admin.routes';
+ import adminReviewRoutes from './routes/admin-review.routes';
+ import adminRecommendRoutes from './routes/admin-recommend.routes';
+@@ -337,6 +338,7 @@ app.use(`${config.apiPrefix}/admin`, adminRoutes);
+ app.use(`${config.apiPrefix}/admin`, adminReviewRoutes);
+ app.use(`${config.apiPrefix}/admin`, adminRecommendRoutes);
+ app.use(`${config.apiPrefix}/recommend`, recommendRoutes);
++app.use(`${config.apiPrefix}/redeem`, redeemRoutes);
+ app.use(`${config.apiPrefix}/newsletter`, newsletterRoutes);
+ 
+ // 文档路由（开发环境）
+diff --git a/backend/src/routes/redeem.routes.ts b/backend/src/routes/redeem.routes.ts
+new file mode 100644
+index 0000000..046dbdd
+--- /dev/null
++++ b/backend/src/routes/redeem.routes.ts
+@@ -0,0 +1,133 @@
++import { Router, Request, Response } from 'express';
++import { asyncHandler } from '../middlewares/error.middleware';
++import { authenticate, optionalAuthenticate } from '../middlewares/auth.middleware';
++import { query, execute } from '../db';
++
++const router = Router();
++
++/**
++ * GET /api/redeem/codes
++ * 获取所有可用的兑换码（公开接口，按热度/时间排序）
++ */
++router.get('/codes', asyncHandler(async (req: Request, res: Response) => {
++  const now = new Date().toISOString();
++  const data = await query(
++    `SELECT id, code, title, description, game_name, reward_type, reward_value,
++            min_order_amount, usage_limit, used_count, starts_at, expires_at, created_at
++     FROM redeem_codes
++     WHERE is_active = 1
++       AND (starts_at IS NULL OR starts_at <= ?)
++       AND (expires_at IS NULL OR expires_at > ?)
++       AND (usage_limit = 0 OR used_count < usage_limit)
++     ORDER BY created_at DESC
++     LIMIT 10`,
++    [now, now]
++  );
++  res.json({ success: true, data });
++}));
++
++/**
++ * GET /api/redeem/codes/:code
++ * 查询单个兑换码是否有效
++ */
++router.get('/codes/:code', asyncHandler(async (req: Request, res: Response) => {
++  const { code } = req.params;
++  const now = new Date().toISOString();
++  const rows: any = await query(
++    `SELECT id, code, title, description, game_name, reward_type, reward_value,
++            min_order_amount, usage_limit, used_count, starts_at, expires_at
++     FROM redeem_codes
++     WHERE code = ? AND is_active = 1
++       AND (starts_at IS NULL OR starts_at <= ?)
++       AND (expires_at IS NULL OR expires_at > ?)
++       AND (usage_limit = 0 OR used_count < usage_limit)`,
++    [code.toUpperCase(), now, now]
++  );
++  if (!rows.length) {
++    return res.status(404).json({ success: false, message: '兑换码无效或已过期' });
++  }
++  res.json({ success: true, data: rows[0] });
++}));
++
++/**
++ * POST /api/redeem/redeem
++ * 用户兑换（需要登录）
++ */
++router.post('/redeem', authenticate, asyncHandler(async (req: Request, res: Response) => {
++  const { code } = req.body;
++  const userId = (req as any).user?.id;
++
++  if (!code) {
++    return res.status(400).json({ success: false, message: '请输入兑换码' });
++  }
++
++  const now = new Date().toISOString();
++  const rows: any = await query(
++    `SELECT id, code, title, reward_type, reward_value, usage_limit, used_count
++     FROM redeem_codes
++     WHERE code = ? AND is_active = 1
++       AND (starts_at IS NULL OR starts_at <= ?)
++       AND (expires_at IS NULL OR expires_at > ?)`,
++    [code.toUpperCase(), now, now]
++  );
++
++  if (!rows.length) {
++    return res.status(404).json({ success: false, message: '兑换码无效或已过期' });
++  }
++
++  const redeemCode = rows[0];
++
++  // 检查使用次数
++  if (redeemCode.usage_limit > 0 && redeemCode.used_count >= redeemCode.usage_limit) {
++    return res.status(400).json({ success: false, message: '兑换码已用完' });
++  }
++
++  // 检查用户是否已兑换过
++  const existing: any = await query(
++    'SELECT id FROM redeem_logs WHERE code_id = ? AND user_id = ?',
++    [redeemCode.id, userId]
++  );
++  if (existing.length > 0) {
++    return res.status(400).json({ success: false, message: '你已经兑换过该兑换码' });
++  }
++
++  // 记录兑换
++  await execute(
++    'INSERT INTO redeem_logs (code_id, user_id, ip_address) VALUES (?, ?, ?)',
++    [redeemCode.id, userId, req.ip || '']
++  );
++
++  // 增加使用计数
++  await execute('UPDATE redeem_codes SET used_count = used_count + 1 WHERE id = ?', [redeemCode.id]);
++
++  res.json({
++    success: true,
++    data: {
++      code: redeemCode.code,
++      title: redeemCode.title,
++      reward_type: redeemCode.reward_type,
++      reward_value: redeemCode.reward_value,
++    },
++    message: '兑换成功！',
++  });
++}));
++
++/**
++ * GET /api/redeem/my
++ * 获取当前用户的兑换记录
++ */
++router.get('/my', authenticate, asyncHandler(async (req: Request, res: Response) => {
++  const userId = (req as any).user?.id;
++  const data = await query(
++    `SELECT rl.id, rl.redeemed_at, rc.code, rc.title, rc.reward_type, rc.reward_value, rc.game_name
++     FROM redeem_logs rl
++     INNER JOIN redeem_codes rc ON rc.id = rl.code_id
++     WHERE rl.user_id = ?
++     ORDER BY rl.redeemed_at DESC
++     LIMIT 20`,
++    [userId]
++  );
++  res.json({ success: true, data });
++}));
++
++export default router;
+diff --git a/frontend/src/App.tsx b/frontend/src/App.tsx
+index 14cd16c..49dbf65 100644
+--- a/frontend/src/App.tsx
++++ b/frontend/src/App.tsx
+@@ -418,10 +418,10 @@ function App() {
+ 
+                 {/* 语言前缀路由 */}
+                 <Route path=":lang" element={<LanguageRouteWrapper><Suspense fallback={<LoadingSpinner />}><Layout /></Suspense></LanguageRouteWrapper>}>
+-                  {/* 首页临时替换为游戏列表页面 */}
++                  {/* 首页 - 精选内容着陆页 */}
+                   <Route index element={
+                     <PageSuspense>
+-                      <GamesPage />
++                      <HomePage />
+                     </PageSuspense>
+                   } />
+                   <Route path="games" element={
+diff --git a/frontend/src/api/hooks.ts b/frontend/src/api/hooks.ts
+index ed5cafc..3c0b8ed 100644
+--- a/frontend/src/api/hooks.ts
++++ b/frontend/src/api/hooks.ts
+@@ -1624,4 +1624,51 @@ export const useRejectContent = () => {
+       queryClient.invalidateQueries({ queryKey: ['admin', 'review'] });
+     },
+   });
++};
++
++// ==================== Banner 和推荐内容 Hooks ====================
++
++export const useBanners = (position?: string) => {
++  return useQuery({
++    queryKey: ['banners', position],
++    queryFn: () => apiService.getBanners(position),
++    staleTime: 1000 * 60 * 5,
++  });
++};
++
++export const useFeaturedContent = (type?: string) => {
++  return useQuery({
++    queryKey: ['featured', type],
++    queryFn: () => apiService.getFeaturedContent(type),
++    staleTime: 1000 * 60 * 5,
++  });
++};
++
++// ==================== 兑换码 Hooks ====================
++
++export const useRedeemCodes = () => {
++  return useQuery({
++    queryKey: ['redeem', 'codes'],
++    queryFn: () => apiService.getRedeemCodes(),
++    staleTime: 1000 * 60 * 2,
++  });
++};
++
++export const useRedeemCode = () => {
++  const queryClient = useQueryClient();
++  return useMutation({
++    mutationFn: (code: string) => apiService.redeemCode(code),
++    onSuccess: () => {
++      queryClient.invalidateQueries({ queryKey: ['redeem', 'codes'] });
++      queryClient.invalidateQueries({ queryKey: ['redeem', 'my'] });
++    },
++  });
++};
++
++export const useMyRedeemHistory = () => {
++  return useQuery({
++    queryKey: ['redeem', 'my'],
++    queryFn: () => apiService.getMyRedeemHistory(),
++    staleTime: 1000 * 30,
++  });
+ };
+\ No newline at end of file
+diff --git a/frontend/src/api/index.ts b/frontend/src/api/index.ts
+index d320ec7..c23bb3b 100644
+--- a/frontend/src/api/index.ts
++++ b/frontend/src/api/index.ts
+@@ -410,6 +410,16 @@ abstract class BaseApiService {
+   abstract getSpaceDetail(slug: string): Promise<any>;
+   abstract getSpacePopularArticle(spaceId: string): Promise<any>;
+   abstract getSpaceArticlesByCategory(spaceId: string, postType: string, params?: any): Promise<{ articles: any[]; total: number }>;
++
++  // ==================== Banner 和推荐内容 ====================
++  abstract getBanners(position?: string): Promise<any[]>;
++  abstract getFeaturedContent(type?: string): Promise<any[]>;
++
++  // ==================== 兑换码系统 ====================
++  abstract getRedeemCodes(): Promise<any[]>;
++  abstract getRedeemCodeDetail(code: string): Promise<any>;
++  abstract redeemCode(code: string): Promise<{ code: string; title: string; reward_type: string; reward_value: string }>;
++  abstract getMyRedeemHistory(): Promise<any[]>;
+ }
+ 
+ /**
+@@ -1844,6 +1854,42 @@ class RealApiService extends BaseApiService {
+   }> {
+     return this.client.get<any>(`/print/order/${id}`);
+   }
++
++  // ==================== Banner 和推荐内容 ====================
++  async getBanners(position?: string): Promise<any[]> {
++    const params: any = {};
++    if (position) params.position = position;
++    const response = await this.client.get<any>('/recommend/banners', params);
++    return response?.data || response || [];
++  }
++
++  async getFeaturedContent(type?: string): Promise<any[]> {
++    const params: any = {};
++    if (type) params.type = type;
++    const response = await this.client.get<any>('/recommend/featured', params);
++    return response?.data || response || [];
++  }
++
++  // ==================== 兑换码系统 ====================
++  async getRedeemCodes(): Promise<any[]> {
++    const response = await this.client.get<any>('/redeem/codes');
++    return response?.data || response || [];
++  }
++
++  async getRedeemCodeDetail(code: string): Promise<any> {
++    const response = await this.client.get<any>(`/redeem/codes/${encodeURIComponent(code)}`);
++    return response?.data || response;
++  }
++
++  async redeemCode(code: string): Promise<{ code: string; title: string; reward_type: string; reward_value: string }> {
++    const response = await this.client.post<any>('/redeem/redeem', { code });
++    return response?.data || response;
++  }
++
++  async getMyRedeemHistory(): Promise<any[]> {
++    const response = await this.client.get<any>('/redeem/my');
++    return response?.data || response || [];
++  }
+ }
+ 
+ /**
+@@ -4331,6 +4377,46 @@ class MockApiService extends BaseApiService {
+   async deleteAiHistory(id: string): Promise<void> {
+     console.log('Mock: 删除AI历史', id);
+   }
++
++  // ==================== Banner 和推荐内容 Mocks ====================
++  async getBanners(position?: string): Promise<any[]> {
++    console.log('Mock: 获取Banner', position);
++    return [
++      { id: 1, title: '🔥 热门游戏促销', subtitle: '限时折扣，低至3折', image_url: 'https://images.unsplash.com/photo-1534423861386-85a16f5d13fd?w=1200&auto=format&fit=crop', link_url: '/games/category/sale', position: 'home', sort_order: 0 },
++      { id: 2, title: '🎮 新游推荐', subtitle: '本月最受期待的新游戏', image_url: 'https://images.unsplash.com/photo-1550745165-9bc0b252726f?w=1200&auto=format&fit=crop', link_url: '/games/category/new', position: 'home', sort_order: 1 },
++      { id: 3, title: '🏆 2026年度游戏评选', subtitle: '为你喜欢的游戏投票', image_url: 'https://images.unsplash.com/photo-1511512578047-dfb367046420?w=1200&auto=format&fit=crop', link_url: '/games/category/awards', position: 'home', sort_order: 2 },
++    ];
++  }
++
++  async getFeaturedContent(type?: string): Promise<any[]> {
++    console.log('Mock: 获取精选内容', type);
++    return [];
++  }
++
++  // ==================== 兑换码系统 Mocks ====================
++  async getRedeemCodes(): Promise<any[]> {
++    console.log('Mock: 获取兑换码列表');
++    return [
++      { id: 1, code: 'WELCOME2026', title: '新用户欢迎礼包', description: '新用户注册即可兑换', game_name: '通用', reward_type: 'discount', reward_value: '满100减20', usage_limit: 0, used_count: 1234 },
++      { id: 2, code: 'SUMMER50', title: '夏日狂欢', description: '夏日限定兑换码', game_name: '艾尔登法环', reward_type: 'discount', reward_value: '50元优惠券', usage_limit: 500, used_count: 320 },
++      { id: 3, code: 'VIP2026', title: 'VIP会员专享', description: 'VIP玩家专属兑换码', game_name: '原神', reward_type: 'item', reward_value: '限定道具礼包', usage_limit: 100, used_count: 67 },
++    ];
++  }
++
++  async getRedeemCodeDetail(code: string): Promise<any> {
++    console.log('Mock: 获取兑换码详情', code);
++    return { id: 1, code, title: '测试兑换码', reward_type: 'discount', reward_value: '8折优惠' };
++  }
++
++  async redeemCode(code: string): Promise<{ code: string; title: string; reward_type: string; reward_value: string }> {
++    console.log('Mock: 兑换', code);
++    return { code, title: '测试兑换码', reward_type: 'discount', reward_value: '8折优惠' };
++  }
++
++  async getMyRedeemHistory(): Promise<any[]> {
++    console.log('Mock: 获取兑换历史');
++    return [];
++  }
+ }
+ 
+ /**
+diff --git a/frontend/src/components/home/FeaturedArticles.tsx b/frontend/src/components/home/FeaturedArticles.tsx
+new file mode 100644
+index 0000000..b85283f
+--- /dev/null
++++ b/frontend/src/components/home/FeaturedArticles.tsx
+@@ -0,0 +1,156 @@
++/**
++ * FeaturedArticles - 精选文章组件
++ *
++ * 展示编辑精选的攻略/评测/新闻文章。
++ * 按热度（views + likes）和时间自动排序。
++ * 使用横排网格 + 滚动触发动画。
++ */
++import { useMemo } from 'react';
++import { useNavigate, useParams } from 'react-router-dom';
++import { Card, Tag, Typography, Skeleton, Button } from 'antd';
++import { StarOutlined, EyeOutlined, ArrowRightOutlined, ReadOutlined } from '@ant-design/icons';
++import { motion } from 'framer-motion';
++import { useTranslation } from 'react-i18next';
++import { useNews, useBlogPosts, useGuides } from '../../api/hooks';
++
++const { Title, Paragraph } = Typography;
++
++const FeaturedArticles = () => {
++  const navigate = useNavigate();
++  const { lang } = useParams<{ lang: string }>();
++  const currentLang = lang || 'cn';
++  const { t } = useTranslation('home');
++
++  const { data: newsData, isLoading: newsLoading } = useNews({ page: 1, limit: 4 });
++  const { data: blogData, isLoading: blogLoading } = useBlogPosts({ page: 1, limit: 4 });
++  const { data: guideData, isLoading: guideLoading } = useGuides({ page: 1, limit: 4 });
++
++  const isLoading = newsLoading && blogLoading && guideLoading;
++
++  // 合并并按热度排序（views + likes）
++  const articles = useMemo(() => {
++    const merged: any[] = [];
++
++    if (newsData) {
++      (Array.isArray(newsData) ? newsData : []).forEach((item: any) => {
++        merged.push({
++          id: `news-${item.id}`,
++          title: item.title,
++          excerpt: item.summary || item.excerpt || '',
++          category: item.category || '新闻',
++          type: 'news',
++          views: item.views || 0,
++          likes: item.likes || 0,
++          date: item.publishDate || item.createdAt || '',
++          link: `/${currentLang}/news/${item.id}`,
++        });
++      });
++    }
++
++    if (blogData) {
++      (Array.isArray(blogData) ? blogData : []).forEach((item: any) => {
++        merged.push({
++          id: `blog-${item.id}`,
++          title: item.title,
++          excerpt: item.excerpt || item.summary || '',
++          category: item.category || '博客',
++          type: 'blog',
++          views: item.views || 0,
++          likes: item.likes || 0,
++          date: item.publishDate || item.createdAt || '',
++          link: `/${currentLang}/blog/${item.id}`,
++        });
++      });
++    }
++
++    if (guideData) {
++      (Array.isArray(guideData) ? guideData : []).forEach((item: any) => {
++        merged.push({
++          id: `guide-${item.id}`,
++          title: item.title,
++          excerpt: item.summary || item.excerpt || '',
++          category: '攻略',
++          type: 'guide',
++          views: item.views || 0,
++          likes: item.likes || 0,
++          date: item.createdAt || '',
++          link: `/${currentLang}/guides/${item.id}`,
++        });
++      });
++    }
++
++    // 按热度排序：likes * 2 + views
++    return merged.sort((a, b) => (b.likes * 2 + b.views) - (a.likes * 2 + a.views)).slice(0, 6);
++  }, [newsData, blogData, guideData]);
++
++  return (
++    <section className="mb-12">
++      <div className="flex justify-between items-center mb-6">
++        <div>
++          <Title level={2} className="flex items-center gap-2 !text-white !mb-1">
++            <ReadOutlined className="text-blue-400" />
++            {t('home.featuredArticles', '精选文章')}
++          </Title>
++          <Paragraph className="text-gray-400 !mb-0">
++            {t('home.featuredArticlesDesc', '编辑精选的攻略、评测与资讯')}
++          </Paragraph>
++        </div>
++        <Button type="link" onClick={() => navigate(`/${currentLang}/news`)}>
++          {t('home.viewAll', '查看全部')} <ArrowRightOutlined />
++        </Button>
++      </div>
++
++      {isLoading ? (
++        <div className="grid grid-cols-1 sm:grid-cols-3 gap-5">
++          {Array.from({ length: 6 }).map((_, i) => (
++            <Card key={i}><Skeleton active paragraph={{ rows: 3 }} /></Card>
++          ))}
++        </div>
++      ) : articles.length === 0 ? (
++        <div className="text-center py-12 text-gray-400">暂无精选文章</div>
++      ) : (
++        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
++          {articles.map((article: any, index: number) => (
++            <motion.div
++              key={article.id}
++              initial={{ opacity: 0, y: 20 }}
++              whileInView={{ opacity: 1, y: 0 }}
++              viewport={{ once: true, margin: '-50px' }}
++              transition={{ duration: 0.4, delay: index * 0.08 }}
++              whileHover={{ y: -6 }}
++            >
++              <Card
++                hoverable
++                className="h-full cursor-pointer border-dark-700 bg-dark-800/80 hover:bg-dark-750 transition-colors"
++                onClick={() => navigate(article.link)}
++              >
++                <div className="mb-3 flex items-center gap-2">
++                  <Tag color={article.type === 'news' ? 'blue' : article.type === 'guide' ? 'green' : 'purple'}>
++                    {article.category}
++                  </Tag>
++                </div>
++                <Title level={4} className="!mb-2 !text-white line-clamp-2 !text-base">
++                  {article.title}
++                </Title>
++                <Paragraph className="text-gray-400 text-sm mb-3 line-clamp-2">
++                  {article.excerpt}
++                </Paragraph>
++                <div className="flex items-center gap-4 text-gray-500 text-xs">
++                  <span className="flex items-center gap-1">
++                    <EyeOutlined /> {article.views || 0}
++                  </span>
++                  <span className="flex items-center gap-1">
++                    <StarOutlined /> {article.likes || 0}
++                  </span>
++                  <span className="ml-auto">{typeof article.date === 'string' ? article.date.slice(0, 10) : ''}</span>
++                </div>
++              </Card>
++            </motion.div>
++          ))}
++        </div>
++      )}
++    </section>
++  );
++};
++
++export default FeaturedArticles;
+diff --git a/frontend/src/components/home/HeroBanner.tsx b/frontend/src/components/home/HeroBanner.tsx
+new file mode 100644
+index 0000000..ba3c584
+--- /dev/null
++++ b/frontend/src/components/home/HeroBanner.tsx
+@@ -0,0 +1,209 @@
++/**
++ * HeroBanner - 全宽轮播横幅组件
++ *
++ * 首页顶部的全宽轮播大图，自动播放精选内容。
++ * 支持后台配置的 banner 数据，自动 fallback 到默认内容。
++ * 使用 framer-motion 实现平滑过渡动画。
++ */
++import { useState, useEffect, useCallback, useRef } from 'react';
++import { useNavigate, useParams } from 'react-router-dom';
++import { motion, AnimatePresence } from 'framer-motion';
++import { Button, Skeleton } from 'antd';
++import { RightOutlined } from '@ant-design/icons';
++import { useBanners } from '../../api/hooks';
++
++interface BannerItem {
++  id: number;
++  title: string;
++  subtitle?: string;
++  image_url: string;
++  link_url?: string;
++  position?: string;
++}
++
++const fallbackBanners: BannerItem[] = [
++  {
++    id: 1,
++    title: '🔥 热门游戏促销',
++    subtitle: '限时折扣，低至3折',
++    image_url: 'https://images.unsplash.com/photo-1534423861386-85a16f5d13fd?w=1200&auto=format&fit=crop',
++    link_url: '/games/category/top-up',
++  },
++  {
++    id: 2,
++    title: '🎮 新游推荐',
++    subtitle: '本月最受期待的新游戏',
++    image_url: 'https://images.unsplash.com/photo-1550745165-9bc0b252726f?w=1200&auto=format&fit=crop',
++    link_url: '/games/category/new',
++  },
++  {
++    id: 3,
++    title: '🏆 2026年度游戏评选',
++    subtitle: '为你喜欢的游戏投票',
++    image_url: 'https://images.unsplash.com/photo-1511512578047-dfb367046420?w=1200&auto=format&fit=crop',
++    link_url: '/games/category/awards',
++  },
++];
++
++const HeroBanner = () => {
++  const navigate = useNavigate();
++  const { lang } = useParams<{ lang: string }>();
++  const currentLang = lang || 'cn';
++  const { data: apiBanners, isLoading } = useBanners('home');
++
++  const banners = (apiBanners && apiBanners.length > 0 ? apiBanners : fallbackBanners) as BannerItem[];
++
++  const [currentIndex, setCurrentIndex] = useState(0);
++  const [scrollY, setScrollY] = useState(0);
++  const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
++
++  // 视差滚动效果
++  useEffect(() => {
++    const handleScroll = () => setScrollY(window.scrollY);
++    window.addEventListener('scroll', handleScroll, { passive: true });
++    return () => window.removeEventListener('scroll', handleScroll);
++  }, []);
++
++  // 自动播放
++  const startAutoPlay = useCallback(() => {
++    if (intervalRef.current) clearInterval(intervalRef.current);
++    intervalRef.current = setInterval(() => {
++      setCurrentIndex((prev) => (prev + 1) % banners.length);
++    }, 5000);
++  }, [banners.length]);
++
++  useEffect(() => {
++    startAutoPlay();
++    return () => {
++      if (intervalRef.current) clearInterval(intervalRef.current);
++    };
++  }, [startAutoPlay]);
++
++  const handleDotClick = (index: number) => {
++    setCurrentIndex(index);
++    startAutoPlay(); // 重置计时器
++  };
++
++  const handleCTAClick = (banner: BannerItem) => {
++    if (banner.link_url) {
++      if (banner.link_url.startsWith('/')) {
++        navigate(`/${currentLang}${banner.link_url}`);
++      } else {
++        window.open(banner.link_url, '_blank');
++      }
++    }
++  };
++
++  if (isLoading) {
++    return (
++      <div className="relative w-full h-[400px] md:h-[500px] bg-dark-800 rounded-2xl overflow-hidden">
++        <Skeleton active paragraph={{ rows: 0 }} className="h-full" />
++      </div>
++    );
++  }
++
++  const currentBanner = banners[currentIndex];
++
++  return (
++    <section className="relative w-full h-[380px] sm:h-[450px] md:h-[520px] overflow-hidden rounded-2xl mb-10">
++      {/* Banner 图片区域 */}
++      <AnimatePresence mode="wait">
++        <motion.div
++          key={currentIndex}
++          initial={{ opacity: 0, scale: 1.05 }}
++          animate={{ opacity: 1, scale: 1 }}
++          exit={{ opacity: 0 }}
++          transition={{ duration: 0.6, ease: 'easeInOut' }}
++          className="absolute inset-0"
++          style={{
++            transform: `translateY(${scrollY * 0.15}px)`,
++          }}
++        >
++          <img
++            src={currentBanner.image_url}
++            alt={currentBanner.title}
++            className="w-full h-full object-cover"
++            onError={(e) => {
++              const el = e.target as HTMLImageElement;
++              el.onerror = null;
++              el.src = 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 500"><rect fill="%231e293b" width="1200" height="500"/><text fill="%2364748b" font-size="24" x="600" y="250" text-anchor="middle">GameHub</text></svg>';
++            }}
++          />
++        </motion.div>
++      </AnimatePresence>
++
++      {/* 渐变遮罩 */}
++      <div className="absolute inset-0 bg-gradient-to-t from-dark-900 via-dark-900/40 to-transparent" />
++      <div className="absolute inset-0 bg-gradient-to-r from-dark-900/70 to-transparent" />
++
++      {/* 内容区 */}
++      <div className="absolute inset-0 flex items-center">
++        <div className="px-8 md:px-16 max-w-2xl">
++          <AnimatePresence mode="wait">
++            <motion.div
++              key={`content-${currentIndex}`}
++              initial={{ opacity: 0, y: 30 }}
++              animate={{ opacity: 1, y: 0 }}
++              exit={{ opacity: 0, y: -20 }}
++              transition={{ duration: 0.4, delay: 0.15 }}
++            >
++              <motion.h2
++                className="text-2xl sm:text-3xl md:text-5xl font-bold text-white mb-3 leading-tight"
++                initial={{ opacity: 0, y: 20 }}
++                animate={{ opacity: 1, y: 0 }}
++                transition={{ duration: 0.4, delay: 0.25 }}
++              >
++                {currentBanner.title}
++              </motion.h2>
++              {currentBanner.subtitle && (
++                <motion.p
++                  className="text-sm sm:text-base md:text-lg text-gray-300 mb-6 max-w-md"
++                  initial={{ opacity: 0, y: 20 }}
++                  animate={{ opacity: 1, y: 0 }}
++                  transition={{ duration: 0.4, delay: 0.35 }}
++                >
++                  {currentBanner.subtitle}
++                </motion.p>
++              )}
++              {currentBanner.link_url && (
++                <motion.div
++                  initial={{ opacity: 0, y: 20 }}
++                  animate={{ opacity: 1, y: 0 }}
++                  transition={{ duration: 0.4, delay: 0.45 }}
++                >
++                  <Button
++                    type="primary"
++                    size="large"
++                    icon={<RightOutlined />}
++                    onClick={() => handleCTAClick(currentBanner)}
++                    className="!bg-gradient-to-r !from-blue-600 !to-purple-600 !border-0 !px-6 !py-5 !text-base !font-semibold hover:!from-blue-500 hover:!to-purple-500"
++                  >
++                    了解更多
++                  </Button>
++                </motion.div>
++              )}
++            </motion.div>
++          </AnimatePresence>
++        </div>
++      </div>
++
++      {/* 指示器圆点 */}
++      <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex gap-2">
++        {banners.map((_, index) => (
++          <button
++            key={index}
++            onClick={() => handleDotClick(index)}
++            className={`h-2 rounded-full transition-all duration-300 ${
++              index === currentIndex
++                ? 'w-8 bg-white'
++                : 'w-2 bg-white/50 hover:bg-white/75'
++            }`}
++            aria-label={`切换到第 ${index + 1} 张图片`}
++          />
++        ))}
++      </div>
++    </section>
++  );
++};
++
++export default HeroBanner;
+diff --git a/frontend/src/components/home/HotDiscussions.tsx b/frontend/src/components/home/HotDiscussions.tsx
+new file mode 100644
+index 0000000..a905a51
+--- /dev/null
++++ b/frontend/src/components/home/HotDiscussions.tsx
+@@ -0,0 +1,118 @@
++/**
++ * HotDiscussions - 热门讨论组件
++ *
++ * 展示社区热门讨论帖子，按回复数和热度自动排序。
++ * 每个卡片显示帖子标题、内容摘要、回复数、作者信息。
++ */
++import { useNavigate, useParams } from 'react-router-dom';
++import { Card, Tag, Typography, Skeleton, Button, Avatar } from 'antd';
++import { FireOutlined, MessageOutlined, ArrowRightOutlined, TeamOutlined, UserOutlined } from '@ant-design/icons';
++import { motion } from 'framer-motion';
++import { useTranslation } from 'react-i18next';
++import { useCommunityPosts } from '../../api/hooks';
++
++const { Title, Paragraph } = Typography;
++
++const HotDiscussions = () => {
++  const navigate = useNavigate();
++  const { lang } = useParams<{ lang: string }>();
++  const currentLang = lang || 'cn';
++  const { t } = useTranslation('home');
++
++  const { data: posts, isLoading } = useCommunityPosts({ page: 1, limit: 6 });
++
++  // 按热度排序（回复数 + 点赞数）
++  const hotPosts = Array.isArray(posts)
++    ? [...posts]
++        .sort((a: any, b: any) => {
++          const aHeat = (a.replyCount || a.commentCount || 0) + (a.likes || 0);
++          const bHeat = (b.replyCount || b.commentCount || 0) + (b.likes || 0);
++          return bHeat - aHeat;
++        })
++        .slice(0, 6)
++    : [];
++
++  return (
++    <section className="mb-12">
++      <div className="flex justify-between items-center mb-6">
++        <div>
++          <Title level={2} className="flex items-center gap-2 !text-white !mb-1">
++            <TeamOutlined className="text-orange-400" />
++            {t('home.hotDiscussions', '热门讨论')}
++          </Title>
++          <Paragraph className="text-gray-400 !mb-0">
++            {t('home.hotDiscussionsDesc', '社区中最活跃的话题讨论')}
++          </Paragraph>
++        </div>
++        <Button type="link" onClick={() => navigate(`/${currentLang}/community-forum`)}>
++          {t('home.viewAll', '查看全部')} <ArrowRightOutlined />
++        </Button>
++      </div>
++
++      {isLoading ? (
++        <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
++          {Array.from({ length: 4 }).map((_, i) => (
++            <Card key={i}><Skeleton active paragraph={{ rows: 2 }} /></Card>
++          ))}
++        </div>
++      ) : hotPosts.length === 0 ? (
++        <div className="text-center py-12 text-gray-400">暂无热门讨论</div>
++      ) : (
++        <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
++          {hotPosts.map((post: any, index: number) => (
++            <motion.div
++              key={post.id}
++              initial={{ opacity: 0, y: 20 }}
++              whileInView={{ opacity: 1, y: 0 }}
++              viewport={{ once: true, margin: '-50px' }}
++              transition={{ duration: 0.4, delay: index * 0.08 }}
++              whileHover={{ y: -4 }}
++            >
++              <Card
++                hoverable
++                className="h-full cursor-pointer border-dark-700 bg-dark-800/80 hover:bg-dark-750"
++                onClick={() => navigate(`/${currentLang}/community/posts/${post.id}`)}
++              >
++                <div className="flex items-start gap-3">
++                  <Avatar
++                    src={post.authorAvatar}
++                    icon={<UserOutlined />}
++                    className="flex-shrink-0"
++                  />
++                  <div className="flex-1 min-w-0">
++                    <Title level={5} className="!mb-2 !text-white line-clamp-1 !text-sm">
++                      {post.title}
++                    </Title>
++                    <Paragraph className="text-gray-400 text-xs mb-3 line-clamp-2">
++                      {post.content || post.excerpt || post.summary || ''}
++                    </Paragraph>
++                    <div className="flex items-center gap-4 text-gray-500 text-xs">
++                      <span className="flex items-center gap-1">
++                        <FireOutlined className="text-orange-400" />
++                        {post.likes || 0} 热度
++                      </span>
++                      <span className="flex items-center gap-1">
++                        <MessageOutlined />
++                        {post.replyCount || post.commentCount || 0} 回复
++                      </span>
++                      <span className="text-gray-600 truncate ml-auto">
++                        {post.authorName || post.author || '匿名'}
++                      </span>
++                    </div>
++                    {post.category && (
++                      <div className="mt-2">
++                        <Tag color="orange" className="text-xs">{post.category}</Tag>
++                      </div>
++                    )}
++                  </div>
++                </div>
++              </Card>
++            </motion.div>
++          ))}
++        </div>
++      )}
++    </section>
++  );
++};
++
++export default HotDiscussions;
+diff --git a/frontend/src/components/home/HotGameRecommendations.tsx b/frontend/src/components/home/HotGameRecommendations.tsx
+new file mode 100644
+index 0000000..cda7efc
+--- /dev/null
++++ b/frontend/src/components/home/HotGameRecommendations.tsx
+@@ -0,0 +1,111 @@
++/**
++ * HotGameRecommendations - 热门游戏推荐组件
++ *
++ * 展示当前最热门的游戏，基于社区讨论热度和评分排序。
++ * 支持 loading 骨架屏、空数据态、hover 效果。
++ */
++import { useNavigate, useParams } from 'react-router-dom';
++import { Card, Tag, Rate, Typography, Skeleton, Button } from 'antd';
++import { FireOutlined, ArrowRightOutlined } from '@ant-design/icons';
++import { motion } from 'framer-motion';
++import { useTranslation } from 'react-i18next';
++import { useTrendingContent } from '../../api/hooks';
++
++const { Title, Paragraph } = Typography;
++
++const HotGameRecommendations = () => {
++  const navigate = useNavigate();
++  const { lang } = useParams<{ lang: string }>();
++  const currentLang = lang || 'cn';
++  const { t } = useTranslation('home');
++
++  const { data: trendingItems, isLoading } = useTrendingContent(10);
++
++  const games = Array.isArray(trendingItems) ? trendingItems.slice(0, 10) : [];
++
++  return (
++    <section className="mb-12">
++      <div className="flex justify-between items-center mb-6">
++        <div>
++          <Title level={2} className="flex items-center gap-2 !text-white !mb-1">
++            <FireOutlined className="text-red-500" />
++            {t('home.hotGames', '热门游戏推荐')}
++          </Title>
++          <Paragraph className="text-gray-400 !mb-0">
++            {t('home.hotGamesDesc', '当前社区最热门的游戏，看看大家都在玩什么')}
++          </Paragraph>
++        </div>
++        <Button type="link" onClick={() => navigate(`/${currentLang}/games/category/trending`)}>
++          {t('home.viewAll', '查看全部')} <ArrowRightOutlined />
++        </Button>
++      </div>
++
++      {isLoading ? (
++        <div className="grid grid-cols-2 sm:grid-cols-5 gap-4">
++          {Array.from({ length: 10 }).map((_, i) => (
++            <Card key={i}><Skeleton active paragraph={{ rows: 2 }} /></Card>
++          ))}
++        </div>
++      ) : games.length === 0 ? (
++        <div className="text-center py-12 text-gray-400">暂无热门游戏</div>
++      ) : (
++        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-4">
++          {games.map((item: any, index: number) => (
++            <motion.div
++              key={item.id || index}
++              initial={{ opacity: 0, y: 20 }}
++              whileInView={{ opacity: 1, y: 0 }}
++              viewport={{ once: true, margin: '-50px' }}
++              transition={{ duration: 0.3, delay: index * 0.05 }}
++              whileHover={{ y: -6 }}
++            >
++              <Card
++                hoverable
++                className="h-full cursor-pointer border-dark-700 bg-dark-800/80 hover:bg-dark-750 overflow-hidden"
++                onClick={() => navigate(`/${currentLang}/games/${item.id}`)}
++                cover={
++                  <div className="h-36 overflow-hidden relative">
++                    {item.coverImageUrl ? (
++                      <img
++                        src={item.coverImageUrl}
++                        alt={item.title}
++                        className="w-full h-full object-cover"
++                        loading="lazy"
++                      />
++                    ) : (
++                      <div className="w-full h-full bg-gradient-to-br from-dark-600 to-dark-700 flex items-center justify-center">
++                        <span className="text-3xl opacity-30">🎮</span>
++                      </div>
++                    )}
++                    {/* 排名角标 */}
++                    <div className="absolute top-2 left-2 w-6 h-6 rounded-full bg-gradient-to-br from-red-500 to-orange-400 flex items-center justify-center text-white text-xs font-bold shadow-md">
++                      {index + 1}
++                    </div>
++                    {index < 3 && (
++                      <Tag color="red" className="absolute top-2 right-2 text-[10px] leading-none px-1 border-0">
++                        HOT
++                      </Tag>
++                    )}
++                  </div>
++                }
++              >
++                <div className="text-sm font-semibold text-white truncate mb-1">{item.title}</div>
++                {item.rating && (
++                  <div className="flex items-center gap-1">
++                    <Rate disabled value={Number(item.rating) / 2} allowHalf className="text-xs" />
++                    <span className="text-xs text-gray-400">{Number(item.rating).toFixed(1)}</span>
++                  </div>
++                )}
++                {item.reason && (
++                  <Tag color="orange" className="text-xs mt-2">{item.reason}</Tag>
++                )}
++              </Card>
++            </motion.div>
++          ))}
++        </div>
++      )}
++    </section>
++  );
++};
++
++export default HotGameRecommendations;
+diff --git a/frontend/src/components/home/RedeemCodeSection.tsx b/frontend/src/components/home/RedeemCodeSection.tsx
+new file mode 100644
+index 0000000..1dae4dd
+--- /dev/null
++++ b/frontend/src/components/home/RedeemCodeSection.tsx
+@@ -0,0 +1,191 @@
++/**
++ * RedeemCodeSection - 兑换码专区组件
++ *
++ * 展示可用的游戏兑换码/优惠码。
++ * 支持未登录浏览 + 登录后一键复制/兑换。
++ */
++import { useState } from 'react';
++import { Card, Tag, Typography, Skeleton, Button, message, Tooltip } from 'antd';
++import { GiftOutlined, CopyOutlined, CheckOutlined, LoginOutlined } from '@ant-design/icons';
++import { motion } from 'framer-motion';
++import { useTranslation } from 'react-i18next';
++import { useNavigate } from 'react-router-dom';
++import { useRedeemCodes, useRedeemCode } from '../../api/hooks';
++import { useAuth } from '../../contexts/AuthContext';
++
++const { Title, Paragraph, Text } = Typography;
++
++const RedeemCodeSection = () => {
++  const navigate = useNavigate();
++  const { t } = useTranslation('home');
++  const { user } = useAuth();
++  const { data: codes, isLoading } = useRedeemCodes();
++  const redeemMutation = useRedeemCode();
++  const [copiedCode, setCopiedCode] = useState<string | null>(null);
++  const [redeemedIds, setRedeemedIds] = useState<Set<number>>(new Set());
++
++  const isLoggedIn = !!user;
++
++  const handleCopy = (code: string) => {
++    navigator.clipboard.writeText(code).then(() => {
++      setCopiedCode(code);
++      message.success('兑换码已复制');
++      setTimeout(() => setCopiedCode(null), 2000);
++    }).catch(() => {
++      // Fallback
++      const input = document.createElement('input');
++      input.value = code;
++      document.body.appendChild(input);
++      input.select();
++      document.execCommand('copy');
++      document.body.removeChild(input);
++      setCopiedCode(code);
++      message.success('兑换码已复制');
++      setTimeout(() => setCopiedCode(null), 2000);
++    });
++  };
++
++  const handleRedeem = async (code: string, id: number) => {
++    if (!isLoggedIn) {
++      navigate('/login');
++      return;
++    }
++    try {
++      await redeemMutation.mutateAsync(code);
++      setRedeemedIds((prev) => new Set(prev).add(id));
++      message.success('兑换成功！');
++    } catch (err: any) {
++      message.error(err?.response?.data?.message || err?.message || '兑换失败');
++    }
++  };
++
++  const codeList = Array.isArray(codes) ? codes.slice(0, 6) : [];
++
++  const rewardLabels: Record<string, string> = {
++    discount: '折扣',
++    free_game: '免费游戏',
++    points: '积分',
++    item: '道具',
++  };
++
++  return (
++    <section className="mb-12">
++      <div className="mb-6">
++        <Title level={2} className="flex items-center gap-2 !text-white !mb-1">
++          <GiftOutlined className="text-yellow-500" />
++          {t('home.redeemCodes', '兑换码专区')}
++        </Title>
++        <Paragraph className="text-gray-400 !mb-0">
++          {t('home.redeemCodesDesc', '限时兑换码，先到先得！')}
++        </Paragraph>
++      </div>
++
++      {isLoading ? (
++        <div className="grid grid-cols-1 sm:grid-cols-3 gap-5">
++          {Array.from({ length: 3 }).map((_, i) => (
++            <Card key={i}><Skeleton active paragraph={{ rows: 2 }} /></Card>
++          ))}
++        </div>
++      ) : codeList.length === 0 ? (
++        <Card className="border-dark-700 bg-dark-800/80 text-center py-8">
++          <GiftOutlined className="text-4xl text-gray-600 mb-3" />
++          <Paragraph className="text-gray-500">暂无可用兑换码，敬请期待</Paragraph>
++        </Card>
++      ) : (
++        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
++          {codeList.map((item: any, index: number) => {
++            const isRedeemed = redeemedIds.has(item.id);
++            const remaining = item.usage_limit === 0 ? '∞' : Math.max(0, item.usage_limit - item.used_count);
++            return (
++              <motion.div
++                key={item.id}
++                initial={{ opacity: 0, y: 20 }}
++                whileInView={{ opacity: 1, y: 0 }}
++                viewport={{ once: true, margin: '-50px' }}
++                transition={{ duration: 0.4, delay: index * 0.1 }}
++              >
++                <Card
++                  className="border-dark-700 bg-dark-800/80 hover:border-yellow-600/50 transition-colors overflow-hidden"
++                >
++                  {/* 装饰渐变条 */}
++                  <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-yellow-500 via-orange-500 to-red-500" />
++
++                  <div className="flex items-start justify-between mb-3">
++                    <div>
++                      <Title level={5} className="!mb-1 !text-white">{item.title}</Title>
++                      {item.game_name && (
++                        <Tag color="geekblue" className="text-xs">{item.game_name}</Tag>
++                      )}
++                    </div>
++                    <Tag color={
++                      item.reward_type === 'discount' ? 'green' :
++                      item.reward_type === 'free_game' ? 'red' :
++                      item.reward_type === 'points' ? 'purple' : 'blue'
++                    }>
++                      {rewardLabels[item.reward_type] || item.reward_type}
++                    </Tag>
++                  </div>
++
++                  {item.description && (
++                    <Paragraph className="text-gray-400 text-sm mb-3 line-clamp-2">
++                      {item.description}
++                    </Paragraph>
++                  )}
++
++                  <div className="flex items-center justify-between mb-3">
++                    <div className="flex items-center gap-2">
++                      <code className="bg-dark-700 text-yellow-400 px-3 py-1.5 rounded-lg text-lg font-mono font-bold select-all">
++                        {item.code}
++                      </code>
++                      <Tooltip title="复制兑换码">
++                        <Button
++                          type="text"
++                          size="small"
++                          icon={copiedCode === item.code ? <CheckOutlined className="text-green-400" /> : <CopyOutlined />}
++                          onClick={() => handleCopy(item.code)}
++                        />
++                      </Tooltip>
++                    </div>
++                  </div>
++
++                  <div className="flex items-center justify-between text-xs text-gray-500">
++                    <span>剩余: {remaining}</span>
++                    <span>{item.reward_value}</span>
++                  </div>
++
++                  <div className="mt-3 pt-3 border-t border-dark-700">
++                    {isRedeemed ? (
++                      <Button block disabled className="!bg-green-900/30 !text-green-400 !border-green-800">
++                        已兑换 ✓
++                      </Button>
++                    ) : isLoggedIn ? (
++                      <Button
++                        block
++                        type="primary"
++                        loading={redeemMutation.isPending}
++                        onClick={() => handleRedeem(item.code, item.id)}
++                        className="!bg-gradient-to-r !from-yellow-600 !to-orange-600 !border-0 hover:!from-yellow-500 hover:!to-orange-500"
++                      >
++                        立即兑换
++                      </Button>
++                    ) : (
++                      <Button
++                        block
++                        icon={<LoginOutlined />}
++                        onClick={() => navigate('/login')}
++                      >
++                        登录后兑换
++                      </Button>
++                    )}
++                  </div>
++                </Card>
++              </motion.div>
++            );
++          })}
++        </div>
++      )}
++    </section>
++  );
++};
++
++export default RedeemCodeSection;
+diff --git a/frontend/src/components/home/index.ts b/frontend/src/components/home/index.ts
+new file mode 100644
+index 0000000..f55a77d
+--- /dev/null
++++ b/frontend/src/components/home/index.ts
+@@ -0,0 +1,5 @@
++export { default as HeroBanner } from './HeroBanner';
++export { default as FeaturedArticles } from './FeaturedArticles';
++export { default as HotDiscussions } from './HotDiscussions';
++export { default as RedeemCodeSection } from './RedeemCodeSection';
++export { default as HotGameRecommendations } from './HotGameRecommendations';
+diff --git a/frontend/src/locales/en/home.json b/frontend/src/locales/en/home.json
+index c2c73b5..3354233 100644
+--- a/frontend/src/locales/en/home.json
++++ b/frontend/src/locales/en/home.json
+@@ -7,5 +7,13 @@
+   "communityDesc": "Connect with thousands of gamers worldwide. Share reviews, discuss strategies, participate in events, and make new friends who share your passion for gaming.",
+   "exploreCommunity": "Explore Community",
+   "signUpFree": "Sign Up Free",
+-  "viewAll": "View All"
++  "viewAll": "View All",
++  "featuredArticles": "Featured Articles",
++  "featuredArticlesDesc": "Curated guides, reviews & news",
++  "hotDiscussions": "Hot Discussions",
++  "hotDiscussionsDesc": "The most active topics in the community",
++  "hotGames": "Hot Game Recommendations",
++  "hotGamesDesc": "Trending games the community is playing right now",
++  "redeemCodes": "Redeem Codes",
++  "redeemCodesDesc": "Limited-time codes, first come first served!"
+ }
+\ No newline at end of file
+diff --git a/frontend/src/locales/zh-CN/home.json b/frontend/src/locales/zh-CN/home.json
+index 4924790..8f79f07 100644
+--- a/frontend/src/locales/zh-CN/home.json
++++ b/frontend/src/locales/zh-CN/home.json
+@@ -7,5 +7,13 @@
+   "communityDesc": "与全球数千名玩家互动。分享评测、讨论策略、参与活动，结识与您一样热爱游戏的新朋友。",
+   "exploreCommunity": "探索社区",
+   "signUpFree": "免费注册",
+-  "viewAll": "查看全部"
++  "viewAll": "查看全部",
++  "featuredArticles": "精选文章",
++  "featuredArticlesDesc": "编辑精选的攻略、评测与资讯",
++  "hotDiscussions": "热门讨论",
++  "hotDiscussionsDesc": "社区中最活跃的话题讨论",
++  "hotGames": "热门游戏推荐",
++  "hotGamesDesc": "当前社区最热门的游戏，看看大家都在玩什么",
++  "redeemCodes": "兑换码专区",
++  "redeemCodesDesc": "限时兑换码，先到先得！"
+ }
+\ No newline at end of file
+diff --git a/frontend/src/pages/HomePage.tsx b/frontend/src/pages/HomePage.tsx
+index b1dfe36..c2a6361 100644
+--- a/frontend/src/pages/HomePage.tsx
++++ b/frontend/src/pages/HomePage.tsx
+@@ -1,52 +1,36 @@
+-import { Card, Row, Col, Button, Typography, Skeleton } from 'antd';
+-import { ArrowRightOutlined, FireOutlined, StarOutlined, RocketOutlined } from '@ant-design/icons';
+-import { useNavigate, useParams } from 'react-router-dom';
++/**
++ * HomePage - GameHub 首页
++ *
++ * 精选内容着陆页，聚合展示平台核心内容：
++ * - Hero 滚动横幅（后台可配置）
++ * - 精选文章（攻略/评测/新闻，按热度+时间排序）
++ * - 热门讨论（社区热帖，按回复数+热度排序）
++ * - 兑换码专区（限时优惠码）
++ * - 热门游戏推荐（社区热门游戏排行）
++ * - 社区宣传 CTA
++ *
++ * 支持 SEO 结构化数据、滚动触发动画、懒加载图片。
++ */
++import { Row, Col, Button, Typography } from 'antd';
+ import { motion } from 'framer-motion';
++import { useNavigate, useParams } from 'react-router-dom';
+ import { useTranslation } from 'react-i18next';
+ import i18n from '../i18n';
+-import LazyLoadImageComponent from 'react-lazy-load-image-component';
+-const { LazyLoadImage } = LazyLoadImageComponent as any;
+ import SEO from '../components/SEO';
+-import RecommendedGames from '../components/recommendations/RecommendedGames';
+-import TrendingCarousel from '../components/recommendations/TrendingCarousel';
+ import SEOBreadcrumb from '../components/SEOBreadcrumb';
+-import { useTrendingContent, usePersonalizedRecommendations, useGames, useNews } from '../api/hooks';
+-import { useAuth } from '../contexts/AuthContext';
++import HeroBanner from '../components/home/HeroBanner';
++import FeaturedArticles from '../components/home/FeaturedArticles';
++import HotDiscussions from '../components/home/HotDiscussions';
++import RedeemCodeSection from '../components/home/RedeemCodeSection';
++import HotGameRecommendations from '../components/home/HotGameRecommendations';
+ 
+-const { Title, Paragraph, Text } = Typography;
++const { Title, Paragraph } = Typography;
+ 
+ const HomePage = () => {
+   const navigate = useNavigate();
+   const { lang } = useParams<{ lang: string }>();
+   const currentLang = lang || 'cn';
+   const { t } = useTranslation('home');
+-  const { user } = useAuth();
+-
+-  const { data: trendingItems, isLoading: trendingLoading } = useTrendingContent(5);
+-  const { data: personalizedItems, isLoading: personalizedLoading } = usePersonalizedRecommendations(6);
+-  const { data: gamesData, isLoading: gamesLoading } = useGames({ page: 1, limit: 10 });
+-  const { data: newsData, isLoading: newsLoading } = useNews({ page: 1, limit: 5 });
+-
+-  // 从 API 获取真实游戏数据，适配 Game 类型到展示所需字段
+-  const featuredGames = Array.isArray(gamesData) ? gamesData.map((game: any) => ({
+-    id: game.id,
+-    title: game.title,
+-    genre: (game.genres || []).join(', '),
+-    rating: game.rating || 0,
+-    price: game.price || 0,
+-    discount: game.discount || 0,
+-    image: game.imageUrl || '/og-image.png',
+-    platforms: game.platforms || [],
+-  })) : [];
+-
+-  // 从 API 获取真实新闻数据
+-  const newsItems = Array.isArray(newsData) ? newsData.map((news: any) => ({
+-    id: news.id,
+-    title: news.title,
+-    excerpt: news.summary || '',
+-    date: news.publishDate || news.createdAt || '',
+-    category: news.category || 'News',
+-  })) : [];
+ 
+   return (
+     <div className="home-page bg-dark-900">
+@@ -69,345 +53,144 @@ const HomePage = () => {
+                     : 'GGHubs（好游聚）是一个综合性游戏社区平台，提供游戏评测、游戏推荐、游戏攻略、玩家社区讨论等功能。平台特色包括AI智能游戏推荐、实时游戏资讯、互动论坛以及在线小游戏。',
+                 },
+               },
+-              {
+-                '@type': 'Question',
+-                'name': i18n.language?.startsWith('en') ? 'Is GameHub free?' : 'GameHub是免费的吗？',
+-                'acceptedAnswer': {
+-                  '@type': 'Answer',
+-                  'text': i18n.language?.startsWith('en')
+-                    ? 'Yes, GGHubs is completely free to use. You can browse games, read reviews, join community discussions, and play online games without any charge.'
+-                    : '是的，GGHubs完全免费使用。您可以免费浏览游戏库、阅读评测、参与社区讨论和玩在线小游戏。',
+-                },
+-              },
+-              {
+-                '@type': 'Question',
+-                'name': i18n.language?.startsWith('en') ? 'What games can I find on GameHub?' : '在GameHub上可以找到哪些游戏？',
+-                'acceptedAnswer': {
+-                  '@type': 'Answer',
+-                  'text': i18n.language?.startsWith('en')
+-                    ? 'GGHubs covers thousands of games across PC, PlayStation, Xbox, Nintendo Switch, and mobile platforms. You can find game reviews, compare ratings, read strategy guides, and discover new titles through personalized recommendations.'
+-                    : 'GGHubs涵盖PC、PlayStation、Xbox、Nintendo Switch和手机平台的数千款游戏。您可以查看游戏评测、对比评分、阅读攻略，并通过个性化推荐发现新游戏。',
+-                },
+-              },
+-              {
+-                '@type': 'Question',
+-                'name': i18n.language?.startsWith('en') ? 'Does GameHub have online games to play?' : 'GameHub有在线游戏可以玩吗？',
+-                'acceptedAnswer': {
+-                  '@type': 'Answer',
+-                  'text': i18n.language?.startsWith('en')
+-                    ? 'Yes! GGHubs offers free HTML5 games including Snake, Tetris, 2048, Minesweeper, Gobang, Pong, Bubble Shooter, and many more. All games run directly in your browser with no downloads needed.'
+-                    : '是的！GGHubs提供免费的HTML5在线小游戏，包括贪吃蛇、俄罗斯方块、2048、扫雷、五子棋、乒乓球、泡泡龙等。所有游戏在浏览器中即点即玩，无需下载。',
+-                },
+-              },
+-              {
+-                '@type': 'Question',
+-                'name': i18n.language?.startsWith('en') ? 'How do I join the GameHub community?' : '如何加入GameHub社区？',
+-                'acceptedAnswer': {
+-                  '@type': 'Answer',
+-                  'text': i18n.language?.startsWith('en')
+-                    ? 'You can join GGHubs by registering a free account. Once registered, you can write game reviews, participate in forum discussions, earn achievement badges, and connect with other gamers.'
+-                    : '注册免费账号即可加入GGHubs社区。注册后可以撰写游戏评测、参与论坛讨论、获得成就徽章并与其他玩家交流。',
+-                },
+-              },
+             ],
+           },
+         ]}
+       />
+       {/* 页面主标题（仅 SEO 可见） */}
+       <h1 className="sr-only">{i18n.language?.startsWith("en") ? "GameHub - Game Reviews & Recommendations, Find Your Next Favorite Game" : "GameHub - 发现游戏推荐与游戏评测，找到你的下一款最爱游戏"}</h1>
+-      {/* BreadcrumbList 结构化数据 */}
+-      <SEOBreadcrumb items={[
+-        { name: "Home", url: "/" },
+-      ]} />
+-      {/* 平台介绍文案（SEO 可见） */}
++      <SEOBreadcrumb items={[{ name: "Home", url: "/" }]} />
++
++      {/* SEO 平台介绍（仅搜索引擎可见） */}
+       <section className="sr-only" aria-label={i18n.language?.startsWith("en") ? "Platform Introduction" : "平台介绍"}>
+         {i18n.language?.startsWith("en") ? (
+           <>
+-            <p>GGHubs is a comprehensive gaming community platform focused on game recommendations and reviews. We help every player discover their next favorite game.</p>
+-            <p>Read professional game reviews covering PC, PlayStation, Xbox, Nintendo Switch, and more. Each review includes detailed ratings and gameplay analysis.</p>
+-            <p>Our recommendation system uses smart algorithms and community feedback to personalize game suggestions just for you.</p>
+-            <p>The GGHubs community brings together millions of passionate gamers worldwide.</p>
++            <p>GGHubs is a comprehensive gaming community platform focused on game recommendations and reviews.</p>
++            <p>Our recommendation system uses smart algorithms and community feedback to personalize game suggestions.</p>
+             <p>Features include: personalized recommendations, multi-dimensional reviews, real-time news, community forums, achievements, and AI assistant.</p>
+-            <p>Join GGHubs and start your game discovery journey.</p>
+           </>
+         ) : (
+           <>
+             <p>GGHubs（好游聚）是一个专注于游戏推荐与游戏评测的综合性游戏社区平台。</p>
+-            <p>你可以查看由资深玩家撰写的专业游戏评测，涵盖各大平台的游戏作品。</p>
+             <p>我们的游戏推荐系统基于智能算法和玩家社区的真实反馈，为你个性化推荐最适合的游戏。</p>
+-            <p>GGHubs社区汇聚了数百万热爱游戏的玩家。</p>
+-            <p>平台特色包括：个性化游戏推荐引擎、多维度游戏评测系统、实时游戏资讯更新、互动社区论坛、成就徽章系统、AI智能助手等。</p>
+-            <p>加入GGHubs（好游聚），开启你的游戏发现之旅。</p>
++            <p>平台特色包括：个性化游戏推荐引擎、多维度游戏评测系统、实时游戏资讯、互动社区论坛、成就系统、AI智能助手等。</p>
+           </>
+         )}
+       </section>
+ 
+-      {/* Platform summary — AI-visible direct answer for GEO */}
+-      <section className=" mb-6" aria-label="Platform Introduction">
+-        <div className="bg-gradient-to-r from-dark-800 to-dark-750 border border-dark-700 rounded-2xl p-6 md:p-8">
+-          <h2 className="sr-only">About GGHubs</h2>
+-          {i18n.language?.startsWith("en") ? (
+-            <p className="text-gray-300 text-base leading-relaxed">
+-              GGHubs is a comprehensive gaming community platform — discover game reviews, recommendations, guides, and connect with millions of gamers worldwide. Browse thousands of games across PC, PlayStation, Xbox, Nintendo Switch, and mobile platforms. Read professional reviews with detailed ratings, get personalized game recommendations powered by smart algorithms and community feedback, and join forum discussions to share strategies and tips. GGHubs also features an AI assistant for game recommendations, real-time gaming news, achievement badges, and a community-driven content ecosystem. Start your game discovery journey at GGHubs today.
+-            </p>
+-          ) : (
+-            <p className="text-gray-300 text-base leading-relaxed">
+-              GGHubs（好游聚）是一个综合性游戏社区平台 — 在这里发现游戏评测、推荐、攻略，并与全球数百万玩家交流互动。浏览涵盖 PC、PlayStation、Xbox、Nintendo Switch 和手机平台的海量游戏库，阅读资深玩家撰写的专业游戏评测，获取基于智能算法和社区真实反馈的个性化游戏推荐，参与论坛讨论分享游戏策略和技巧。GGHubs 还提供 AI 智能游戏推荐助手、实时游戏资讯、成就徽章系统以及社区驱动的内容生态。立即加入 GGHubs，开启你的游戏发现之旅。
+-            </p>
+-          )}
+-        </div>
+-      </section>
+-
+-      {/* Featured Games */}
+-      <section className="mb-16">
+-        <div className=" px-4 sm:px-6 lg:px-8">
+-          <div className="flex justify-between items-center mb-8">
+-            <div>
+-              <Title level={2} className="flex items-center gap-2 !text-white">
+-                <FireOutlined className="text-orange-500" />
+-                {t('home.featuredGames', 'Featured Games')}
+-              </Title>
+-              <Paragraph className="text-gray-400">
+-                {t('home.featuredGamesDesc', 'Handpicked selection of must-play titles')}
+-              </Paragraph>
+-            </div>
+-            <Button type="link" onClick={() => navigate(`/${currentLang}/games`)}>
+-              {t('home.viewAll', 'View All')} <ArrowRightOutlined />
+-            </Button>
+-          </div>
++      {/* ========== 板块 1: Hero 滚动横幅 ========== */}
++      <HeroBanner />
+ 
+-          {gamesLoading ? (
+-            <div className="grid grid-cols-1 sm:grid-cols-5 gap-6">
+-              {Array.from({ length: 5 }).map((_, i) => (
+-                <Card key={i} className="h-full">
+-                  <Skeleton active paragraph={{ rows: 4 }} />
+-                </Card>
+-              ))}
+-            </div>
+-          ) : (
+-          <div className="grid grid-cols-1 sm:grid-cols-5 gap-6">
+-              {featuredGames.slice(0, 10).map((game: any, index: number) => (
+-                <motion.div
+-                  key={game.id}
+-                  initial={{ opacity: 0, y: 20 }}
+-                  animate={{ opacity: 1, y: 0 }}
+-                  transition={{ duration: 0.4, delay: index * 0.1 }}
+-                  whileHover={{ y: -8 }}
+-                >
+-                  <a
+-                    href={`/${currentLang}/games/${game.id}`}
+-                    onClick={(e) => { e.preventDefault(); navigate(`/${currentLang}/games/${game.id}`); }}
+-                    className="block h-full no-underline"
+-                  >
+-                  <Card
+-                    hoverable
+-                    className="h-full"
+-                    cover={
+-                      <div className="relative h-48 overflow-hidden">
+-                        <LazyLoadImage
+-                          src={game.image}
+-                          alt={game.title}
+-                          className="w-full h-full object-cover"
+-                          effect="blur"
+-                          threshold={100}
+-                        />
+-                        {game.discount > 0 && (
+-                          <div className="absolute top-3 right-3 bg-green-500 text-white font-bold px-3 py-1 rounded-full">
+-                            -{game.discount}%
+-                          </div>
+-                        )}
+-                      </div>
+-                    }
+-                  >
+-                    <div className="flex justify-between items-start mb-2">
+-                      <Title level={4} className="mb-1 truncate flex-1 min-w-0">{game.title}</Title>
+-                      <div className="flex items-center gap-1 flex-shrink-0 ml-2">
+-                        <StarOutlined className="text-yellow-500" />
+-                        <Text strong>{game.rating}</Text>
+-                      </div>
+-                    </div>
+-                    <Paragraph className="text-gray-400 text-sm mb-3 truncate">{game.genre}</Paragraph>
+-                    <div className="flex justify-between items-center">
+-                      <div className="flex-shrink-0">
+-                        <Text className="text-lg font-bold">
+-                          ¥{game.discount > 0 ? Math.round(game.price * (1 - game.discount / 100)) : game.price}
+-                        </Text>
+-                        {game.discount > 0 && (
+-                          <Text delete className="text-gray-400 ml-2">¥{game.price}</Text>
+-                        )}
+-                      </div>
+-                      <div className="flex gap-1 flex-shrink-0 ml-2">
+-                        {(game.platforms || []).map((platform: string) => (
+-                          <span key={platform} className="px-2 py-1 bg-dark-700 text-gray-300 text-xs rounded whitespace-nowrap">
+-                            {platform}
+-                          </span>
+-                        ))}
+-                      </div>
+-                    </div>
+-                  </Card>
+-                  </a>
+-                </motion.div>
+-              ))}
+-            </div>
+-          )}
+-          </div>
+-        </section>
++      {/* ========== 板块 2: 精选文章 ========== */}
++      <motion.div
++        initial={{ opacity: 0, y: 30 }}
++        whileInView={{ opacity: 1, y: 0 }}
++        viewport={{ once: true, margin: '-100px' }}
++        transition={{ duration: 0.5 }}
++      >
++        <FeaturedArticles />
++      </motion.div>
+ 
+-      {/* 新闻与更新 — 真实数据 */}
+-      <section className="mb-16">
+-        <div className=" px-4 sm:px-6 lg:px-8">
+-          <div className="flex justify-between items-center mb-8">
+-            <div>
+-              <Title level={2} className="flex items-center gap-2 !text-white">
+-                <RocketOutlined className="text-blue-500" />
+-                {t('home.latestNews', 'Latest News & Updates')}
+-              </Title>
+-              <Paragraph className="text-gray-400">
+-                {t('home.latestNewsDesc', 'Stay informed with the latest gaming industry news')}
+-              </Paragraph>
+-            </div>
+-            <Button type="link" onClick={() => navigate(`/${currentLang}/news`)}>
+-              {t('home.viewAll', 'View All')} <ArrowRightOutlined />
+-            </Button>
+-          </div>
++      {/* ========== 板块 3: 热门讨论 ========== */}
++      <motion.div
++        initial={{ opacity: 0, y: 30 }}
++        whileInView={{ opacity: 1, y: 0 }}
++        viewport={{ once: true, margin: '-100px' }}
++        transition={{ duration: 0.5, delay: 0.1 }}
++      >
++        <HotDiscussions />
++      </motion.div>
+ 
+-          {newsLoading ? (
+-            <div className="grid grid-cols-1 sm:grid-cols-5 gap-6">
+-              {Array.from({ length: 5 }).map((_, i) => (
+-                <Card key={i} className="h-full">
+-                  <Skeleton active paragraph={{ rows: 4 }} />
+-                </Card>
+-              ))}
+-            </div>
+-          ) : (
+-          <div className="grid grid-cols-1 sm:grid-cols-5 gap-6">
+-              {newsItems.length > 0 ? (
+-                newsItems.slice(0, 10).map((news: any, index: number) => (
+-                  <motion.div
+-                    key={news.id}
+-                    initial={{ opacity: 0, y: 20 }}
+-                    animate={{ opacity: 1, y: 0 }}
+-                    transition={{ duration: 0.4, delay: index * 0.1 }}
+-                  >
+-                    <Card
+-                      hoverable
+-                      className="h-full"
+-                      onClick={() => navigate(`/news/${news.id}`)}
+-                    >
+-                      <div className="mb-4">
+-                        <span className="inline-block px-3 py-1 bg-blue-900/50 text-blue-300 text-sm font-medium rounded-full">
+-                          {news.category}
+-                        </span>
+-                      </div>
+-                      <Title level={4} className="mb-3 truncate">{news.title}</Title>
+-                      <Paragraph className="text-gray-400 mb-4 truncate">
+-                        {news.excerpt}
+-                      </Paragraph>
+-                      <div className="flex justify-between items-center text-gray-500 text-sm">
+-                        <span className="whitespace-nowrap">{news.date}</span>
+-                        <Button type="link" size="small" className="flex-shrink-0">
+-                          Read More
+-                        </Button>
+-                      </div>
+-                    </Card>
+-                  </motion.div>
+-                ))
+-              ) : (
+-                <div className="col-span-5 text-center py-12 text-gray-400">
+-                  暂无新闻数据
+-                </div>
+-              )}
+-            </div>
+-          )}
+-          </div>
+-        </section>
++      {/* ========== 板块 4: 兑换码专区 ========== */}
++      <motion.div
++        initial={{ opacity: 0, y: 30 }}
++        whileInView={{ opacity: 1, y: 0 }}
++        viewport={{ once: true, margin: '-100px' }}
++        transition={{ duration: 0.5, delay: 0.2 }}
++      >
++        <RedeemCodeSection />
++      </motion.div>
+ 
+-      {/* 热门趋势推荐 */}
+-      <section className="mb-16">
+-        <div className=" px-4 sm:px-6 lg:px-8">
+-          <TrendingCarousel
+-            title="热门趋势"
+-            items={trendingItems || []}
+-            loading={trendingLoading}
+-            variant="grid"
+-          />
+-        </div>
+-      </section>
++      {/* ========== 板块 5: 热门游戏推荐 ========== */}
++      <motion.div
++        initial={{ opacity: 0, y: 30 }}
++        whileInView={{ opacity: 1, y: 0 }}
++        viewport={{ once: true, margin: '-100px' }}
++        transition={{ duration: 0.5, delay: 0.3 }}
++      >
++        <HotGameRecommendations />
++      </motion.div>
+ 
+-      {/* 社区宣传 */}
+-      <section className="mb-16">
+-        <div className="bg-gradient-to-r from-purple-900/30 to-blue-900/30 rounded-2xl border border-dark-700">
+-          <div className=" py-8">
+-            <Row align="middle" gutter={[48, 24]}>
+-              <Col xs={24} lg={12}>
+-                <motion.div
+-                  initial={{ opacity: 0, x: -20 }}
+-                  animate={{ opacity: 1, x: 0 }}
+-                  transition={{ duration: 0.6 }}
+-                >
+-                  <Title level={2} className="mb-4 !text-white">
+-                    {t('home.joinCommunity', 'Join Our Gaming Community')}
++      {/* ========== 板块 6: 社区宣传 CTA ========== */}
++      <motion.div
++        initial={{ opacity: 0, y: 30 }}
++        whileInView={{ opacity: 1, y: 0 }}
++        viewport={{ once: true, margin: '-100px' }}
++        transition={{ duration: 0.5 }}
++      >
++        <section className="mb-12">
++          <div className="bg-gradient-to-r from-purple-900/30 to-blue-900/30 rounded-2xl border border-dark-700">
++            <div className="py-10 px-6 md:px-12">
++              <Row align="middle" gutter={[48, 24]}>
++                <Col xs={24} lg={14}>
++                  <Title level={2} className="!mb-4 !text-white">
++                    {t('home.joinCommunity', '加入我们的游戏社区')}
+                   </Title>
+-                  <Paragraph className="text-lg text-gray-300 mb-6">
+-                    {t('home.communityDesc', 'Connect with thousands of gamers worldwide. Share reviews, discuss strategies, participate in events, and make new friends who share your passion for gaming.')}
++                  <Paragraph className="text-lg text-gray-300 !mb-6">
++                    {t('home.communityDesc', '与全球数千名玩家交流互动。分享评测、讨论攻略、参加活动，结识志同道合的游戏伙伴。')}
+                   </Paragraph>
+                   <div className="flex flex-wrap gap-4">
+                     <Button type="primary" size="large" onClick={() => navigate(`/${currentLang}/community-forum`)}>
+-                      {t('home.exploreCommunity', 'Explore Community')}
++                      {t('home.exploreCommunity', '探索社区')}
+                     </Button>
+                     <Button size="large" onClick={() => navigate(`/${currentLang}/register`)}>
+-                      {t('home.signUpFree', 'Sign Up Free')}
++                      {t('home.signUpFree', '免费注册')}
+                     </Button>
+                   </div>
+-                </motion.div>
+-              </Col>
+-              <Col xs={24} lg={12}>
+-                <motion.div
+-                  initial={{ opacity: 0, x: 20 }}
+-                  animate={{ opacity: 1, x: 0 }}
+-                  transition={{ duration: 0.6, delay: 0.2 }}
+-                  className="bg-dark-800 p-6 rounded-xl shadow-lg border border-dark-700"
+-                >
++                </Col>
++                <Col xs={24} lg={10}>
+                   <div className="grid grid-cols-2 gap-4">
+                     <div className="text-center p-4 bg-purple-900/30 rounded-lg border border-purple-800/50">
+                       <div className="text-3xl font-bold text-purple-400 mb-2">10K+</div>
+-                      <div className="text-gray-400">Active Members</div>
++                      <div className="text-gray-400 text-sm">活跃成员</div>
+                     </div>
+                     <div className="text-center p-4 bg-blue-900/30 rounded-lg border border-blue-800/50">
+                       <div className="text-3xl font-bold text-blue-400 mb-2">5K+</div>
+-                      <div className="text-gray-400">Game Reviews</div>
++                      <div className="text-gray-400 text-sm">游戏评测</div>
+                     </div>
+                     <div className="text-center p-4 bg-green-900/30 rounded-lg border border-green-800/50">
+                       <div className="text-3xl font-bold text-green-400 mb-2">500+</div>
+-                      <div className="text-gray-400">Monthly Events</div>
++                      <div className="text-gray-400 text-sm">每月活动</div>
+                     </div>
+                     <div className="text-center p-4 bg-orange-900/30 rounded-lg border border-orange-800/50">
+                       <div className="text-3xl font-bold text-orange-400 mb-2">100+</div>
+-                      <div className="text-gray-400">Game Discussions</div>
++                      <div className="text-gray-400 text-sm">讨论话题</div>
+                     </div>
+                   </div>
+-                </motion.div>
+-              </Col>
+-            </Row>
++                </Col>
++              </Row>
++            </div>
+           </div>
++        </section>
++      </motion.div>
++
++      {/* 平台简介（搜索引擎可见的文字版） */}
++      <section className="mb-6">
++        <div className="bg-gradient-to-r from-dark-800 to-dark-750 border border-dark-700 rounded-2xl p-6 md:p-8">
++          <h2 className="sr-only">About GGHubs</h2>
++          {i18n.language?.startsWith("en") ? (
++            <p className="text-gray-300 text-base leading-relaxed">
++              GGHubs is a comprehensive gaming community platform — discover game reviews, recommendations, guides, and connect with millions of gamers worldwide. Browse thousands of games across PC, PlayStation, Xbox, Nintendo Switch, and mobile platforms. Read professional reviews with detailed ratings, get personalized game recommendations powered by smart algorithms and community feedback, and join forum discussions to share strategies and tips. Start your game discovery journey at GGHubs today.
++            </p>
++          ) : (
++            <p className="text-gray-300 text-base leading-relaxed">
++              GGHubs（好游聚）是一个综合性游戏社区平台 — 在这里发现游戏评测、推荐、攻略，并与全球数百万玩家交流互动。浏览涵盖 PC、PlayStation、Xbox、Nintendo Switch 和手机平台的海量游戏库，阅读专业游戏评测，获取基于智能算法和社区反馈的个性化推荐，参与论坛讨论分享游戏策略和技巧。立即加入 GGHubs，开启你的游戏发现之旅。
++            </p>
++          )}
+         </div>
+       </section>
+-
+-      {/* 个性化推荐（登录用户） */}
+-      {user && (
+-        <section className="mb-16">
+-          <div className=" px-4 sm:px-6 lg:px-8">
+-            <RecommendedGames
+-              title="为你推荐"
+-              recommendations={personalizedItems || []}
+-              loading={personalizedLoading}
+-              variant="grid"
+-            />
+-          </div>
+-        </section>
+-      )}
+     </div>
+   );
+ };
+ 
+-export default HomePage;
+\ No newline at end of file
++export default HomePage;
+-- 
+2.45.1.windows.1
+

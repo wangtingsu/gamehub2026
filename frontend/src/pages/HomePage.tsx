@@ -81,44 +81,44 @@ const HomePage = () => {
       {/* ========== 板块 1: Hero 滚动横幅 ========== */}
       <HeroBanner />
 
-      {/* ========== 板块 2: 精选文章 ========== */}
+      {/* ========== 板块 2: 热门游戏推荐 ========== */}
       <motion.div
         initial={{ opacity: 0, y: 30 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, margin: '-100px' }}
         transition={{ duration: 0.5 }}
       >
-        <FeaturedArticles />
+        <HotGameRecommendations />
       </motion.div>
 
-      {/* ========== 板块 3: 热门讨论 ========== */}
+      {/* ========== 板块 3: 精选文章 ========== */}
       <motion.div
         initial={{ opacity: 0, y: 30 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, margin: '-100px' }}
         transition={{ duration: 0.5, delay: 0.1 }}
       >
-        <HotDiscussions />
+        <FeaturedArticles />
       </motion.div>
 
-      {/* ========== 板块 4: 兑换码专区 ========== */}
+      {/* ========== 板块 4: 热门讨论 ========== */}
       <motion.div
         initial={{ opacity: 0, y: 30 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, margin: '-100px' }}
         transition={{ duration: 0.5, delay: 0.2 }}
       >
-        <RedeemCodeSection />
+        <HotDiscussions />
       </motion.div>
 
-      {/* ========== 板块 5: 热门游戏推荐 ========== */}
+      {/* ========== 板块 5: 兑换码专区 ========== */}
       <motion.div
         initial={{ opacity: 0, y: 30 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, margin: '-100px' }}
         transition={{ duration: 0.5, delay: 0.3 }}
       >
-        <HotGameRecommendations />
+        <RedeemCodeSection />
       </motion.div>
 
       {/* ========== 板块 6: 社区宣传 CTA ========== */}
