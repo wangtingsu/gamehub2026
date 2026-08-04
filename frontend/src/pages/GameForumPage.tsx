@@ -167,7 +167,7 @@ const GameForumPage = () => {
              paginated.length === 0 ? <div className="text-center py-16 text-gray-500">还没有帖子，来发第一个吧 ✍️</div> :
               <div>
                 {paginated.map((post: any) => (
-                  <div key={post.id} className="py-4 border-b border-dark-700 last:border-b-0 rounded-xl px-3 -mx-3 hover:bg-dark-750 hover:border-dark-600 transition-all duration-200">
+                  <div key={post.id} className="py-4 border-b border-dark-700 last:border-b-0 rounded-xl px-3 -mx-3 hover:bg-dark-700/50 hover:border-blue-500/30 hover:shadow-lg transition-all duration-200">
                     <div className="flex items-center gap-2 mb-2">
                       <Avatar size={32} icon={<UserOutlined />} className="flex-shrink-0" />
                       <div>
