@@ -112,7 +112,13 @@ const CommunityPostDetailPage = () => {
             </div>
             <div className="mt-6">
               <Title level={3} className="!text-white !mb-4 !text-lg">评论 ({post.comments || 0})</Title>
-              <CommentList parentType="community_post" parentId={post.id} />
+              {isAuthenticated ? (
+                <CommentList parentType="community_post" parentId={post.id} />
+              ) : (
+                <div className="text-center py-4 text-gray-500 text-sm">
+                  请登录后查看评论
+                </div>
+              )}
             </div>
           </Sidebar>
         </div>
