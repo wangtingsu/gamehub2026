@@ -161,6 +161,7 @@ const CommentForm: React.FC<CommentFormProps> = ({
             autoFocus={autoFocus}
             disabled={submitting}
             className="w-full"
+            style={{ backgroundColor: 'var(--c-input)', color: 'var(--c-text)' }}
           />
 
           {/* 底部操作栏：提示文案 + 取消/提交按钮 */}

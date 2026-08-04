@@ -60,7 +60,7 @@ const CommentItem: React.FC<CommentItemProps> = ({
   const isAuthor = !!user && userId === authorId;
   const canEdit = isAuthor || user?.role === 'super_admin' || user?.role === 'admin';
   const canDelete = canEdit;
-  const maxLevel = 5;
+  const maxLevel = 3;
 
   const handleLike = async () => {
     if (!user) { message.info('请先登录后再点赞'); return; }
@@ -85,23 +85,23 @@ const CommentItem: React.FC<CommentItemProps> = ({
   };
 
   const renderAuthorInfo = () => (
-    <div className="flex items-center space-x-2">
+    <div className="flex items-center space-x-5">
       <Avatar src={comment.author?.avatarUrl} icon={!comment.author?.avatarUrl && <UserOutlined />} size="small" />
       <div className="flex flex-col">
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-5">
           <span className="font-medium text-sm">{comment.author?.displayName || comment.author?.username || '匿名用户'}</span>
           {comment.author?.level && <LevelBadge level={comment.author.level} size="small" showIcon={false} />}
         </div>
-        <span className="text-xs text-[var(--c-text2)]">
+        <span className="text-xs text-[var(--c-text5)]">
           {dayjs(comment.createdAt).fromNow()}
-          {comment.isEdited && <span className="ml-2 text-gray-400">(已编辑)</span>}
+          {comment.isEdited && <span className="ml-5 text-gray-400">(已编辑)</span>}
         </span>
       </div>
     </div>
   );
 
   const renderActions = () => (
-    <div className="flex items-center space-x-4 mt-2">
+    <div className="flex items-center space-x-4 mt-5">
       <Tooltip title={liked ? '取消点赞' : '点赞'}>
         <Button type="text" size="small"
           icon={liked ? <LikeFilled /> : <LikeOutlined />}
@@ -124,12 +124,12 @@ const CommentItem: React.FC<CommentItemProps> = ({
   );
 
   return (
-    <div className={`comment-item ${level > 0 ? 'ml-8 border-l-2 pl-4' : ''}`} style={level > 0 ? { borderLeftColor: 'var(--c-border)' } : undefined}>
+    <div className={`comment-item ${level > 0 ? 'ml-8 border-l-5 pl-4' : ''}`} style={level > 0 ? { borderLeftColor: 'var(--c-border)' } : undefined}>
       <div className="rounded-lg p-4 shadow-sm" style={{ backgroundColor: 'var(--c-card)', color: 'var(--c-text)' }}>
         <div className="flex justify-between">
           {renderAuthorInfo()}
           {level === 0 && comment.replyCount > 0 && (
-            <div className="text-sm text-[var(--c-text2)]">共 {comment.replyCount} 条回复</div>
+            <div className="text-sm text-[var(--c-text5)]">共 {comment.replyCount} 条回复</div>
           )}
         </div>
         <div className="mt-5">
@@ -149,7 +149,7 @@ const CommentItem: React.FC<CommentItemProps> = ({
           </div>
         )}
 
-        {/* 子回复（最多嵌套2层） */}
+        {/* 子回复（最多嵌套5层） */}
         {level <= 1 && visibleReplies.length > 0 && (
           <div className="mt-4 space-y-5 border-t pt-5" style={{ borderTopColor: 'var(--c-border)' }}>
             {visibleReplies.map((reply: any) => (
