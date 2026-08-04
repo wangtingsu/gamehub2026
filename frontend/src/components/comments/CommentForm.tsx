@@ -132,8 +132,8 @@ const CommentForm: React.FC<CommentFormProps> = ({
   // 未登录且非编辑模式时，展示登录提示
   if (!user && !isEditMode) {
     return (
-      <div className="comment-form-login-prompt p-4 bg-gray-50 rounded-lg text-center">
-        <p className="text-gray-600 mb-2">登录后即可发表评论</p>
+      <div className="comment-form-login-prompt p-4 rounded-lg text-center" style={{ backgroundColor: 'var(--c-card)' }}>
+        <p className="mb-2" style={{ color: 'var(--c-text2)' }}>登录后即可发表评论</p>
         <Button type="primary" onClick={() => navigate(`/${lang}/login`)}>
           立即登录
         </Button>
@@ -165,7 +165,7 @@ const CommentForm: React.FC<CommentFormProps> = ({
 
           {/* 底部操作栏：提示文案 + 取消/提交按钮 */}
           <div className="flex justify-between items-center mt-3">
-            <div className="text-sm text-gray-500">
+            <div className="text-sm" style={{ color: 'var(--c-text2)' }}>
               支持 Markdown 语法，Ctrl + Enter 快速提交
             </div>
 

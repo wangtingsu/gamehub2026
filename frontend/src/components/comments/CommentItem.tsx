@@ -92,7 +92,7 @@ const CommentItem: React.FC<CommentItemProps> = ({
           <span className="font-medium text-sm">{comment.author?.displayName || comment.author?.username || '匿名用户'}</span>
           {comment.author?.level && <LevelBadge level={comment.author.level} size="small" showIcon={false} />}
         </div>
-        <span className="text-xs text-gray-500">
+        <span className="text-xs text-[var(--c-text2)]">
           {dayjs(comment.createdAt).fromNow()}
           {comment.isEdited && <span className="ml-2 text-gray-400">(已编辑)</span>}
         </span>
@@ -124,16 +124,16 @@ const CommentItem: React.FC<CommentItemProps> = ({
   );
 
   return (
-    <div className={`comment-item ${level > 0 ? 'ml-8 border-l-2 border-gray-200 pl-4' : ''}`}>
-      <div className="bg-white rounded-lg p-4 shadow-sm">
+    <div className={`comment-item ${level > 0 ? 'ml-8 border-l-2 pl-4' : ''}`} style={level > 0 ? { borderLeftColor: 'var(--c-border)' } : undefined}>
+      <div className="rounded-lg p-4 shadow-sm" style={{ backgroundColor: 'var(--c-card)', color: 'var(--c-text)' }}>
         <div className="flex justify-between">
           {renderAuthorInfo()}
           {level === 0 && comment.replyCount > 0 && (
-            <div className="text-sm text-gray-500">共 {comment.replyCount} 条回复</div>
+            <div className="text-sm text-[var(--c-text2)]">共 {comment.replyCount} 条回复</div>
           )}
         </div>
         <div className="mt-5">
-          <p className="text-gray-800 whitespace-pre-wrap">
+          <p className="whitespace-pre-wrap" style={{ color: 'var(--c-text)' }}>
             {level > 0 && (
               <span className="text-blue-500 text-xs block mb-1">回复 @{comment.parentAuthorName || comment.parentAuthor?.username || '评论'}</span>
             )}
@@ -151,7 +151,7 @@ const CommentItem: React.FC<CommentItemProps> = ({
 
         {/* 子回复（最多嵌套2层） */}
         {level <= 1 && visibleReplies.length > 0 && (
-          <div className="mt-4 space-y-5 border-t border-gray-100 pt-5">
+          <div className="mt-4 space-y-5 border-t pt-5" style={{ borderTopColor: 'var(--c-border)' }}>
             {visibleReplies.map((reply: any) => (
               <CommentItem key={reply.id} comment={reply} parentType={parentType} parentId={parentId}
                 allowReplies={allowReplies} onReplyAdded={onReplyAdded} onDelete={onDelete} level={level + 1} />
