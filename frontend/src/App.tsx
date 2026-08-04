@@ -418,10 +418,10 @@ function App() {
 
                 {/* 语言前缀路由 */}
                 <Route path=":lang" element={<LanguageRouteWrapper><Suspense fallback={<LoadingSpinner />}><Layout /></Suspense></LanguageRouteWrapper>}>
-                  {/* 首页临时替换为游戏列表页面 */}
+                  {/* 首页 - 精选内容着陆页 */}
                   <Route index element={
                     <PageSuspense>
-                      <GamesPage />
+                      <HomePage />
                     </PageSuspense>
                   } />
                   <Route path="games" element={

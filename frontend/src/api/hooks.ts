@@ -1625,3 +1625,50 @@ export const useRejectContent = () => {
     },
   });
 };
+
+// ==================== Banner 和推荐内容 Hooks ====================
+
+export const useBanners = (position?: string) => {
+  return useQuery({
+    queryKey: ['banners', position],
+    queryFn: () => apiService.getBanners(position),
+    staleTime: 1000 * 60 * 5,
+  });
+};
+
+export const useFeaturedContent = (type?: string) => {
+  return useQuery({
+    queryKey: ['featured', type],
+    queryFn: () => apiService.getFeaturedContent(type),
+    staleTime: 1000 * 60 * 5,
+  });
+};
+
+// ==================== 兑换码 Hooks ====================
+
+export const useRedeemCodes = () => {
+  return useQuery({
+    queryKey: ['redeem', 'codes'],
+    queryFn: () => apiService.getRedeemCodes(),
+    staleTime: 1000 * 60 * 2,
+  });
+};
+
+export const useRedeemCode = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (code: string) => apiService.redeemCode(code),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['redeem', 'codes'] });
+      queryClient.invalidateQueries({ queryKey: ['redeem', 'my'] });
+    },
+  });
+};
+
+export const useMyRedeemHistory = () => {
+  return useQuery({
+    queryKey: ['redeem', 'my'],
+    queryFn: () => apiService.getMyRedeemHistory(),
+    staleTime: 1000 * 30,
+  });
+};

@@ -76,6 +76,7 @@ import blogSpacesRoutes from './routes/blog-spaces.routes';
 import printRoutes from './routes/print.routes';
 import newsletterRoutes from './routes/newsletter.routes';
 import recommendRoutes from './routes/recommend.routes';
+import redeemRoutes from './routes/redeem.routes';
 import adminRoutes from './routes/admin.routes';
 import adminReviewRoutes from './routes/admin-review.routes';
 import adminRecommendRoutes from './routes/admin-recommend.routes';
@@ -337,6 +338,7 @@ app.use(`${config.apiPrefix}/admin`, adminRoutes);
 app.use(`${config.apiPrefix}/admin`, adminReviewRoutes);
 app.use(`${config.apiPrefix}/admin`, adminRecommendRoutes);
 app.use(`${config.apiPrefix}/recommend`, recommendRoutes);
+app.use(`${config.apiPrefix}/redeem`, redeemRoutes);
 app.use(`${config.apiPrefix}/newsletter`, newsletterRoutes);
 
 // 文档路由（开发环境）

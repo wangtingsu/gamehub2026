@@ -410,6 +410,16 @@ abstract class BaseApiService {
   abstract getSpaceDetail(slug: string): Promise<any>;
   abstract getSpacePopularArticle(spaceId: string): Promise<any>;
   abstract getSpaceArticlesByCategory(spaceId: string, postType: string, params?: any): Promise<{ articles: any[]; total: number }>;
+
+  // ==================== Banner 和推荐内容 ====================
+  abstract getBanners(position?: string): Promise<any[]>;
+  abstract getFeaturedContent(type?: string): Promise<any[]>;
+
+  // ==================== 兑换码系统 ====================
+  abstract getRedeemCodes(): Promise<any[]>;
+  abstract getRedeemCodeDetail(code: string): Promise<any>;
+  abstract redeemCode(code: string): Promise<{ code: string; title: string; reward_type: string; reward_value: string }>;
+  abstract getMyRedeemHistory(): Promise<any[]>;
 }
 
 /**
@@ -1843,6 +1853,42 @@ class RealApiService extends BaseApiService {
     createdAt: string;
   }> {
     return this.client.get<any>(`/print/order/${id}`);
+  }
+
+  // ==================== Banner 和推荐内容 ====================
+  async getBanners(position?: string): Promise<any[]> {
+    const params: any = {};
+    if (position) params.position = position;
+    const response = await this.client.get<any>('/recommend/banners', params);
+    return response?.data || response || [];
+  }
+
+  async getFeaturedContent(type?: string): Promise<any[]> {
+    const params: any = {};
+    if (type) params.type = type;
+    const response = await this.client.get<any>('/recommend/featured', params);
+    return response?.data || response || [];
+  }
+
+  // ==================== 兑换码系统 ====================
+  async getRedeemCodes(): Promise<any[]> {
+    const response = await this.client.get<any>('/redeem/codes');
+    return response?.data || response || [];
+  }
+
+  async getRedeemCodeDetail(code: string): Promise<any> {
+    const response = await this.client.get<any>(`/redeem/codes/${encodeURIComponent(code)}`);
+    return response?.data || response;
+  }
+
+  async redeemCode(code: string): Promise<{ code: string; title: string; reward_type: string; reward_value: string }> {
+    const response = await this.client.post<any>('/redeem/redeem', { code });
+    return response?.data || response;
+  }
+
+  async getMyRedeemHistory(): Promise<any[]> {
+    const response = await this.client.get<any>('/redeem/my');
+    return response?.data || response || [];
   }
 }
 
@@ -4330,6 +4376,46 @@ class MockApiService extends BaseApiService {
 
   async deleteAiHistory(id: string): Promise<void> {
     console.log('Mock: 删除AI历史', id);
+  }
+
+  // ==================== Banner 和推荐内容 Mocks ====================
+  async getBanners(position?: string): Promise<any[]> {
+    console.log('Mock: 获取Banner', position);
+    return [
+      { id: 1, title: '🔥 热门游戏促销', subtitle: '限时折扣，低至3折', image_url: 'https://images.unsplash.com/photo-1534423861386-85a16f5d13fd?w=1200&auto=format&fit=crop', link_url: '/games/category/sale', position: 'home', sort_order: 0 },
+      { id: 2, title: '🎮 新游推荐', subtitle: '本月最受期待的新游戏', image_url: 'https://images.unsplash.com/photo-1550745165-9bc0b252726f?w=1200&auto=format&fit=crop', link_url: '/games/category/new', position: 'home', sort_order: 1 },
+      { id: 3, title: '🏆 2026年度游戏评选', subtitle: '为你喜欢的游戏投票', image_url: 'https://images.unsplash.com/photo-1511512578047-dfb367046420?w=1200&auto=format&fit=crop', link_url: '/games/category/awards', position: 'home', sort_order: 2 },
+    ];
+  }
+
+  async getFeaturedContent(type?: string): Promise<any[]> {
+    console.log('Mock: 获取精选内容', type);
+    return [];
+  }
+
+  // ==================== 兑换码系统 Mocks ====================
+  async getRedeemCodes(): Promise<any[]> {
+    console.log('Mock: 获取兑换码列表');
+    return [
+      { id: 1, code: 'WELCOME2026', title: '新用户欢迎礼包', description: '新用户注册即可兑换', game_name: '通用', reward_type: 'discount', reward_value: '满100减20', usage_limit: 0, used_count: 1234 },
+      { id: 2, code: 'SUMMER50', title: '夏日狂欢', description: '夏日限定兑换码', game_name: '艾尔登法环', reward_type: 'discount', reward_value: '50元优惠券', usage_limit: 500, used_count: 320 },
+      { id: 3, code: 'VIP2026', title: 'VIP会员专享', description: 'VIP玩家专属兑换码', game_name: '原神', reward_type: 'item', reward_value: '限定道具礼包', usage_limit: 100, used_count: 67 },
+    ];
+  }
+
+  async getRedeemCodeDetail(code: string): Promise<any> {
+    console.log('Mock: 获取兑换码详情', code);
+    return { id: 1, code, title: '测试兑换码', reward_type: 'discount', reward_value: '8折优惠' };
+  }
+
+  async redeemCode(code: string): Promise<{ code: string; title: string; reward_type: string; reward_value: string }> {
+    console.log('Mock: 兑换', code);
+    return { code, title: '测试兑换码', reward_type: 'discount', reward_value: '8折优惠' };
+  }
+
+  async getMyRedeemHistory(): Promise<any[]> {
+    console.log('Mock: 获取兑换历史');
+    return [];
   }
 }
 
