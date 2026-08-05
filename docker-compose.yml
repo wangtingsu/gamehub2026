@@ -98,6 +98,7 @@ services:
       NEWSLETTER_CRON_SCHEDULE: ${NEWSLETTER_CRON_SCHEDULE:-0 9 * * 1}
     volumes:
       - backend_uploads:/app/uploads
+      - backend_backups:/app/backups
       - frontend_dist_data:/app/frontend-dist
     ports:
       - "127.0.0.1:3000:3000"
@@ -176,6 +177,7 @@ services:
       NEWSLETTER_CRON_SCHEDULE: ${NEWSLETTER_CRON_SCHEDULE:-0 9 * * 1}
     volumes:
       - backend_uploads:/app/uploads
+      - backend_backups:/app/backups
     ports:
       - "127.0.0.1:3002:3000"
     depends_on:
@@ -253,6 +255,8 @@ volumes:
   redis_data:
     driver: local
   backend_uploads:
+    driver: local
+  backend_backups:
     driver: local
   frontend_dist_data:
     driver: local
