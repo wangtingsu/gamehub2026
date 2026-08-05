@@ -47,5 +47,15 @@
     "xboxOne": "Xbox One",
     "xboxSeriesX": "Xbox Series X",
     "switch": "Nintendo Switch"
+  },
+  "seo": {
+    "gamesTitle": "Games | GameHub",
+    "gamesDescription": "Browse our extensive game library.",
+    "gamesKeywords": "games, game list, popular games, new games, game library"
+  },
+  "sections": {
+    "topUp": "Top-Up Games",
+    "indie": "Indie Games",
+    "recommended": "Recommended Games"
   }
 }

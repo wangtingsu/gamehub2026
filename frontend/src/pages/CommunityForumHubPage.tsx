@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import {
   Typography, Card, Row, Col, Tag, Input, Button, Skeleton, Alert,
   Pagination, Empty, Avatar, Statistic
@@ -20,6 +21,7 @@ const PAGE_SIZE = 24;
 const CommunityForumHubPage = () => {
   const navigate = useNavigate();
   const { lang } = useParams<{ lang: string }>();
+  const { t } = useTranslation();
   const currentLang = lang || 'cn';
   const [searchText, setSearchText] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
@@ -50,9 +52,9 @@ const CommunityForumHubPage = () => {
   return (
     <div className="min-h-screen bg-dark-900">
       <SEO
-        title="社区论坛 | GameHub"
-        description="GameHub 社区论坛 — 按游戏浏览讨论帖、评测和攻略"
-        keywords="社区论坛,游戏讨论,游戏评测,游戏攻略,GameHub"
+        title={t('community.seoTitle', '社区论坛 | GameHub')}
+        description={t('community.seoDesc', 'GameHub 社区论坛 — 按游戏浏览讨论帖、评测和攻略')}
+        keywords={t('community.seoKeywords', '社区论坛,游戏讨论,游戏评测,游戏攻略,GameHub')}
       />
 
       <div className="py-8">
@@ -61,14 +63,14 @@ const CommunityForumHubPage = () => {
           <div className="inline-flex items-center justify-center w-20 h-20 rounded-2xl bg-gradient-to-br from-blue-500 to-purple-500 mb-6 shadow-lg shadow-blue-500/20">
             <TeamOutlined className="text-4xl text-white" />
           </div>
-          <Title level={1} className="!mb-2 !text-gray-100">社区论坛</Title>
+          <Title level={1} className="!mb-2 !text-gray-100">{t('community.title', '社区论坛')}</Title>
           <Paragraph className="text-lg text-gray-400 max-w-2xl mx-auto mb-6">
-            按游戏浏览讨论帖、评测和攻略，与玩家一起交流分享
+            {t('community.subtitle', '按游戏浏览讨论帖、评测和攻略，与玩家一起交流分享')}
           </Paragraph>
 
           <div className="max-w-xl mx-auto">
             <Search
-              placeholder="搜索游戏名称..."
+              placeholder={t('community.searchPlaceholder', '搜索游戏名称...')}
               size="large"
               value={searchText}
               onChange={(e) => { setSearchText(e.target.value); setCurrentPage(1); }}

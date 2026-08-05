@@ -33,5 +33,9 @@
   },
   "pagination": {
     "total": "Total {{total}} articles"
+  },
+  "seo": {
+    "newsTitle": "Game News | GameHub",
+    "newsDescription": "Latest gaming news and updates"
   }
 }

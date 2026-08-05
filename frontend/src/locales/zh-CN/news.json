@@ -33,5 +33,9 @@
   },
   "pagination": {
     "total": "共 {{total}} 条新闻"
+  },
+  "seo": {
+    "newsTitle": "游戏新闻 | GameHub",
+    "newsDescription": "最新游戏资讯"
   }
 }

@@ -20,18 +20,18 @@ const BlogPage = () => {
 
   return (
     <div className="min-h-screen bg-dark-900">
-      <SEO title="GameHub 博客空间" description="游戏专区博客" canonical={`/${currentLang}/blog`} />
+      <SEO title={t('blog.title', 'GameHub 博客空间')} description={t('blog.subtitle', '游戏专区博客')} canonical={`/${currentLang}/blog`} />
 
       <div className="px-8 py-2">
         <div className="flex items-center justify-between mb-2">
           <Title level={1} className="!text-gray-100">{t('blog.title', '博客空间')}</Title>
         </div>
-        <p className="text-gray-400 mb-4"><p className="text-gray-400 mb-4">{t('blog.subtitle', '游戏专区博客，发现你感兴趣的游戏文章')}</p></p>
+        <p className="text-gray-400 mb-4">{t('blog.subtitle', '游戏专区博客，发现你感兴趣的游戏文章')}</p>
 
         {/* 空间卡片 */}
         {spaces.length > 0 && (
           <div className="mb-8">
-            <Title level={2} className="!text-gray-100 !text-lg mb-4">游戏专区</Title>
+            <Title level={2} className="!text-gray-100 !text-lg mb-4">{t('blog.gameSection', '游戏专区')}</Title>
             <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6">
               {spaces.map(s => (
                 <div key={s.id} onClick={() => navigate(`/${currentLang}/blog/space/${s.slug}`)}
@@ -47,7 +47,7 @@ const BlogPage = () => {
                   )}
                   <div className="px-5 py-4 bg-dark-800">
                     <h3 className="text-white text-lg font-bold mb-1">{s.name}</h3>
-                    <p className="text-sm text-gray-400 line-clamp-2">{s.description || '游戏专区'}</p>
+                    <p className="text-sm text-gray-400 line-clamp-2">{s.description || t('blog.gameSection', '游戏专区')}</p>
                   </div>
                 </div>
               ))}

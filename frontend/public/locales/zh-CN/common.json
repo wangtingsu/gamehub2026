@@ -32,15 +32,29 @@
     "achievements": "成就",
     "about": "关于我们",
     "admin": "管理后台",
-    "login": "登入",
+    "login": "登录",
     "logout": "退出登录",
     "profile": "个人资料",
     "dashboard": "仪表盘",
     "users": "用户管理",
     "content": "内容管理",
     "settings": "系统设置",
-    "blog": "博客",
-    "more": "更多的"
+    "onlineGames": "在线游戏",
+    "recommend": "推荐游戏",
+    "freeGames": "免费游戏",
+    "cozyGames": "治愈游戏",
+    "soulStation": "心灵驿站",
+    "aiGuide": "AI 攻略",
+    "aiPortrait": "AI 人物自画像",
+    "aiCompanion": "命理师",
+    "communityForum": "社区论坛",
+    "allGames": "全部游戏",
+    "leaderboard": "排行榜",
+    "trending": "热门",
+    "discovery": "发现",
+    "more": "更多的",
+    "blog": "博客空间",
+    "myBlogs": "我的文章"
   },
   "auth": {
     "login": "登录",
@@ -182,8 +196,14 @@
       "news": "新闻",
       "reviews": "评测",
       "topRated": "评分最高",
+      "cozyGames": "休闲游戏",
+      "onlineGames": "网游",
+      "freeGames": "免费游戏",
+      "aiGaming": "AI 游戏",
       "forums": "论坛",
       "guides": "指南",
+      "trending": "热门趋势",
+      "leaderboard": "排行榜",
       "events": "活动",
       "discord": "Discord",
       "aboutUs": "关于我们",
@@ -193,10 +213,7 @@
       "privacyPolicy": "隐私政策",
       "termsOfService": "服务条款",
       "cookiePolicy": "Cookie 政策",
-      "codeOfConduct": "行为准则",
-      "cozyGames": "治愈游戏",
-      "freeGames": "免费游戏",
-      "aiGaming": "AI 游戏"
+      "codeOfConduct": "行为准则"
     },
     "brand": {
       "tagline": "您的终极游戏目的地。与我们的热情社区一起发现、评测和讨论最新游戏。"
@@ -401,243 +418,6 @@
           }
         ]
       }
-    },
-    "cozyGame": {
-      "trendingBadge": "🔥 热门趋势：Steam上搜索量增长 675%",
-      "hero": {
-        "title": "2026年最佳治愈游戏推荐",
-        "subtitle": "放松心情，逃离喧嚣，沉浸在宁静的游戏世界。为您精选各个平台的最佳治愈系游戏。"
-      },
-      "categories": {
-        "title": "治愈游戏分类",
-        "farming": "农场模拟",
-        "lifeSim": "生活模拟",
-        "relaxing": "放松解压",
-        "building": "建造休闲"
-      },
-      "popular": {
-        "title": "热门治愈游戏",
-        "viewAll": "浏览全部游戏"
-      },
-      "desc": {
-        "stardew": "经营农场，结交朋友，探索迷人的乡村世界。",
-        "animalCrossing": "打造属于你的岛屿天堂，与可爱的动物朋友一起放松。",
-        "palia": "一款MMO治愈游戏，一起建造、烹饪和探索。",
-        "spiritfarer": "关于放手和继续前行的精美管理游戏。",
-        "hozy": "修复废弃房屋，打造温馨空间，放松身心。",
-        "unpacking": "禅意解谜游戏，通过整理物品体验人生故事。"
-      },
-      "why": {
-        "title": "为什么治愈游戏越来越受欢迎",
-        "content": "治愈游戏热潮在2026年席卷全球，Steam上'治愈'关键词搜索量暴增675%。这些游戏为玩家提供了逃离高压竞技游戏的避风港，以放松的玩法、舒缓的音乐和友好的社区为特色。无论你是种田、装修还是悠闲探索，治愈游戏都把你的身心健康放在首位。",
-        "stats": {
-          "stress": {
-            "value": "68%",
-            "label": "为放松而玩"
-          },
-          "creative": {
-            "value": "52%",
-            "label": "热爱创意玩法"
-          },
-          "community": {
-            "value": "41%",
-            "label": "加入社区"
-          },
-          "accessibility": {
-            "value": "73%",
-            "label": "低压力吸引"
-          }
-        }
-      },
-      "faq": {
-        "title": "常见问题",
-        "q1": "什么是'治愈系游戏'？",
-        "a1": "治愈系游戏注重放松、温和的玩法和积极的情感体验，而非挑战或竞争。常见玩法包括种田、手工、装修、探索和社交，一切都按你自己的节奏进行。",
-        "q2": "新手适合哪些治愈游戏？",
-        "a2": "星露谷物语是最佳入门选择。动物森友会、Unpacking 和 Dorfromantik 也是优秀的入门游戏。",
-        "q3": "可以在电脑上玩治愈游戏吗？",
-        "a3": "大多数治愈游戏可在PC（Steam、itch.io）、Nintendo Switch和现代主机上游玩，许多游戏也支持移动平台。",
-        "q4": "治愈游戏可以多人玩吗？",
-        "a4": "许多治愈游戏支持多人模式。Palia是免费MMO治愈游戏，动物森友会支持岛屿访问，星露谷物语有合作农场模式。"
-      },
-      "cta": {
-        "title": "准备放松一下？",
-        "subtitle": "发现你的下一款最爱治愈游戏",
-        "button": "探索治愈游戏"
-      }
-    },
-    "freeGame": {
-      "hero": {
-        "title": "2026年免费在线游戏",
-        "subtitle": "畅玩最佳免费在线游戏，无需下载，无需注册，即刻开玩。"
-      },
-      "categories": {
-        "title": "按分类浏览",
-        "action": {
-          "name": "动作",
-          "games": [
-            "地铁跑酷",
-            "神庙逃亡",
-            "火柴人钩索"
-          ]
-        },
-        "strategy": {
-          "name": "策略",
-          "games": [
-            "国际象棋",
-            "8球台球",
-            "瘟疫公司"
-          ]
-        },
-        "multiplayer": {
-          "name": "多人",
-          "games": [
-            "细胞吞噬",
-            "贪吃蛇大作战",
-            "蛋蛋突击"
-          ]
-        },
-        "casual": {
-          "name": "休闲",
-          "games": [
-            "糖果传奇",
-            "愤怒的小鸟",
-            "2048"
-          ]
-        }
-      },
-      "top": {
-        "title": "2026年热门免费游戏",
-        "0": {
-          "title": "堡垒之夜",
-          "desc": "结合建造机制的大逃杀游戏，持续更新内容。"
-        },
-        "1": {
-          "title": "英雄联盟",
-          "desc": "全球最受欢迎的MOBA游戏，深度策略玩法。"
-        },
-        "2": {
-          "title": "原神",
-          "desc": "免费开放世界动作RPG，抽卡养成机制。"
-        },
-        "3": {
-          "title": "炉石传说",
-          "desc": "暴雪出品的数字卡牌游戏，定期扩展包。"
-        },
-        "4": {
-          "title": "火箭联盟",
-          "desc": "足球与赛车结合的免费快节奏运动游戏。"
-        },
-        "5": {
-          "title": "失落方舟",
-          "desc": "大型多人在线ARPG，精美的战斗和探索。"
-        }
-      },
-      "why": {
-        "title": "为什么选择免费游戏？",
-        "content": "免费在线游戏从未如此触手可及。无论是网页游戏还是各大平台的免费作品，你都可以在不花一分钱的情况下体验精彩的游戏内容。如今的免费游戏已具备主机级的画质和深度玩法。",
-        "points": {
-          "noCost": {
-            "title": "完全免费",
-            "desc": "无需任何费用"
-          },
-          "noDownload": {
-            "title": "即点即玩",
-            "desc": "无需安装"
-          },
-          "crossPlatform": {
-            "title": "多平台",
-            "desc": "PC、手机、平板均可"
-          },
-          "social": {
-            "title": "社交互动",
-            "desc": "与好友联机"
-          }
-        }
-      },
-      "faq": {
-        "title": "常见问题",
-        "q0": "这些游戏真的免费吗？",
-        "a0": "是的！所有列出的游戏均可免费游玩。部分游戏可能提供可选内购，但核心体验始终免费。",
-        "q1": "需要下载吗？",
-        "a1": "网页游戏完全无需下载。对于堡垒之夜、原神等客户端游戏，需要安装游戏客户端。",
-        "q2": "可以在手机上玩吗？",
-        "a2": "许多免费游戏支持移动端。网页游戏可在任何设备上运行，原神等热门游戏有优秀的手机版本。",
-        "q3": "免费游戏安全吗？",
-        "a3": "GameHub精选的游戏均来自可信发行商和平台。我们精心筛选，确保安全的游戏体验。"
-      },
-      "cta": {
-        "title": "立即开始游戏",
-        "subtitle": "加入数百万玩家，畅玩免费在线游戏",
-        "button": "浏览免费游戏"
-      }
-    },
-    "aiGame": {
-      "hero": {
-        "title": "2026年AI游戏",
-        "subtitle": "探索人工智能如何革新游戏世界——从智能NPC到程序生成的无限宇宙。"
-      },
-      "features": {
-        "title": "AI正在改变游戏",
-        "npc": {
-          "title": "AI NPC",
-          "desc": "能够学习和自然反应的智能角色"
-        },
-        "companion": {
-          "title": "AI伴侣",
-          "desc": "适应你游戏风格的智能伙伴"
-        },
-        "procedural": {
-          "title": "程序世界",
-          "desc": "AI生成的无尽地图和任务"
-        },
-        "assistant": {
-          "title": "AI工具",
-          "desc": "AI驱动的创作和游戏管理工具"
-        }
-      },
-      "tools": {
-        "title": "GameHub AI 工具",
-        "desc": "体验内置AI功能带来的未来游戏体验。",
-        "portrait": "AI角色肖像",
-        "soul": "AI灵魂站",
-        "npc": "AI游戏NPC"
-      },
-      "games": {
-        "title": "AI驱动游戏",
-        "0": {
-          "desc": "AI驱动的NPC，具备动态对话和自适应行为。"
-        },
-        "1": {
-          "desc": "从你的选择中学习并进化的AI伴侣。"
-        },
-        "2": {
-          "desc": "程序生成的无尽世界，拥有独特的生态系统。"
-        },
-        "3": {
-          "desc": "即时生成分支叙事的AI故事系统。"
-        }
-      },
-      "future": {
-        "title": "AI游戏的未来",
-        "content": "到2026年，AI已成为游戏行业最具变革性的力量。从记住你选择的NPC到根据你的游戏风格自动生成的世界，AI正在让游戏变得更加个性化、沉浸式和可重玩。脚本化体验与鲜活世界之间的界限正在模糊。"
-      },
-      "faq": {
-        "title": "常见问题",
-        "q0": "AI在现代游戏中如何应用？",
-        "a0": "AI驱动NPC行为、程序化内容生成、动态难度调整、语音识别和个性化游戏体验。现代游戏中的AI应用涵盖从敌人战术到生成整个世界的各个层面。",
-        "q1": "AI能创造游戏角色吗？",
-        "a1": "可以！AI可以生成独特的角色肖像、声音、个性和背景故事。GameHub的3D角色肖像等工具可以帮你创建AI驱动的游戏角色。",
-        "q2": "什么是AI NPC？",
-        "a2": "AI NPC是由语言模型和行为树驱动的非玩家角色。与传统脚本NPC不同，它们可以进行自然对话、记住过往互动并动态调整行为。",
-        "q3": "AI会取代游戏开发者吗？",
-        "a3": "不会——AI是赋能开发者创造更丰富体验的工具。它自动化重复任务并催生新的游戏形式，但人类的创造力在游戏设计中仍然不可或缺。"
-      },
-      "cta": {
-        "title": "体验AI游戏",
-        "subtitle": "尝试GameHub的AI驱动游戏工具",
-        "button": "探索AI功能"
-      }
     }
   },
   "cozyGame": {
@@ -745,7 +525,6 @@
       }
     },
     "top": {
-      "title": "2026年热门免费游戏",
       "0": {
         "title": "堡垒之夜",
         "desc": "结合建造机制的大逃杀游戏，持续更新内容。"
@@ -769,7 +548,8 @@
       "5": {
         "title": "失落方舟",
         "desc": "大型多人在线ARPG，精美的战斗和探索。"
-      }
+      },
+      "title": "2026年热门免费游戏"
     },
     "why": {
       "title": "为什么选择免费游戏？",
@@ -842,7 +622,6 @@
       "npc": "AI游戏NPC"
     },
     "games": {
-      "title": "AI驱动游戏",
       "0": {
         "desc": "AI驱动的NPC，具备动态对话和自适应行为。"
       },
@@ -854,7 +633,8 @@
       },
       "3": {
         "desc": "即时生成分支叙事的AI故事系统。"
-      }
+      },
+      "title": "AI驱动游戏"
     },
     "future": {
       "title": "AI游戏的未来",
@@ -875,6 +655,383 @@
       "title": "体验AI游戏",
       "subtitle": "尝试GameHub的AI驱动游戏工具",
       "button": "探索AI功能"
+    }
+  },
+  "common": {
+    "confirm": "确定",
+    "cancel": "取消",
+    "save": "保存",
+    "edit": "编辑",
+    "delete": "删除",
+    "search": "搜索",
+    "filter": "筛选",
+    "reset": "重置",
+    "back": "返回",
+    "next": "下一步",
+    "previous": "上一步",
+    "submit": "提交",
+    "retry": "重试",
+    "more": "更多",
+    "anonymous": "匿名",
+    "anonymousUser": "匿名用户",
+    "operationFailed": "操作失败，请稍后重试",
+    "loadFailed": "加载失败",
+    "noData": "暂无数据",
+    "viewAll": "查看全部"
+  },
+  "breadcrumb": {
+    "home": "首页",
+    "games": "游戏库",
+    "community": "社区",
+    "blog": "博客",
+    "news": "新闻"
+  },
+  "errorBoundary": {
+    "title": "应用出现错误",
+    "subtitle": "抱歉，应用遇到了问题。我们已经记录了这个错误，请稍后重试。",
+    "refresh": "刷新页面",
+    "goHome": "返回首页"
+  },
+  "twoFactor": {
+    "enterCode": "请输入6位验证码",
+    "verifyFailed": "验证失败，请重试",
+    "title": "双因素认证",
+    "instruction": "请输入您的身份验证器应用中的验证码",
+    "account": "账号",
+    "alertTitle": "验证失败",
+    "codePlaceholder": "输入 6 位验证码",
+    "verify": "验证",
+    "backToLogin": "返回登录"
+  },
+  "comments": {
+    "loadFailed": "加载评论失败",
+    "unknownError": "未知错误",
+    "noComments": "暂无评论",
+    "totalCount": "共 {n} 条评论",
+    "placeholder": "发表你的评论...",
+    "contentRequired": "评论内容不能为空",
+    "loginRequired": "请先登录",
+    "updateSuccess": "评论更新成功",
+    "createSuccess": "评论发表成功",
+    "operationFailed": "操作失败",
+    "loginPrompt": "登录后即可发表评论",
+    "loginNow": "立即登录",
+    "markdownHint": "支持 Markdown 语法，Ctrl + Enter 快速提交",
+    "updateButton": "更新评论",
+    "submitButton": "发表评论",
+    "loginToLike": "请先登录后再点赞",
+    "likeFailed": "点赞失败",
+    "deleteSuccess": "删除成功",
+    "deleteFailed": "删除失败",
+    "edited": "(已编辑)",
+    "unlike": "取消点赞",
+    "like": "点赞",
+    "reply": "回复",
+    "deleteConfirm": "确定要删除这条评论吗？",
+    "replyCount": "共 {n} 条回复",
+    "replyTo": "回复 @{name}",
+    "viewMoreReplies": "查看更多回复 ({n} 条)"
+  },
+  "game": {
+    "loadFailed": "加载失败",
+    "notFound": "游戏不存在",
+    "backToList": "返回游戏列表",
+    "seoKeywords": "游戏详情,游戏介绍,游戏信息",
+    "tab": {
+      "overview": "游戏概述",
+      "requirements": "系统需求",
+      "reviews": "评测",
+      "forum": "论坛"
+    },
+    "features": "游戏特色",
+    "feature": {
+      "awards": "获奖无数",
+      "awardDesc": "获得多项游戏大奖和媒体好评",
+      "immersive": "沉浸体验",
+      "immersiveDesc": "精美的画面和音乐带来身临其境的体验",
+      "multiplayer": "多人游戏",
+      "multiplayerDesc": "与好友联机，共享游戏乐趣",
+      "liveService": "持续更新",
+      "liveServiceDesc": "开发团队定期推出新内容和活动"
+    },
+    "req": {
+      "os": "操作系统",
+      "processor": "处理器",
+      "memory": "内存",
+      "graphics": "显卡",
+      "storage": "存储空间",
+      "directX": "DirectX 版本",
+      "storageValue": "需要 80 GB 可用空间"
+    },
+    "noReviews": "暂无评测数据",
+    "beFirstReviewer": "成为第一个为这款游戏撰写评测的玩家！",
+    "writeReview": "撰写评测",
+    "playerReviews": "玩家评测 ({n})",
+    "noForumPosts": "暂无论坛帖子",
+    "beFirstPoster": "成为第一个为本游戏发帖的玩家！",
+    "gameForum": "游戏论坛 ({n})",
+    "viewAllPosts": "浏览全部",
+    "newPost": "发帖",
+    "developer": "开发商",
+    "publisher": "发行商",
+    "releaseDate": "发行日期",
+    "platforms": "支持平台",
+    "genres": "游戏类型",
+    "buyNow": "立即购买",
+    "shareGame": "分享游戏",
+    "overallRating": "综合评分",
+    "basedOnReviews": "基于 {n} 个玩家评测",
+    "similarGames": "类似游戏",
+    "usersAlsoLiked": "用户也喜欢",
+    "rating": {
+      "gameplay": "游戏性",
+      "graphics": "画面表现",
+      "story": "剧情叙事",
+      "audio": "音效音乐",
+      "value": "性价比"
+    }
+  },
+  "messages": {
+    "sendFailed": "发送失败",
+    "deleted": "消息已删除",
+    "deleteFailed": "删除失败",
+    "cleared": "聊天记录已清空",
+    "clearFailed": "清空失败",
+    "clearTitle": "清空聊天记录",
+    "clearConfirm": "确定要清空该对话的所有消息吗？此操作不可恢复。",
+    "clearOk": "确定清空",
+    "clearButton": "清除聊天记录",
+    "seoTitle": "消息 | GameHub",
+    "defaultUser": "用户",
+    "noMessages": "暂无消息",
+    "deleteConfirm": "删除这条消息？",
+    "inputPlaceholder": "输入消息，Enter 发送，Shift+Enter 换行",
+    "send": "发送"
+  },
+  "cart": {
+    "added": "《{title}》已添加到购物车",
+    "alreadyInCart": "《{title}》已在购物车中",
+    "addFailed": "添加到购物车失败",
+    "addToCart": "加入购物车"
+  },
+  "favorites": {
+    "loginRequired": "请先登录后再收藏游戏",
+    "removed": "已取消收藏",
+    "added": "收藏成功",
+    "saved": "已收藏",
+    "save": "收藏",
+    "addToFavorites": "加入收藏"
+  },
+  "editor": {
+    "imageUploadFailed": "图片上传失败",
+    "imageInserted": "图片已插入",
+    "imageUrlInserted": "图片链接已插入",
+    "selectLocalImage": "选择本地图片上传",
+    "uploadImage": "上传图片",
+    "pasteImageUrl": "粘贴在线图片链接",
+    "imageUrl": "图片URL",
+    "dragOrPasteHint": "拖拽图片到编辑器 或 Ctrl+V 粘贴截图",
+    "markdownPlaceholder": "使用 Markdown 编写，支持拖拽/粘贴上传图片...",
+    "dropToUpload": "释放以上传图片",
+    "supportedFormats": "支持 JPG、PNG、GIF、WebP 格式",
+    "shortcuts": "快捷操作：",
+    "shortcutsHint": "选中文字后点击工具栏按钮即可自动添加格式。",
+    "images": "图片：",
+    "imageHint": "拖拽 / 粘贴 / 点击按钮上传",
+    "preview": "预览：",
+    "previewHint": "点击工具栏眼睛图标",
+    "insertImageUrl": "插入图片链接",
+    "insert": "插入",
+    "imageUrlLabel": "图片 URL",
+    "imageUrlHint": "粘贴在线图片的完整 URL 地址..."
+  },
+  "community": {
+    "seoTitle": "社区论坛 | GameHub",
+    "seoDesc": "GameHub 社区论坛 — 按游戏浏览讨论帖、评测和攻略",
+    "title": "社区论坛",
+    "subtitle": "按游戏浏览讨论帖、评测和攻略，与玩家一起交流分享",
+    "searchPlaceholder": "搜索游戏名称...",
+    "searchButton": "搜索",
+    "errorLoad": "加载失败",
+    "errorLoadDesc": "无法加载社区论坛列表，请稍后重试。",
+    "retry": "重试",
+    "empty": "暂没有社区论坛活动",
+    "emptyHint": "游戏发布后可以在社区中创建讨论帖",
+    "searchHint": "请尝试其他关键词搜索",
+    "noSearchResults": "没有找到\"{q}\"相关的游戏",
+    "gameCount": "个游戏社区",
+    "postCountUnit": "帖",
+    "totalCount": "共 {n} 个游戏社区",
+    "myFollowed": "我的关注",
+    "noFollowed": "暂无关注的论坛",
+    "relatedGames": "相关游戏",
+    "pinned": "置顶",
+    "locked": "已锁定",
+    "loginToViewComments": "请登录后查看评论",
+    "postNotFound": "帖子不存在",
+    "time": {
+      "today": "今天",
+      "yesterday": "昨天",
+      "daysAgo": "{n}天前"
+    }
+  },
+  "discovery": {
+    "seoTitle": "发现 | GameHub",
+    "seoDesc": "GameHub 发现页面 - 趋势分析、排行榜、数据报告",
+    "title": "发现",
+    "tab": {
+      "trends": "趋势分析",
+      "leaderboard": "排行榜",
+      "stats": "数据报告"
+    },
+    "searchTrendsTitle": "搜索趋势（近30天）",
+    "chart": {
+      "searchCount": "搜索次数",
+      "uniqueQueries": "唯一搜索词"
+    },
+    "noTrendData": "暂无趋势数据",
+    "leaderboardTitle": "游戏排行榜",
+    "lb": {
+      "rating": "评分最高",
+      "reviews": "评测最多",
+      "favorites": "收藏最多",
+      "discussions": "讨论最多"
+    },
+    "noLbData": "暂无排行榜数据",
+    "platformDist": "平台分布",
+    "genreDist": "类型分布",
+    "communityOverview": "社区概览",
+    "stat": {
+      "totalUsers": "总用户",
+      "totalGames": "总游戏",
+      "totalReviews": "总评测",
+      "totalPosts": "总帖子",
+      "newUsersToday": "今日新用户",
+      "activeUsers": "活跃用户(7d)"
+    },
+    "noData": "暂无数据",
+    "noCommunityData": "暂无社区数据"
+  },
+  "home": {
+    "noDiscussions": "暂无热门讨论",
+    "heat": "热度",
+    "replies": "回复",
+    "noHotGames": "暂无热门游戏",
+    "noFeaturedArticles": "暂无精选文章",
+    "article": {
+      "news": "新闻",
+      "blog": "博客",
+      "guide": "攻略"
+    },
+    "banner": {
+      "hotPromo": "热门游戏促销",
+      "hotPromoSub": "限时折扣，低至3折",
+      "newGames": "新游推荐",
+      "newGamesSub": "本月最受期待的新游戏",
+      "awards2026": "2026年度游戏评选",
+      "awards2026Sub": "为你喜欢的游戏投票",
+      "learnMore": "了解更多",
+      "previous": "上一张",
+      "next": "下一张",
+      "switchTo": "切换到第 {n} 张图片"
+    }
+  },
+  "redeem": {
+    "copied": "兑换码已复制",
+    "success": "兑换成功！",
+    "failed": "兑换失败",
+    "noCodes": "暂无可用兑换码，敬请期待",
+    "copyCode": "复制兑换码",
+    "remaining": "剩余:",
+    "redeemed": "已兑换",
+    "redeemNow": "立即兑换",
+    "loginToRedeem": "登录后兑换",
+    "labels": {
+      "discount": "折扣",
+      "free_game": "免费游戏",
+      "points": "积分",
+      "item": "道具"
+    }
+  },
+  "about": {
+    "seoTitle": "关于 GameHub",
+    "seoDescription": "GameHub 是一个专注于游戏爱好者的社区平台",
+    "seoKeywords": "GameHub, 关于我们, 游戏社区",
+    "fallbackNotice": "部分内容未加载，以下为默认展示信息。",
+    "reload": "重新加载",
+    "title": "关于 GameHub",
+    "description": "GameHub 是一个专注于游戏爱好者的社区平台",
+    "mission": "我们的使命",
+    "missionDesc": "连接每一位游戏爱好者",
+    "vision": "我们的愿景",
+    "visionDesc": "成为全球最受信赖的游戏社区平台",
+    "coreValues": "核心价值",
+    "timeline": "发展历程",
+    "contactUs": "联系我们",
+    "contactDesc": "如果您有任何问题、建议或合作意向",
+    "email": "电子邮件",
+    "community": "社区",
+    "joinDiscord": "加入我们的 Discord 社区",
+    "business": "商务合作"
+  },
+  "ai": {
+    "seoTitle": "AI 助手 | GameHub",
+    "seoDescription": "GameHub AI 智能助手",
+    "title": "AI 助手",
+    "subtitle": "GameHub AI 智能助手，为你提供游戏聊天陪伴",
+    "tips": "使用提示",
+    "tip1": {
+      "title": "AI 聊天",
+      "desc": "选择游戏和心情，与 AI 畅聊游戏体验和情感"
+    },
+    "tip2": {
+      "title": "AI 攻略",
+      "desc": "搜索任意游戏名，获取攻略、视频和二创内容"
+    },
+    "soul": {
+      "title": "心灵驿站",
+      "desc": "游戏心灵驿站，倾诉你的游戏故事"
+    },
+    "guide": {
+      "title": "AI 攻略",
+      "desc": "搜索游戏攻略、评测、视频教程"
+    },
+    "companion": {
+      "title": "命理师",
+      "desc": "完成性格测试，AI 为你推荐最匹配的游戏角色和玩法"
+    }
+  },
+  "category": {
+    "recommended": {
+      "title": "推荐游戏",
+      "desc": "为您精选的优质游戏推荐",
+      "seoTitle": "推荐游戏 | GGHubs",
+      "seoDesc": "浏览GGHubs为您推荐的热门游戏",
+      "seoKeywords": "推荐游戏,热门游戏,游戏推荐"
+    },
+    "topUp": {
+      "title": "直充游戏",
+      "desc": "支持直接购买的数字版游戏",
+      "seoTitle": "直充游戏 | GGHubs"
+    },
+    "indie": {
+      "title": "独立游戏",
+      "desc": "独立游戏精品",
+      "seoTitle": "独立游戏 | GGHubs"
+    },
+    "filters": {
+      "genreOptions": "全部,RPG,动作,冒险,策略,科幻,奇幻,魂类,魔法",
+      "searchPlaceholder": "搜索游戏...",
+      "searchButton": "搜索",
+      "filterGenre": "选择类型",
+      "filterPlatform": "选择平台",
+      "resetFilters": "重置筛选",
+      "priceRange": "价格区间",
+      "minRating": "最低评分",
+      "unlimited": "不限",
+      "stars": "星",
+      "noResults": "没有找到匹配的游戏",
+      "showingGames": "显示 {n} 款游戏 (共 {m} 款)"
     }
   }
 }

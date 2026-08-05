@@ -47,5 +47,15 @@
     "xboxOne": "Xbox One",
     "xboxSeriesX": "Xbox Series X",
     "switch": "Nintendo Switch"
+  },
+  "seo": {
+    "gamesTitle": "Jeux | GameHub",
+    "gamesDescription": "Parcourez notre bibliothèque.",
+    "gamesKeywords": "jeux,liste,catalogue"
+  },
+  "sections": {
+    "topUp": "Jeux à recharger",
+    "indie": "Jeux indépendants",
+    "recommended": "Jeux recommandés"
   }
 }

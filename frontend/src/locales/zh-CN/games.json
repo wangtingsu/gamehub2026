@@ -47,5 +47,15 @@
     "xboxOne": "Xbox One",
     "xboxSeriesX": "Xbox Series X",
     "switch": "Nintendo Switch"
+  },
+  "seo": {
+    "gamesTitle": "游戏库 | GameHub",
+    "gamesDescription": "浏览我们丰富的游戏库。",
+    "gamesKeywords": "游戏列表, 游戏库, 热门游戏, 最新游戏, 游戏大全, 游戏推荐"
+  },
+  "sections": {
+    "topUp": "直充游戏",
+    "indie": "独立游戏",
+    "recommended": "推荐游戏"
   }
 }

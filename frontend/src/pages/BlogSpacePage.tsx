@@ -2,6 +2,7 @@ import { useState, useEffect, useCallback, useRef } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import { Typography, Skeleton, Alert, Empty, Tag, Button, Avatar, Input } from 'antd';
 import { SearchOutlined } from '@ant-design/icons';
+import { useTranslation } from 'react-i18next';
 import {
   ArrowLeftOutlined, EyeOutlined, LikeOutlined, MessageOutlined,
   RightOutlined, CalendarOutlined, UserOutlined, ClockCircleOutlined,
@@ -12,16 +13,16 @@ import BlogRenderContent from '../components/blog/BlogRenderContent';
 
 const { Title, Text, Paragraph } = Typography;
 
-const CATEGORIES = [
-  { key: 'blog', label: '博客', icon: '📝', color: '#3b82f6' },
-  { key: 'guide', label: '攻略', icon: '📖', color: '#8b5cf6' },
-  { key: 'review', label: '评测', icon: '⭐', color: '#10b981' },
-];
-
 const BlogSpacePage = () => {
   const { slug, lang } = useParams<{ slug: string; lang: string }>();
   const navigate = useNavigate();
+  const { t } = useTranslation();
   const currentLang = lang || 'cn';
+  const CATEGORIES = [
+    { key: 'blog', label: t('blog.space.tabLabels.blog', '博客'), icon: '📝', color: '#3b82f6' },
+    { key: 'guide', label: t('blog.space.tabLabels.guide', '攻略'), icon: '📖', color: '#8b5cf6' },
+    { key: 'review', label: t('blog.space.tabLabels.review', '评测'), icon: '⭐', color: '#10b981' },
+  ];
 
   const [space, setSpace] = useState<any>(null);
   const [activeArticle, setActiveArticle] = useState<any>(null); // 当前展示的文章
@@ -54,7 +55,7 @@ const BlogSpacePage = () => {
           apiService.getBlogSpaces(),
         ]);
         if (cancelled) return;
-        if (!detail) { setError('空间不存在'); setLoading(false); return; }
+        if (!detail) { setError(t('blog.space.notFound', '空间不存在')); setLoading(false); return; }
         setSpace(detail);
         const related = (spaces || []).filter((s: any) => s.slug !== slug);
         setRelatedSpaces(related);
@@ -78,7 +79,7 @@ const BlogSpacePage = () => {
           if (!cancelled) setCategoryData(catResults);
         }
       } catch (e: any) {
-        if (!cancelled) setError(e?.message || '加载失败');
+        if (!cancelled) setError(e?.message || t('blog.space.loadFailed', '加载失败'));
       } finally {
         if (!cancelled) setLoading(false);
       }
@@ -146,7 +147,7 @@ const BlogSpacePage = () => {
             ))}
           </div>
         ) : isEmpty ? (
-          <Empty description="暂无文章" image={Empty.PRESENTED_IMAGE_SIMPLE} />
+          <Empty description={t('blog.space.noArticles', '暂无文章')} image={Empty.PRESENTED_IMAGE_SIMPLE} />
         ) : (
           <div className="grid grid-cols-5 gap-4">
             {articles.map((article: any) => {
@@ -203,7 +204,7 @@ const BlogSpacePage = () => {
         <div className="mb-6">
           <Input
             size="large"
-            placeholder="搜索文章标题..."
+            placeholder={t('blog.space.searchPlaceholder', '搜索文章标题...')}
             prefix={<SearchOutlined className="text-gray-400" />}
             value={searchText}
             onChange={e => setSearchText(e.target.value)}
@@ -213,8 +214,8 @@ const BlogSpacePage = () => {
         </div>
 
         {error && (
-          <Alert type="error" message="加载失败" description={error} showIcon className="mb-6"
-            action={<Button onClick={() => window.location.reload()}>重试</Button>} />
+          <Alert type="error" message={t('blog.space.loadFailed', '加载失败')} description={error} showIcon className="mb-6"
+            action={<Button onClick={() => window.location.reload()}>{t('blog.space.retry', '重试')}</Button>} />
         )}
 
         {/* 文章内容 + 相关空间（等高） */}
@@ -224,12 +225,12 @@ const BlogSpacePage = () => {
             {loading || articleLoading ? (
               <Skeleton active avatar paragraph={{ rows: 8 }} />
             ) : !activeArticle ? (
-              <Empty description="暂无文章" />
+              <Empty description={t('blog.space.noArticles', '暂无文章')} />
             ) : (
               <>
                 {/* 文章元信息 */}
                 <div className="flex flex-wrap gap-2 mb-4">
-                  <Tag color="blue">{activeArticle.postType === 'review' ? '评测' : activeArticle.postType === 'guide' ? '攻略' : '博客'}</Tag>
+                  <Tag color="blue">{activeArticle.postType === 'review' ? t('blog.space.tabLabels.review', '评测') : activeArticle.postType === 'guide' ? t('blog.space.tabLabels.guide', '攻略') : t('blog.space.tabLabels.blog', '博客')}</Tag>
                   {activeArticle.category && <Tag>{activeArticle.category}</Tag>}
                   {activeArticle.rating != null && <Tag color="gold">⭐ {activeArticle.rating}</Tag>}
                 </div>
@@ -276,7 +277,7 @@ const BlogSpacePage = () => {
                 {[1, 2, 3, 4].map(i => <Skeleton key={i} active paragraph={{ rows: 1 }} />)}
               </div>
             ) : relatedSpaces.length === 0 ? (
-              <Empty description="暂无其他空间" image={Empty.PRESENTED_IMAGE_SIMPLE} />
+              <Empty description={t('blog.space.noOtherSpaces', '暂无其他空间')} image={Empty.PRESENTED_IMAGE_SIMPLE} />
             ) : (
               <div className="space-y-3 flex-1 overflow-y-auto space-scroll pr-1">
                 {relatedSpaces.map((s: any) => (

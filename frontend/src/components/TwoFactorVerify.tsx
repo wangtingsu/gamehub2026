@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Card, Input, Button, Typography, Alert, Space } from 'antd';
 import { KeyOutlined, ArrowLeftOutlined } from '@ant-design/icons';
+import { useTranslation } from 'react-i18next';
 import { useAuth } from '../contexts/AuthContext';
 
 const { Title, Text, Paragraph } = Typography;
@@ -33,23 +34,12 @@ const TwoFactorVerify = () => {
   const [code, setCode] = useState('');
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
+  const { t } = useTranslation();
   const { twoFactorEmail, verifyTwoFactor, cancelTwoFactor } = useAuth();
 
-  /**
-   * 提交 2FA 验证码进行验证
-   *
-   * 校验逻辑：
-   * 1. 验证码长度必须为 6 位（TOTP 标准）
-   * 2. 调用 AuthContext 的 verifyTwoFactor 方法，将验证码发送到后端验证
-   * 3. 验证成功后由上层 AuthContext 处理（如完成登录、跳转到首页）
-   * 4. 验证失败时从后端返回的错误信息中提取错误描述，或使用默认文案
-   *
-   * 输入处理：输入框通过 onChange 过滤非数字字符并限制最长 6 位，
-   * 确保传递给后端的验证码格式正确。
-   */
   const handleSubmit = async () => {
     if (code.length !== 6) {
-      setError('请输入6位验证码');
+      setError(t('twoFactor.enterCode', '请输入6位验证码'));
       return;
     }
     try {
@@ -57,7 +47,7 @@ const TwoFactorVerify = () => {
       setError(null);
       await verifyTwoFactor(code);
     } catch (err: any) {
-      setError(err?.response?.data?.error || err?.message || '验证失败，请重试');
+      setError(err?.response?.data?.error || err?.message || t('twoFactor.verifyFailed', '验证失败，请重试'));
     } finally {
       setLoading(false);
     }
@@ -71,20 +61,20 @@ const TwoFactorVerify = () => {
             <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-r from-blue-600 to-purple-600 rounded-2xl shadow-lg mb-4">
               <KeyOutlined className="text-white text-2xl" />
             </div>
-            <Title level={3} className="mb-2">双因素认证</Title>
+            <Title level={3} className="mb-2">{t('twoFactor.title', '双因素认证')}</Title>
             <Paragraph className="text-gray-500 mb-1">
-              请输入您的身份验证器应用中的验证码
+              {t('twoFactor.instruction', '请输入您的身份验证器应用中的验证码')}
             </Paragraph>
             {twoFactorEmail && (
               <Text type="secondary" className="text-sm">
-                账号: {twoFactorEmail}
+                {t('twoFactor.account', '账号')}: {twoFactorEmail}
               </Text>
             )}
           </div>
 
           {error && (
             <Alert
-              message="验证失败"
+              message={t('twoFactor.alertTitle', '验证失败')}
               description={error}
               type="error"
               showIcon
@@ -99,7 +89,7 @@ const TwoFactorVerify = () => {
               <Input
                 value={code}
                 onChange={(e) => setCode(e.target.value.replace(/\D/g, '').slice(0, 6))}
-                placeholder="输入 6 位验证码"
+                placeholder={t('twoFactor.codePlaceholder', '输入 6 位验证码')}
                 size="large"
                 maxLength={6}
                 className="w-48 text-center text-2xl tracking-[0.5em]"
@@ -117,7 +107,7 @@ const TwoFactorVerify = () => {
               loading={loading}
               disabled={code.length !== 6}
             >
-              验证
+              {t('twoFactor.verify', '验证')}
             </Button>
 
             <Button
@@ -126,7 +116,7 @@ const TwoFactorVerify = () => {
               icon={<ArrowLeftOutlined />}
               onClick={cancelTwoFactor}
             >
-              返回登录
+              {t('twoFactor.backToLogin', '返回登录')}
             </Button>
           </Space>
         </Card>

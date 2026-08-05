@@ -134,17 +134,17 @@ const HomePage = () => {
               <Row align="middle" gutter={[48, 24]}>
                 <Col xs={24} lg={14}>
                   <Title level={2} className="!mb-4 !text-white">
-                    {t('home.joinCommunity', '加入我们的游戏社区')}
+                    {t('joinCommunity', '加入我们的游戏社区')}
                   </Title>
                   <Paragraph className="text-lg text-gray-300 !mb-6">
-                    {t('home.communityDesc', '与全球数千名玩家交流互动。分享评测、讨论攻略、参加活动，结识志同道合的游戏伙伴。')}
+                    {t('communityDesc', '与全球数千名玩家交流互动。分享评测、讨论攻略、参加活动，结识志同道合的游戏伙伴。')}
                   </Paragraph>
                   <div className="flex flex-wrap gap-4">
                     <Button type="primary" size="large" onClick={() => navigate(`/${currentLang}/community-forum`)}>
-                      {t('home.exploreCommunity', '探索社区')}
+                      {t('exploreCommunity', '探索社区')}
                     </Button>
                     <Button size="large" onClick={() => navigate(`/${currentLang}/register`)}>
-                      {t('home.signUpFree', '免费注册')}
+                      {t('signUpFree', '免费注册')}
                     </Button>
                   </div>
                 </Col>
@@ -152,19 +152,19 @@ const HomePage = () => {
                   <div className="grid grid-cols-2 gap-4">
                     <div className="text-center p-4 bg-purple-900/30 rounded-lg border border-purple-800/50">
                       <div className="text-3xl font-bold text-purple-400 mb-2">10K+</div>
-                      <div className="text-gray-400 text-sm">活跃成员</div>
+                      <div className="text-gray-400 text-sm">{t('activeMembers', '活跃成员')}</div>
                     </div>
                     <div className="text-center p-4 bg-blue-900/30 rounded-lg border border-blue-800/50">
                       <div className="text-3xl font-bold text-blue-400 mb-2">5K+</div>
-                      <div className="text-gray-400 text-sm">游戏评测</div>
+                      <div className="text-gray-400 text-sm">{t('gameReviews', '游戏评测')}</div>
                     </div>
                     <div className="text-center p-4 bg-green-900/30 rounded-lg border border-green-800/50">
                       <div className="text-3xl font-bold text-green-400 mb-2">500+</div>
-                      <div className="text-gray-400 text-sm">每月活动</div>
+                      <div className="text-gray-400 text-sm">{t('monthlyEvents', '每月活动')}</div>
                     </div>
                     <div className="text-center p-4 bg-orange-900/30 rounded-lg border border-orange-800/50">
                       <div className="text-3xl font-bold text-orange-400 mb-2">100+</div>
-                      <div className="text-gray-400 text-sm">讨论话题</div>
+                      <div className="text-gray-400 text-sm">{t('discussionTopics', '讨论话题')}</div>
                     </div>
                   </div>
                 </Col>

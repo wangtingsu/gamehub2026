@@ -37,7 +37,7 @@ const FeaturedArticles = () => {
           id: `news-${item.id}`,
           title: item.title,
           excerpt: item.summary || item.excerpt || '',
-          category: item.category || '新闻',
+          category: item.category || t('article.news', '新闻'),
           type: 'news',
           views: item.views || 0,
           likes: item.likes || 0,
@@ -53,7 +53,7 @@ const FeaturedArticles = () => {
           id: `blog-${item.id}`,
           title: item.title,
           excerpt: item.excerpt || item.summary || '',
-          category: item.category || '博客',
+          category: item.category || t('article.blog', '博客'),
           type: 'blog',
           views: item.views || 0,
           likes: item.likes || 0,
@@ -69,7 +69,7 @@ const FeaturedArticles = () => {
           id: `guide-${item.id}`,
           title: item.title,
           excerpt: item.summary || item.excerpt || '',
-          category: '攻略',
+          category: t('article.guide', '攻略'),
           type: 'guide',
           views: item.views || 0,
           likes: item.likes || 0,
@@ -89,14 +89,14 @@ const FeaturedArticles = () => {
         <div>
           <Title level={2} className="flex items-center gap-2 !text-white !mb-1">
             <ReadOutlined className="text-blue-400" />
-            {t('home.featuredArticles', '精选文章')}
+            {t('featuredArticles', '精选文章')}
           </Title>
           <Paragraph className="text-gray-400 !mb-0">
-            {t('home.featuredArticlesDesc', '编辑精选的攻略、评测与资讯')}
+            {t('featuredArticlesDesc', '编辑精选的攻略、评测与资讯')}
           </Paragraph>
         </div>
         <Button type="link" onClick={() => navigate(`/${currentLang}/news`)}>
-          {t('home.viewAll', '查看全部')} <ArrowRightOutlined />
+          {t('viewAll', '查看全部')} <ArrowRightOutlined />
         </Button>
       </div>
 
@@ -107,7 +107,7 @@ const FeaturedArticles = () => {
           ))}
         </div>
       ) : articles.length === 0 ? (
-        <div className="text-center py-12 text-gray-400">暂无精选文章</div>
+        <div className="text-center py-12 text-gray-400">{t('noFeaturedArticles', '暂无精选文章')}</div>
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
           {articles.map((article: any, index: number) => (

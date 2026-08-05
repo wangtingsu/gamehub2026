@@ -16,7 +16,9 @@
     "games": "Game Management",
     "content": "Content Management",
     "settings": "Settings",
-    "logout": "Logout"
+    "logout": "Logout",
+    "analytics": "Analytique",
+    "profiling": "Profilage"
   },
   "dashboard": {
     "title": "Admin Dashboard",
@@ -134,5 +136,19 @@
       "pending": "Pending Review",
       "rejected": "Rejected"
     }
+  },
+  "analytics": {
+    "title": "Analyse commerciale",
+    "userGrowth": "Croissance utilisateurs",
+    "gamePopularity": "Popularité des jeux",
+    "contentEngagement": "Engagement contenu",
+    "distribution": "Distribution",
+    "activeUsers": "Utilisateurs actifs"
+  },
+  "profiling": {
+    "title": "Profilage utilisateur",
+    "tags": "Tags",
+    "segments": "Segments",
+    "behavior": "Analyse comportementale"
   }
 }

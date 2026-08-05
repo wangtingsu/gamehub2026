@@ -10,7 +10,23 @@
     "community": "コミュニティ",
     "about": "会社概要",
     "admin": "管理",
-    "logout": "ログアウト"
+    "logout": "ログアウト",
+    "recommend": "おすすめ",
+    "onlineGames": "オンラインゲーム",
+    "freeGames": "無料ゲーム",
+    "cozyGames": "癒し系ゲーム",
+    "soulStation": "ソウルステーション",
+    "aiGuide": "AIガイド",
+    "aiPortrait": "AIポートレート",
+    "aiCompanion": "AIコンパニオン",
+    "communityForum": "コミュニティフォーラム",
+    "allGames": "すべてのゲーム",
+    "leaderboard": "ランキング",
+    "trending": "トレンド",
+    "discovery": "発見",
+    "more": "もっと見る",
+    "blog": "ブログ",
+    "myBlogs": "マイ記事"
   },
   "language": {
     "en": "英語",
@@ -333,5 +349,437 @@
         ]
       }
     }
+  },
+  "user": {
+    "role": {
+      "admin": "管理者",
+      "moderator": "モデレーター",
+      "user": "ユーザー",
+      "editor": "編集者"
+    },
+    "status": {
+      "active": "アクティブ",
+      "inactive": "非アクティブ",
+      "suspended": "停止中",
+      "pending": "審査中"
+    },
+    "profile": "プロフィール",
+    "settings": "設定",
+    "library": "ライブラリ",
+    "favorites": "お気に入り",
+    "reviews": "レビュー",
+    "posts": "投稿"
+  },
+  "date": {
+    "today": "今日",
+    "yesterday": "昨日",
+    "daysAgo": "{{count}}日前",
+    "justNow": "たった今",
+    "minutesAgo": "{{count}}分前",
+    "hoursAgo": "{{count}}時間前"
+  },
+  "cozyGame": {
+    "trendingBadge": "🔥 トレンド",
+    "hero": {
+      "title": "癒し系ゲームおすすめ",
+      "subtitle": "リラックスして穏やかなゲームの世界へ"
+    }
+  },
+  "freeGame": {
+    "hero": {
+      "title": "無料オンラインゲーム",
+      "subtitle": "ダウンロード不要、今すぐプレイ"
+    }
+  },
+  "aiGame": {
+    "hero": {
+      "title": "AIゲーム",
+      "subtitle": "AIが変革するゲームの未来を探る"
+    }
+  },
+  "common": {
+    "confirm": "確認",
+    "cancel": "キャンセル",
+    "save": "保存",
+    "edit": "編集",
+    "delete": "削除",
+    "search": "検索",
+    "filter": "フィルター",
+    "reset": "リセット",
+    "back": "戻る",
+    "next": "次へ",
+    "previous": "前へ",
+    "submit": "送信",
+    "retry": "再試行",
+    "more": "もっと見る",
+    "anonymous": "匿名",
+    "anonymousUser": "匿名ユーザー",
+    "operationFailed": "操作に失敗しました。再試行してください",
+    "loadFailed": "読み込み失敗",
+    "noData": "データなし",
+    "viewAll": "すべて表示"
+  },
+  "breadcrumb": {
+    "home": "ホーム",
+    "games": "ゲームライブラリ",
+    "community": "コミュニティ",
+    "blog": "ブログ",
+    "news": "ニュース"
+  },
+  "errorBoundary": {
+    "title": "アプリケーションエラー",
+    "subtitle": "問題が発生しました。エラーは記録され、調査されます。",
+    "refresh": "ページを更新",
+    "goHome": "ホームに戻る"
+  },
+  "twoFactor": {
+    "enterCode": "6桁のコードを入力してください",
+    "verifyFailed": "検証に失敗しました",
+    "title": "二要素認証",
+    "instruction": "認証アプリのコードを入力してください",
+    "account": "アカウント",
+    "alertTitle": "検証失敗",
+    "codePlaceholder": "6桁のコードを入力",
+    "verify": "検証",
+    "backToLogin": "ログインに戻る"
+  },
+  "comments": {
+    "loadFailed": "コメント読込失敗",
+    "unknownError": "不明なエラー",
+    "noComments": "コメントなし",
+    "totalCount": "全{n}コメント",
+    "placeholder": "コメントを書く...",
+    "contentRequired": "コメントを入力",
+    "loginRequired": "ログインしてください",
+    "updateSuccess": "コメント更新",
+    "createSuccess": "コメント投稿",
+    "operationFailed": "操作失敗",
+    "loginPrompt": "ログインしてコメント",
+    "loginNow": "ログイン",
+    "markdownHint": "Markdown対応 Ctrl+Enter送信",
+    "updateButton": "更新",
+    "submitButton": "投稿",
+    "loginToLike": "ログインして「いいね」",
+    "likeFailed": "失敗",
+    "deleteSuccess": "削除完了",
+    "deleteFailed": "削除失敗",
+    "edited": "(編集済)",
+    "unlike": "取消",
+    "like": "いいね",
+    "reply": "返信",
+    "deleteConfirm": "削除しますか？",
+    "replyCount": "全{n}返信",
+    "replyTo": "@{name}に返信",
+    "viewMoreReplies": "もっと見る({n})"
+  },
+  "game": {
+    "loadFailed": "読込失敗",
+    "notFound": "ゲームなし",
+    "backToList": "一覧に戻る",
+    "seoKeywords": "ゲーム詳細",
+    "tab": {
+      "overview": "概要",
+      "requirements": "動作環境",
+      "reviews": "レビュー",
+      "forum": "フォーラム"
+    },
+    "features": "特徴",
+    "feature": {
+      "awards": "受賞歴",
+      "awardDesc": "主要ゲーム賞を受賞",
+      "immersive": "没入体験",
+      "immersiveDesc": "美しい映像と音楽",
+      "multiplayer": "マルチ",
+      "multiplayerDesc": "友達とオンラインプレイ",
+      "liveService": "継続更新",
+      "liveServiceDesc": "定期的なコンテンツ更新"
+    },
+    "req": {
+      "os": "OS",
+      "processor": "CPU",
+      "memory": "メモリ",
+      "graphics": "GPU",
+      "storage": "容量",
+      "directX": "DirectX",
+      "storageValue": "80GBの空き容量"
+    },
+    "noReviews": "レビューなし",
+    "beFirstReviewer": "最初のレビューを書こう！",
+    "writeReview": "レビューを書く",
+    "playerReviews": "プレイヤーレビュー({n})",
+    "noForumPosts": "投稿なし",
+    "beFirstPoster": "最初の投稿をしよう！",
+    "gameForum": "フォーラム({n})",
+    "viewAllPosts": "すべて表示",
+    "newPost": "投稿",
+    "developer": "開発元",
+    "publisher": "販売元",
+    "releaseDate": "発売日",
+    "platforms": "対応機種",
+    "genres": "ジャンル",
+    "buyNow": "今すぐ購入",
+    "shareGame": "共有",
+    "overallRating": "総合評価",
+    "basedOnReviews": "{n}件のレビュー",
+    "similarGames": "類似ゲーム",
+    "usersAlsoLiked": "おすすめ",
+    "rating": {
+      "gameplay": "ゲーム性",
+      "graphics": "グラフィック",
+      "story": "ストーリー",
+      "audio": "音楽",
+      "value": "コスパ"
+    }
+  },
+  "messages": {
+    "sendFailed": "送信失敗",
+    "deleted": "削除済",
+    "deleteFailed": "削除失敗",
+    "cleared": "クリア済",
+    "clearFailed": "クリア失敗",
+    "clearTitle": "チャット消去",
+    "clearConfirm": "すべてのメッセージを消去しますか？",
+    "clearOk": "消去",
+    "clearButton": "消去",
+    "seoTitle": "メッセージ",
+    "defaultUser": "ユーザー",
+    "noMessages": "メッセージなし",
+    "deleteConfirm": "削除しますか？",
+    "inputPlaceholder": "メッセージ入力、Enter送信",
+    "send": "送信"
+  },
+  "cart": {
+    "added": "「{title}」をカートに追加",
+    "alreadyInCart": "「{title}」は既にカートにあります",
+    "addFailed": "追加失敗",
+    "addToCart": "カートに入れる"
+  },
+  "favorites": {
+    "loginRequired": "ログインしてお気に入り登録",
+    "removed": "お気に入り解除",
+    "added": "お気に入り追加",
+    "saved": "お気に入り済",
+    "save": "お気に入り",
+    "addToFavorites": "お気に入り追加"
+  },
+  "editor": {
+    "imageUploadFailed": "アップロード失敗",
+    "imageInserted": "画像挿入完了",
+    "imageUrlInserted": "画像URL挿入完了",
+    "selectLocalImage": "ローカル画像を選択",
+    "uploadImage": "画像アップロード",
+    "pasteImageUrl": "画像URLを貼り付け",
+    "imageUrl": "画像URL",
+    "dragOrPasteHint": "画像をドラッグまたはCtrl+Vで貼り付け",
+    "markdownPlaceholder": "Markdownで記述、画像をドラッグ/貼り付け...",
+    "dropToUpload": "ドロップしてアップロード",
+    "supportedFormats": "JPG、PNG、GIF、WebP対応",
+    "shortcuts": "ショートカット：",
+    "shortcutsHint": "文字選択後ツールバーで書式設定",
+    "images": "画像：",
+    "imageHint": "ドラッグ/貼り付け/クリック",
+    "preview": "プレビュー：",
+    "previewHint": "目のアイコンをクリック",
+    "insertImageUrl": "画像URL挿入",
+    "insert": "挿入",
+    "imageUrlLabel": "画像URL",
+    "imageUrlHint": "オンライン画像のURLを貼り付け..."
+  },
+  "community": {
+    "seoTitle": "コミュニティ",
+    "seoDesc": "コミュニティフォーラム",
+    "title": "コミュニティフォーラム",
+    "subtitle": "ゲーム別に議論やレビューを閲覧",
+    "searchPlaceholder": "ゲーム名検索...",
+    "searchButton": "検索",
+    "errorLoad": "読込失敗",
+    "errorLoadDesc": "再試行してください",
+    "retry": "再試行",
+    "empty": "まだ活動なし",
+    "emptyHint": "ゲーム発売後に投稿できます",
+    "searchHint": "他のキーワードを試す",
+    "noSearchResults": "\"{q}\"に一致なし",
+    "gameCount": "コミュニティ",
+    "postCountUnit": "投稿",
+    "totalCount": "全{n}コミュニティ",
+    "myFollowed": "フォロー中",
+    "noFollowed": "なし",
+    "relatedGames": "関連ゲーム",
+    "pinned": "固定",
+    "locked": "ロック",
+    "loginToViewComments": "ログインして閲覧",
+    "postNotFound": "投稿なし",
+    "time": {
+      "today": "今日",
+      "yesterday": "昨日",
+      "daysAgo": "{n}日前"
+    },
+    "seoKeywords": "コミュニティ,ゲーム掲示板"
+  },
+  "discovery": {
+    "seoTitle": "発見",
+    "seoDesc": "トレンドとランキング",
+    "title": "発見",
+    "tab": {
+      "trends": "トレンド",
+      "leaderboard": "ランキング",
+      "stats": "統計"
+    },
+    "searchTrendsTitle": "検索トレンド(30日)",
+    "chart": {
+      "searchCount": "検索数",
+      "uniqueQueries": "ユニーク検索"
+    },
+    "noTrendData": "データなし",
+    "leaderboardTitle": "ランキング",
+    "lb": {
+      "rating": "高評価",
+      "reviews": "最多レビュー",
+      "favorites": "最多お気に入り",
+      "discussions": "最多議論"
+    },
+    "noLbData": "データなし",
+    "platformDist": "機種分布",
+    "genreDist": "ジャンル分布",
+    "communityOverview": "コミュニティ概要",
+    "stat": {
+      "totalUsers": "総ユーザー",
+      "totalGames": "総ゲーム",
+      "totalReviews": "総レビュー",
+      "totalPosts": "総投稿",
+      "newUsersToday": "本日の新規",
+      "activeUsers": "アクティブ(7d)"
+    },
+    "noData": "データなし",
+    "noCommunityData": "データなし"
+  },
+  "home": {
+    "banner": {
+      "hotPromo": "ゲームセール",
+      "hotPromoSub": "最大70%オフ",
+      "newGames": "新着ゲーム",
+      "newGamesSub": "今月の期待作",
+      "awards2026": "2026年ゲーム大賞",
+      "awards2026Sub": "お気に入りに投票",
+      "learnMore": "詳細",
+      "previous": "前へ",
+      "next": "次へ",
+      "switchTo": "{n}枚目に切替"
+    }
+  },
+  "redeem": {
+    "copied": "コピー済",
+    "success": "交換完了！",
+    "failed": "交換失敗",
+    "noCodes": "コードなし",
+    "copyCode": "コピー",
+    "remaining": "残り:",
+    "redeemed": "交換済",
+    "redeemNow": "今すぐ交換",
+    "loginToRedeem": "ログインして交換",
+    "labels": {
+      "discount": "割引",
+      "free_game": "無料ゲーム",
+      "points": "ポイント",
+      "item": "アイテム"
+    }
+  },
+  "about": {
+    "seoTitle": "GameHubについて",
+    "seoDescription": "ゲーム愛好家のためのコミュニティ",
+    "seoKeywords": "GameHub,会社概要",
+    "fallbackNotice": "一部読込失敗、デフォルト表示",
+    "reload": "再読込",
+    "title": "GameHubについて",
+    "description": "ゲーム愛好家のためのコミュニティ",
+    "mission": "ミッション",
+    "missionDesc": "すべてのゲーマーをつなぐ",
+    "vision": "ビジョン",
+    "visionDesc": "最も信頼されるゲームコミュニティへ",
+    "coreValues": "価値観",
+    "timeline": "沿革",
+    "contactUs": "お問合せ",
+    "contactDesc": "ご質問・ご提案・協業のご相談",
+    "email": "メール",
+    "community": "コミュニティ",
+    "joinDiscord": "Discordに参加",
+    "business": "ビジネス"
+  },
+  "ai": {
+    "seoTitle": "AIアシスタント",
+    "seoDescription": "GameHub AIアシスタント",
+    "title": "AIアシスタント",
+    "subtitle": "AIゲーミングコンパニオン",
+    "tips": "ヒント",
+    "tip1": {
+      "title": "AIチャット",
+      "desc": "AIとゲーム談義"
+    },
+    "tip2": {
+      "title": "AIガイド",
+      "desc": "攻略・動画を検索"
+    },
+    "soul": {
+      "title": "ソウルステーション",
+      "desc": "ゲーム体験を共有"
+    },
+    "guide": {
+      "title": "AIガイド",
+      "desc": "攻略情報を検索"
+    },
+    "companion": {
+      "title": "AIコンパニオン",
+      "desc": "性格診断でゲーム推薦"
+    }
+  },
+  "category": {
+    "recommended": {
+      "title": "おすすめ",
+      "desc": "厳選おすすめゲーム",
+      "seoTitle": "おすすめ | GGHubs"
+    },
+    "topUp": {
+      "title": "チャージ",
+      "desc": "デジタル版購入可能",
+      "seoTitle": "チャージ | GGHubs"
+    },
+    "indie": {
+      "title": "インディー",
+      "desc": "インディーゲーム",
+      "seoTitle": "インディー | GGHubs"
+    },
+    "filters": {
+      "genreOptions": "全部,RPG,アクション,冒険,戦略,SF,ファンタジー,ソウル,魔法",
+      "searchPlaceholder": "ゲーム検索...",
+      "searchButton": "検索",
+      "filterGenre": "ジャンル",
+      "filterPlatform": "機種",
+      "resetFilters": "リセット",
+      "priceRange": "価格帯",
+      "minRating": "最低評価",
+      "unlimited": "不問",
+      "stars": "星",
+      "noResults": "一致なし",
+      "showingGames": "{n}件表示(全{m}件)"
+    }
+  },
+  "blog": {
+    "space": {
+      "notFound": "スペースなし",
+      "noArticles": "記事なし",
+      "loadFailed": "読込失敗",
+      "retry": "再試行",
+      "searchPlaceholder": "記事検索...",
+      "exploreMore": "もっと見る",
+      "noOtherSpaces": "他にスペースなし",
+      "tabLabels": {
+        "blog": "ブログ",
+        "guide": "ガイド",
+        "review": "レビュー"
+      }
+    },
+    "gameSection": "ゲームセクション",
+    "title": "ブログスペース",
+    "subtitle": "ゲームブログ、お気に入りの記事を見つけよう"
   }
 }

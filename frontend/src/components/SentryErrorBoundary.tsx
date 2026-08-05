@@ -2,6 +2,8 @@ import React, { Component, ErrorInfo, ReactNode } from 'react';
 import * as Sentry from '@sentry/react';
 import { Button, Result } from 'antd';
 import { HomeOutlined, ReloadOutlined } from '@ant-design/icons';
+import i18n from '../i18n';
+const t = (key: string, fallback: string) => i18n.t(key, fallback);
 
 /**
  * SentryErrorBoundary 组件的属性接口
@@ -136,8 +138,8 @@ class SentryErrorBoundary extends Component<Props, State> {
       <div className="flex items-center justify-center min-h-screen bg-gray-50">
         <Result
           status="error"
-          title="应用出现错误"
-          subTitle="抱歉，应用遇到了问题。我们已经记录了这个错误，请尝试刷新页面或返回首页。"
+          title={t('errorBoundary.title', '应用出现错误')}
+          subTitle={t('errorBoundary.subtitle', '抱歉，应用遇到了问题。我们已经记录了这个错误，请尝试刷新页面或返回首页。')}
           extra={[
             <Button
               key="reload"
@@ -146,14 +148,14 @@ class SentryErrorBoundary extends Component<Props, State> {
               onClick={this.handleReload}
               className="mr-4"
             >
-              刷新页面
+              {t('errorBoundary.refresh', '刷新页面')}
             </Button>,
             <Button
               key="home"
               icon={<HomeOutlined />}
               onClick={this.handleGoHome}
             >
-              返回首页
+              {t('errorBoundary.goHome', '返回首页')}
             </Button>,
           ]}
         />

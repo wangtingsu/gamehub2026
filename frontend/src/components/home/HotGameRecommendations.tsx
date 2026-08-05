@@ -29,14 +29,14 @@ const HotGameRecommendations = () => {
         <div>
           <Title level={2} className="flex items-center gap-2 !text-white !mb-1">
             <FireOutlined className="text-red-500" />
-            {t('home.hotGames', '热门游戏推荐')}
+            {t('hotGames', '热门游戏推荐')}
           </Title>
           <Paragraph className="text-gray-400 !mb-0">
-            {t('home.hotGamesDesc', '当前社区最热门的游戏，看看大家都在玩什么')}
+            {t('hotGamesDesc', '当前社区最热门的游戏，看看大家都在玩什么')}
           </Paragraph>
         </div>
         <Button type="link" onClick={() => navigate(`/${currentLang}/games/category/trending`)}>
-          {t('home.viewAll', '查看全部')} <ArrowRightOutlined />
+          {t('viewAll', '查看全部')} <ArrowRightOutlined />
         </Button>
       </div>
 
@@ -47,7 +47,7 @@ const HotGameRecommendations = () => {
           ))}
         </div>
       ) : games.length === 0 ? (
-        <div className="text-center py-12 text-gray-400">暂无热门游戏</div>
+        <div className="text-center py-12 text-gray-400">{t('noHotGames', '暂无热门游戏')}</div>
       ) : (
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-4">
           {games.map((item: any, index: number) => (

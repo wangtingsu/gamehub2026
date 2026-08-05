@@ -16,7 +16,9 @@
     "games": "Game Management",
     "content": "Content Management",
     "settings": "Settings",
-    "logout": "Logout"
+    "logout": "Logout",
+    "analytics": "분석",
+    "profiling": "사용자 분석"
   },
   "dashboard": {
     "title": "Admin Dashboard",
@@ -134,5 +136,19 @@
       "pending": "Pending Review",
       "rejected": "Rejected"
     }
+  },
+  "analytics": {
+    "title": "비즈니스 분석",
+    "userGrowth": "사용자 성장",
+    "gamePopularity": "게임 인기도",
+    "contentEngagement": "콘텐츠 참여",
+    "distribution": "분포",
+    "activeUsers": "활성 사용자"
+  },
+  "profiling": {
+    "title": "사용자 분석",
+    "tags": "태그",
+    "segments": "세그먼트",
+    "behavior": "행동 분석"
   }
 }

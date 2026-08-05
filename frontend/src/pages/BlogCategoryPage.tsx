@@ -2,21 +2,23 @@ import { useState, useEffect } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import { Typography, Pagination, Spin, Alert, Empty, Tag, Button } from 'antd';
 import { ArrowLeftOutlined, CalendarOutlined, EyeOutlined, LikeOutlined, MessageOutlined } from '@ant-design/icons';
+import { useTranslation } from 'react-i18next';
 import apiService from '../api';
 import SEO from '../components/SEO';
 
 const { Title, Text } = Typography;
 
-const LABELS: Record<string, { label: string; icon: string; color: string }> = {
-  blog: { label: '博客', icon: '📝', color: '#3b82f6' },
-  guide: { label: '攻略', icon: '📖', color: '#8b5cf6' },
-  review: { label: '评测', icon: '⭐', color: '#10b981' },
-};
-
 const BlogCategoryPage = () => {
   const { slug, postType, lang } = useParams<{ slug: string; postType: string; lang: string }>();
   const navigate = useNavigate();
+  const { t } = useTranslation();
   const currentLang = lang || 'cn';
+
+  const LABELS: Record<string, { label: string; icon: string; color: string }> = {
+    blog: { label: t('blog.space.tabLabels.blog', '博客'), icon: '📝', color: '#3b82f6' },
+    guide: { label: t('blog.space.tabLabels.guide', '攻略'), icon: '📖', color: '#8b5cf6' },
+    review: { label: t('blog.space.tabLabels.review', '评测'), icon: '⭐', color: '#10b981' },
+  };
   const cat = LABELS[postType || 'blog'] || LABELS.blog;
 
   const [space, setSpace] = useState<any>(null);
@@ -34,7 +36,7 @@ const BlogCategoryPage = () => {
       try {
         const detail = await apiService.getSpaceDetail(slug || '');
         if (cancelled) return;
-        if (!detail) { setError('空间不存在'); setLoading(false); return; }
+        if (!detail) { setError(t('blog.space.notFound', '空间不存在')); setLoading(false); return; }
         setSpace(detail);
 
         const res = await apiService.getSpaceArticlesByCategory(detail.id, postType || 'blog', { page, limit: pageSize });
@@ -43,7 +45,7 @@ const BlogCategoryPage = () => {
           setTotal(res.total || 0);
         }
       } catch (e: any) {
-        if (!cancelled) setError(e?.message || '加载失败');
+        if (!cancelled) setError(e?.message || t('blog.space.loadFailed', '加载失败'));
       } finally {
         if (!cancelled) setLoading(false);
       }
@@ -74,14 +76,14 @@ const BlogCategoryPage = () => {
         </div>
 
         {error && (
-          <Alert type="error" message="加载失败" description={error} showIcon className="mb-6"
+          <Alert type="error" message={t('blog.space.loadFailed', '加载失败')} description={error} showIcon className="mb-6"
             action={<Button onClick={() => window.location.reload()}>重试</Button>} />
         )}
 
         {loading ? (
           <div className="flex justify-center py-20"><Spin size="large" /></div>
         ) : articles.length === 0 ? (
-          <Empty description="暂无文章" />
+          <Empty description={t('blog.space.noArticles', '暂无文章')} />
         ) : (
           <div className="bg-dark-800 rounded-lg border border-dark-700 divide-y divide-dark-700">
             {articles.map((article: any) => (

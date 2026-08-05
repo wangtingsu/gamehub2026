@@ -38,14 +38,14 @@ const HotDiscussions = () => {
         <div>
           <Title level={2} className="flex items-center gap-2 !text-white !mb-1">
             <TeamOutlined className="text-orange-400" />
-            {t('home.hotDiscussions', '热门讨论')}
+            {t('hotDiscussions', '热门讨论')}
           </Title>
           <Paragraph className="text-gray-400 !mb-0">
-            {t('home.hotDiscussionsDesc', '社区中最活跃的话题讨论')}
+            {t('hotDiscussionsDesc', '社区中最活跃的话题讨论')}
           </Paragraph>
         </div>
         <Button type="link" onClick={() => navigate(`/${currentLang}/community-forum`)}>
-          {t('home.viewAll', '查看全部')} <ArrowRightOutlined />
+          {t('viewAll', '查看全部')} <ArrowRightOutlined />
         </Button>
       </div>
 
@@ -56,7 +56,7 @@ const HotDiscussions = () => {
           ))}
         </div>
       ) : hotPosts.length === 0 ? (
-        <div className="text-center py-12 text-gray-400">暂无热门讨论</div>
+        <div className="text-center py-12 text-gray-400">{t('noDiscussions', '暂无热门讨论')}</div>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
           {hotPosts.map((post: any, index: number) => (
@@ -89,14 +89,14 @@ const HotDiscussions = () => {
                     <div className="flex items-center gap-4 text-gray-500 text-xs">
                       <span className="flex items-center gap-1">
                         <FireOutlined className="text-orange-400" />
-                        {post.likes || 0} 热度
+                        {post.likes || 0} {t('heat', '热度')}
                       </span>
                       <span className="flex items-center gap-1">
                         <MessageOutlined />
-                        {post.replyCount || post.commentCount || 0} 回复
+                        {post.replyCount || post.commentCount || 0} {t('replies', '回复')}
                       </span>
                       <span className="text-gray-600 truncate ml-auto">
-                        {post.authorName || post.author || '匿名'}
+                        {post.authorName || post.author || t('common.anonymous', '匿名')}
                       </span>
                     </div>
                     {post.category && (

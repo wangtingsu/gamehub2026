@@ -10,7 +10,23 @@
     "community": "커뮤니티",
     "about": "회사소개",
     "admin": "관리자",
-    "logout": "로그아웃"
+    "logout": "로그아웃",
+    "recommend": "추천",
+    "onlineGames": "온라인 게임",
+    "freeGames": "무료 게임",
+    "cozyGames": "힐링 게임",
+    "soulStation": "소울 스테이션",
+    "aiGuide": "AI 가이드",
+    "aiPortrait": "AI 초상화",
+    "aiCompanion": "AI 동반자",
+    "communityForum": "커뮤니티 포럼",
+    "allGames": "모든 게임",
+    "leaderboard": "리더보드",
+    "trending": "트렌딩",
+    "discovery": "발견",
+    "more": "더 보기",
+    "blog": "블로그",
+    "myBlogs": "내 글"
   },
   "language": {
     "en": "영어",
@@ -333,5 +349,437 @@
         ]
       }
     }
+  },
+  "user": {
+    "role": {
+      "admin": "관리자",
+      "moderator": "모더레이터",
+      "user": "사용자",
+      "editor": "편집자"
+    },
+    "status": {
+      "active": "활성",
+      "inactive": "비활성",
+      "suspended": "정지됨",
+      "pending": "대기 중"
+    },
+    "profile": "프로필",
+    "settings": "설정",
+    "library": "라이브러리",
+    "favorites": "즐겨찾기",
+    "reviews": "리뷰",
+    "posts": "게시물"
+  },
+  "date": {
+    "today": "오늘",
+    "yesterday": "어제",
+    "daysAgo": "{{count}}일 전",
+    "justNow": "방금",
+    "minutesAgo": "{{count}}분 전",
+    "hoursAgo": "{{count}}시간 전"
+  },
+  "cozyGame": {
+    "trendingBadge": "🔥 트렌드",
+    "hero": {
+      "title": "힐링 게임 추천",
+      "subtitle": "편안한 게임 세계로 떠나보세요"
+    }
+  },
+  "freeGame": {
+    "hero": {
+      "title": "무료 온라인 게임",
+      "subtitle": "다운로드 없이 바로 플레이"
+    }
+  },
+  "aiGame": {
+    "hero": {
+      "title": "AI 게임",
+      "subtitle": "AI가 변화시키는 게임의 미래"
+    }
+  },
+  "common": {
+    "confirm": "확인",
+    "cancel": "취소",
+    "save": "저장",
+    "edit": "편집",
+    "delete": "삭제",
+    "search": "검색",
+    "filter": "필터",
+    "reset": "초기화",
+    "back": "뒤로",
+    "next": "다음",
+    "previous": "이전",
+    "submit": "제출",
+    "retry": "재시도",
+    "more": "더 보기",
+    "anonymous": "익명",
+    "anonymousUser": "익명 사용자",
+    "operationFailed": "작업 실패, 다시 시도해주세요",
+    "loadFailed": "로드 실패",
+    "noData": "데이터 없음",
+    "viewAll": "전체 보기"
+  },
+  "breadcrumb": {
+    "home": "홈",
+    "games": "게임 라이브러리",
+    "community": "커뮤니티",
+    "blog": "블로그",
+    "news": "뉴스"
+  },
+  "errorBoundary": {
+    "title": "애플리케이션 오류",
+    "subtitle": "문제가 발생했습니다. 오류가 기록되었습니다.",
+    "refresh": "페이지 새로고침",
+    "goHome": "홈으로 이동"
+  },
+  "twoFactor": {
+    "enterCode": "6자리 코드를 입력하세요",
+    "verifyFailed": "인증 실패, 다시 시도하세요",
+    "title": "2단계 인증",
+    "instruction": "인증 앱의 코드를 입력하세요",
+    "account": "계정",
+    "alertTitle": "인증 실패",
+    "codePlaceholder": "6자리 코드 입력",
+    "verify": "인증",
+    "backToLogin": "로그인으로 돌아가기"
+  },
+  "comments": {
+    "loadFailed": "댓글 로드 실패",
+    "unknownError": "알수없는 오류",
+    "noComments": "댓글 없음",
+    "totalCount": "총 {n}개 댓글",
+    "placeholder": "댓글 작성...",
+    "contentRequired": "내용을 입력하세요",
+    "loginRequired": "로그인 필요",
+    "updateSuccess": "댓글 수정됨",
+    "createSuccess": "댓글 게시됨",
+    "operationFailed": "작업 실패",
+    "loginPrompt": "로그인하여 댓글 작성",
+    "loginNow": "로그인",
+    "markdownHint": "Markdown 지원, Ctrl+Enter",
+    "updateButton": "수정",
+    "submitButton": "게시",
+    "loginToLike": "로그인 필요",
+    "likeFailed": "실패",
+    "deleteSuccess": "삭제됨",
+    "deleteFailed": "삭제 실패",
+    "edited": "(편집됨)",
+    "unlike": "취소",
+    "like": "좋아요",
+    "reply": "답글",
+    "deleteConfirm": "삭제하시겠습니까?",
+    "replyCount": "총 {n}개 답글",
+    "replyTo": "@{name}에게 답글",
+    "viewMoreReplies": "더보기 ({n})"
+  },
+  "game": {
+    "loadFailed": "로드 실패",
+    "notFound": "게임 없음",
+    "backToList": "목록으로",
+    "seoKeywords": "게임 상세",
+    "tab": {
+      "overview": "개요",
+      "requirements": "시스템 요구사항",
+      "reviews": "리뷰",
+      "forum": "포럼"
+    },
+    "features": "특징",
+    "feature": {
+      "awards": "수상 경력",
+      "awardDesc": "주요 게임상 수상",
+      "immersive": "몰입감",
+      "immersiveDesc": "뛰어난 영상과 사운드",
+      "multiplayer": "멀티플레이",
+      "multiplayerDesc": "친구와 온라인 플레이",
+      "liveService": "지속 업데이트",
+      "liveServiceDesc": "정기 콘텐츠 업데이트"
+    },
+    "req": {
+      "os": "OS",
+      "processor": "CPU",
+      "memory": "메모리",
+      "graphics": "GPU",
+      "storage": "저장공간",
+      "directX": "DirectX",
+      "storageValue": "80GB 여유 공간"
+    },
+    "noReviews": "리뷰 없음",
+    "beFirstReviewer": "첫 리뷰를 작성하세요!",
+    "writeReview": "리뷰 작성",
+    "playerReviews": "플레이어 리뷰({n})",
+    "noForumPosts": "게시물 없음",
+    "beFirstPoster": "첫 게시물을 작성하세요!",
+    "gameForum": "게임 포럼({n})",
+    "viewAllPosts": "전체 보기",
+    "newPost": "글쓰기",
+    "developer": "개발사",
+    "publisher": "퍼블리셔",
+    "releaseDate": "출시일",
+    "platforms": "플랫폼",
+    "genres": "장르",
+    "buyNow": "구매하기",
+    "shareGame": "공유",
+    "overallRating": "종합 평점",
+    "basedOnReviews": "{n}개 리뷰 기반",
+    "similarGames": "비슷한 게임",
+    "usersAlsoLiked": "추천 게임",
+    "rating": {
+      "gameplay": "게임성",
+      "graphics": "그래픽",
+      "story": "스토리",
+      "audio": "사운드",
+      "value": "가성비"
+    }
+  },
+  "messages": {
+    "sendFailed": "전송 실패",
+    "deleted": "삭제됨",
+    "deleteFailed": "삭제 실패",
+    "cleared": "비움",
+    "clearFailed": "비우기 실패",
+    "clearTitle": "대화 비우기",
+    "clearConfirm": "모든 메시지를 삭제하시겠습니까?",
+    "clearOk": "확인",
+    "clearButton": "비우기",
+    "seoTitle": "메시지",
+    "defaultUser": "사용자",
+    "noMessages": "메시지 없음",
+    "deleteConfirm": "삭제하시겠습니까?",
+    "inputPlaceholder": "메시지 입력, Enter 전송",
+    "send": "전송"
+  },
+  "cart": {
+    "added": "\"{title}\" 장바구니 추가됨",
+    "alreadyInCart": "\"{title}\" 이미 장바구니에 있음",
+    "addFailed": "추가 실패",
+    "addToCart": "장바구니 추가"
+  },
+  "favorites": {
+    "loginRequired": "로그인 후 즐겨찾기",
+    "removed": "즐겨찾기 해제",
+    "added": "즐겨찾기 추가",
+    "saved": "저장됨",
+    "save": "저장",
+    "addToFavorites": "즐겨찾기 추가"
+  },
+  "editor": {
+    "imageUploadFailed": "업로드 실패",
+    "imageInserted": "이미지 삽입됨",
+    "imageUrlInserted": "URL 삽입됨",
+    "selectLocalImage": "로컬 이미지 선택",
+    "uploadImage": "이미지 업로드",
+    "pasteImageUrl": "URL 붙여넣기",
+    "imageUrl": "이미지 URL",
+    "dragOrPasteHint": "드래그 또는 Ctrl+V",
+    "markdownPlaceholder": "Markdown 작성, 드래그/붙여넣기...",
+    "dropToUpload": "드롭하여 업로드",
+    "supportedFormats": "JPG,PNG,GIF,WebP 지원",
+    "shortcuts": "단축키:",
+    "shortcutsHint": "텍스트 선택 후 도구 클릭",
+    "images": "이미지:",
+    "imageHint": "드래그/붙여넣기/클릭",
+    "preview": "미리보기:",
+    "previewHint": "눈 아이콘 클릭",
+    "insertImageUrl": "URL 삽입",
+    "insert": "삽입",
+    "imageUrlLabel": "URL",
+    "imageUrlHint": "온라인 이미지 URL 붙여넣기..."
+  },
+  "community": {
+    "seoTitle": "커뮤니티",
+    "seoDesc": "커뮤니티 포럼",
+    "title": "커뮤니티 포럼",
+    "subtitle": "게임별 토론과 리뷰를 찾아보세요",
+    "searchPlaceholder": "게임명 검색...",
+    "searchButton": "검색",
+    "errorLoad": "로드 실패",
+    "errorLoadDesc": "재시도하세요",
+    "retry": "재시도",
+    "empty": "활동 없음",
+    "emptyHint": "게임 출시 후 게시 가능",
+    "searchHint": "다른 키워드 시도",
+    "noSearchResults": "\"{q}\" 결과 없음",
+    "gameCount": "개 커뮤니티",
+    "postCountUnit": "게시물",
+    "totalCount": "총 {n}개 커뮤니티",
+    "myFollowed": "팔로잉",
+    "noFollowed": "없음",
+    "relatedGames": "관련 게임",
+    "pinned": "고정",
+    "locked": "잠금",
+    "loginToViewComments": "로그인 필요",
+    "postNotFound": "게시물 없음",
+    "time": {
+      "today": "오늘",
+      "yesterday": "어제",
+      "daysAgo": "{n}일 전"
+    },
+    "seoKeywords": "커뮤니티,게임토론"
+  },
+  "discovery": {
+    "seoTitle": "발견",
+    "seoDesc": "트렌드와 랭킹",
+    "title": "발견",
+    "tab": {
+      "trends": "트렌드",
+      "leaderboard": "리더보드",
+      "stats": "통계"
+    },
+    "searchTrendsTitle": "검색 트렌드(30일)",
+    "chart": {
+      "searchCount": "검색 수",
+      "uniqueQueries": "고유 검색어"
+    },
+    "noTrendData": "데이터 없음",
+    "leaderboardTitle": "랭킹",
+    "lb": {
+      "rating": "최고 평점",
+      "reviews": "최다 리뷰",
+      "favorites": "최다 즐겨찾기",
+      "discussions": "최다 토론"
+    },
+    "noLbData": "데이터 없음",
+    "platformDist": "플랫폼 분포",
+    "genreDist": "장르 분포",
+    "communityOverview": "커뮤니티 개요",
+    "stat": {
+      "totalUsers": "전체 사용자",
+      "totalGames": "전체 게임",
+      "totalReviews": "전체 리뷰",
+      "totalPosts": "전체 게시물",
+      "newUsersToday": "오늘 신규",
+      "activeUsers": "활성(7일)"
+    },
+    "noData": "데이터 없음",
+    "noCommunityData": "데이터 없음"
+  },
+  "home": {
+    "banner": {
+      "hotPromo": "게임 할인",
+      "hotPromoSub": "최대 70% 할인",
+      "newGames": "신작 추천",
+      "newGamesSub": "이달의 기대작",
+      "awards2026": "2026 게임 어워드",
+      "awards2026Sub": "좋아하는 게임에 투표",
+      "learnMore": "자세히",
+      "previous": "이전",
+      "next": "다음",
+      "switchTo": "{n}번째로 전환"
+    }
+  },
+  "redeem": {
+    "copied": "복사됨",
+    "success": "교환 완료!",
+    "failed": "교환 실패",
+    "noCodes": "코드 없음",
+    "copyCode": "복사",
+    "remaining": "남음:",
+    "redeemed": "교환됨",
+    "redeemNow": "교환하기",
+    "loginToRedeem": "로그인 후 교환",
+    "labels": {
+      "discount": "할인",
+      "free_game": "무료 게임",
+      "points": "포인트",
+      "item": "아이템"
+    }
+  },
+  "about": {
+    "seoTitle": "GameHub 소개",
+    "seoDescription": "게임 애호가를 위한 커뮤니티",
+    "seoKeywords": "GameHub,소개",
+    "fallbackNotice": "일부 로드 실패, 기본 표시",
+    "reload": "새로고침",
+    "title": "GameHub 소개",
+    "description": "게임 애호가를 위한 커뮤니티",
+    "mission": "미션",
+    "missionDesc": "모든 게이머를 연결",
+    "vision": "비전",
+    "visionDesc": "가장 신뢰받는 게임 커뮤니티",
+    "coreValues": "핵심 가치",
+    "timeline": "연혁",
+    "contactUs": "문의하기",
+    "contactDesc": "질문, 제안, 협업 문의",
+    "email": "이메일",
+    "community": "커뮤니티",
+    "joinDiscord": "Discord 참여",
+    "business": "비즈니스"
+  },
+  "ai": {
+    "seoTitle": "AI 어시스턴트",
+    "seoDescription": "GameHub AI 어시스턴트",
+    "title": "AI 어시스턴트",
+    "subtitle": "AI 게이밍 도우미",
+    "tips": "팁",
+    "tip1": {
+      "title": "AI 채팅",
+      "desc": "AI와 게임 대화"
+    },
+    "tip2": {
+      "title": "AI 가이드",
+      "desc": "공략과 영상 검색"
+    },
+    "soul": {
+      "title": "소울 스테이션",
+      "desc": "게임 이야기 공유"
+    },
+    "guide": {
+      "title": "AI 가이드",
+      "desc": "공략 검색"
+    },
+    "companion": {
+      "title": "AI 동반자",
+      "desc": "성격 테스트로 게임 추천"
+    }
+  },
+  "category": {
+    "recommended": {
+      "title": "추천",
+      "desc": "엄선 추천 게임",
+      "seoTitle": "추천 | GGHubs"
+    },
+    "topUp": {
+      "title": "충전",
+      "desc": "디지털 구매 가능",
+      "seoTitle": "충전 | GGHubs"
+    },
+    "indie": {
+      "title": "인디",
+      "desc": "인디 게임",
+      "seoTitle": "인디 | GGHubs"
+    },
+    "filters": {
+      "genreOptions": "전체,RPG,액션,어드벤처,전략,SF,판타지,소울,마법",
+      "searchPlaceholder": "게임 검색...",
+      "searchButton": "검색",
+      "filterGenre": "장르",
+      "filterPlatform": "플랫폼",
+      "resetFilters": "초기화",
+      "priceRange": "가격대",
+      "minRating": "최소 평점",
+      "unlimited": "제한없음",
+      "stars": "점",
+      "noResults": "일치 없음",
+      "showingGames": "{n}개 표시(총 {m}개)"
+    }
+  },
+  "blog": {
+    "space": {
+      "notFound": "공간 없음",
+      "noArticles": "글 없음",
+      "loadFailed": "로드 실패",
+      "retry": "재시도",
+      "searchPlaceholder": "글 검색...",
+      "exploreMore": "더 보기",
+      "noOtherSpaces": "다른 공간 없음",
+      "tabLabels": {
+        "blog": "블로그",
+        "guide": "가이드",
+        "review": "리뷰"
+      }
+    },
+    "gameSection": "게임 섹션",
+    "title": "블로그 공간",
+    "subtitle": "게임 블로그, 관심 있는 글을 발견하세요"
   }
 }

@@ -32,15 +32,29 @@
     "achievements": "Achievements",
     "about": "About",
     "admin": "Admin",
-    "login": "Sign In",
-    "logout": "Sign Out",
+    "login": "Login",
+    "logout": "Logout",
     "profile": "Profile",
     "dashboard": "Dashboard",
     "users": "Users",
     "content": "Content",
     "settings": "Settings",
+    "onlineGames": "Online Games",
+    "recommend": "Recommended",
+    "freeGames": "Free Games",
+    "cozyGames": "Cozy Games",
+    "soulStation": "Soul Station",
+    "aiGuide": "AI Guide",
+    "aiPortrait": "AI Portrait",
+    "aiCompanion": "AI Companion",
+    "communityForum": "Community Forum",
+    "allGames": "All Games",
+    "leaderboard": "Leaderboard",
+    "trending": "Trending",
+    "discovery": "Discovery",
+    "more": "More",
     "blog": "Blog",
-    "more": "more"
+    "myBlogs": "My Articles"
   },
   "auth": {
     "login": "Login",
@@ -182,8 +196,14 @@
       "news": "News",
       "reviews": "Reviews",
       "topRated": "Top Rated",
+      "cozyGames": "Cozy Games",
+      "onlineGames": "Online Games",
+      "freeGames": "Free Games",
+      "aiGaming": "AI Gaming",
       "forums": "Forums",
       "guides": "Guides",
+      "trending": "Trending",
+      "leaderboard": "Leaderboard",
       "events": "Events",
       "discord": "Discord",
       "aboutUs": "About Us",
@@ -193,10 +213,7 @@
       "privacyPolicy": "Privacy Policy",
       "termsOfService": "Terms of Service",
       "cookiePolicy": "Cookie Policy",
-      "codeOfConduct": "Code of Conduct",
-      "cozyGames": "Cozy Games",
-      "freeGames": "Free Games",
-      "aiGaming": "AI Gaming"
+      "codeOfConduct": "Code of Conduct"
     },
     "brand": {
       "tagline": "Your ultimate gaming destination. Discover, review, and discuss the latest games with our passionate community."
@@ -401,243 +418,6 @@
           }
         ]
       }
-    },
-    "cozyGame": {
-      "trendingBadge": "🔥 Trending: +675% search growth on Steam",
-      "hero": {
-        "title": "Best Cozy Games 2026",
-        "subtitle": "Relax, unwind, and escape into peaceful worlds. Our curated collection of the best cozy games for every platform."
-      },
-      "categories": {
-        "title": "Cozy Game Categories",
-        "farming": "Farming Sims",
-        "lifeSim": "Life Simulation",
-        "relaxing": "Relaxing & Meditative",
-        "building": "Building & Crafting"
-      },
-      "popular": {
-        "title": "Most Popular Cozy Games",
-        "viewAll": "Browse all games"
-      },
-      "desc": {
-        "stardew": "Grow your farm, befriend townsfolk, and discover a charming rural world.",
-        "animalCrossing": "Create your island paradise and relax with adorable animal friends.",
-        "palia": "An MMO cozy game where you build, cook, and explore together.",
-        "spiritfarer": "A beautiful management game about letting go and moving on.",
-        "hozy": "Restore abandoned homes and create cozy spaces in this relaxing game.",
-        "unpacking": "A zen puzzle game about unpacking boxes and building a life."
-      },
-      "why": {
-        "title": "Why Cozy Games Are Taking Over",
-        "content": "The cozy gaming trend has exploded in 2026, with searches for 'cozy' on Steam surging 675%. These games offer a sanctuary from high-stress competitive titles, providing players with relaxing mechanics, soothing soundtracks, and welcoming communities. Whether you're farming, decorating, or exploring at your own pace, cozy games prioritize your wellbeing over winning.",
-        "stats": {
-          "stress": {
-            "value": "68%",
-            "label": "Play to relax"
-          },
-          "creative": {
-            "value": "52%",
-            "label": "Love creativity"
-          },
-          "community": {
-            "value": "41%",
-            "label": "Join communities"
-          },
-          "accessibility": {
-            "value": "73%",
-            "label": "Low-stress appeal"
-          }
-        }
-      },
-      "faq": {
-        "title": "Frequently Asked Questions",
-        "q1": "What defines a 'cozy game'?",
-        "a1": "Cozy games prioritize relaxation, gentle gameplay, and positive emotions over challenge or competition. Common features include farming, crafting, decorating, exploration, and relationship-building — all at your own pace.",
-        "q2": "What are the best cozy games for beginners?",
-        "a2": "Stardew Valley is the perfect starting point. Animal Crossing: New Horizons, Unpacking, and Dorfromantik are also excellent choices with gentle learning curves.",
-        "q3": "Can I play cozy games on PC?",
-        "a3": "Most cozy games are available on PC (Steam, itch.io), Nintendo Switch, and modern consoles. Many are also available on mobile platforms.",
-        "q4": "Are cozy games multiplayer?",
-        "a4": "Many cozy games offer multiplayer modes. Palia is a free MMO cozy game, Animal Crossing supports island visits, and Stardew Valley has co-op farming."
-      },
-      "cta": {
-        "title": "Ready to Relax?",
-        "subtitle": "Discover your next favorite cozy game",
-        "button": "Explore Cozy Games"
-      }
-    },
-    "freeGame": {
-      "hero": {
-        "title": "Free Online Games 2026",
-        "subtitle": "Play the best free online games instantly. No downloads, no sign-ups — just fun."
-      },
-      "categories": {
-        "title": "Browse by Category",
-        "action": {
-          "name": "Action",
-          "games": [
-            "Subway Surfers",
-            "Temple Run",
-            "Stickman Hook"
-          ]
-        },
-        "strategy": {
-          "name": "Strategy",
-          "games": [
-            "Chess",
-            "8 Ball Pool",
-            "Plague Inc."
-          ]
-        },
-        "multiplayer": {
-          "name": "Multiplayer",
-          "games": [
-            "Agar.io",
-            "Slither.io",
-            "Shell Shockers"
-          ]
-        },
-        "casual": {
-          "name": "Casual",
-          "games": [
-            "Candy Crush",
-            "Flappy Bird",
-            "2048"
-          ]
-        }
-      },
-      "top": {
-        "title": "Top Free Games in 2026",
-        "0": {
-          "title": "Fortnite",
-          "desc": "Battle royale with building mechanics and constant content updates."
-        },
-        "1": {
-          "title": "League of Legends",
-          "desc": "The world's most popular MOBA with deep strategic gameplay."
-        },
-        "2": {
-          "title": "Genshin Impact",
-          "desc": "Free-to-play open-world action RPG with gacha mechanics."
-        },
-        "3": {
-          "title": "Hearthstone",
-          "desc": "Blizzard's digital card game with regular expansions."
-        },
-        "4": {
-          "title": "Rocket League",
-          "desc": "Soccer meets driving in this fast-paced free sports game."
-        },
-        "5": {
-          "title": "Lost Ark",
-          "desc": "Massive multiplayer ARPG with stunning combat and exploration."
-        }
-      },
-      "why": {
-        "title": "Why Play Free Games?",
-        "content": "Free online games have never been more accessible. With browser-based games and free-to-play titles on all platforms, you can jump into incredible gaming experiences without spending a penny. Many free games now offer console-quality graphics and deep gameplay.",
-        "points": {
-          "noCost": {
-            "title": "100% Free",
-            "desc": "No upfront costs"
-          },
-          "noDownload": {
-            "title": "Instant Play",
-            "desc": "No installation needed"
-          },
-          "crossPlatform": {
-            "title": "Any Device",
-            "desc": "Play on PC, mobile, tablet"
-          },
-          "social": {
-            "title": "Social",
-            "desc": "Play with friends online"
-          }
-        }
-      },
-      "faq": {
-        "title": "Frequently Asked Questions",
-        "q0": "Are these games really free?",
-        "a0": "Yes! All games listed are completely free to play. Some may offer optional in-game purchases, but the core experience is always free.",
-        "q1": "Do I need to download anything?",
-        "a1": "Browser-based games require no download at all. For free-to-play titles like Fortnite and Genshin Impact, you'll need to install the game client.",
-        "q2": "Can I play on mobile?",
-        "a2": "Many free games support mobile play. Browser games work on any device. Popular titles like Genshin Impact and Rocket League Sideswipe have excellent mobile versions.",
-        "q3": "Are free games safe?",
-        "a3": "All games featured on GameHub are from trusted publishers and platforms. We carefully curate our collection to ensure a safe gaming experience."
-      },
-      "cta": {
-        "title": "Start Playing Now",
-        "subtitle": "Join millions of players enjoying free online games",
-        "button": "Browse Free Games"
-      }
-    },
-    "aiGame": {
-      "hero": {
-        "title": "AI in Gaming 2026",
-        "subtitle": "Discover how artificial intelligence is revolutionizing the gaming world — from smart NPCs to procedurally generated universes."
-      },
-      "features": {
-        "title": "AI Features Transforming Games",
-        "npc": {
-          "title": "AI NPCs",
-          "desc": "Non-player characters that learn and react naturally"
-        },
-        "companion": {
-          "title": "AI Companions",
-          "desc": "Intelligent in-game friends that adapt to your playstyle"
-        },
-        "procedural": {
-          "title": "Procedural Worlds",
-          "desc": "Endless AI-generated landscapes and quests"
-        },
-        "assistant": {
-          "title": "AI Game Tools",
-          "desc": "AI-powered creation and game mastering tools"
-        }
-      },
-      "tools": {
-        "title": "GameHub AI Tools",
-        "desc": "Experience the future of gaming with our built-in AI features.",
-        "portrait": "AI Character Portrait",
-        "soul": "AI Soul Station",
-        "npc": "AI Game NPC"
-      },
-      "games": {
-        "title": "AI-Powered Games",
-        "0": {
-          "desc": "AI-driven NPCs with dynamic dialogue and adaptive behavior."
-        },
-        "1": {
-          "desc": "An AI companion that learns from your choices and evolves."
-        },
-        "2": {
-          "desc": "Procedurally generated infinite worlds with unique ecosystems."
-        },
-        "3": {
-          "desc": "AI storyteller that creates branching narratives on the fly."
-        }
-      },
-      "future": {
-        "title": "The Future of AI Gaming",
-        "content": "By 2026, AI has become the most transformative force in gaming. From NPCs that remember your choices to worlds that generate themselves based on your play style, AI is making games more personal, immersive, and replayable than ever before. The line between scripted experiences and living worlds is blurring."
-      },
-      "faq": {
-        "title": "Frequently Asked Questions",
-        "q0": "How is AI used in modern games?",
-        "a0": "AI powers NPC behavior, procedural content generation, dynamic difficulty adjustment, voice recognition, and personalized gaming experiences. Modern games use AI for everything from enemy tactics to generating entire worlds.",
-        "q1": "Can AI create game characters?",
-        "a1": "Yes! AI can generate unique character portraits, voices, personalities, and backstories. Tools like GameHub's Character Portrait 3D let you create AI-powered game characters.",
-        "q2": "What are AI NPCs?",
-        "a2": "AI NPCs are non-player characters powered by language models and behavior trees. Unlike traditional scripted NPCs, they can hold natural conversations, remember past interactions, and adapt their behavior dynamically.",
-        "q3": "Will AI replace game developers?",
-        "a3": "No — AI is a tool that empowers developers to create richer experiences. It automates repetitive tasks and enables new forms of gameplay, but human creativity remains essential for game design."
-      },
-      "cta": {
-        "title": "Experience AI Gaming",
-        "subtitle": "Try GameHub's AI-powered gaming tools",
-        "button": "Explore AI Features"
-      }
     }
   },
   "cozyGame": {
@@ -745,7 +525,6 @@
       }
     },
     "top": {
-      "title": "Top Free Games in 2026",
       "0": {
         "title": "Fortnite",
         "desc": "Battle royale with building mechanics and constant content updates."
@@ -769,7 +548,8 @@
       "5": {
         "title": "Lost Ark",
         "desc": "Massive multiplayer ARPG with stunning combat and exploration."
-      }
+      },
+      "title": "Top Free Games in 2026"
     },
     "why": {
       "title": "Why Play Free Games?",
@@ -842,7 +622,6 @@
       "npc": "AI Game NPC"
     },
     "games": {
-      "title": "AI-Powered Games",
       "0": {
         "desc": "AI-driven NPCs with dynamic dialogue and adaptive behavior."
       },
@@ -854,7 +633,8 @@
       },
       "3": {
         "desc": "AI storyteller that creates branching narratives on the fly."
-      }
+      },
+      "title": "AI-Powered Games"
     },
     "future": {
       "title": "The Future of AI Gaming",
@@ -875,6 +655,383 @@
       "title": "Experience AI Gaming",
       "subtitle": "Try GameHub's AI-powered gaming tools",
       "button": "Explore AI Features"
+    }
+  },
+  "common": {
+    "confirm": "Confirm",
+    "cancel": "Cancel",
+    "save": "Save",
+    "edit": "Edit",
+    "delete": "Delete",
+    "search": "Search",
+    "filter": "Filter",
+    "reset": "Reset",
+    "back": "Back",
+    "next": "Next",
+    "previous": "Previous",
+    "submit": "Submit",
+    "retry": "Retry",
+    "more": "More",
+    "anonymous": "Anonymous",
+    "anonymousUser": "Anonymous User",
+    "operationFailed": "Operation failed, please retry",
+    "loadFailed": "Load Failed",
+    "noData": "No data",
+    "viewAll": "View All"
+  },
+  "breadcrumb": {
+    "home": "Home",
+    "games": "Game Library",
+    "community": "Community",
+    "blog": "Blog",
+    "news": "News"
+  },
+  "errorBoundary": {
+    "title": "Application Error",
+    "subtitle": "Sorry, the app encountered an issue. The error has been logged and will be investigated.",
+    "refresh": "Refresh Page",
+    "goHome": "Go Home"
+  },
+  "twoFactor": {
+    "enterCode": "Please enter 6-digit code",
+    "verifyFailed": "Verification failed, please retry",
+    "title": "Two-Factor Authentication",
+    "instruction": "Enter code from your authenticator app",
+    "account": "Account",
+    "alertTitle": "Verification Failed",
+    "codePlaceholder": "Enter 6-digit code",
+    "verify": "Verify",
+    "backToLogin": "Back to Login"
+  },
+  "comments": {
+    "loadFailed": "Failed to load comments",
+    "unknownError": "Unknown error",
+    "noComments": "No comments yet",
+    "totalCount": "{n} comments total",
+    "placeholder": "Write your comment...",
+    "contentRequired": "Comment cannot be empty",
+    "loginRequired": "Please login first",
+    "updateSuccess": "Comment updated",
+    "createSuccess": "Comment posted",
+    "operationFailed": "Operation failed",
+    "loginPrompt": "Login to comment",
+    "loginNow": "Login Now",
+    "markdownHint": "Supports Markdown, Ctrl+Enter to submit",
+    "updateButton": "Update Comment",
+    "submitButton": "Post Comment",
+    "loginToLike": "Please login to like",
+    "likeFailed": "Like failed",
+    "deleteSuccess": "Deleted",
+    "deleteFailed": "Delete failed",
+    "edited": "(edited)",
+    "unlike": "Unlike",
+    "like": "Like",
+    "reply": "Reply",
+    "deleteConfirm": "Delete this comment?",
+    "replyCount": "{n} replies",
+    "replyTo": "Reply to @{name}",
+    "viewMoreReplies": "View more ({n})"
+  },
+  "game": {
+    "loadFailed": "Load Failed",
+    "notFound": "Game not found",
+    "backToList": "Back to Game List",
+    "seoKeywords": "game details, game info",
+    "tab": {
+      "overview": "Overview",
+      "requirements": "System Requirements",
+      "reviews": "Reviews",
+      "forum": "Forum"
+    },
+    "features": "Game Features",
+    "feature": {
+      "awards": "Award Winning",
+      "awardDesc": "Recognized by major gaming awards",
+      "immersive": "Immersive Experience",
+      "immersiveDesc": "Stunning visuals and sound design",
+      "multiplayer": "Multiplayer",
+      "multiplayerDesc": "Play with friends online",
+      "liveService": "Live Service",
+      "liveServiceDesc": "Regular content updates"
+    },
+    "req": {
+      "os": "OS",
+      "processor": "Processor",
+      "memory": "Memory",
+      "graphics": "Graphics",
+      "storage": "Storage",
+      "directX": "DirectX",
+      "storageValue": "80 GB available space"
+    },
+    "noReviews": "No reviews yet",
+    "beFirstReviewer": "Be the first to review this game!",
+    "writeReview": "Write Review",
+    "playerReviews": "Player Reviews ({n})",
+    "noForumPosts": "No forum posts yet",
+    "beFirstPoster": "Be the first to post in this forum!",
+    "gameForum": "Game Forum ({n})",
+    "viewAllPosts": "View All",
+    "newPost": "New Post",
+    "developer": "Developer",
+    "publisher": "Publisher",
+    "releaseDate": "Release Date",
+    "platforms": "Platforms",
+    "genres": "Genres",
+    "buyNow": "Buy Now",
+    "shareGame": "Share Game",
+    "overallRating": "Overall Rating",
+    "basedOnReviews": "Based on {n} player reviews",
+    "similarGames": "Similar Games",
+    "usersAlsoLiked": "Users Also Liked",
+    "rating": {
+      "gameplay": "Gameplay",
+      "graphics": "Graphics",
+      "story": "Story",
+      "audio": "Audio",
+      "value": "Value"
+    }
+  },
+  "messages": {
+    "sendFailed": "Send failed",
+    "deleted": "Message deleted",
+    "deleteFailed": "Delete failed",
+    "cleared": "Chat cleared",
+    "clearFailed": "Clear failed",
+    "clearTitle": "Clear Chat",
+    "clearConfirm": "Clear all messages? This cannot be undone.",
+    "clearOk": "Confirm",
+    "clearButton": "Clear Chat",
+    "seoTitle": "Messages | GameHub",
+    "defaultUser": "User",
+    "noMessages": "No messages",
+    "deleteConfirm": "Delete this message?",
+    "inputPlaceholder": "Type a message, Enter to send...",
+    "send": "Send"
+  },
+  "cart": {
+    "added": "\"{title}\" added to cart",
+    "alreadyInCart": "\"{title}\" is already in cart",
+    "addFailed": "Failed to add to cart",
+    "addToCart": "Add to Cart"
+  },
+  "favorites": {
+    "loginRequired": "Please login to save favorites",
+    "removed": "Removed from favorites",
+    "added": "Added to favorites",
+    "saved": "Saved",
+    "save": "Save",
+    "addToFavorites": "Add to Favorites"
+  },
+  "editor": {
+    "imageUploadFailed": "Image upload failed",
+    "imageInserted": "Image inserted",
+    "imageUrlInserted": "Image URL inserted",
+    "selectLocalImage": "Select local image",
+    "uploadImage": "Upload Image",
+    "pasteImageUrl": "Paste image URL",
+    "imageUrl": "Image URL",
+    "dragOrPasteHint": "Drag image or Ctrl+V to paste",
+    "markdownPlaceholder": "Write in Markdown, drag/paste to upload images...",
+    "dropToUpload": "Drop to upload",
+    "supportedFormats": "Supports JPG, PNG, GIF, WebP",
+    "shortcuts": "Shortcuts:",
+    "shortcutsHint": "Select text then click toolbar to format.",
+    "images": "Images:",
+    "imageHint": "Drag / Paste / Click to upload",
+    "preview": "Preview:",
+    "previewHint": "Click eye icon in toolbar",
+    "insertImageUrl": "Insert Image URL",
+    "insert": "Insert",
+    "imageUrlLabel": "Image URL",
+    "imageUrlHint": "Paste full URL of online image..."
+  },
+  "community": {
+    "seoTitle": "Community Forum | GameHub",
+    "seoDesc": "GameHub Community - browse discussions, reviews and guides by game",
+    "title": "Community Forum",
+    "subtitle": "Browse discussions, reviews and guides by game",
+    "searchPlaceholder": "Search game name...",
+    "searchButton": "Search",
+    "errorLoad": "Load Failed",
+    "errorLoadDesc": "Failed to load community list, please retry.",
+    "retry": "Retry",
+    "empty": "No community activity yet",
+    "emptyHint": "Create discussion posts after game release",
+    "searchHint": "Try other keywords",
+    "noSearchResults": "No games matching \"{q}\"",
+    "gameCount": "game communities",
+    "postCountUnit": "posts",
+    "totalCount": "{n} game communities total",
+    "myFollowed": "My Followed",
+    "noFollowed": "No followed forums",
+    "relatedGames": "Related Games",
+    "pinned": "Pinned",
+    "locked": "Locked",
+    "loginToViewComments": "Login to view comments",
+    "postNotFound": "Post not found",
+    "time": {
+      "today": "Today",
+      "yesterday": "Yesterday",
+      "daysAgo": "{n}d ago"
+    }
+  },
+  "discovery": {
+    "seoTitle": "Discovery | GameHub",
+    "seoDesc": "Trends, leaderboard and data reports",
+    "title": "Discovery",
+    "tab": {
+      "trends": "Trends",
+      "leaderboard": "Leaderboard",
+      "stats": "Stats"
+    },
+    "searchTrendsTitle": "Search Trends (30 days)",
+    "chart": {
+      "searchCount": "Search Count",
+      "uniqueQueries": "Unique Queries"
+    },
+    "noTrendData": "No trend data",
+    "leaderboardTitle": "Game Leaderboard",
+    "lb": {
+      "rating": "Top Rated",
+      "reviews": "Most Reviewed",
+      "favorites": "Most Favorited",
+      "discussions": "Most Discussed"
+    },
+    "noLbData": "No leaderboard data",
+    "platformDist": "Platform Distribution",
+    "genreDist": "Genre Distribution",
+    "communityOverview": "Community Overview",
+    "stat": {
+      "totalUsers": "Total Users",
+      "totalGames": "Total Games",
+      "totalReviews": "Total Reviews",
+      "totalPosts": "Total Posts",
+      "newUsersToday": "New Users Today",
+      "activeUsers": "Active Users (7d)"
+    },
+    "noData": "No data",
+    "noCommunityData": "No community data"
+  },
+  "home": {
+    "noDiscussions": "No discussions yet",
+    "heat": "heat",
+    "replies": "replies",
+    "noHotGames": "No hot games",
+    "noFeaturedArticles": "No featured articles",
+    "article": {
+      "news": "News",
+      "blog": "Blog",
+      "guide": "Guide"
+    },
+    "banner": {
+      "hotPromo": "Hot Game Promo",
+      "hotPromoSub": "Limited discounts, up to 70% off",
+      "newGames": "New Game Recommendations",
+      "newGamesSub": "Most anticipated new games",
+      "awards2026": "2026 Game Awards",
+      "awards2026Sub": "Vote for your favorite games",
+      "learnMore": "Learn More",
+      "previous": "Previous",
+      "next": "Next",
+      "switchTo": "Switch to slide {n}"
+    }
+  },
+  "redeem": {
+    "copied": "Code copied",
+    "success": "Redeemed!",
+    "failed": "Redemption failed",
+    "noCodes": "No codes available, stay tuned",
+    "copyCode": "Copy code",
+    "remaining": "Remaining:",
+    "redeemed": "Redeemed",
+    "redeemNow": "Redeem Now",
+    "loginToRedeem": "Login to Redeem",
+    "labels": {
+      "discount": "Discount",
+      "free_game": "Free Game",
+      "points": "Points",
+      "item": "Item"
+    }
+  },
+  "about": {
+    "seoTitle": "About GameHub",
+    "seoDescription": "GameHub is a community platform for gaming enthusiasts",
+    "seoKeywords": "GameHub, about, gaming community",
+    "fallbackNotice": "Some content failed to load, showing default content.",
+    "reload": "Reload",
+    "title": "About GameHub",
+    "description": "GameHub is a community platform for gaming enthusiasts",
+    "mission": "Our Mission",
+    "missionDesc": "Connect every gaming enthusiast",
+    "vision": "Our Vision",
+    "visionDesc": "Become the most trusted gaming community",
+    "coreValues": "Core Values",
+    "timeline": "Timeline",
+    "contactUs": "Contact Us",
+    "contactDesc": "Questions, suggestions or partnership inquiries",
+    "email": "Email",
+    "community": "Community",
+    "joinDiscord": "Join our Discord",
+    "business": "Business Cooperation"
+  },
+  "ai": {
+    "seoTitle": "AI Assistant | GameHub",
+    "seoDescription": "GameHub AI Assistant - chat, guides, recommendations",
+    "title": "AI Assistant",
+    "subtitle": "AI-powered gaming companion",
+    "tips": "Tips",
+    "tip1": {
+      "title": "AI Chat",
+      "desc": "Chat about games with AI"
+    },
+    "tip2": {
+      "title": "AI Guide",
+      "desc": "Search guides and videos"
+    },
+    "soul": {
+      "title": "Soul Station",
+      "desc": "Share your gaming stories"
+    },
+    "guide": {
+      "title": "AI Guide",
+      "desc": "Search game guides and videos"
+    },
+    "companion": {
+      "title": "AI Companion",
+      "desc": "Take personality test for game recommendations"
+    }
+  },
+  "category": {
+    "recommended": {
+      "title": "Recommended Games",
+      "desc": "Curated quality games for you",
+      "seoTitle": "Recommended Games | GGHubs",
+      "seoDesc": "Browse recommended games",
+      "seoKeywords": "recommended games, game recommendations"
+    },
+    "topUp": {
+      "title": "Top-Up Games",
+      "desc": "Digital games available for purchase",
+      "seoTitle": "Top-Up Games | GGHubs"
+    },
+    "indie": {
+      "title": "Indie Games",
+      "desc": "Independent game gems",
+      "seoTitle": "Indie Games | GGHubs"
+    },
+    "filters": {
+      "genreOptions": "All,RPG,Action,Adventure,Strategy,Sci-Fi,Fantasy,Souls-like,Magic",
+      "searchPlaceholder": "Search games...",
+      "searchButton": "Search",
+      "filterGenre": "Select Genre",
+      "filterPlatform": "Select Platform",
+      "resetFilters": "Reset Filters",
+      "priceRange": "Price Range",
+      "minRating": "Min Rating",
+      "unlimited": "Any",
+      "stars": "stars",
+      "noResults": "No matching games",
+      "showingGames": "Showing {n} games (total {m})"
     }
   }
 }

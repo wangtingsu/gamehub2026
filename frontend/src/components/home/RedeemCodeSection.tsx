@@ -73,10 +73,10 @@ const RedeemCodeSection = () => {
       <div className="mb-6">
         <Title level={2} className="flex items-center gap-2 !text-white !mb-1">
           <GiftOutlined className="text-yellow-500" />
-          {t('home.redeemCodes', '兑换码专区')}
+          {t('redeemCodes', '兑换码专区')}
         </Title>
         <Paragraph className="text-gray-400 !mb-0">
-          {t('home.redeemCodesDesc', '限时兑换码，先到先得！')}
+          {t('redeemCodesDesc', '限时兑换码，先到先得！')}
         </Paragraph>
       </div>
 
@@ -89,7 +89,7 @@ const RedeemCodeSection = () => {
       ) : codeList.length === 0 ? (
         <Card className="border-dark-700 bg-dark-800/80 text-center py-8">
           <GiftOutlined className="text-4xl text-gray-600 mb-3" />
-          <Paragraph className="text-gray-500">暂无可用兑换码，敬请期待</Paragraph>
+          <Paragraph className="text-gray-500">{t('noCodes', '暂无可用兑换码，敬请期待')}</Paragraph>
         </Card>
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">

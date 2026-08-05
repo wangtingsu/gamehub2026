@@ -47,5 +47,15 @@
     "xboxOne": "Xbox One",
     "xboxSeriesX": "Xbox Series X",
     "switch": "Nintendo Switch"
+  },
+  "seo": {
+    "gamesTitle": "ゲーム | GameHub",
+    "gamesDescription": "豊富なゲームライブラリを閲覧。",
+    "gamesKeywords": "ゲーム,ゲーム一覧,人気ゲーム"
+  },
+  "sections": {
+    "topUp": "チャージゲーム",
+    "indie": "インディーゲーム",
+    "recommended": "おすすめゲーム"
   }
 }

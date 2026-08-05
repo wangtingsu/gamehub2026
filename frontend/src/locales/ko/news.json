@@ -33,5 +33,9 @@
   },
   "pagination": {
     "total": "Total {{total}} articles"
+  },
+  "seo": {
+    "newsTitle": "게임 뉴스 | GameHub",
+    "newsDescription": "최신 게임 뉴스"
   }
 }

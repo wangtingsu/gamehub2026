@@ -368,8 +368,8 @@ const GamesPage = () => {
     );
   };
 
-  const renderTopUpSection = () => renderHorizontalSection('直充游戏', <DollarOutlined className="text-green-500" />, topUpGames, isLoading, 'top-up');
-  const renderIndieSection = () => renderHorizontalSection('独立游戏', <RocketOutlined className="text-purple-500" />, indieGames, isLoading, 'indie');
+  const renderTopUpSection = () => renderHorizontalSection(t('sections.topUp', '直充游戏'), <DollarOutlined className="text-green-500" />, topUpGames, isLoading, 'top-up');
+  const renderIndieSection = () => renderHorizontalSection(t('sections.indie', '独立游戏'), <RocketOutlined className="text-purple-500" />, indieGames, isLoading, 'indie');
 
   const siteUrl = import.meta.env.VITE_SITE_URL || 'https://www.gghubs.com';
   const structuredData = [
@@ -432,7 +432,7 @@ const GamesPage = () => {
       {/* 板块1: 推荐游戏 */}
       <section className="mb-10">
         <RecommendedGames
-          title="推荐游戏"
+          title={t('sections.recommended', '推荐游戏')}
           recommendations={displayRecommendations}
           loading={recLoading && !recError}
           variant="grid"

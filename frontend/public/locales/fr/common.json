@@ -10,7 +10,23 @@
     "community": "Communauté",
     "about": "À propos",
     "admin": "Administration",
-    "logout": "Déconnexion"
+    "logout": "Déconnexion",
+    "recommend": "Recommandé",
+    "onlineGames": "Jeux en ligne",
+    "freeGames": "Jeux gratuits",
+    "cozyGames": "Jeux apaisants",
+    "soulStation": "Station Âme",
+    "aiGuide": "Guide IA",
+    "aiPortrait": "Portrait IA",
+    "aiCompanion": "Compagnon IA",
+    "communityForum": "Forum communautaire",
+    "allGames": "Tous les jeux",
+    "leaderboard": "Classement",
+    "trending": "Tendances",
+    "discovery": "Découvrir",
+    "more": "Plus",
+    "blog": "Blog",
+    "myBlogs": "Mes articles"
   },
   "language": {
     "en": "Anglais",
@@ -333,6 +349,428 @@
           }
         ]
       }
+    }
+  },
+  "user": {
+    "role": {
+      "admin": "Administrateur",
+      "moderator": "Modérateur",
+      "user": "Utilisateur",
+      "editor": "Éditeur"
+    },
+    "status": {
+      "active": "Actif",
+      "inactive": "Inactif",
+      "suspended": "Suspendu",
+      "pending": "En attente"
+    },
+    "profile": "Profil",
+    "settings": "Paramètres",
+    "library": "Bibliothèque",
+    "favorites": "Favoris",
+    "reviews": "Avis",
+    "posts": "Publications"
+  },
+  "date": {
+    "today": "Aujourd'hui",
+    "yesterday": "Hier",
+    "daysAgo": "Il y a {{count}} jours",
+    "justNow": "À l'instant",
+    "minutesAgo": "Il y a {{count}} minutes",
+    "hoursAgo": "Il y a {{count}} heures"
+  },
+  "cozyGame": {
+    "trendingBadge": "🔥 Tendance",
+    "hero": {
+      "title": "Jeux apaisants recommandés",
+      "subtitle": "Détendez-vous dans un monde de jeux paisibles"
+    }
+  },
+  "freeGame": {
+    "hero": {
+      "title": "Jeux en ligne gratuits",
+      "subtitle": "Pas de téléchargement, jouez instantanément"
+    }
+  },
+  "aiGame": {
+    "hero": {
+      "title": "Jeux IA",
+      "subtitle": "Découvrez comment l'IA révolutionne le jeu"
+    }
+  },
+  "common": {
+    "confirm": "Confirmer",
+    "cancel": "Annuler",
+    "save": "Enregistrer",
+    "edit": "Modifier",
+    "delete": "Supprimer",
+    "search": "Rechercher",
+    "filter": "Filtrer",
+    "reset": "Réinitialiser",
+    "back": "Retour",
+    "next": "Suivant",
+    "previous": "Précédent",
+    "submit": "Soumettre",
+    "retry": "Réessayer",
+    "more": "Plus",
+    "anonymous": "Anonyme",
+    "anonymousUser": "Utilisateur anonyme",
+    "operationFailed": "Opération échouée, veuillez réessayer",
+    "loadFailed": "Échec du chargement",
+    "noData": "Aucune donnée",
+    "viewAll": "Voir tout"
+  },
+  "breadcrumb": {
+    "home": "Accueil",
+    "games": "Bibliothèque",
+    "community": "Communauté",
+    "blog": "Blog",
+    "news": "Actualités"
+  },
+  "errorBoundary": {
+    "title": "Erreur d'application",
+    "subtitle": "Désolé, un problème est survenu. L'erreur a été enregistrée.",
+    "refresh": "Actualiser la page",
+    "goHome": "Retour à l'accueil"
+  },
+  "twoFactor": {
+    "enterCode": "Entrez le code à 6 chiffres",
+    "verifyFailed": "Échec de la vérification",
+    "title": "Authentification à deux facteurs",
+    "instruction": "Entrez le code de votre application d'authentification",
+    "account": "Compte",
+    "alertTitle": "Échec de vérification",
+    "codePlaceholder": "Entrez le code à 6 chiffres",
+    "verify": "Vérifier",
+    "backToLogin": "Retour à la connexion"
+  },
+  "comments": {
+    "loadFailed": "Echec chargement",
+    "unknownError": "Erreur inconnue",
+    "noComments": "Aucun commentaire",
+    "totalCount": "{n} commentaires",
+    "placeholder": "Votre commentaire...",
+    "contentRequired": "Commentaire requis",
+    "loginRequired": "Connectez-vous",
+    "updateSuccess": "Commentaire mis a jour",
+    "createSuccess": "Commentaire publie",
+    "operationFailed": "Operation echouee",
+    "loginPrompt": "Connectez-vous pour commenter",
+    "loginNow": "Connexion",
+    "markdownHint": "Markdown, Ctrl+Enter",
+    "updateButton": "Modifier",
+    "submitButton": "Publier",
+    "loginToLike": "Connectez-vous",
+    "likeFailed": "Echec",
+    "deleteSuccess": "Supprime",
+    "deleteFailed": "Echec suppression",
+    "edited": "(modifie)",
+    "unlike": "Retirer",
+    "like": "J'aime",
+    "reply": "Repondre",
+    "deleteConfirm": "Supprimer?",
+    "replyCount": "{n} reponses",
+    "replyTo": "Repondre a @{name}",
+    "viewMoreReplies": "Plus ({n})"
+  },
+  "game": {
+    "loadFailed": "Echec",
+    "notFound": "Jeu introuvable",
+    "backToList": "Retour",
+    "seoKeywords": "details jeu",
+    "tab": {
+      "overview": "Apercu",
+      "requirements": "Configuration",
+      "reviews": "Avis",
+      "forum": "Forum"
+    },
+    "features": "Caracteristiques",
+    "feature": {
+      "awards": "Prime",
+      "awardDesc": "Reconnu par les grands prix",
+      "immersive": "Immersion",
+      "immersiveDesc": "Visuels et son epoustouflants",
+      "multiplayer": "Multijoueur",
+      "multiplayerDesc": "Jouez avec des amis",
+      "liveService": "Mises a jour",
+      "liveServiceDesc": "Nouveau contenu regulier"
+    },
+    "req": {
+      "os": "OS",
+      "processor": "Processeur",
+      "memory": "Memoire",
+      "graphics": "Graphiques",
+      "storage": "Stockage",
+      "directX": "DirectX",
+      "storageValue": "80 Go disponibles"
+    },
+    "noReviews": "Aucun avis",
+    "beFirstReviewer": "Soyez le premier a donner votre avis!",
+    "writeReview": "Ecrire un avis",
+    "playerReviews": "Avis ({n})",
+    "noForumPosts": "Aucun post",
+    "beFirstPoster": "Soyez le premier a poster!",
+    "gameForum": "Forum ({n})",
+    "viewAllPosts": "Voir tout",
+    "newPost": "Nouveau",
+    "developer": "Developpeur",
+    "publisher": "Editeur",
+    "releaseDate": "Date de sortie",
+    "platforms": "Plateformes",
+    "genres": "Genres",
+    "buyNow": "Acheter",
+    "shareGame": "Partager",
+    "overallRating": "Note globale",
+    "basedOnReviews": "Base sur {n} avis",
+    "similarGames": "Jeux similaires",
+    "usersAlsoLiked": "Les utilisateurs aiment aussi",
+    "rating": {
+      "gameplay": "Jouabilite",
+      "graphics": "Graphismes",
+      "story": "Scenario",
+      "audio": "Audio",
+      "value": "Rapport qualite-prix"
+    }
+  },
+  "messages": {
+    "sendFailed": "Echec envoi",
+    "deleted": "Supprime",
+    "deleteFailed": "Echec suppression",
+    "cleared": "Efface",
+    "clearFailed": "Echec",
+    "clearTitle": "Effacer",
+    "clearConfirm": "Effacer tous les messages?",
+    "clearOk": "Confirmer",
+    "clearButton": "Effacer",
+    "seoTitle": "Messages",
+    "defaultUser": "Utilisateur",
+    "noMessages": "Aucun message",
+    "deleteConfirm": "Supprimer?",
+    "inputPlaceholder": "Message, Entree pour envoyer",
+    "send": "Envoyer"
+  },
+  "cart": {
+    "added": "\"{title}\" ajoute au panier",
+    "alreadyInCart": "\"{title}\" deja dans le panier",
+    "addFailed": "Echec ajout",
+    "addToCart": "Ajouter au panier"
+  },
+  "favorites": {
+    "loginRequired": "Connectez-vous pour les favoris",
+    "removed": "Retire des favoris",
+    "added": "Ajoute aux favoris",
+    "saved": "Enregistre",
+    "save": "Enregistrer",
+    "addToFavorites": "Ajouter aux favoris"
+  },
+  "editor": {
+    "imageUploadFailed": "Echec upload",
+    "imageInserted": "Image inseree",
+    "imageUrlInserted": "URL inseree",
+    "selectLocalImage": "Choisir image",
+    "uploadImage": "Uploader",
+    "pasteImageUrl": "Coller URL",
+    "imageUrl": "URL image",
+    "dragOrPasteHint": "Glisser ou Ctrl+V",
+    "markdownPlaceholder": "Markdown, glisser/coller...",
+    "dropToUpload": "Deposer pour uploader",
+    "supportedFormats": "JPG,PNG,GIF,WebP",
+    "shortcuts": "Raccourcis:",
+    "shortcutsHint": "Selectionner texte puis cliquer",
+    "images": "Images:",
+    "imageHint": "Glisser/Coller/Cliquer",
+    "preview": "Apercu:",
+    "previewHint": "Cliquer icone oeil",
+    "insertImageUrl": "Inserer URL",
+    "insert": "Inserer",
+    "imageUrlLabel": "URL",
+    "imageUrlHint": "Coller URL complete..."
+  },
+  "community": {
+    "seoTitle": "Communaute",
+    "seoDesc": "Forum communautaire",
+    "title": "Communaute",
+    "subtitle": "Discussions et avis par jeu",
+    "searchPlaceholder": "Rechercher un jeu...",
+    "searchButton": "Rechercher",
+    "errorLoad": "Echec",
+    "errorLoadDesc": "Reessayez",
+    "retry": "Reessayer",
+    "empty": "Aucune activite",
+    "emptyHint": "Publiez apres sortie du jeu",
+    "searchHint": "Essayer autres mots-cles",
+    "noSearchResults": "Aucun resultat pour \"{q}\"",
+    "gameCount": "communautes",
+    "postCountUnit": "posts",
+    "totalCount": "{n} communautes",
+    "myFollowed": "Suivis",
+    "noFollowed": "Aucun",
+    "relatedGames": "Jeux lies",
+    "pinned": "Epingler",
+    "locked": "Verrouille",
+    "loginToViewComments": "Connectez-vous",
+    "postNotFound": "Introuvable",
+    "time": {
+      "today": "Aujourd'hui",
+      "yesterday": "Hier",
+      "daysAgo": "Il y a {n}j"
+    }
+  },
+  "discovery": {
+    "seoTitle": "Decouverte",
+    "seoDesc": "Tendances et classements",
+    "title": "Decouverte",
+    "tab": {
+      "trends": "Tendances",
+      "leaderboard": "Classement",
+      "stats": "Stats"
+    },
+    "searchTrendsTitle": "Tendances (30j)",
+    "chart": {
+      "searchCount": "Recherches",
+      "uniqueQueries": "Requetes uniques"
+    },
+    "noTrendData": "Pas de donnees",
+    "leaderboardTitle": "Classement",
+    "lb": {
+      "rating": "Mieux notes",
+      "reviews": "Plus commentes",
+      "favorites": "Plus favoris",
+      "discussions": "Plus discutes"
+    },
+    "noLbData": "Pas de donnees",
+    "platformDist": "Plateformes",
+    "genreDist": "Genres",
+    "communityOverview": "Apercu",
+    "stat": {
+      "totalUsers": "Total utilisateurs",
+      "totalGames": "Total jeux",
+      "totalReviews": "Total avis",
+      "totalPosts": "Total posts",
+      "newUsersToday": "Nouveaux aujourd'hui",
+      "activeUsers": "Actifs (7j)"
+    },
+    "noData": "Pas de donnees",
+    "noCommunityData": "Pas de donnees"
+  },
+  "home": {
+    "noDiscussions": "Aucune discussion",
+    "heat": "popularite",
+    "replies": "reponses",
+    "noHotGames": "Aucun jeu",
+    "noFeaturedArticles": "Aucun article",
+    "article": {
+      "news": "Actualites",
+      "blog": "Blog",
+      "guide": "Guide"
+    },
+    "banner": {
+      "hotPromo": "Promos jeux",
+      "hotPromoSub": "Jusqu'a 70% de reduction",
+      "newGames": "Nouveaux jeux",
+      "newGamesSub": "Les plus attendus",
+      "awards2026": "Game Awards 2026",
+      "awards2026Sub": "Votez pour vos jeux",
+      "learnMore": "En savoir plus",
+      "previous": "Precedent",
+      "next": "Suivant",
+      "switchTo": "Diapositive {n}"
+    }
+  },
+  "redeem": {
+    "copied": "Copie",
+    "success": "Echange reussi!",
+    "failed": "Echec",
+    "noCodes": "Aucun code",
+    "copyCode": "Copier",
+    "remaining": "Restant:",
+    "redeemed": "Echange",
+    "redeemNow": "Echanger",
+    "loginToRedeem": "Connectez-vous",
+    "labels": {
+      "discount": "Remise",
+      "free_game": "Jeu gratuit",
+      "points": "Points",
+      "item": "Objet"
+    }
+  },
+  "about": {
+    "seoTitle": "A propos",
+    "seoDescription": "Plateforme communautaire de jeux",
+    "seoKeywords": "GameHub,a propos",
+    "fallbackNotice": "Echec chargement partiel",
+    "reload": "Recharger",
+    "title": "A propos",
+    "description": "Plateforme pour passionnes de jeux",
+    "mission": "Notre mission",
+    "missionDesc": "Connecter chaque joueur",
+    "vision": "Notre vision",
+    "visionDesc": "La communaute la plus fiable",
+    "coreValues": "Valeurs",
+    "timeline": "Historique",
+    "contactUs": "Contact",
+    "contactDesc": "Questions, suggestions, partenariats",
+    "email": "Email",
+    "community": "Communaute",
+    "joinDiscord": "Rejoindre Discord",
+    "business": "Partenariats"
+  },
+  "ai": {
+    "seoTitle": "Assistant IA",
+    "seoDescription": "Assistant IA GameHub",
+    "title": "Assistant IA",
+    "subtitle": "Compagnon de jeu IA",
+    "tips": "Conseils",
+    "tip1": {
+      "title": "Chat IA",
+      "desc": "Discutez jeux avec l'IA"
+    },
+    "tip2": {
+      "title": "Guide IA",
+      "desc": "Recherchez guides et videos"
+    },
+    "soul": {
+      "title": "Station Ame",
+      "desc": "Partagez vos histoires"
+    },
+    "guide": {
+      "title": "Guide IA",
+      "desc": "Recherche de guides"
+    },
+    "companion": {
+      "title": "Compagnon IA",
+      "desc": "Test de personnalite"
+    }
+  },
+  "category": {
+    "recommended": {
+      "title": "Recommandes",
+      "desc": "Selection de qualite",
+      "seoTitle": "Recommandes | GGHubs"
+    },
+    "topUp": {
+      "title": "Recharger",
+      "desc": "Achat numerique",
+      "seoTitle": "Recharger | GGHubs"
+    },
+    "indie": {
+      "title": "Indie",
+      "desc": "Perles independantes",
+      "seoTitle": "Indie | GGHubs"
+    },
+    "filters": {
+      "genreOptions": "Tous,RPG,Action,Aventure,Strategie,SF,Fantasy,Souls,Magie",
+      "searchPlaceholder": "Rechercher...",
+      "searchButton": "Rechercher",
+      "filterGenre": "Genre",
+      "filterPlatform": "Plateforme",
+      "resetFilters": "Reinitialiser",
+      "priceRange": "Prix",
+      "minRating": "Note min",
+      "unlimited": "Tous",
+      "stars": "etoiles",
+      "noResults": "Aucun resultat",
+      "showingGames": "{n} jeux (total {m})"
     }
   }
 }

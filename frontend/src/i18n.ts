@@ -1,7 +1,6 @@
 import i18n from 'i18next';
 import { initReactI18next } from 'react-i18next';
 import LanguageDetector from 'i18next-browser-languagedetector';
-import Backend from 'i18next-http-backend';
 
 // 同步加载所有语言的翻译资源（全命名空间预加载，避免 H1/H2 显示 i18n key）
 import zhCN from './locales/zh-CN/common.json';
@@ -23,12 +22,46 @@ import enHome from './locales/en/home.json';
 import enDiscovery from './locales/en/discovery.json';
 
 import ja from './locales/ja/common.json';
+import jaGames from './locales/ja/games.json';
+import jaAuth from './locales/ja/auth.json';
+import jaNews from './locales/ja/news.json';
+import jaReviews from './locales/ja/reviews.json';
+import jaCommunity from './locales/ja/community.json';
+import jaHome from './locales/ja/home.json';
+import jaDiscovery from './locales/ja/discovery.json';
+import jaAdmin from './locales/ja/admin.json';
+
 import ko from './locales/ko/common.json';
+import koGames from './locales/ko/games.json';
+import koAuth from './locales/ko/auth.json';
+import koNews from './locales/ko/news.json';
+import koReviews from './locales/ko/reviews.json';
+import koCommunity from './locales/ko/community.json';
+import koHome from './locales/ko/home.json';
+import koDiscovery from './locales/ko/discovery.json';
+import koAdmin from './locales/ko/admin.json';
+
 import fr from './locales/fr/common.json';
+import frGames from './locales/fr/games.json';
+import frAuth from './locales/fr/auth.json';
+import frNews from './locales/fr/news.json';
+import frReviews from './locales/fr/reviews.json';
+import frCommunity from './locales/fr/community.json';
+import frHome from './locales/fr/home.json';
+import frDiscovery from './locales/fr/discovery.json';
+import frAdmin from './locales/fr/admin.json';
+
 import es from './locales/es/common.json';
+import esGames from './locales/es/games.json';
+import esAuth from './locales/es/auth.json';
+import esNews from './locales/es/news.json';
+import esReviews from './locales/es/reviews.json';
+import esCommunity from './locales/es/community.json';
+import esHome from './locales/es/home.json';
+import esDiscovery from './locales/es/discovery.json';
+import esAdmin from './locales/es/admin.json';
 
 i18n
-  .use(Backend)
   .use(LanguageDetector)
   .use(initReactI18next)
   .init({
@@ -39,12 +72,6 @@ i18n
     },
     ns: ['translation', 'games', 'auth', 'news', 'reviews', 'community', 'admin', 'home', 'discovery'],
     defaultNS: 'translation',
-    backend: {
-      loadPath: (lng: string, ns: string) => {
-        const fileName = ns === 'translation' ? 'common' : ns;
-        return `/locales/${lng}/${fileName}.json`;
-      },
-    },
     resources: {
       'en': {
         translation: en,
@@ -66,10 +93,50 @@ i18n
         home: zhCNHome,
         discovery: zhCNDiscovery,
       },
-      'ja': { translation: ja },
-      'ko': { translation: ko },
-      'fr': { translation: fr },
-      'es': { translation: es },
+      'ja': {
+        translation: ja,
+        games: jaGames,
+        auth: jaAuth,
+        news: jaNews,
+        reviews: jaReviews,
+        community: jaCommunity,
+        home: jaHome,
+        discovery: jaDiscovery,
+        admin: jaAdmin,
+      },
+      'ko': {
+        translation: ko,
+        games: koGames,
+        auth: koAuth,
+        news: koNews,
+        reviews: koReviews,
+        community: koCommunity,
+        home: koHome,
+        discovery: koDiscovery,
+        admin: koAdmin,
+      },
+      'fr': {
+        translation: fr,
+        games: frGames,
+        auth: frAuth,
+        news: frNews,
+        reviews: frReviews,
+        community: frCommunity,
+        home: frHome,
+        discovery: frDiscovery,
+        admin: frAdmin,
+      },
+      'es': {
+        translation: es,
+        games: esGames,
+        auth: esAuth,
+        news: esNews,
+        reviews: esReviews,
+        community: esCommunity,
+        home: esHome,
+        discovery: esDiscovery,
+        admin: esAdmin,
+      },
     },
     detection: {
       order: ['localStorage', 'navigator'],

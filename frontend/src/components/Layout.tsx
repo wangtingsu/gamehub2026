@@ -163,9 +163,9 @@ const Layout = () => {
   ];
 
   const recommendNavItems: MenuProps['items'] = [
-    { key: `/${currentLang}/library/online`, icon: <PlayCircleOutlined />, label: '在线游戏' },
-    { key: `/${currentLang}/free-games`, icon: <HeartOutlined />, label: '免费游戏' },
-    { key: `/${currentLang}/cozy-games`, icon: <ThunderboltOutlined />, label: '治愈游戏' },
+    { key: `/${currentLang}/library/online`, icon: <PlayCircleOutlined />, label: t('navigation.onlineGames', '在线游戏') },
+    { key: `/${currentLang}/free-games`, icon: <HeartOutlined />, label: t('navigation.freeGames', '免费游戏') },
+    { key: `/${currentLang}/cozy-games`, icon: <ThunderboltOutlined />, label: t('navigation.cozyGames', '治愈游戏') },
   ];
 
   /**
@@ -173,10 +173,10 @@ const Layout = () => {
    * 包含：人物自画像、心灵驿站、游戏百科、命理师
    */
   const aiNavItems: MenuProps['items'] = [
-    { key: `/${currentLang}/ai/soul`, icon: <CommentOutlined />, label: '心灵驿站' },
-    { key: `/${currentLang}/ai/npc`, icon: <BookOutlined />, label: 'AI 攻略' },
-    { key: `/${currentLang}/ai/portrait`, icon: <UserOutlined />, label: 'AI 人物自画像' },
-    { key: `/${currentLang}/ai/companion`, icon: <ThunderboltOutlined />, label: '命理师' },
+    { key: `/${currentLang}/ai/soul`, icon: <CommentOutlined />, label: t('navigation.soulStation', '心灵驿站') },
+    { key: `/${currentLang}/ai/npc`, icon: <BookOutlined />, label: t('navigation.aiGuide', 'AI 攻略') },
+    { key: `/${currentLang}/ai/portrait`, icon: <UserOutlined />, label: t('navigation.aiPortrait', 'AI 人物自画像') },
+    { key: `/${currentLang}/ai/companion`, icon: <ThunderboltOutlined />, label: t('navigation.aiCompanion', '命理师') },
   ];
 
   /**
@@ -187,7 +187,7 @@ const Layout = () => {
     { key: `/${currentLang}/news`, icon: <ReadOutlined />, label: t('navigation.news', '新闻中心') },
     { key: `/${currentLang}/blog`, icon: <ReadOutlined />, label: t('navigation.blog', '博客空间') },
     ...(isAdmin ? [{ key: `/${currentLang}/blog/my` as string, icon: <ReadOutlined />, label: t('navigation.myBlogs', '我的文章') }] : []),
-    { key: `/${currentLang}/community-forum`, icon: <TeamOutlined />, label: '社区论坛' },
+    { key: `/${currentLang}/community-forum`, icon: <TeamOutlined />, label: t('navigation.communityForum', '社区论坛') },
     { key: `/${currentLang}/about`, icon: <InfoCircleOutlined />, label: t('navigation.about', '关于我们') },
   ];
 
@@ -197,7 +197,7 @@ const Layout = () => {
    */
   const navConfig: Record<string, { title: string; items: MenuProps['items'] }> = {
     games: { title: t('navigation.games', '游戏库'), items: gamesNavItems },
-    recommend: { title: '推荐游戏', items: recommendNavItems },
+    recommend: { title: t('navigation.recommend', '推荐游戏'), items: recommendNavItems },
     more: { title: t('navigation.more', '更多的'), items: moreNavItems },
   };
 

@@ -15,5 +15,20 @@
   "hotGames": "Hot Game Recommendations",
   "hotGamesDesc": "Trending games the community is playing right now",
   "redeemCodes": "Redeem Codes",
-  "redeemCodesDesc": "Limited-time codes, first come first served!"
+  "redeemCodesDesc": "Limited-time codes, first come first served!",
+  "activeMembers": "Active Members",
+  "gameReviews": "Game Reviews",
+  "monthlyEvents": "Monthly Events",
+  "discussionTopics": "Discussion Topics",
+  "noDiscussions": "No discussions yet",
+  "heat": "heat",
+  "replies": "replies",
+  "noHotGames": "No hot games",
+  "noFeaturedArticles": "No featured articles",
+  "article": {
+    "news": "News",
+    "blog": "Blog",
+    "guide": "Guide"
+  },
+  "noCodes": "No redeem codes available, stay tuned"
 }

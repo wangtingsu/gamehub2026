@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import MDEditor from '@uiw/react-md-editor';
 
 interface BlogRenderContentProps {
@@ -5,7 +6,8 @@ interface BlogRenderContentProps {
 }
 
 const BlogRenderContent: React.FC<BlogRenderContentProps> = ({ content }) => {
-  if (!content) return <p className="text-gray-400">暂无内容</p>;
+  const { t } = useTranslation();
+  if (!content) return <p className="text-gray-400">{t('blog.noContent', '暂无内容')}</p>;
 
   // 始终用 Markdown 渲染，它能同时处理 Markdown 和 HTML 混合内容
   return (

@@ -47,5 +47,15 @@
     "xboxOne": "Xbox One",
     "xboxSeriesX": "Xbox Series X",
     "switch": "Nintendo Switch"
+  },
+  "seo": {
+    "gamesTitle": "게임 | GameHub",
+    "gamesDescription": "다양한 게임 라이브러리를 둘러보세요.",
+    "gamesKeywords": "게임,게임목록,인기게임"
+  },
+  "sections": {
+    "topUp": "충전 게임",
+    "indie": "인디 게임",
+    "recommended": "추천 게임"
   }
 }

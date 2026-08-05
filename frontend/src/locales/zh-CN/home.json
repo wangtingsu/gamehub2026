@@ -15,5 +15,20 @@
   "hotGames": "热门游戏推荐",
   "hotGamesDesc": "当前社区最热门的游戏，看看大家都在玩什么",
   "redeemCodes": "兑换码专区",
-  "redeemCodesDesc": "限时兑换码，先到先得！"
+  "redeemCodesDesc": "限时兑换码，先到先得！",
+  "activeMembers": "活跃成员",
+  "gameReviews": "游戏评测",
+  "monthlyEvents": "每月活动",
+  "discussionTopics": "讨论话题",
+  "noDiscussions": "暂无热门讨论",
+  "heat": "热度",
+  "replies": "回复",
+  "noHotGames": "暂无热门游戏",
+  "noFeaturedArticles": "暂无精选文章",
+  "article": {
+    "news": "新闻",
+    "blog": "博客",
+    "guide": "攻略"
+  },
+  "noCodes": "暂无可用兑换码，敬请期待"
 }

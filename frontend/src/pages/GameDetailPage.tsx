@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import {
   Typography,
   Card,
@@ -54,6 +55,7 @@ const GameDetailPage = () => {
   const navigate = useNavigate();
   const { isAuthenticated, user } = useAuth();
   const lang = paramLang || 'cn';
+  const { t } = useTranslation();
   const { data: game, isLoading, isError, error: gameError } = useGame(id || '');
   const { data: reviews = [], isLoading: reviewsLoading } = useGameReviews(id || '');
   const { data: forumPosts = [], isLoading: forumLoading } = useGamePosts(id || '');
@@ -121,19 +123,18 @@ const GameDetailPage = () => {
       if (!cart.includes(game.id)) {
         cart.push(game.id);
         localStorage.setItem('gamehub_cart', JSON.stringify(cart));
-        message.success(`《${game.title}》已添加到购物车`);
+        message.success(t('cart.added', '《{{title}}》已添加到购物车', { title: game.title }));
       } else {
-        message.info(`《${game.title}》已在购物车中`);
+        message.info(t('cart.alreadyInCart', '《{{title}}》已在购物车中', { title: game.title }));
       }
     } catch (error) {
-      console.error('添加到购物车失败:', error);
-      message.error('添加到购物车失败');
+      message.error(t('cart.addFailed', '添加到购物车失败'));
     }
   };
 
   const handleToggleFavorite = async () => {
     if (!isAuthenticated) {
-      message.warning('请先登录后再收藏游戏');
+      message.warning(t('favorites.loginRequired', '请先登录后再收藏游戏'));
       navigate(`/${lang}/login`);
       return;
     }
@@ -143,19 +144,16 @@ const GameDetailPage = () => {
     try {
       setIsFavoriteLoading(true);
       if (isFavorited) {
-        // 取消收藏
         await apiService.removeFavorite(game.id);
         setIsFavorited(false);
-        message.success('已取消收藏');
+        message.success(t('favorites.removed', '已取消收藏'));
       } else {
-        // 添加收藏
         await apiService.addFavorite(game.id);
         setIsFavorited(true);
-        message.success('收藏成功');
+        message.success(t('favorites.added', '收藏成功'));
       }
     } catch (err) {
-      console.error('收藏操作失败:', err);
-      message.error('操作失败，请稍后重试');
+      message.error(t('common.operationFailed', '操作失败，请稍后重试'));
     } finally {
       setIsFavoriteLoading(false);
     }

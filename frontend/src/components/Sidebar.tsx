@@ -129,7 +129,7 @@ const Sidebar = ({ collapsed, onNavigate, onToggleCollapse, navMode, onNavModeCh
     {
       key: 'recommend',
       icon: <HeartOutlined />,
-      label: '推荐游戏',
+      label: t('navigation.recommend', '推荐游戏'),
     },
     {
       key: `/${currentLang}/ai`,
