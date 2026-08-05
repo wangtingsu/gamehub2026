@@ -55,6 +55,15 @@ router.post('/featured', asyncHandler(async (req: Request, res: Response) => {
   res.json({ success: true, data: { id: String(r.lastInsertRowid) } });
 }));
 
+router.put('/featured/:id', asyncHandler(async (req: Request, res: Response) => {
+  const { contentType, contentId, featureType, topicName, sortOrder, expiresAt } = req.body;
+  await execute(
+    'UPDATE featured_content SET content_type=?, content_id=?, feature_type=?, topic_name=?, sort_order=?, expires_at=?, updated_at=? WHERE id=?',
+    [contentType, contentId, featureType, topicName || null, sortOrder || 0, expiresAt || null, new Date().toISOString(), req.params.id]
+  );
+  res.json({ success: true });
+}));
+
 router.delete('/featured/:id', asyncHandler(async (req: Request, res: Response) => {
   await execute('DELETE FROM featured_content WHERE id=?', [req.params.id]);
   res.json({ success: true });

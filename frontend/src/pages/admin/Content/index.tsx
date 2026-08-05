@@ -682,11 +682,11 @@ const Content: React.FC = () => {
           setNews(prev => prev.filter(item => String(item.id) !== idStr));
           break;
         case 'reviews':
-          await apiService.deleteBlogPost(idStr);
+          await apiService.deleteReview(idStr);
           setReviews(prev => prev.filter(item => String(item.id) !== idStr));
           break;
         case 'guides':
-          await apiService.deleteBlogPost(idStr);
+          await apiService.deleteGuide(idStr);
           setGuides(prev => prev.filter(item => String(item.id) !== idStr));
           break;
         case 'community':
@@ -1021,7 +1021,6 @@ const Content: React.FC = () => {
             className="shadow-sm border-gray-200"
           />
         </TabPane><TabPane tab="博客" key="blogs">
-          <div style={{color:'white',marginBottom:16}}>博客数量: {blogs.length} | loading: {String(loading)}</div>
           <Table dataSource={blogs} rowKey="id" loading={loading}
             pagination={{ pageSize: 10, showTotal: t => `共 ${t} 篇` }}
             columns={[

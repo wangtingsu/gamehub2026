@@ -13,7 +13,9 @@ const AuditLogs: React.FC = () => {
   const [auditTotal, setAuditTotal] = useState(0);
   const [loginTotal, setLoginTotal] = useState(0);
   const [loading, setLoading] = useState(false);
+  const [activeTab, setActiveTab] = useState('audit');
   const [page, setPage] = useState(1);
+  const [loginPage, setLoginPage] = useState(1);
   const [userId, setUserId] = useState<string | undefined>();
 
   const loadAuditLogs = async () => {
@@ -37,6 +39,7 @@ const AuditLogs: React.FC = () => {
   };
 
   useEffect(() => { loadAuditLogs(); }, [page, userId]);
+  useEffect(() => { loadLoginLogs(); }, [loginPage, userId]);
 
   const auditColumns = [
     {
@@ -109,7 +112,7 @@ const AuditLogs: React.FC = () => {
       <SEO title="审计日志 | GameHub" description="查看系统审计日志和登录记录" keywords="审计日志, 操作日志, 系统审计, 登录日志, 安全审计" noindex />
       <Title level={3}><AuditOutlined className="mr-2" />审计日志</Title>
 
-      <Tabs defaultActiveKey="audit">
+      <Tabs activeKey={activeTab} onChange={(key) => setActiveTab(key)}>
         <TabPane tab="操作日志" key="audit">
           <Card>
             <Table
@@ -137,10 +140,10 @@ const AuditLogs: React.FC = () => {
               loading={loading}
               size="small"
               pagination={{
-                current: page,
+                current: loginPage,
                 pageSize: 20,
                 total: loginTotal,
-                onChange: (p) => setPage(p),
+                onChange: (p) => setLoginPage(p),
                 showTotal: (t) => `共 ${t} 条`,
               }}
             />

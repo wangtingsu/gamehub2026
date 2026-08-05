@@ -17,12 +17,16 @@
     <meta name="description" content="GameHub（好游聚）- Discover game reviews, recommendations, guides, and connect with millions of gamers worldwide. Play free online games, read gaming news, and join the community." />
     <meta name="keywords" content="GameHub, 好游聚, game reviews, game recommendations, online games, free games, gaming community, game guides, 游戏推荐, 游戏评测, 在线游戏, 免费游戏, 游戏社区" />
 
-    <!-- ========== 语言偏好恢复 ========== -->
-    <!-- 在页面渲染前从 localStorage 恢复用户保存的语言设置，避免首屏闪烁 -->
+    <!-- ========== 语言检测 ========== -->
+    <!-- 优先从 URL 路径读取语言（/cn→zh-CN, /ja→ja...），其次从 localStorage -->
     <script>
       (function() {
-        var lang = localStorage.getItem('i18nextLng');
-        if (lang) { document.documentElement.lang = lang; }
+        var map = { cn: 'zh-CN', en: 'en', ja: 'ja', ko: 'ko', es: 'es', fr: 'fr' };
+        var m = location.pathname.match(/^\/([a-z]{2})\b/);
+        var urlLang = m ? (map[m[1]] || m[1]) : null;
+        var stored = localStorage.getItem('i18nextLng');
+        var lang = urlLang || stored || 'zh-CN';
+        document.documentElement.lang = lang;
       })();
     </script>
 

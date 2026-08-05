@@ -166,8 +166,17 @@ const Backups: React.FC = () => {
               size="small"
               icon={<DownloadOutlined />}
               disabled={record.status !== 'completed'}
-              href={`${import.meta.env.VITE_API_BASE_URL || '/api/v1'}/admin/backups/${record.id}/download`}
-              target="_blank"
+              onClick={async () => {
+                try {
+                  const { adminApiClient } = await import('../../../api/client');
+                  const res = await adminApiClient.get(`/admin/backups/${record.id}/download`, { responseType: 'blob' });
+                  const blob = res instanceof Blob ? res : new Blob([JSON.stringify(res)]);
+                  const url = URL.createObjectURL(blob);
+                  const a = document.createElement('a');
+                  a.href = url; a.download = record.filename || `backup-${record.id}.sql`;
+                  a.click(); URL.revokeObjectURL(url);
+                } catch { message.error('Download failed'); }
+              }}
             />
           </Tooltip>
           <Popconfirm

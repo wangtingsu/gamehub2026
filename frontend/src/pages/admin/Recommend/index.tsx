@@ -1,7 +1,11 @@
 import { useState, useEffect } from 'react';
 import { Table, Button, Modal, Form, Input, Select, InputNumber, Popconfirm, message, Tabs, Card, Space, Tag, Image } from 'antd';
 import { PlusOutlined, EditOutlined, DeleteOutlined, ReloadOutlined } from '@ant-design/icons';
+import { adminApiClient } from '../../../api/client';
 import SEO from '../../../components/SEO';
+
+const BANNER_API = '/admin/banners';
+const FEATURED_API = '/admin/featured';
 
 const RecommendPage = () => {
   const [banners, setBanners] = useState<any[]>([]);
@@ -11,38 +15,34 @@ const RecommendPage = () => {
   const [tab, setTab] = useState('banner');
   const [form] = Form.useForm();
 
-  const token = localStorage.getItem('adminToken') || '';
-
-  const fetchBanners = () => {
-    fetch('/admin-api/v1/admin/banners', { headers: { Authorization: `Bearer ${token}` } })
-      .then(r => r.json()).then(d => setBanners(d.data || [])).catch(() => {});
+  const fetchBanners = async () => {
+    try { const r: any = await adminApiClient.get(BANNER_API); setBanners(r?.data || r || []); } catch {}
   };
 
-  const fetchFeatured = () => {
-    fetch('/admin-api/v1/admin/featured', { headers: { Authorization: `Bearer ${token}` } })
-      .then(r => r.json()).then(d => setFeatured(d.data || [])).catch(() => {});
+  const fetchFeatured = async () => {
+    try { const r: any = await adminApiClient.get(FEATURED_API); setFeatured(r?.data || r || []); } catch {}
   };
 
   useEffect(() => { fetchBanners(); fetchFeatured(); }, []);
 
   const handleSubmit = async (values: any) => {
-    const url = editing?.id
-      ? `/admin-api/v1/admin/${tab === 'banner' ? 'banners' : 'featured'}/${editing.id}`
-      : `/admin-api/v1/admin/${tab === 'banner' ? 'banners' : 'featured'}`;
-    const method = editing?.id ? 'PUT' : 'POST';
-    const res = await fetch(url, {
-      method, headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
-      body: JSON.stringify(values),
-    });
-    const d = await res.json();
-    if (d.success) { message.success(editing?.id ? '更新成功' : '创建成功'); setModalOpen(false); tab === 'banner' ? fetchBanners() : fetchFeatured(); }
-    else { message.error(d.error || '操作失败'); }
+    const api = tab === 'banner' ? BANNER_API : FEATURED_API;
+    try {
+      if (editing?.id) await adminApiClient.put(`${api}/${editing.id}`, values);
+      else await adminApiClient.post(api, values);
+      message.success(editing?.id ? '更新成功' : '创建成功');
+      setModalOpen(false);
+      tab === 'banner' ? fetchBanners() : fetchFeatured();
+    } catch (e: any) { message.error(e?.response?.data?.error || '操作失败'); }
   };
 
   const handleDelete = async (id: string) => {
-    const url = `/admin-api/v1/admin/${tab === 'banner' ? 'banners' : 'featured'}/${id}`;
-    const res = await fetch(url, { method: 'DELETE', headers: { Authorization: `Bearer ${token}` } });
-    if (res.ok) { message.success('删除成功'); tab === 'banner' ? fetchBanners() : fetchFeatured(); }
+    const api = tab === 'banner' ? BANNER_API : FEATURED_API;
+    try {
+      await adminApiClient.delete(`${api}/${id}`);
+      message.success('删除成功');
+      tab === 'banner' ? fetchBanners() : fetchFeatured();
+    } catch { message.error('删除失败'); }
   };
 
   const openCreate = () => { setEditing(null); form.resetFields(); setModalOpen(true); };

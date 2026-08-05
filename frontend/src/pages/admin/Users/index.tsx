@@ -191,6 +191,7 @@ const Users: React.FC = () => {
 
   // 角色变更（仅超级管理员）
   const handleRoleChange = (user: User) => {
+    let selectedRole = user.role;
     Modal.confirm({
       title: '角色变更',
       icon: <ExclamationCircleOutlined />,
@@ -200,15 +201,7 @@ const Users: React.FC = () => {
           <Select
             defaultValue={user.role}
             style={{ width: '100%', marginTop: 8 }}
-            onChange={async (newRole) => {
-              try {
-                await apiService.changeUserRole(user.id, newRole);
-                message.success(`角色已变更为 ${roleConfig[newRole]?.label}`);
-                loadUsers();
-              } catch (error: any) {
-                message.error(error.message || '角色变更失败');
-              }
-            }}
+            onChange={(newRole) => { selectedRole = newRole; }}
           >
             <Option value="super_admin">超级管理员</Option>
             <Option value="admin">管理员</Option>
@@ -216,9 +209,18 @@ const Users: React.FC = () => {
           </Select>
         </div>
       ),
-      okText: '关闭',
+      okText: '确认变更',
       cancelText: '取消',
-      onOk: () => {},
+      onOk: async () => {
+        if (selectedRole === user.role) return;
+        try {
+          await apiService.changeUserRole(user.id, selectedRole);
+          message.success(`角色已变更为 ${roleConfig[selectedRole]?.label}`);
+          loadUsers();
+        } catch (error: any) {
+          message.error(error.message || '角色变更失败');
+        }
+      },
     });
   };
 

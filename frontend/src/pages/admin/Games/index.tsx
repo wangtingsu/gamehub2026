@@ -182,15 +182,22 @@ const Games: React.FC = () => {
     {
       title: 'Status',
       key: 'status',
-      render: (_: unknown, _record: unknown) => ( // eslint-disable-line @typescript-eslint/no-unused-vars
+      render: (_: unknown, record: any) => (
         <div className="flex flex-col space-y-1">
           <Switch
             checkedChildren="Active"
             unCheckedChildren="Inactive"
-            defaultChecked={true}
+            checked={record.status !== 'archived'}
             size="small"
+            onChange={async (checked) => {
+              try {
+                await apiService.updateGame(record.id, { status: checked ? 'active' : 'archived' });
+                message.success(checked ? 'Game activated' : 'Game archived');
+                loadGames();
+              } catch { message.error('Failed to update status'); }
+            }}
           />
-          <span className="text-xs text-gray-500">Published</span>
+          <span className="text-xs text-gray-500">{record.status || 'Published'}</span>
         </div>
       ),
     },
@@ -422,12 +429,17 @@ const Games: React.FC = () => {
     Modal.confirm({
       title: 'Delete Selected Games',
       content: `Are you sure you want to delete ${selectedRowKeys.length} games?`,
-      onOk: () => {
-        const updatedGames = games.filter(game => !selectedRowKeys.includes(game.id));
-        setGames(updatedGames);
-        setFilteredGames(updatedGames);
-        setSelectedRowKeys([]);
-        message.success(`${selectedRowKeys.length} games deleted successfully`);
+      onOk: async () => {
+        try {
+          await Promise.all(selectedRowKeys.map(id => apiService.deleteGame(id)));
+          const updatedGames = games.filter(game => !selectedRowKeys.includes(game.id));
+          setGames(updatedGames);
+          setFilteredGames(updatedGames);
+          setSelectedRowKeys([]);
+          message.success(`${selectedRowKeys.length} games deleted successfully`);
+        } catch {
+          message.error('Failed to delete some games');
+        }
       },
     });
   };

@@ -445,7 +445,7 @@ const Sidebar = ({ collapsed, onNavigate, onToggleCollapse, navMode, onNavModeCh
               className="w-full flex items-center gap-3 px-3 py-2 rounded-lg text-gray-400 hover:text-white hover:bg-dark-700 transition-colors"
             >
               <UserOutlined className="text-lg" />
-              {!collapsed && <span className="text-sm">登录</span>}
+              {!collapsed && <span className="text-sm">{t('auth.login', '登录')}</span>}
             </button>
           )}
         </div>
