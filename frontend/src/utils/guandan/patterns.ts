@@ -3,6 +3,9 @@
 import { Card, Rank, Suit, Pattern, PlayedCards, effectiveRank, GAME_LEVEL } from './types';
 import { groupByRank, groupBySuit, sortHand } from './cards';
 
+/** 获取有效rank（带等级牌修正） */
+function er(rank: Rank) { return effectiveRank(rank, GAME_LEVEL); }
+
 /** 识别牌型，返回 null 表示无效牌型 */
 export function identifyPattern(cards: Card[]): PlayedCards | null {
   const n = cards.length;
@@ -24,22 +27,22 @@ export function identifyPattern(cards: Card[]): PlayedCards | null {
 
   // 炸弹：4~8张同rank
   if (n >= 4 && uniqueRanks.length === 1) {
-    return { pattern: Pattern.Bomb, mainRank: ranks[0], length: n, cards: sorted };
+    return { pattern: Pattern.Bomb, mainRank: er(ranks[0]), length: n, cards: sorted };
   }
 
   // 单张
   if (n === 1) {
-    return { pattern: Pattern.Single, mainRank: ranks[0], length: 1, cards: sorted };
+    return { pattern: Pattern.Single, mainRank: er(ranks[0]), length: 1, cards: sorted };
   }
 
   // 对子
   if (n === 2 && uniqueRanks.length === 1) {
-    return { pattern: Pattern.Pair, mainRank: ranks[0], length: 2, cards: sorted };
+    return { pattern: Pattern.Pair, mainRank: er(ranks[0]), length: 2, cards: sorted };
   }
 
   // 三同张
   if (n === 3 && uniqueRanks.length === 1) {
-    return { pattern: Pattern.Triple, mainRank: ranks[0], length: 3, cards: sorted };
+    return { pattern: Pattern.Triple, mainRank: er(ranks[0]), length: 3, cards: sorted };
   }
 
   // 三带二：三同张 + 一对
@@ -57,10 +60,10 @@ export function identifyPattern(cards: Card[]): PlayedCards | null {
         const suitGroups = groupBySuit(sorted);
         for (const [, group] of suitGroups) {
           if (group.length === 5) {
-            return { pattern: Pattern.StraightFlush, mainRank: sortedRanks[4], length: 5, cards: sorted };
+            return { pattern: Pattern.StraightFlush, mainRank: er(sortedRanks[4]), length: 5, cards: sorted };
           }
         }
-        return { pattern: Pattern.Straight, mainRank: sortedRanks[4], length: 5, cards: sorted };
+        return { pattern: Pattern.Straight, mainRank: er(sortedRanks[4]), length: 5, cards: sorted };
       }
     }
   }
@@ -224,7 +227,7 @@ function findSameTypeBeating(hand: Card[], lastPlay: PlayedCards): Card[][] {
   switch (lastPlay.pattern) {
     case Pattern.Single: {
       for (const [, group] of rankGroups) {
-        if (group[0].rank > lastPlay.mainRank && !isJokerRank(group[0].rank)) {
+        if (effectiveRank(group[0].rank, GAME_LEVEL) > effectiveRank(lastPlay.mainRank, GAME_LEVEL) && !isJokerRank(group[0].rank)) {
           results.push([group[0]]);
         }
       }
@@ -232,7 +235,7 @@ function findSameTypeBeating(hand: Card[], lastPlay: PlayedCards): Card[][] {
     }
     case Pattern.Pair: {
       for (const [, group] of rankGroups) {
-        if (group.length >= 2 && group[0].rank > lastPlay.mainRank) {
+        if (group.length >= 2 && effectiveRank(group[0].rank, GAME_LEVEL) > effectiveRank(lastPlay.mainRank, GAME_LEVEL)) {
           results.push(group.slice(0, 2));
         }
       }
@@ -240,7 +243,7 @@ function findSameTypeBeating(hand: Card[], lastPlay: PlayedCards): Card[][] {
     }
     case Pattern.Triple: {
       for (const [, group] of rankGroups) {
-        if (group.length >= 3 && group[0].rank > lastPlay.mainRank) {
+        if (group.length >= 3 && effectiveRank(group[0].rank, GAME_LEVEL) > effectiveRank(lastPlay.mainRank, GAME_LEVEL)) {
           results.push(group.slice(0, 3));
         }
       }
