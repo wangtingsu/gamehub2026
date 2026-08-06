@@ -151,10 +151,15 @@ const GuandanGame: React.FC<GameProps> = ({ onScoreChange, onGameOver, onGameSta
   const [levelUp, setLevelUp] = useState(0);
   // 升级后的下一等级名称
   const [nextLevel, setNextLevel] = useState('');
+  // AI 玩家名字
+  const aiNames = ['小帅', '大壮', '阿强'];
   // 鼠标悬停的按钮标签（用于高亮效果）
   const [hoveredBtn, setHoveredBtn] = useState<string | null>(null);
   // AI 是否正在思考（用于禁用玩家操作和显示等待提示）
   const [aiThinking, setAiThinking] = useState(false);
+
+  // 初始化等级
+  useEffect(() => { setGameLevel(gRef.current.level); }, []);
   // 按钮区域数组，供点击/悬停检测使用
   const buttons = useRef<ButtonRect[]>([]);
 
@@ -357,6 +362,7 @@ const GuandanGame: React.FC<GameProps> = ({ onScoreChange, onGameOver, onGameSta
     const g = gRef.current;
     const steps = calculateLevelUp(g.completedRank);  // 计算升级级数
     const newLevel = getNextLevel(g.level, steps);    // 计算新等级
+    setGameLevel(newLevel); // 同步等级到牌值系统
     setLevelUp(steps);
     setNextLevel(getLevelName(newLevel));
     setGamePhase('over');
@@ -391,7 +397,7 @@ const GuandanGame: React.FC<GameProps> = ({ onScoreChange, onGameOver, onGameSta
     }
 
     // 绘制游戏信息（等级、玩家状态等）
-    drawGameInfo(ctx, g.level, getLevelName(g.level), g.players, g.currentPlayer);
+    drawGameInfo(ctx, g.level, getLevelName(g.level), g.players, ['你', ...aiNames], g.currentPlayer);
 
     // 绘制玩家0（自己）的手牌，选中状态高亮
     const p0 = g.players[0];
@@ -405,9 +411,9 @@ const GuandanGame: React.FC<GameProps> = ({ onScoreChange, onGameOver, onGameSta
     }
 
     // 绘制3个对手的牌背及位置标识（左侧/对家/右侧）
-    drawOpponentCards(ctx, g.players[1].hand.length, 10, CENTER_Y - 30, '左侧', g.currentPlayer === 1 && !g.players[1].playedOut);
-    drawOpponentCards(ctx, g.players[2].hand.length, 320, 50, '对家', g.currentPlayer === 2 && !g.players[2].playedOut);
-    drawOpponentCards(ctx, g.players[3].hand.length, TABLE_W - 120, CENTER_Y - 30, '右侧', g.currentPlayer === 3 && !g.players[3].playedOut);
+    drawOpponentCards(ctx, g.players[1].hand.length, 10, CENTER_Y - 30, aiNames[0], g.currentPlayer === 1 && !g.players[1].playedOut);
+    drawOpponentCards(ctx, g.players[2].hand.length, 320, 50, aiNames[1], g.currentPlayer === 2 && !g.players[2].playedOut);
+    drawOpponentCards(ctx, g.players[3].hand.length, TABLE_W - 120, CENTER_Y - 30, aiNames[2], g.currentPlayer === 3 && !g.players[3].playedOut);
 
     // 显示对手是否已出完的标记
     if (g.players[1].playedOut) { ctx.fillStyle = '#666'; ctx.font = '14px Arial'; ctx.fillText('✓ 已出完', 60, CENTER_Y + 60); }

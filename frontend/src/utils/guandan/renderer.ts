@@ -289,6 +289,7 @@ export function drawGameInfo(
   level: number,
   levelName: string,
   players: Player[],
+  names: string[],
   currentPlayer: number,
 ) {
   // 级别
@@ -298,7 +299,7 @@ export function drawGameInfo(
   ctx.fillText(`打 ${levelName}`, 15, 30);
 
   // 玩家状态
-  const labels = ['你', '电脑 1', '电脑 2', '电脑 3'];
+  const labels = names || ['你', '电脑 1', '电脑 2', '电脑 3'];
   ctx.font = '12px Arial';
   ctx.textAlign = 'right';
   for (let i = 0; i < 4; i++) {
