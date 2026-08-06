@@ -509,10 +509,11 @@ const GuandanGame: React.FC<GameProps> = ({ onScoreChange, onGameOver, onGameSta
       // 是否在手牌区域的范围内
       if (my < cardY - 5 || my > cardY + CARD_H + 15) return;
 
-      // 逐张检测点击到了哪张牌
+      // 逐张检测点击到了哪张牌（每张牌只响应其可见区域）
       for (let i = 0; i < sorted.length; i++) {
         const cx = startX + i * gap;
-        if (mx >= cx && mx <= cx + CARD_W) {
+        const rightEdge = i < sorted.length - 1 ? Math.min(cx + CARD_W, startX + (i + 1) * gap) : cx + CARD_W;
+        if (mx >= cx && mx <= rightEdge) {
           setSelected(prev => {
             const next = new Set(prev);
             if (next.has(i)) next.delete(i);   // 已选中则取消
