@@ -298,7 +298,7 @@ export function drawGameInfo(
   ctx.fillText(`打 ${levelName}`, 15, 30);
 
   // 玩家状态
-  const labels = ['你', '左侧', '对家', '右侧'];
+  const labels = ['你', '电脑 1', '电脑 2', '电脑 3'];
   ctx.font = '12px Arial';
   ctx.textAlign = 'right';
   for (let i = 0; i < 4; i++) {
