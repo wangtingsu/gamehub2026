@@ -318,7 +318,7 @@ const GuandanGame: React.FC<GameProps> = ({ onScoreChange, onGameOver, onGameSta
       // 轮到AI，显示思考动画并延时调用AI决策
       setAiThinking(true);
       setMessage(`玩家 ${next + 1} 思考中`);
-      setTimeout(() => aiTurn(next), 1200);
+      setTimeout(() => aiTurn(next), 2500);
     }
   };
 
@@ -423,8 +423,8 @@ const GuandanGame: React.FC<GameProps> = ({ onScoreChange, onGameOver, onGameSta
     const passPositions: [number, number, string][] = [[140, CENTER_Y - 15, '你'], [30, CENTER_Y + 25, aiNames[0]], [360, 65, aiNames[1]], [TABLE_W - 60, CENTER_Y + 25, aiNames[2]]];
     for (let i = 0; i < 4; i++) {
       const ts = passTS.current[i];
-      if (ts && (now - ts) < 1000) {
-        const alpha = 1 - (now - ts) / 1000;
+      if (ts && (now - ts) < 3000) {
+        const alpha = (now - ts) < 2000 ? 1 : 1 - (now - ts - 2000) / 1000;
         ctx.fillStyle = 'rgba(255,100,100,' + alpha + ')';
         ctx.font = 'bold 16px Arial';
         ctx.textAlign = 'center';
