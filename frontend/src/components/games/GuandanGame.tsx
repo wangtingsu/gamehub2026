@@ -157,6 +157,8 @@ const GuandanGame: React.FC<GameProps> = ({ onScoreChange, onGameOver, onGameSta
   const [hoveredBtn, setHoveredBtn] = useState<string | null>(null);
   // AI 是否正在思考（用于禁用玩家操作和显示等待提示）
   const [aiThinking, setAiThinking] = useState(false);
+  const [hoveredIdx, setHoveredIdx] = useState(-1);
+  const passTS = useRef<Record<number, number>>({});
 
   // 初始化等级
   useEffect(() => { setGameLevel(gRef.current.level); }, []);
@@ -225,6 +227,7 @@ const GuandanGame: React.FC<GameProps> = ({ onScoreChange, onGameOver, onGameSta
     if (g.players[0].playedOut || g.phase !== 'play') return;
     if (!g.lastPlay || g.lastPlayBy === 0) { setMessage('必须出牌'); return; }
     setMessage('不出');
+    passTS.current[0] = Date.now();
     g.passCount++;
     nextTurn();
   }, []);
@@ -344,6 +347,7 @@ const GuandanGame: React.FC<GameProps> = ({ onScoreChange, onGameOver, onGameSta
     if (chosen.length === 0) {
       // AI选择不出
       setMessage(`玩家 ${playerIdx + 1} 不出`);
+      passTS.current[playerIdx] = Date.now();
       g.passCount++;
       setAiThinking(false);
       nextTurn();
@@ -402,7 +406,7 @@ const GuandanGame: React.FC<GameProps> = ({ onScoreChange, onGameOver, onGameSta
     // 绘制玩家0（自己）的手牌，选中状态高亮
     const p0 = g.players[0];
     if (!p0.playedOut) {
-      drawHand(ctx, p0.hand, gamePhase === 'playing' && !aiThinking ? selected : new Set(), 0, TABLE_H - 100);
+      drawHand(ctx, p0.hand, gamePhase === 'playing' && !aiThinking ? selected : new Set(), hoveredIdx, 0, TABLE_H - 100);
     } else {
       ctx.fillStyle = '#666';
       ctx.font = 'bold 24px Arial';
@@ -414,6 +418,19 @@ const GuandanGame: React.FC<GameProps> = ({ onScoreChange, onGameOver, onGameSta
     drawOpponentCards(ctx, g.players[1].hand.length, 10, CENTER_Y - 30, aiNames[0], g.currentPlayer === 1 && !g.players[1].playedOut);
     drawOpponentCards(ctx, g.players[2].hand.length, 320, 50, aiNames[1], g.currentPlayer === 2 && !g.players[2].playedOut);
     drawOpponentCards(ctx, g.players[3].hand.length, TABLE_W - 120, CENTER_Y - 30, aiNames[2], g.currentPlayer === 3 && !g.players[3].playedOut);
+    // 不出指示
+    const now = Date.now();
+    const passPositions: [number, number, string][] = [[140, CENTER_Y - 15, '你'], [30, CENTER_Y + 25, aiNames[0]], [360, 65, aiNames[1]], [TABLE_W - 60, CENTER_Y + 25, aiNames[2]]];
+    for (let i = 0; i < 4; i++) {
+      const ts = passTS.current[i];
+      if (ts && (now - ts) < 1000) {
+        const alpha = 1 - (now - ts) / 1000;
+        ctx.fillStyle = 'rgba(255,100,100,' + alpha + ')';
+        ctx.font = 'bold 16px Arial';
+        ctx.textAlign = 'center';
+        ctx.fillText('不出', passPositions[i][0], passPositions[i][1]);
+      }
+    }
 
     // 显示对手是否已出完的标记
     if (g.players[1].playedOut) { ctx.fillStyle = '#666'; ctx.font = '14px Arial'; ctx.fillText('✓ 已出完', 60, CENTER_Y + 60); }
@@ -456,7 +473,7 @@ const GuandanGame: React.FC<GameProps> = ({ onScoreChange, onGameOver, onGameSta
     }
 
     for (const btn of buttons.current) drawButton(ctx, btn, hoveredBtn === btn.label);
-  }, [gamePhase, selected, message, levelUp, nextLevel, hoveredBtn, aiThinking]);
+  }, [gamePhase, selected, message, levelUp, nextLevel, hoveredBtn, aiThinking, hoveredIdx]);
 
   /**
    * 注册 Canvas 原生事件（点击和鼠标移动）
@@ -482,6 +499,21 @@ const GuandanGame: React.FC<GameProps> = ({ onScoreChange, onGameOver, onGameSta
         }
       }
       setHoveredBtn(found);
+      // 手牌hover检测
+      const g2 = gRef.current;
+      if (g2.players.length > 0 && g2.currentPlayer === 0) {
+        const sorted = sortHand(g2.players[0].hand);
+        const { gap, startX, cardY } = calcHandLayout(sorted.length);
+        if (my > cardY - 5 && my < cardY + CARD_H + 15) {
+          let hi = -1;
+          for (let i = 0; i < sorted.length; i++) {
+            const cx = startX + i * gap;
+            const re = i < sorted.length - 1 ? Math.min(cx + CARD_W, startX + (i + 1) * gap) : cx + CARD_W;
+            if (mx >= cx && mx <= re) { hi = i; break; }
+          }
+          setHoveredIdx(hi);
+        } else { setHoveredIdx(-1); }
+      }
     };
 
     // Canvas 点击事件：检测按钮或手牌区域

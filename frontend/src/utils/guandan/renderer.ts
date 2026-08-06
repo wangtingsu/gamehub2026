@@ -179,13 +179,14 @@ export function drawHand(
   ctx: CanvasRenderingContext2D,
   cards: Card[],
   selectedIndices: Set<number>,
+  hoveredIndex: number,
   x: number,
   y: number,
 ) {
   const sorted = sortHand(cards);
   const maxGap = 36;
   const minGap = 18;
-  const availableW = TABLE_W - 20; // 左右留白
+  const availableW = TABLE_W - 20;
   const gap = sorted.length > 1
     ? Math.max(minGap, Math.min(maxGap, (availableW - CARD_W) / (sorted.length - 1)))
     : 0;
@@ -194,7 +195,8 @@ export function drawHand(
 
   for (let i = 0; i < sorted.length; i++) {
     const cardX = startX + i * gap;
-    drawCard(ctx, sorted[i], cardX, y, true, selectedIndices.has(i));
+    const cardY = i === hoveredIndex ? y - 10 : y;
+    drawCard(ctx, sorted[i], cardX, cardY, true, selectedIndices.has(i), i === hoveredIndex);
   }
 }
 
