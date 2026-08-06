@@ -32,6 +32,7 @@ export enum Pattern {
   Triple = 'triple',           // 三同张
   TripleWithPair = 'triple_with_pair', // 三带二
   Straight = 'straight',       // 顺子（5张）
+  PairStraight = 'pair_straight', // 连对（3个以上连续对子，如334455）
   TriplePair = 'triple_pair',  // 钢板（2个连续三同张）
   TripleTriple = 'triple_triple', // 夯（2个三同张）
   Bomb = 'bomb',               // 炸弹（4~8张同值）

@@ -68,6 +68,15 @@ export function identifyPattern(cards: Card[]): PlayedCards | null {
     }
   }
 
+  // 连对：3个以上连续对子（6/8/10/12...张）
+  if (n >= 6 && n % 2 === 0 && groupSizes.every(s => s === 2)) {
+    const pairRanks = [...rankGroups.keys()].sort((a, b) => a - b);
+    if (pairRanks.length >= 3 && pairRanks[pairRanks.length-1] - pairRanks[0] === pairRanks.length - 1
+        && !pairRanks.some(r => r <= Rank.R2 || isJokerRank(r))) {
+      return { pattern: Pattern.PairStraight, mainRank: er(pairRanks[pairRanks.length-1]), length: n, cards: sorted };
+    }
+  }
+
   // 钢板：2个连续的三同张（6张）
   if (n === 6 && groupSizes.length === 2 && groupSizes.every(s => s === 3)) {
     const tripleRanks = [...rankGroups.keys()].sort((a, b) => a - b);
@@ -110,7 +119,16 @@ export function canBeat(current: PlayedCards, last: PlayedCards): boolean {
   if (current.pattern === Pattern.Rocket) return true;
   if (last.pattern === Pattern.Rocket) return false;
 
-  // 炸弹/同花顺 vs 非炸弹
+  // 连对 vs 连对：张数相同、最大rank更大
+  if (current.pattern === Pattern.PairStraight && last.pattern === Pattern.PairStraight) {
+    if (current.length !== last.length) return false;
+    return current.mainRank > last.mainRank;
+  }
+
+  // 炸弹/同花顺 vs 非炸弹/非连对
+  const isBomb = (p: Pattern) => p === Pattern.Bomb || p === Pattern.Rocket || p === Pattern.StraightFlush;
+  if (isBomb(current.pattern) && !isBomb(last.pattern)) return true;
+  if (!isBomb(current.pattern) && isBomb(last.pattern)) return false;
   const currentIsBomb = current.pattern === Pattern.Bomb || current.pattern === Pattern.StraightFlush;
   const lastIsBomb = last.pattern === Pattern.Bomb || last.pattern === Pattern.StraightFlush;
 
@@ -249,6 +267,10 @@ function findSameTypeBeating(hand: Card[], lastPlay: PlayedCards): Card[][] {
       }
       break;
     }
+    case Pattern.PairStraight: {
+      findPairStraights(hand, effectiveRank(lastPlay.mainRank, GAME_LEVEL), lastPlay.length).forEach(r => results.push(r));
+      break;
+    }
     case Pattern.TripleWithPair: {
       for (const [r, group] of rankGroups) {
         if (group.length >= 3 && r > lastPlay.mainRank) {
@@ -287,6 +309,32 @@ function findPair(hand: Card[], excludeRank?: number): Card[] | null {
     }
   }
   return null;
+}
+
+/** 找连对（连续对子，大于指定最大rank） */
+function findPairStraights(hand: Card[], minMaxRank: number, targetLen?: number): Card[][] {
+  const results: Card[][] = [];
+  const rankGroups = groupByRank(hand);
+  const pairRanks = [...rankGroups.entries()]
+    .filter(([r, g]) => g.length >= 2 && er(r) > minMaxRank && r > Rank.R2 && !isJokerRank(r))
+    .map(([r]) => r)
+    .sort((a, b) => a - b);
+  if (pairRanks.length < 3) return results;
+  for (let i = 0; i <= pairRanks.length - 3; i++) {
+    for (let len = 3; i + len <= pairRanks.length; len++) {
+      const seq = pairRanks.slice(i, i + len);
+      if (seq[len - 1] - seq[0] !== len - 1) break;
+      const total = len * 2;
+      if (targetLen && total !== targetLen) continue;
+      const cards: Card[] = [];
+      for (const r of seq) {
+        const group = rankGroups.get(r)!;
+        cards.push(...group.slice(0, 2));
+      }
+      results.push(cards);
+    }
+  }
+  return results;
 }
 
 /** 找顺子（大于指定最大牌） */
