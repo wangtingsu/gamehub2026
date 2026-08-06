@@ -19,7 +19,7 @@ import { Card, Suit, Rank, Player, PlayedCards, GameStateData, setGameLevel } fr
 import { createDeck, shuffleDeck, dealCards, sortHand, removeCards, groupByRank } from '../../utils/guandan/cards';
 import { identifyPattern, getSuggestion, getLeadSuggestion } from '../../utils/guandan/patterns';
 import { isValidPlay, checkAllOut, calculateLevelUp, getNextLevel, nextActivePlayer, getLevelName, createInitialState } from '../../utils/guandan/rules';
-import { aiChoosePlay } from '../../utils/guandan/ai';
+import { aiChoosePlay, aiLeadPlay } from '../../utils/guandan/ai';
 import {
   TABLE_W, TABLE_H, CARD_W, CARD_H, CENTER_Y,
   drawTable, drawHand, drawOpponentCards, drawPlayedCards,
@@ -243,7 +243,7 @@ const GuandanGame: React.FC<GameProps> = ({ onScoreChange, onGameOver, onGameSta
     const sorted = sortHand(g.players[0].hand);
     // 自由出牌时使用领出提示，否则根据上家牌型给出提示
     const suggestion = (!g.lastPlay || g.lastPlayBy === 0)
-      ? getLeadSuggestion(sorted) : getSuggestion(sorted, g.lastPlay);
+      ? aiLeadPlay(sorted, groupByRank(sorted), g.players, 0) : getSuggestion(sorted, g.lastPlay);
     if (suggestion) {
       const indices = new Set<number>();
       for (const card of suggestion) {
@@ -341,8 +341,8 @@ const GuandanGame: React.FC<GameProps> = ({ onScoreChange, onGameOver, onGameSta
 
     const isLead = !g.lastPlay || g.lastPlayBy === playerIdx;
     const chosen = isLead
-      ? getLeadSuggestion(g.players[playerIdx].hand)    // 自由出牌：简单策略
-      : aiChoosePlay({                                    // 跟牌：复杂AI决策
+      ? aiLeadPlay(sortHand(g.players[playerIdx].hand), groupByRank(sortHand(g.players[playerIdx].hand)), g.players, playerIdx)
+      : aiChoosePlay({
           hand: g.players[playerIdx].hand,
           lastPlay: g.lastPlay,
           lastPlayBy: g.lastPlayBy,

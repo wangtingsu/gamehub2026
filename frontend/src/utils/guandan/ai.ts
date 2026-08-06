@@ -96,7 +96,7 @@ export function aiChoosePlay(ctx: AIContext): Card[] {
 }
 
 /** 自由出牌策略 */
-function aiLeadPlay(
+export function aiLeadPlay(
   sorted: Card[],
   rankGroups: Map<number, Card[]>,
   players: Player[],
