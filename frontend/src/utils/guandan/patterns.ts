@@ -1,6 +1,6 @@
 // 掼蛋牌型识别与比较
 
-import { Card, Rank, Suit, Pattern, PlayedCards } from './types';
+import { Card, Rank, Suit, Pattern, PlayedCards, effectiveRank, GAME_LEVEL } from './types';
 import { groupByRank, groupBySuit, sortHand } from './cards';
 
 /** 识别牌型，返回 null 表示无效牌型 */
@@ -131,9 +131,9 @@ export function canBeat(current: PlayedCards, last: PlayedCards): boolean {
     if (last.pattern === Pattern.StraightFlush) {
       return current.length >= 6; // 6张及以上炸弹大于同花顺
     }
-    // 普通炸弹 vs 普通炸弹：张数多的赢，张数相同比较rank
+    // 普通炸弹 vs 普通炸弹：张数多的赢，张数相同比较effective rank
     if (current.length !== last.length) return current.length > last.length;
-    return current.mainRank > last.mainRank;
+    return effectiveRank(current.mainRank, GAME_LEVEL) > effectiveRank(last.mainRank, GAME_LEVEL);
   }
 
   // 炸弹压非炸弹

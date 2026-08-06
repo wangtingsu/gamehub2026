@@ -104,7 +104,25 @@ export function isJokerRank(r: number): boolean {
   return r === Rank.SmallJoker || r === Rank.BigJoker;
 }
 
+/** 计算等级牌的有效排名（打几时该rank排在A之后） */
+export function effectiveRank(rank: Rank, level: number): number {
+  if (rank === Rank.BigJoker) return 101;
+  if (rank === Rank.SmallJoker) return 100;
+  if (rank === level) return 15; // 等级牌最高(>A=14)
+  if (rank === Rank.R2) return 2;
+  return rank; // R3=3...A=14
+}
+
+/** 根据等级判断是否为等级牌 */
+export function isLevelRank(rank: Rank, level: number): boolean {
+  return rank === level;
+}
+
 // 增加辅助函数
+/** 游戏当前等级（全局，用于牌值比较） */
+export let GAME_LEVEL = 2;
+export function setGameLevel(level: number) { GAME_LEVEL = level; }
+
 export function getRankDisplay(rank: Rank): string {
   return RANK_NAMES[rank] || String(rank);
 }

@@ -15,7 +15,7 @@
  */
 
 import React, { useRef, useState, useEffect, useCallback } from 'react';
-import { Card, Suit, Rank, Player, PlayedCards, GameStateData } from '../../utils/guandan/types';
+import { Card, Suit, Rank, Player, PlayedCards, GameStateData, setGameLevel } from '../../utils/guandan/types';
 import { createDeck, shuffleDeck, dealCards, sortHand, removeCards, groupByRank } from '../../utils/guandan/cards';
 import { identifyPattern, getSuggestion, getLeadSuggestion } from '../../utils/guandan/patterns';
 import { isValidPlay, checkAllOut, calculateLevelUp, getNextLevel, nextActivePlayer, getLevelName, createInitialState } from '../../utils/guandan/rules';
@@ -310,7 +310,7 @@ const GuandanGame: React.FC<GameProps> = ({ onScoreChange, onGameOver, onGameSta
       // 轮到AI，显示思考动画并延时调用AI决策
       setAiThinking(true);
       setMessage(`玩家 ${next + 1} 思考中`);
-      setTimeout(() => aiTurn(next), 600);
+      setTimeout(() => aiTurn(next), 1200);
     }
   };
 
