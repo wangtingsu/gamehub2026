@@ -394,19 +394,11 @@ const GameDetailPage = () => {
                       <Text type="secondary">
                         成为第一个为这款游戏撰写评测的玩家！
                       </Text>
-                      <div className="mt-6">
-                        <Button type="primary" size="large">
-                          撰写评测
-                        </Button>
-                      </div>
                     </div>
                   ) : (
                     <div className="reviews-list">
                       <div className="flex items-center justify-between mb-6">
                         <Title level={4} className="!text-white">玩家评测 ({reviews.length})</Title>
-                        <Button type="primary" icon={<EditOutlined />}>
-                          撰写评测
-                        </Button>
                       </div>
                       <List
                         itemLayout="vertical"
