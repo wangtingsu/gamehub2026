@@ -252,7 +252,7 @@ const BlogEditor: React.FC<BlogEditorProps> = ({ value = '', onChange, height = 
       </div>
 
       {/* MDEditor */}
-      <div data-color-mode="light" style={{ position: 'relative' }}>
+      <div data-color-mode="light" style={{ position: 'relative', border: '2px solid var(--c-border, #d9d9d9)', borderTop: 'none', borderBottom: 'none' }}>
         <MDEditor
           value={value}
           onChange={(v) => onChange?.(v || '')}
