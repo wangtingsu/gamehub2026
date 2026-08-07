@@ -1,6 +1,7 @@
+import { useState, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Row, Col, Tag, Typography, Rate, Spin } from 'antd';
-import { HeartOutlined, StarFilled, SmileOutlined } from '@ant-design/icons';
+import { Row, Col, Tag, Typography, Rate, Spin, Input } from 'antd';
+import { HeartOutlined, StarFilled, SmileOutlined, SearchOutlined } from '@ant-design/icons';
 import { useGames } from '../api/hooks';
 import SEO from '../components/SEO';
 
@@ -8,9 +9,14 @@ const { Title, Paragraph, Text } = Typography;
 
 export default function CozyGamesPage() {
   const navigate = useNavigate();
+  const [search, setSearch] = useState('');
   const { data: games = [], isLoading } = useGames({ limit: 50 });
-  const cozyGames = (games || []).filter((g: any) => g.displayZone === 'cozy' || (g.genres || []).some((ge: string) => ['休闲', '治愈', '模拟', '可爱'].includes(ge)));
   const lang = window.location.pathname.split('/')[1] || 'cn';
+  const cozyGames = useMemo(() => {
+    let list = (games || []).filter((g: any) => g.displayZone === 'cozy' || (g.genres || []).some((ge: string) => ['休闲', '治愈', '模拟', '可爱'].includes(ge)));
+    if (search) list = list.filter((g: any) => g.title.toLowerCase().includes(search.toLowerCase()));
+    return list;
+  }, [games, search]);
 
   return (
     <div className="min-h-screen bg-dark-900">
@@ -24,7 +30,10 @@ export default function CozyGamesPage() {
           <Paragraph className="!text-pink-200 !text-lg !mb-6 max-w-2xl mx-auto">
             放下疲惫，沉浸在温暖的游戏世界里。种田、养宠、探索、交友，让心灵得到治愈。
           </Paragraph>
-          <Text className="!text-pink-300">{cozyGames.length} 款治愈游戏等你来发现</Text>
+          <Input size="large" placeholder="搜索治愈游戏..." prefix={<SearchOutlined />}
+            value={search} onChange={e => setSearch(e.target.value)} allowClear
+            className="max-w-md mx-auto !bg-white/10 !border-pink-400/30 !text-white placeholder:!text-pink-300" />
+          <Text className="!text-pink-300 block mt-3">{cozyGames.length} 款治愈游戏等你来发现</Text>
         </div>
       </div>
 

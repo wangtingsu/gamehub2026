@@ -1,6 +1,7 @@
+import { useState, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Card, Row, Col, Tag, Typography, Rate, Spin, Button } from 'antd';
-import { ThunderboltOutlined, RightOutlined, FireOutlined, CrownOutlined } from '@ant-design/icons';
+import { Card, Row, Col, Tag, Typography, Rate, Spin, Input } from 'antd';
+import { ThunderboltOutlined, RightOutlined, FireOutlined, CrownOutlined, SearchOutlined } from '@ant-design/icons';
 import { useGames } from '../api/hooks';
 import SEO from '../components/SEO';
 
@@ -8,9 +9,14 @@ const { Title, Paragraph, Text } = Typography;
 
 export default function FreeGamesPage() {
   const navigate = useNavigate();
+  const [search, setSearch] = useState('');
   const { data: games = [], isLoading } = useGames({ limit: 50 });
-  const freeGames = (games || []).filter((g: any) => g.displayZone === 'free' || g.price === 0);
   const lang = window.location.pathname.split('/')[1] || 'cn';
+  const freeGames = useMemo(() => {
+    let list = (games || []).filter((g: any) => g.displayZone === 'free' || g.price === 0);
+    if (search) list = list.filter((g: any) => g.title.toLowerCase().includes(search.toLowerCase()));
+    return list;
+  }, [games, search]);
 
   return (
     <div className="min-h-screen bg-dark-900">
@@ -24,7 +30,10 @@ export default function FreeGamesPage() {
           <Paragraph className="!text-emerald-200 !text-lg !mb-6 max-w-2xl mx-auto">
             精选免费好游，无需付费即可畅玩。从MOBA到FPS，从卡牌到开放世界，总有一款适合你。
           </Paragraph>
-          <Text className="!text-emerald-300">{freeGames.length} 款免费游戏等你来玩</Text>
+          <Input size="large" placeholder="搜索免费游戏..." prefix={<SearchOutlined />}
+            value={search} onChange={e => setSearch(e.target.value)} allowClear
+            className="max-w-md mx-auto !bg-white/10 !border-emerald-400/30 !text-white placeholder:!text-emerald-300" />
+          <Text className="!text-emerald-300 block mt-3">{freeGames.length} 款免费游戏等你来玩</Text>
         </div>
       </div>
 
