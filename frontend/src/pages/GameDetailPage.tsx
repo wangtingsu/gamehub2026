@@ -559,14 +559,9 @@ const GameDetailPage = () => {
           {/* 相关推荐 */}
           <div className="mt-6">
             <Row gutter={[16,16]}>
-              <Col xs={24} md={12}>
-                <Card className="bg-dark-800 border-dark-700 h-full">
+              <Col xs={24}>
+                <Card className="bg-dark-800 border-dark-700">
                   <RelatedContent title="类似游戏" items={relatedGames || []} />
-                </Card>
-              </Col>
-              <Col xs={24} md={12}>
-                <Card className="bg-dark-800 border-dark-700 h-full">
-                  <RelatedContent title="用户也喜欢" items={alsoLiked || []} />
                 </Card>
               </Col>
             </Row>
