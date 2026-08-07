@@ -244,67 +244,31 @@ const GameDetailPage = () => {
       <article>
       <div className="min-h-screen bg-dark-900">
       {/* 头部区域 */}
-      <div className="bg-gradient-to-r from-blue-600 to-purple-600 text-white py-8">
+      <div className="bg-gradient-to-r from-blue-600 to-purple-600 text-white py-10">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex flex-col md:flex-row items-start md:items-center justify-between">
+          <div className="flex flex-col md:flex-row gap-6 items-start">
+            {/* 游戏封面 */}
+            <div className="w-full md:w-56 flex-shrink-0">
+              <img alt={game.title} src={game.imageUrl} className="w-full h-36 md:h-48 object-cover rounded-xl shadow-2xl" loading="lazy" />
+            </div>
+            {/* 游戏信息 */}
             <div className="flex-1">
-              <Title level={1} className="text-white mb-4">{game.title}</Title>
-              <div className="flex flex-wrap items-center gap-4">
-                <div className="flex items-center">
-                  <span
-                    className="text-3xl font-bold mr-2"
-                    style={{ color: getRatingColor(game.rating) }}
-                  >
-                    {Number(game.rating).toFixed(1)}
-                  </span>
-                  <Rate
-                    allowHalf
-                    defaultValue={game.rating / 2}
-                    disabled
-                    style={{ fontSize: 20 }}
-                  />
-                  <Text className="text-white ml-2 opacity-80">
-                    ({Number(game.rating).toFixed(1)}/5.0)
-                  </Text>
-                </div>
-                <div className="flex flex-wrap gap-2">
-                  {(game.genres || []).map((genre, index) => (
-                    <Tag key={index} color="blue" className="text-lg px-4 py-1 bg-white/20 border-0">
-                      {genre}
-                    </Tag>
+              <Title level={1} className="!text-white !mb-3">{game.title}</Title>
+              <div className="flex flex-wrap items-center gap-4 mb-3">
+                <span className="text-3xl font-bold" style={{ color: getRatingColor(game.rating) }}>{Number(game.rating).toFixed(1)}</span>
+                <Rate allowHalf defaultValue={game.rating / 2} disabled style={{ fontSize: 18 }} />
+                <div className="flex flex-wrap gap-1">
+                  {(game.genres || []).slice(0,3).map((g: string, i: number) => (
+                    <Tag key={i} color="blue" className="bg-white/20 border-0">{g}</Tag>
                   ))}
                 </div>
               </div>
-            </div>
-            <div className="mt-6 md:mt-0">
-              <Space direction="vertical" size="middle">
-                <div className="text-right">
-                  {game.discount && (
-                    <div className="mb-2">
-                      <Text className="text-white line-through opacity-70 mr-2">
-                        ¥{originalPrice}
-                      </Text>
-                      <Tag color="red" className="text-lg">
-                        -{game.discount}%
-                      </Tag>
-                    </div>
-                  )}
-                  <div className="text-4xl font-bold text-white">
-                    ¥{formattedPrice}
-                  </div>
-                </div>
-                <Space>
-                  <Button
-                    type="primary"
-                    size="large"
-                    icon={<ShoppingCartOutlined />}
-                    onClick={handleAddToCart}
-                  >
-                    加入购物车
-                  </Button>
-                  <Button
-                    size="large"
-                    icon={isFavorited ? <HeartFilled /> : <HeartOutlined />}
+              <p className="text-white/70 text-sm line-clamp-2 mb-4">{game.description}</p>
+              <div className="flex items-center gap-4 flex-wrap">
+                {game.discount ? <><span className="text-sm line-through opacity-70">¥{game.price}</span><Tag color="red">-{game.discount}%</Tag></> : null}
+                <span className="text-3xl font-bold">¥{game.discount ? Math.round(game.price * (1 - game.discount / 100)) : game.price}</span>
+                <Button type="primary" size="large" icon={<ShoppingCartOutlined />}>加入购物车</Button>
+                <Button size="large" icon={isFavorited ? <HeartFilled /> : <HeartOutlined />}
                     onClick={handleToggleFavorite}
                     loading={isFavoriteLoading}
                     type={isFavorited ? 'primary' : 'default'}
@@ -312,11 +276,10 @@ const GameDetailPage = () => {
                   >
                     {isFavorited ? '已收藏' : '收藏'}
                   </Button>
-                </Space>
-              </Space>
             </div>
           </div>
         </div>
+      </div>
       </div>
 
       {/* 主要内容 */}
@@ -593,87 +556,50 @@ const GameDetailPage = () => {
                 </TabPane>
               </Tabs>
             </Card>
+          {/* 相关推荐 */}
+          <div className="mt-6">
+            <Row gutter={[16,16]}>
+              <Col xs={24} md={12}>
+                <Card className="bg-dark-800 border-dark-700 h-full">
+                  <RelatedContent title="类似游戏" items={relatedGames || []} />
+                </Card>
+              </Col>
+              <Col xs={24} md={12}>
+                <Card className="bg-dark-800 border-dark-700 h-full">
+                  <RelatedContent title="用户也喜欢" items={alsoLiked || []} />
+                </Card>
+              </Col>
+            </Row>
+          </div>
           </Col>
 
           {/* 右侧侧边栏 */}
           <Col xs={24} lg={8}>
             {/* 游戏信息卡片 */}
-            <Card className="mb-8 bg-dark-800 border-dark-700">
-              <div className="text-center mb-6">
-                <img
-                  alt={game.title}
-                  src={game.imageUrl}
-                  className="w-full h-48 object-cover rounded-lg mb-4"
-                  width="340"
-                  height="192"
-                  loading="lazy"
-                />
-              </div>
-
-              <Descriptions column={1} size="middle">
-                <Descriptions.Item label="开发商">
-                  <Text strong className="text-gray-200">{game.developer}</Text>
+            <Card className="mb-6 bg-dark-800 border-dark-700" title={<span className="text-white text-base">游戏信息</span>}>
+              <Descriptions column={1} size="small" colon={false}>
+                <Descriptions.Item label={<span className="text-gray-400">开发商</span>}>
+                  <span className="text-gray-200">{game.developer}</span>
                 </Descriptions.Item>
-                <Descriptions.Item label="发行商">
-                  <Text strong className="text-gray-200">{game.publisher}</Text>
+                <Descriptions.Item label={<span className="text-gray-400">发行商</span>}>
+                  <span className="text-gray-200">{game.publisher}</span>
                 </Descriptions.Item>
-                <Descriptions.Item label="发行日期">
-                  <Space>
-                    <CalendarOutlined />
-                    <Text className="text-gray-200">{formatDate(game.releaseDate)}</Text>
-                  </Space>
+                <Descriptions.Item label={<span className="text-gray-400">发行日期</span>}>
+                  <CalendarOutlined className="mr-1" /><span className="text-gray-200">{formatDate(game.releaseDate)}</span>
                 </Descriptions.Item>
-                <Descriptions.Item label="支持平台">
-                  <Space direction="vertical" size="small" className="w-full">
-                    {(game.platforms || []).map((platform, index) => (
-                      <Tag key={index} color="default" className="w-full text-center">
-                        {platform}
-                      </Tag>
-                    ))}
-                  </Space>
-                </Descriptions.Item>
-                <Descriptions.Item label="游戏类型">
+                <Descriptions.Item label={<span className="text-gray-400">平台</span>}>
                   <div className="flex flex-wrap gap-1">
-                    {(game.genres || []).map((genre, index) => (
-                      <Tag key={index} color="blue">
-                        {genre}
-                      </Tag>
-                    ))}
+                    {(game.platforms || []).slice(0,4).map((p, i) => <Tag key={i} className="text-xs bg-dark-700 border-0 text-gray-300">{p}</Tag>)}
+                  </div>
+                </Descriptions.Item>
+                <Descriptions.Item label={<span className="text-gray-400">类型</span>}>
+                  <div className="flex flex-wrap gap-1">
+                    {(game.genres || []).slice(0,4).map((g, i) => <Tag key={i} color="blue" className="text-xs">{g}</Tag>)}
                   </div>
                 </Descriptions.Item>
               </Descriptions>
-
-              <Divider />
-
-              <div className="space-y-4">
-                <Button
-                  type="primary"
-                  block
-                  size="large"
-                  icon={<ShoppingCartOutlined />}
-                  onClick={handleAddToCart}
-                >
-                  立即购买
-                </Button>
-                <Button
-                  block
-                  size="large"
-                  icon={isFavorited ? <HeartFilled /> : <HeartOutlined />}
-                  onClick={handleToggleFavorite}
-                  loading={isFavoriteLoading}
-                  type={isFavorited ? 'primary' : 'default'}
-                  danger={isFavorited}
-                >
-                  {isFavorited ? '已收藏' : '加入收藏'}
-                </Button>
-                <Button
-                  block
-                  size="large"
-                  icon={<ShareAltOutlined />}
-                >
-                  分享游戏
-                </Button>
-              </div>
+              <Divider className="!my-3 !border-dark-700" />
+              <Button type="primary" block icon={<ShareAltOutlined />} size="small">分享游戏</Button>
             </Card>
 
             {/* 评分统计 */}
@@ -723,19 +649,6 @@ const GameDetailPage = () => {
               </div>
             </Card>
 
-            {/* 相关游戏 */}
-            <Card className="mb-4 bg-dark-800 border-dark-700">
-              <RelatedContent
-                title="类似游戏"
-                items={relatedGames || []}
-              />
-            </Card>
-            <Card className="bg-dark-800 border-dark-700">
-              <RelatedContent
-                title="用户也喜欢"
-                items={alsoLiked || []}
-              />
-            </Card>
           </Col>
         </Row>
       </div>
