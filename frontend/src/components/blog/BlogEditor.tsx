@@ -200,7 +200,7 @@ const BlogEditor: React.FC<BlogEditorProps> = ({ value = '', onChange, height = 
   };
 
   return (
-    <div ref={editorWrapRef} style={{ position: 'relative' }}>
+    <div ref={editorWrapRef} style={{ position: 'relative', border: '2px solid #d9d9d9', borderRadius: 6 }}>
       {/* 图片上传工具栏 */}
       <div
         style={{
@@ -252,7 +252,7 @@ const BlogEditor: React.FC<BlogEditorProps> = ({ value = '', onChange, height = 
       </div>
 
       {/* MDEditor */}
-      <div data-color-mode="light" style={{ position: 'relative', border: '2px solid var(--c-border, #d9d9d9)', borderTop: 'none', borderBottom: 'none' }}>
+      <div data-color-mode="light" style={{ position: 'relative' }}>
         <MDEditor
           value={value}
           onChange={(v) => onChange?.(v || '')}
