@@ -368,6 +368,13 @@ const GobangGame: React.FC<GameProps> = ({ onScoreChange, onGameOver, onGameStar
       <canvas
         ref={canvasRef}
         onClick={handleClick}
+        onTouchEnd={(e) => {
+          e.preventDefault();
+          const touch = e.changedTouches[0];
+          if (!touch) return;
+          const fake = { clientX: touch.clientX, clientY: touch.clientY } as React.MouseEvent<HTMLCanvasElement>;
+          handleClick(fake);
+        }}
         className="rounded-lg cursor-pointer border border-dark-600"
         style={{ cursor: gameState === 'playing' ? 'pointer' : 'default' }}
       />
