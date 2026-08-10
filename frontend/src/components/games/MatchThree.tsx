@@ -823,6 +823,7 @@ const MatchThree: React.FC<GameProps> = ({ onScoreChange, onGameOver, onGameStar
           width={CANVAS_W}
           height={CANVAS_H}
           onClick={handleClick}
+        onTouchEnd={(e) => { e.preventDefault(); const t = e.changedTouches[0]; if (t) handleClick({ clientX: t.clientX, clientY: t.clientY } as any); }}
         />
         {/* Level up overlay */}
         {levelUp && (

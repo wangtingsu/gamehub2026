@@ -753,6 +753,7 @@ const WhackAMole: React.FC<GameProps> = ({ onScoreChange, onGameOver, onGameStar
         width={CANVAS_W}
         height={CANVAS_H}
         onClick={handleClick}
+        onTouchEnd={(e) => { e.preventDefault(); const t = e.changedTouches[0]; if (t) handleClick({ clientX: t.clientX, clientY: t.clientY } as any); }}
       />
       {/* 空闲/结束状态按钮 */}
       {gameState === 'idle' && (
