@@ -3,7 +3,7 @@
 import { Card, PlayedCards, Pattern, Player, Rank } from './types';
 import { groupByRank, sortHand, handToString } from './cards';
 import { getCardsBeating, getLeadSuggestion } from './patterns';
-import { isJokerRank } from './types';
+import { isJokerRank, effectiveRank, GAME_LEVEL } from './types';
 import { nextActivePlayer } from './rules';
 
 interface AIContext {
@@ -123,35 +123,33 @@ export function aiLeadPlay(
     return [sorted[0]];
   }
 
-  // 普通情况：从小牌开始出
-  // 策略：出最小的单张或对子
+  // 从小牌开始出（按effective rank排序，级别牌不会被当成小牌）
   const nonJokerRanks = [...rankGroups.entries()]
-    .filter(([r, g]) => !isJokerRank(r) && r <= 14)
-    .sort((a, b) => a[0] - b[0]);
+    .filter(([r]) => !isJokerRank(r) && r <= Rank.A)
+    .sort((a, b) => effectiveRank(a[0], GAME_LEVEL) - effectiveRank(b[0], GAME_LEVEL));
 
-  // 优先出对子（如果有很多对子）
   const pairs = nonJokerRanks.filter(([_, g]) => g.length === 2);
   const singles = nonJokerRanks.filter(([_, g]) => g.length === 1);
   const triples = nonJokerRanks.filter(([_, g]) => g.length === 3);
 
-  // 如果有3张的单牌很多，先出单张
   if (singles.length >= 2 && pairs.length <= 2) {
-    return [sorted.find(c => c.rank === singles[0][0])!];
+    const found = sorted.find(c => c.rank === singles[0][0]);
+    if (found) return [found];
   }
 
-  // 优先出对子
   if (pairs.length > 0) {
-    return rankGroups.get(pairs[0][0])!.slice(0, 2);
+    const group = rankGroups.get(pairs[0][0]);
+    if (group) return group.slice(0, 2);
   }
 
-  // 出最小单张
   if (singles.length > 0) {
-    return [sorted.find(c => c.rank === singles[0][0])!];
+    const found = sorted.find(c => c.rank === singles[0][0]);
+    if (found) return [found];
   }
 
-  // 出三同张
   if (triples.length > 0) {
-    return rankGroups.get(triples[0][0])!.slice(0, 3);
+    const group = rankGroups.get(triples[0][0]);
+    if (group) return group.slice(0, 3);
   }
 
   // 出最小非王

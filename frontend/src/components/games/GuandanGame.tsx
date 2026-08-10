@@ -331,13 +331,18 @@ const GuandanGame: React.FC<GameProps> = ({ onScoreChange, onGameOver, onGameSta
     const g = gRef.current;
     if (g.players[playerIdx].playedOut) { nextTurn(); return; }
     if (g.currentPlayer !== playerIdx) {
-      // 不是我的回合了，但AI还在运行中，继续推动游戏
       setAiThinking(false);
-      if (g.phase === 'play' && g.currentPlayer !== 0) {
-        setTimeout(() => aiTurn(g.currentPlayer), 2500);
+      // 如果当前轮到另一个AI，重试；否则回到玩家
+      if (g.phase === 'play') {
+        if (g.currentPlayer !== 0) {
+          setTimeout(() => aiTurn(g.currentPlayer), 2000);
+        } else {
+          setMessage('你的回合');
+        }
       }
       return;
     }
+    if (g.phase !== 'play') { setAiThinking(false); return; }
 
     const isLead = !g.lastPlay || g.lastPlayBy === playerIdx;
     const chosen = isLead
