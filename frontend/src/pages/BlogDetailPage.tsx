@@ -98,17 +98,21 @@ const BlogDetailPage = () => {
         <div className="flex gap-6">
           {/* ====== 左侧：目录 (TOC) ====== */}
           <aside className="w-52 flex-shrink-0 hidden xl:block">
-            <div className="sticky top-4 bg-dark-800 border border-dark-700 rounded-xl p-4 max-h-[calc(100vh-40px)] overflow-y-auto space-scroll">
-              <Text className="!text-white !text-sm !font-semibold block mb-3">目录</Text>
+            <div className="sticky top-4 bg-dark-800/80 backdrop-blur border border-dark-700/50 rounded-xl p-4 max-h-[calc(100vh-40px)] overflow-y-auto space-scroll">
+              <Text className="!text-white !text-xs !font-bold !uppercase !tracking-wider block mb-3 opacity-60">目录</Text>
               {headings.length === 0 ? (
-                <Text className="!text-gray-500 !text-xs">暂无目录</Text>
+                <Text className="!text-gray-600 !text-xs">暂无目录</Text>
               ) : (
-                <nav className="space-y-0.5">
+                <nav className="space-y-0 border-l border-dark-700/50">
                   {headings.map((h, i) => (
                     <a key={i} href={`#${h.id}`}
-                      className={`block text-xs text-gray-400 hover:text-blue-400 transition-colors py-1 ${h.level === 2 ? 'pl-0' : h.level === 3 ? 'pl-3' : ''}`}
+                      className={`block text-xs py-1.5 transition-all duration-200 border-l-2 -ml-px ${
+                        h.level === 2
+                          ? 'pl-3 text-gray-300 hover:text-blue-400 hover:border-blue-400 border-transparent'
+                          : 'pl-6 text-gray-500 hover:text-blue-400 hover:border-blue-400 border-transparent'
+                      }`}
                       onClick={(e) => { e.preventDefault(); const el = document.getElementById(h.id); if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' }); }}>
-                      {h.text}
+                      <span className="line-clamp-1">{h.text}</span>
                     </a>
                   ))}
                 </nav>
