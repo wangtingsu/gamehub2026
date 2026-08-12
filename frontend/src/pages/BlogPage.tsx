@@ -124,31 +124,6 @@ const BlogPage = () => {
           </section>
         )}
 
-        {/* ====== Popular Gaming Hubs ====== */}
-        {spaces.length > 0 && (
-          <section className="mb-12">
-            <Title level={2} className="!text-white !text-xl !mb-6">Popular Gaming Hubs</Title>
-            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3">
-              {spaces.map(s => (
-                <div key={s.id} onClick={() => navigate(`/${lang}/blog/space/${s.slug}`)}
-                  className="bg-dark-800 border border-dark-700 rounded-xl overflow-hidden cursor-pointer hover:border-blue-500/50 transition-all hover:-translate-y-1">
-                  <div className="h-32 bg-dark-700 overflow-hidden">
-                    {s.coverImageUrl ? (
-                      <img src={s.coverImageUrl} alt={s.name} className="w-full h-full object-cover" loading="lazy" />
-                    ) : (
-                      <div className="w-full h-full flex items-center justify-center text-4xl">🎮</div>
-                    )}
-                  </div>
-                  <div className="p-3">
-                    <div className="text-white text-sm font-bold truncate">{s.name}</div>
-                    <div className="text-gray-500 text-xs mt-0.5 line-clamp-1">{s.description}</div>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </section>
-        )}
-
         {/* ====== 空间文章推荐 ====== */}
         {spaces.map(s => spaceArticles[s.id]?.length > 0 && (
           <section key={s.id} className="mb-10">
