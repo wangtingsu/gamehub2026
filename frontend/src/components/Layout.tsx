@@ -275,7 +275,6 @@ const Layout = () => {
           >
             <Sidebar
               collapsed={collapsed}
-              onToggleCollapse={() => setCollapsed(!collapsed)}
               navMode={navMode}
               onNavModeChange={(mode) => {
                 setNavMode(mode);

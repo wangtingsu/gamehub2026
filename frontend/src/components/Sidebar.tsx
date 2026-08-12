@@ -36,7 +36,6 @@ import NotificationBell from './NotificationBell';
 interface SidebarProps {
   collapsed: boolean;
   onNavigate?: () => void;
-  onToggleCollapse?: () => void;
   navMode: 'main' | 'games' | 'ai' | 'more' | 'recommend';
   onNavModeChange: (mode: 'main' | 'games' | 'ai' | 'more') => void;
   /** 点击分类（games/ai/more）时不跳转，只切换导航模式（移动端使用） */
@@ -63,7 +62,7 @@ interface SidebarProps {
  * @param props - 组件属性，详见 SidebarProps 接口
  * @returns 侧边导航栏的 JSX 元素
  */
-const Sidebar = ({ collapsed, onNavigate, onToggleCollapse, navMode, onNavModeChange, categoryClickOnly }: SidebarProps) => {
+const Sidebar = ({ collapsed, onNavigate, navMode, onNavModeChange, categoryClickOnly }: SidebarProps) => {
   const navigate = useNavigate();
   const location = useLocation();
   const { user, isAuthenticated, logout } = useAuth();
@@ -238,9 +237,6 @@ const Sidebar = ({ collapsed, onNavigate, onToggleCollapse, navMode, onNavModeCh
       if (collapsed && navMode !== 'main') {
         // 子导航打开时，点击空白关闭子导航并展开侧栏
         onNavModeChange('main');
-      } else {
-        // 子导航未打开时，切换折叠状态
-        onToggleCollapse?.();
       }
     }
   };
