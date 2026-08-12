@@ -1,39 +1,20 @@
 import React from 'react';
 import { Menu, Modal } from 'antd';
 import { useNavigate, useLocation } from 'react-router-dom';
-import {
-  DashboardOutlined,
-  UserOutlined,
-  PlayCircleOutlined,
-  FileTextOutlined,
-  SettingOutlined,
-  LogoutOutlined,
-  SafetyOutlined,
-  AuditOutlined,
-  CrownOutlined,
-  UploadOutlined,
-  MailOutlined,
-  BarChartOutlined,
-  TagsOutlined,
-  RocketOutlined,
-  StarOutlined,
-  DatabaseOutlined,
-  BellOutlined,
-  CheckCircleOutlined,
-  ReadOutlined,
-} from '@ant-design/icons';
-import type { MenuProps } from 'antd';
-
-type MenuItem = Required<MenuProps>['items'][number];
+import { getAdminMenu, filterMenu } from './adminMenu.tsx';
 
 interface SidebarProps {
-  collapsed: boolean;
+  /** 侧边栏宽度（px），默认 240；传入 80 即为折叠态 */
+  width?: number;
   allowedMenus?: string[];
 }
 
-const Sidebar: React.FC<SidebarProps> = ({ collapsed, allowedMenus }: SidebarProps) => {
-  // collapsed parameter is currently not used but kept for future responsive features
-  void collapsed;
+/**
+ * 管理后台侧边栏
+ * - 默认展开不折叠，可通过 width 属性控制宽度
+ * - 菜单配置在 adminMenu.ts 中统一管理，方便调用和切换
+ */
+const Sidebar: React.FC<SidebarProps> = ({ width = 240, allowedMenus }: SidebarProps) => {
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -46,7 +27,6 @@ const Sidebar: React.FC<SidebarProps> = ({ collapsed, allowedMenus }: SidebarPro
         cancelText: '取消',
         onOk: () => {
           localStorage.removeItem('adminToken');
-          // 使用整页跳转确保 React 组件树完全重建
           window.location.href = '/admin/login';
         },
       });
@@ -55,154 +35,10 @@ const Sidebar: React.FC<SidebarProps> = ({ collapsed, allowedMenus }: SidebarPro
     navigate(key);
   };
 
-  const menuItems: MenuItem[] = [
-    {
-      key: '/admin/dashboard',
-      icon: <DashboardOutlined />,
-      label: 'Dashboard',
-    },
-    {
-      key: '/admin/analytics',
-      icon: <BarChartOutlined />,
-      label: '业务分析',
-    },
-    {
-      key: '/admin/profiling',
-      icon: <TagsOutlined />,
-      label: '用户画像',
-    },
-    {
-      key: '/admin/users',
-      icon: <UserOutlined />,
-      label: '用户管理',
-    },
-    {
-      key: '/admin/monitoring',
-      icon: <SafetyOutlined />,
-      label: '监控',
-    },
-    {
-      key: '/admin/audit-logs',
-      icon: <AuditOutlined />,
-      label: '审计日志',
-    },
-    {
-      key: '/admin/deployments',
-      icon: <RocketOutlined />,
-      label: '部署管理',
-    },
-    {
-      key: '/admin/backups',
-      icon: <DatabaseOutlined />,
-      label: '备份恢复',
-    },
-    {
-      key: '/admin/uploads',
-      icon: <UploadOutlined />,
-      label: '文件管理',
-    },
-    {
-      key: '/admin/email',
-      icon: <MailOutlined />,
-      label: '邮件管理',
-    },
-    {
-      key: '/admin/notifications',
-      icon: <BellOutlined />,
-      label: '通知管理',
-    },
-    {
-      key: '/admin/blogs',
-      icon: <ReadOutlined />,
-      label: '博客管理',
-    },
-    {
-      key: '/admin/games',
-      icon: <PlayCircleOutlined />,
-      label: '游戏管理',
-    },
-    {
-      key: '/admin/recommend',
-      icon: <StarOutlined />,
-      label: '推荐管理',
-    },
-    {
-      key: '/admin/review-queue',
-      icon: <CheckCircleOutlined />,
-      label: '审核队列',
-    },
-    {
-      key: '/admin/content',
-      icon: <FileTextOutlined />,
-      label: '内容管理',
-      children: [
-        {
-          key: '/admin/content/news',
-          label: '新闻',
-        },
-        {
-          key: '/admin/content/blogs',
-          label: '博客',
-        },
-        {
-          key: '/admin/content/guides',
-          label: '攻略',
-        },
-        {
-          key: '/admin/content/reviews',
-          label: '测评',
-        },
-        {
-          key: '/admin/content/community',
-          label: '论坛',
-        },
-        {
-          key: '/admin/content/blogspaces',
-          label: '空间',
-        },
-      ],
-    },
-    {
-      type: 'divider',
-    },
-    {
-      key: '/admin/about',
-      icon: <FileTextOutlined />,
-      label: 'About',
-    },
-    {
-      key: '/admin/settings',
-      icon: <SettingOutlined />,
-      label: 'Settings',
-    },
-    {
-      key: '/admin/logout',
-      icon: <LogoutOutlined />,
-      label: 'Logout',
-      danger: true,
-    },
-  ];
+  const menuItems = getAdminMenu();
+  const filteredItems = filterMenu(menuItems, allowedMenus);
 
-  // 根据权限过滤菜单项（退出登录项始终保留，嵌套子菜单也过滤）
-  const filteredItems = allowedMenus
-    ? menuItems
-        .map(item => {
-          if (!item || !('key' in item)) return null;
-          const menuItem = item as any;
-          // 有子菜单的项：过滤 children
-          if (menuItem.children && Array.isArray(menuItem.children)) {
-            const filteredChildren = menuItem.children.filter(
-              (child: any) => child && child.key && (allowedMenus.includes(child.key) || child.key === '/admin/logout')
-            );
-            if (filteredChildren.length === 0) return null;
-            return { ...menuItem, children: filteredChildren };
-          }
-          // 无子菜单：直接检查 key
-          if (menuItem.key === '/admin/logout') return item;
-          return allowedMenus.includes(menuItem.key) ? item : null;
-        })
-        .filter(Boolean)
-    : menuItems;
+  const isCollapsed = width <= 80;
 
   return (
     <Menu
@@ -211,9 +47,14 @@ const Sidebar: React.FC<SidebarProps> = ({ collapsed, allowedMenus }: SidebarPro
       defaultOpenKeys={['/admin/content']}
       items={filteredItems}
       onClick={({ key }) => handleMenuClick(key)}
+      inlineCollapsed={isCollapsed}
       style={{
         border: 'none',
         background: 'transparent',
+        width,
+        minWidth: width,
+        maxWidth: width,
+        transition: 'width 0.2s',
       }}
     />
   );

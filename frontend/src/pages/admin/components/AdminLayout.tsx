@@ -78,10 +78,10 @@ const AdminLayout: React.FC = () => {
       <Sider
         trigger={null}
         collapsible
-        collapsed={collapsed}
+        collapsed={false}
         theme="light"
         breakpoint="lg"
-        collapsedWidth={80}
+        collapsedWidth={240}
         className="admin-sider"
         style={{
           boxShadow: '2px 0 8px rgba(0, 0, 0, 0.1)',
@@ -99,7 +99,7 @@ const AdminLayout: React.FC = () => {
               </div>
             )}
           </div>
-          <Sidebar collapsed={collapsed} allowedMenus={allowedMenus} />
+          <Sidebar allowedMenus={allowedMenus} />
         </div>
       </Sider>
 
