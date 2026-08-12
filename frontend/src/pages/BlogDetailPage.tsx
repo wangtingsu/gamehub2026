@@ -84,9 +84,9 @@ const BlogDetailPage = () => {
     setToggling(null);
   };
 
-  if (isLoading) return <div className="bg-dark-900 pb-8 py-16"><div className="max-w-5xl mx-auto px-4"><Skeleton active paragraph={{rows:10}}/></div></div>;
+  if (isLoading) return <div className="bg-dark-900 pb-2 py-16"><div className="max-w-5xl mx-auto px-4"><Skeleton active paragraph={{rows:10}}/></div></div>;
   if (isError || !post) return (
-    <div className="bg-dark-900 pb-8 py-16">
+    <div className="bg-dark-900 pb-2 py-16">
       <div className="max-w-5xl mx-auto px-4">
         <Alert type="error" message="加载失败" description={(error as any)?.message || '文章不存在'} showIcon />
         <Button className="mt-4" onClick={() => navigate(`/${currentLang}/blog`)}><ArrowLeftOutlined /> 返回博客</Button>
@@ -100,7 +100,7 @@ const BlogDetailPage = () => {
   const spaceSlug = (post as any).spaceSlug;
 
   return (
-    <div className="bg-dark-900 pb-8">
+    <div className="bg-dark-900 pb-2">
       <SEO type="article" title={`${post.title} | GameHub 博客`} description={post.excerpt} image={coverUrl} publishedTime={post.publishDate} author={post.author} section={post.category} canonical={`/blog/${post.id}`} />
       <SEOBreadcrumb items={[
         { name: '首页', url: `/${currentLang}` },
@@ -176,7 +176,7 @@ const BlogDetailPage = () => {
             </article>
 
             {post.tags?.length > 0 && (
-              <div className="flex flex-wrap gap-2 mb-8 pb-8 border-b border-dark-700">
+              <div className="flex flex-wrap gap-2 mb-8 pb-2 border-b border-dark-700">
                 {post.tags.map((t: string) => <Tag key={t} className="bg-dark-700 text-gray-300 border-0">{t}</Tag>)}
               </div>
             )}
