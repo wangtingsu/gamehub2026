@@ -165,7 +165,7 @@ const Sidebar = ({ collapsed, onNavigate, navMode, onNavModeChange, categoryClic
   const gameSubPaths = [`/${currentLang}/games`, `/${currentLang}/discovery`, `/${currentLang}/trending`, `/${currentLang}/leaderboard`];
   const recommendSubPaths = [`/${currentLang}/library/online`, `/${currentLang}/library/play`, `/${currentLang}/free-games`, `/${currentLang}/cozy-games`];
   const aiSubPaths = [`/${currentLang}/ai`, `/${currentLang}/ai/soul`, `/${currentLang}/ai/npc`, `/${currentLang}/ai/companion`];
-  const moreSubPaths = [`/${currentLang}/news`, `/${currentLang}/about`, `/${currentLang}/community-forum`];
+  const moreSubPaths = [`/${currentLang}/news`, `/${currentLang}/about`, `/${currentLang}/community-forum`, `/${currentLang}/blog`, `/${currentLang}/community`];
 
   /**
    * 计算当前选中的菜单项 key
