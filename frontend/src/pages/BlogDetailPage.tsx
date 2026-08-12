@@ -59,11 +59,8 @@ const BlogDetailPage = () => {
 
   const toggle = async (type: 'like'|'favorite') => {
     if (!id || !getToken()) { navigate(`/${currentLang}/login`); return; }
-    if (toggling) return; // 防止连点
+    if (toggling) return;
     setToggling(type);
-    const prevL = liked, prevF = favorited;
-    if (type === 'like') { setLiked(!prevL); setStats(s => ({ ...s, likes: Math.max(0, s.likes + (prevL ? -1 : 1)) })); }
-    else { setFavorited(!prevF); setStats(s => ({ ...s, favorites: Math.max(0, s.favorites + (prevF ? -1 : 1)) })); }
     try {
       const res = await fetch(`/api/v1/blogs/${id}/${type}`, { method: 'POST', headers: { Authorization: `Bearer ${getToken()}` } });
       const d = await res.json();
@@ -72,11 +69,7 @@ const BlogDetailPage = () => {
         setFavorited(d.data.favorited);
         setStats({ likes: d.data.likes || 0, favorites: d.data.favorites || 0 });
       }
-    } catch {
-      if (type === 'like') setLiked(prevL);
-      else setFavorited(prevF);
-      setStats(s => type === 'like' ? { ...s, likes: Math.max(0, s.likes) } : { ...s, favorites: Math.max(0, s.favorites) });
-    }
+    } catch { /* ignore */ }
     setToggling(null);
   };
 
