@@ -61,21 +61,27 @@ const BlogDetailPage = () => {
     if (!id || !getToken()) { navigate(`/${currentLang}/login`); return; }
     if (toggling) return;
     setToggling(type);
+    // 乐观更新：先改UI
+    if (type === 'like') {
+      setLiked(!liked);
+      setStats(s => ({ ...s, likes: Math.max(0, s.likes + (liked ? -1 : 1)) }));
+    } else {
+      setFavorited(!favorited);
+      setStats(s => ({ ...s, favorites: Math.max(0, s.favorites + (favorited ? -1 : 1)) }));
+    }
     try {
-      const res = await fetch(`/api/v1/blogs/${id}/${type}`, { method: 'POST', headers: { Authorization: `Bearer ${getToken()}` } });
-      const d = await res.json();
-      if (d.success && d.data) {
-        setLiked(d.data.liked);
-        setFavorited(d.data.favorited);
-        setStats({ likes: d.data.likes || 0, favorites: d.data.favorites || 0 });
+      await fetch(`/api/v1/blogs/${id}/${type}`, { method: 'POST', headers: { Authorization: `Bearer ${getToken()}` } });
+    } catch {
+      // 失败回滚
+      if (type === 'like') {
+        setLiked(liked);
+        setStats(s => ({ ...s, likes: Math.max(0, s.likes + (liked ? 1 : -1)) }));
+      } else {
+        setFavorited(favorited);
+        setStats(s => ({ ...s, favorites: Math.max(0, s.favorites + (favorited ? 1 : -1)) }));
       }
-    } catch { /* ignore */ }
+    }
     setToggling(null);
-    // 重新拉取状态
-    fetch(`/api/v1/blogs/${id}/status`, { headers: { Authorization: `Bearer ${getToken()}` } })
-      .then(r => r.json()).then(d => {
-        if (d.success) { setLiked(d.data.liked); setFavorited(d.data.favorited); setStats({ likes: d.data.likes, favorites: d.data.favorites }); }
-      });
   };
 
   if (isLoading) return <div className="min-h-screen bg-dark-900 py-16"><div className="max-w-5xl mx-auto px-4"><Skeleton active paragraph={{rows:10}}/></div></div>;
