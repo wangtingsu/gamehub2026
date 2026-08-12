@@ -143,37 +143,6 @@ const BlogPage = () => {
           </section>
         )}
 
-        {/* ====== 游戏专区文章 ====== */}
-        {spaces.map(s => spaceArticles[s.id]?.length > 0 && (
-          <section key={s.id} className="mb-10">
-            <div className="flex items-center justify-between mb-4">
-              <Title level={2} className="!text-white !text-lg !mb-0">{s.name}</Title>
-              <Link to={`/${lang}/blog/space/${s.slug}`} className="text-blue-400 text-sm hover:text-blue-300 flex items-center gap-1">
-                更多 <RightOutlined />
-              </Link>
-            </div>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
-              {spaceArticles[s.id].map((a: any) => (
-                <Link key={a.id} to={`/${lang}/blog/${a.id}`} className="no-underline group block">
-                  <div className="bg-dark-800 border border-dark-700 rounded-lg overflow-hidden hover:border-blue-500/50 transition-all h-full">
-                    <div className="h-28 bg-dark-700 overflow-hidden">
-                      {a.coverImageUrl ? <img src={a.coverImageUrl} alt="" className="w-full h-full object-cover" loading="lazy" /> : <div className="w-full h-full flex items-center justify-center text-3xl">📄</div>}
-                    </div>
-                    <div className="p-3">
-                      <h5 className="text-white text-sm font-medium line-clamp-2 group-hover:text-blue-400 mb-1">{a.title}</h5>
-                      <div className="flex items-center gap-2 text-xs text-gray-600">
-                        <EyeOutlined />{a.views||0}
-                        <LikeOutlined className="ml-2" />{a.likes||0}
-                        <span className="ml-auto">{fmt(a.publishedAt||a.publishDate)}</span>
-                      </div>
-                    </div>
-                  </div>
-                </Link>
-              ))}
-            </div>
-          </section>
-        ))}
-
         {/* ====== Latest Updates ====== */}
         {latest.length > 0 && (
           <section>
