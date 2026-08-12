@@ -58,7 +58,7 @@ const BlogPage = () => {
     <div className="min-h-screen bg-dark-900">
       <SEO title={t('blog.title', 'GameHub Blog')} description={t('blog.subtitle', '游戏专区博客')} canonical={`/${lang}/blog`} />
 
-      <div className="py-8 max-w-7xl mx-auto px-4">
+      <div className="py-8 max-w-[1600px] mx-auto px-2 sm:px-4">
         {/* 标题 */}
         <Title level={1} className="!text-white !text-2xl md:!text-3xl !mb-2">{t('blog.title', 'GameHub Blog – News, Guides & More')}</Title>
         <Paragraph className="!text-gray-400 !mb-10">游戏攻略、评测、资讯，尽在 GameHub 博客</Paragraph>
