@@ -60,7 +60,7 @@ const BlogPage = () => {
   const sidePicks = picks.slice(1, 7);
 
   return (
-    <div className="min-h-screen bg-dark-900">
+    <div className="bg-dark-900 pb-8">
       <SEO title={t('blog.title', 'GameHub Blog')} description={t('blog.subtitle', '游戏专区博客')} canonical={`/${lang}/blog`} />
 
       <div className="py-8 max-w-[1600px] mx-auto px-2 sm:px-4">
