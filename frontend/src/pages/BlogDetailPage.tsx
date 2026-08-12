@@ -94,21 +94,21 @@ const BlogDetailPage = () => {
         { name: post.title, url: `/${currentLang}/blog/${post.id}` },
       ]} />
 
-      <div className="py-8 max-w-[1400px] mx-auto px-4">
+      <div className="py-8 max-w-[1600px] mx-auto px-1 sm:px-2">
         <div className="flex gap-6">
           {/* ====== 左侧：目录 (TOC) ====== */}
-          <aside className="w-40 flex-shrink-0 hidden xl:block">
-            <div className="sticky top-4 bg-dark-800/80 backdrop-blur border border-dark-700/50 rounded-xl p-4 max-h-[calc(100vh-40px)] overflow-y-auto space-scroll">
-              <Text className="!text-white !text-xs !font-bold !uppercase !tracking-wider block mb-3 opacity-60">目录</Text>
+          <aside className="w-36 flex-shrink-0 hidden xl:block">
+            <div className="sticky top-4 max-h-[calc(100vh-40px)] overflow-y-auto space-scroll pt-2">
+              <Text className="!text-gray-500 !text-[10px] !font-bold !uppercase !tracking-widest block mb-4 pl-2">目录</Text>
               {headings.length === 0 ? (
-                <Text className="!text-gray-600 !text-xs">暂无目录</Text>
+                <Text className="!text-gray-600 !text-xs pl-2">暂无目录</Text>
               ) : (
-                <nav className="space-y-0 border-l border-dark-700/50">
+                <nav className="space-y-0 border-l border-dark-700/30">
                   {headings.map((h, i) => (
                     <a key={i} href={`#${h.id}`}
                       className={`block text-xs py-1.5 transition-all duration-200 border-l-2 -ml-px ${
                         h.level === 2
-                          ? 'pl-3 text-gray-300 hover:text-blue-400 hover:border-blue-400 border-transparent'
+                          ? 'pl-3 text-gray-400 hover:text-blue-400 hover:border-blue-400 border-transparent'
                           : 'pl-6 text-gray-500 hover:text-blue-400 hover:border-blue-400 border-transparent'
                       }`}
                       onClick={(e) => { e.preventDefault(); const el = document.getElementById(h.id); if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' }); }}>
@@ -173,26 +173,26 @@ const BlogDetailPage = () => {
           </div>
 
           {/* ====== 右侧：相关推荐 ====== */}
-          <aside className="w-64 flex-shrink-0 hidden lg:block">
-            <div className="sticky top-4 bg-dark-800 border border-dark-700 rounded-xl p-4 max-h-[calc(100vh-40px)] overflow-y-auto space-scroll">
-              <Text className="!text-white !text-sm !font-semibold block mb-3">相关推荐</Text>
+          <aside className="w-72 flex-shrink-0 hidden lg:block">
+            <div className="sticky top-4 max-h-[calc(100vh-40px)] overflow-y-auto space-scroll pt-2">
+              <Text className="!text-gray-500 !text-[10px] !font-bold !uppercase !tracking-widest block mb-4">相关推荐</Text>
               {related.length === 0 ? (
-                <Text className="!text-gray-500 !text-xs">暂无推荐</Text>
+                <Text className="!text-gray-600 !text-xs">暂无推荐</Text>
               ) : (
-                <div className="space-y-3">
+                <div className="space-y-4">
                   {related.map((a: any) => (
                     <Link key={a.id} to={`/${currentLang}/blog/${a.id}`} className="block no-underline group">
-                      <div className="rounded-lg overflow-hidden border border-dark-700 hover:border-blue-500/50 transition-all">
-                        <div className="h-24 bg-dark-700 overflow-hidden">
+                      <div className="rounded-xl overflow-hidden border border-dark-700/50 hover:border-blue-500/50 transition-all hover:-translate-y-0.5">
+                        <div className="h-32 bg-dark-800 overflow-hidden">
                           {(a.coverImageUrl || a.coverImage) ? (
-                            <img src={a.coverImageUrl || a.coverImage} alt="" className="w-full h-full object-cover" loading="lazy" />
-                          ) : <div className="w-full h-full flex items-center justify-center text-xl">📄</div>}
+                            <img src={a.coverImageUrl || a.coverImage} alt="" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" loading="lazy" />
+                          ) : <div className="w-full h-full flex items-center justify-center text-3xl">📄</div>}
                         </div>
-                        <div className="p-2 bg-dark-800">
-                          <div className="text-white text-sm line-clamp-2 group-hover:text-blue-400">{a.title}</div>
-                          <div className="text-gray-500 text-[10px] mt-1 flex items-center gap-2">
+                        <div className="p-3 bg-dark-800/50">
+                          <div className="text-white text-sm font-medium line-clamp-2 group-hover:text-blue-400 mb-1">{a.title}</div>
+                          <div className="text-gray-500 text-[11px] flex items-center gap-2">
                             <EyeOutlined />{a.views||0}
-                            <span>{fmt(a.publishDate||a.publishedAt)}</span>
+                            <span className="ml-auto">{fmt(a.publishDate||a.publishedAt)}</span>
                           </div>
                         </div>
                       </div>
