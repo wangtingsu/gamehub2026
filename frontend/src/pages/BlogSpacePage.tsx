@@ -221,7 +221,7 @@ const BlogSpacePage = () => {
         {/* 文章内容 + 相关空间（等高） */}
         <div className="flex flex-col lg:flex-row gap-6 mb-8 lg:items-start">
           {/* 左：完整文章内容 */}
-          <div ref={leftRef} className="lg:w-3/4 bg-dark-800 border border-dark-700 rounded-xl p-6" id="article-content">
+          <div ref={leftRef} className="lg:w-5/6 bg-dark-800 border border-dark-700 rounded-xl p-6" id="article-content">
             {loading || articleLoading ? (
               <Skeleton active avatar paragraph={{ rows: 8 }} />
             ) : !activeArticle ? (
@@ -269,7 +269,7 @@ const BlogSpacePage = () => {
             )}
           </div>
           {/* 右：相关空间 */}
-          <div className="lg:w-1/4 bg-dark-800 border border-dark-700 rounded-xl p-4 flex flex-col overflow-hidden space-scroll self-stretch"
+          <div className="lg:w-1/6 bg-dark-800 border border-dark-700 rounded-xl p-4 flex flex-col overflow-hidden space-scroll self-stretch"
             style={{ maxHeight: rightHeight || undefined }}>
             <Title level={3} className="!text-white !mb-4 !text-lg flex-shrink-0">🎮 探索更多空间</Title>
             {loading ? (
@@ -303,8 +303,6 @@ const BlogSpacePage = () => {
           </div>
         </div>
 
-        {/* 分类区域 */}
-        {CATEGORIES.map(renderCategorySection)}
       </div>
     </div>
   );
