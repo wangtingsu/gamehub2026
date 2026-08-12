@@ -23,7 +23,7 @@ const BlogPage = () => {
       setLoading(true);
       try {
         const sp = await apiService.getBlogSpaces();
-        const active = (sp || []).filter((s: any) => s.isActive !== false).slice(0, 6);
+        const active = (sp || []).filter((s: any) => s.isActive !== false).slice(0, 12);
         setSpaces(active);
 
         // 每个空间取4篇
@@ -123,25 +123,57 @@ const BlogPage = () => {
         {spaces.length > 0 && (
           <section className="mb-12">
             <Title level={2} className="!text-white !text-xl !mb-6">Popular Gaming Hubs</Title>
-            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3">
               {spaces.map(s => (
                 <div key={s.id} onClick={() => navigate(`/${lang}/blog/space/${s.slug}`)}
-                  className="bg-dark-800 border border-dark-700 rounded-xl overflow-hidden cursor-pointer hover:border-blue-500/50 transition-all hover:-translate-y-1 text-center">
-                  <div className="h-20 bg-dark-700 overflow-hidden">
+                  className="bg-dark-800 border border-dark-700 rounded-xl overflow-hidden cursor-pointer hover:border-blue-500/50 transition-all hover:-translate-y-1">
+                  <div className="h-32 bg-dark-700 overflow-hidden">
                     {s.coverImageUrl ? (
                       <img src={s.coverImageUrl} alt={s.name} className="w-full h-full object-cover" loading="lazy" />
                     ) : (
-                      <div className="w-full h-full flex items-center justify-center text-3xl">🎮</div>
+                      <div className="w-full h-full flex items-center justify-center text-4xl">🎮</div>
                     )}
                   </div>
-                  <div className="p-2">
-                    <div className="text-white text-xs font-medium truncate">{s.name}</div>
+                  <div className="p-3">
+                    <div className="text-white text-sm font-bold truncate">{s.name}</div>
+                    <div className="text-gray-500 text-xs mt-0.5 line-clamp-1">{s.description}</div>
                   </div>
                 </div>
               ))}
             </div>
           </section>
         )}
+
+        {/* ====== 空间文章推荐 ====== */}
+        {spaces.map(s => spaceArticles[s.id]?.length > 0 && (
+          <section key={s.id} className="mb-10">
+            <div className="flex items-center justify-between mb-4">
+              <Title level={3} className="!text-white !text-lg !mb-0">{s.name}</Title>
+              <Link to={`/${lang}/blog/space/${s.slug}`} className="text-blue-400 text-sm hover:text-blue-300 flex items-center gap-1">
+                更多 <RightOutlined />
+              </Link>
+            </div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+              {spaceArticles[s.id].map((a: any) => (
+                <Link key={a.id} to={`/${lang}/blog/${a.id}`} className="no-underline group block">
+                  <div className="bg-dark-800 border border-dark-700 rounded-lg overflow-hidden hover:border-blue-500/50 transition-all h-full">
+                    <div className="h-32 bg-dark-700 overflow-hidden">
+                      {a.coverImageUrl ? <img src={a.coverImageUrl} alt="" className="w-full h-full object-cover group-hover:scale-105 transition-transform" loading="lazy" /> : <div className="w-full h-full flex items-center justify-center text-3xl">📄</div>}
+                    </div>
+                    <div className="p-3">
+                      <h5 className="text-white text-sm font-medium line-clamp-2 group-hover:text-blue-400 mb-2">{a.title}</h5>
+                      <div className="flex items-center gap-2 text-xs text-gray-600">
+                        <EyeOutlined />{a.views||0}
+                        <LikeOutlined className="ml-2" />{a.likes||0}
+                        <span className="ml-auto">{fmt(a.publishedAt||a.publishDate)}</span>
+                      </div>
+                    </div>
+                  </div>
+                </Link>
+              ))}
+            </div>
+          </section>
+        ))}
 
         {/* ====== Latest Updates ====== */}
         {latest.length > 0 && (
