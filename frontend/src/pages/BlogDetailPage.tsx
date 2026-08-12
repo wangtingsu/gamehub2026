@@ -35,6 +35,7 @@ const BlogDetailPage = () => {
   const [liked, setLiked] = useState(false);
   const [favorited, setFavorited] = useState(false);
   const [stats, setStats] = useState({ likes: 0, favorites: 0 });
+  const [toggling, setToggling] = useState<'like'|'favorite'|null>(null);
   const [related, setRelated] = useState<any[]>([]);
 
   useEffect(() => {
@@ -58,22 +59,25 @@ const BlogDetailPage = () => {
 
   const toggle = async (type: 'like'|'favorite') => {
     if (!id || !getToken()) { navigate(`/${currentLang}/login`); return; }
+    if (toggling) return; // 防止连点
+    setToggling(type);
     const prevL = liked, prevF = favorited;
-    const prevLikes = stats.likes, prevFavs = stats.favorites;
     if (type === 'like') { setLiked(!prevL); setStats(s => ({ ...s, likes: Math.max(0, s.likes + (prevL ? -1 : 1)) })); }
     else { setFavorited(!prevF); setStats(s => ({ ...s, favorites: Math.max(0, s.favorites + (prevF ? -1 : 1)) })); }
     try {
       const res = await fetch(`/api/v1/blogs/${id}/${type}`, { method: 'POST', headers: { Authorization: `Bearer ${getToken()}` } });
       const d = await res.json();
-      // 用服务端返回的真实数字同步
       if (d.success && d.data) {
-        if (type === 'like') { setLiked(d.data.liked); setStats(s => ({ ...s, likes: d.data.likes || prevLikes })); }
-        else { setFavorited(d.data.favorited); setStats(s => ({ ...s, favorites: s.favorites || prevFavs })); }
+        setLiked(d.data.liked);
+        setFavorited(d.data.favorited);
+        setStats({ likes: d.data.likes || 0, favorites: d.data.favorites || 0 });
       }
     } catch {
-      if (type === 'like') { setLiked(prevL); setStats(s => ({ ...s, likes: prevLikes })); }
-      else { setFavorited(prevF); setStats(s => ({ ...s, favorites: prevFavs })); }
+      if (type === 'like') setLiked(prevL);
+      else setFavorited(prevF);
+      setStats(s => type === 'like' ? { ...s, likes: Math.max(0, s.likes) } : { ...s, favorites: Math.max(0, s.favorites) });
     }
+    setToggling(null);
   };
 
   if (isLoading) return <div className="min-h-screen bg-dark-900 py-16"><div className="max-w-5xl mx-auto px-4"><Skeleton active paragraph={{rows:10}}/></div></div>;
@@ -152,8 +156,8 @@ const BlogDetailPage = () => {
                 </div>
               </div>
               <div className="ml-auto flex items-center gap-2">
-                <Button type="text" size="small" icon={liked ? <LikeFilled className="text-red-400" /> : <LikeOutlined />} onClick={()=>toggle('like')} className={liked?'!text-red-400':'!text-gray-400'}>{stats.likes||0}</Button>
-                <Button type="text" size="small" icon={favorited ? <StarFilled className="text-yellow-400" /> : <StarOutlined />} onClick={()=>toggle('favorite')} className={favorited?'!text-yellow-400':'!text-gray-400'}>{stats.favorites||0}</Button>
+                <Button type="text" size="small" loading={toggling==='like'} icon={liked ? <LikeFilled className="text-red-400" /> : <LikeOutlined />} onClick={()=>toggle('like')} className={liked?'!text-red-400':'!text-gray-400'}>{stats.likes||0}</Button>
+                <Button type="text" size="small" loading={toggling==='favorite'} icon={favorited ? <StarFilled className="text-yellow-400" /> : <StarOutlined />} onClick={()=>toggle('favorite')} className={favorited?'!text-yellow-400':'!text-gray-400'}>{stats.favorites||0}</Button>
               </div>
             </div>
 
