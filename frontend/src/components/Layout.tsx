@@ -67,7 +67,7 @@ const { Content } = AntLayout;
  */
 const Layout = () => {
   const { isAdmin } = useAuth();
-  const [collapsed, setCollapsed] = useState(true);
+  const [collapsed, setCollapsed] = useState(false); // 默认展开不折叠
   const [isMobile, setIsMobile] = useState(false);
   const [navMode, setNavMode] = useState<'main' | 'games' | 'ai' | 'more' | 'recommend'>('main');
   const skipAutoNav = useRef(false);
@@ -266,7 +266,7 @@ const Layout = () => {
             onCollapse={setCollapsed}
             trigger={null}
             width={338}
-            collapsedWidth={104}
+            collapsedWidth={240}
             theme="dark"
             className="main-sider"
             style={{
@@ -276,8 +276,6 @@ const Layout = () => {
               height: '100vh',
               overflow: 'hidden',
             }}
-            onClick={() => { if (collapsed) setCollapsed(false); }}
-            onMouseLeave={() => { if (navMode === 'main') setCollapsed(true); }}
           >
             <Sidebar
               collapsed={collapsed}
