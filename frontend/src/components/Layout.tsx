@@ -126,7 +126,6 @@ const Layout = () => {
     if (autoCloseTimerRef.current) clearTimeout(autoCloseTimerRef.current);
     autoCloseTimerRef.current = setTimeout(() => {
       setNavMode('main');
-      setCollapsed(false);
     }, 5000);
   }, []);
 
@@ -235,9 +234,7 @@ const Layout = () => {
     skipAutoNav.current = true;
     // 先关闭子面板并收起侧栏
     setNavMode('main');
-    setCollapsed(true);
-    // 延迟导航，让关闭动画先执行
-    setTimeout(() => navigate(key), 50);
+    navigate(key);
   };
 
   return (
@@ -263,7 +260,6 @@ const Layout = () => {
           <AntLayout.Sider
             collapsible
             collapsed={collapsed}
-            onCollapse={setCollapsed}
             trigger={null}
             width={338}
             collapsedWidth={240}
@@ -283,8 +279,6 @@ const Layout = () => {
               navMode={navMode}
               onNavModeChange={(mode) => {
                 setNavMode(mode);
-                if (mode !== 'main') setCollapsed(true);
-                else setCollapsed(false);
               }}
             />
           </AntLayout.Sider>
@@ -333,7 +327,7 @@ const Layout = () => {
           )}
 
           {/* Main Content + Footer — 点击内容区关闭子面板 */}
-          <AntLayout className="bg-dark-900" onClick={() => { setNavMode('main'); setCollapsed(true); }}>
+          <AntLayout className="bg-dark-900" onClick={() => { setNavMode('main'); }}>
             <Content className="bg-dark-900 text-gray-100 main-content">
               <div className="px-8 flex-grow">
                 <Outlet />
