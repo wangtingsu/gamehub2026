@@ -59,13 +59,20 @@ const BlogDetailPage = () => {
   const toggle = async (type: 'like'|'favorite') => {
     if (!id || !getToken()) { navigate(`/${currentLang}/login`); return; }
     const prevL = liked, prevF = favorited;
-    if (type === 'like') { setLiked(!prevL); setStats(s => ({ ...s, likes: s.likes + (prevL ? -1 : 1) })); }
-    else { setFavorited(!prevF); setStats(s => ({ ...s, favorites: s.favorites + (prevF ? -1 : 1) })); }
+    const prevLikes = stats.likes, prevFavs = stats.favorites;
+    if (type === 'like') { setLiked(!prevL); setStats(s => ({ ...s, likes: Math.max(0, s.likes + (prevL ? -1 : 1)) })); }
+    else { setFavorited(!prevF); setStats(s => ({ ...s, favorites: Math.max(0, s.favorites + (prevF ? -1 : 1)) })); }
     try {
-      await fetch(`/api/v1/blogs/${id}/${type}`, { method: 'POST', headers: { Authorization: `Bearer ${getToken()}` } });
+      const res = await fetch(`/api/v1/blogs/${id}/${type}`, { method: 'POST', headers: { Authorization: `Bearer ${getToken()}` } });
+      const d = await res.json();
+      // 用服务端返回的真实数字同步
+      if (d.success && d.data) {
+        if (type === 'like') { setLiked(d.data.liked); setStats(s => ({ ...s, likes: d.data.likes || prevLikes })); }
+        else { setFavorited(d.data.favorited); setStats(s => ({ ...s, favorites: s.favorites || prevFavs })); }
+      }
     } catch {
-      if (type === 'like') { setLiked(prevL); setStats(s => ({ ...s, likes: s.likes + (prevL ? 1 : -1) })); }
-      else { setFavorited(prevF); setStats(s => ({ ...s, favorites: s.favorites + (prevF ? 1 : -1) })); }
+      if (type === 'like') { setLiked(prevL); setStats(s => ({ ...s, likes: prevLikes })); }
+      else { setFavorited(prevF); setStats(s => ({ ...s, favorites: prevFavs })); }
     }
   };
 
