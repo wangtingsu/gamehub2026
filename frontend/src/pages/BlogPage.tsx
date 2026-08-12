@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import { Typography, Tag, Skeleton, Avatar } from 'antd';
+import { Typography, Tag, Skeleton, Avatar, Pagination } from 'antd';
 import { EyeOutlined, LikeOutlined, CalendarOutlined, UserOutlined, RightOutlined } from '@ant-design/icons';
 import { useTranslation } from 'react-i18next';
 import apiService from '../api';
@@ -16,7 +16,10 @@ const BlogPage = () => {
   const [spaceArticles, setSpaceArticles] = useState<Record<string, any[]>>({});
   const [picks, setPicks] = useState<any[]>([]);     // Editor's Picks (前4篇)
   const [latest, setLatest] = useState<any[]>([]);
+  const [latestTotal, setLatestTotal] = useState(0);
+  const [latestPage, setLatestPage] = useState(1);
   const [loading, setLoading] = useState(true);
+  const PAGE_SIZE = 12;
 
   useEffect(() => {
     const load = async () => {
@@ -37,8 +40,10 @@ const BlogPage = () => {
         const all = await apiService.getBlogPosts({ limit: 30 });
         const articles = Array.isArray(all) ? all : [];
         const sorted = [...articles].sort((a, b) => (b.views + b.likes*2) - (a.views + a.likes*2));
-        setPicks(sorted.slice(0, 7));   // 1 main + 6 side
-        setLatest([...articles].sort((a, b) => new Date(b.publishedAt||b.publishDate||0).getTime() - new Date(a.publishedAt||a.publishDate||0).getTime()).slice(0, 8));
+        setPicks(sorted.slice(0, 7));
+        const byDate = [...articles].sort((a, b) => new Date(b.publishedAt||b.publishDate||0).getTime() - new Date(a.publishedAt||a.publishDate||0).getTime());
+        setLatest(byDate);
+        setLatestTotal(byDate.length);
       } catch { }
       setLoading(false);
     };
@@ -180,7 +185,7 @@ const BlogPage = () => {
           <section>
             <Title level={2} className="!text-white !text-xl !mb-6">Latest Updates</Title>
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-3">
-              {latest.map(a => (
+              {latest.slice((latestPage-1)*PAGE_SIZE, latestPage*PAGE_SIZE).map(a => (
                 <Link key={a.id} to={`/${lang}/blog/${a.id}`} className="no-underline group block">
                   <div className="bg-dark-800 border border-dark-700 rounded-lg p-4 hover:border-blue-500/50 transition-all flex gap-4">
                     <div className="w-28 h-20 flex-shrink-0 rounded-lg overflow-hidden bg-dark-700">
@@ -202,6 +207,12 @@ const BlogPage = () => {
                 </Link>
               ))}
             </div>
+            {latestTotal > PAGE_SIZE && (
+              <div className="flex justify-center mt-8">
+                <Pagination current={latestPage} pageSize={PAGE_SIZE} total={latestTotal}
+                  onChange={setLatestPage} showSizeChanger={false} />
+              </div>
+            )}
           </section>
         )}
       </div>
