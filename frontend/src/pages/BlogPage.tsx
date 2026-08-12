@@ -99,13 +99,17 @@ const BlogPage = () => {
               <div className="lg:w-1/2 grid grid-cols-1 sm:grid-cols-2 gap-3">
                 {sidePicks.map(a => (
                   <Link key={a.id} to={`/${lang}/blog/${a.id}`} className="no-underline group block">
-                    <div className="bg-dark-800 border border-dark-700 rounded-lg p-4 hover:border-blue-500/50 transition-all hover:-translate-y-0.5 h-full">
-                      <Tag color="blue" className="text-[10px] mb-1">{a.category || '博客'}</Tag>
-                      <h4 className="text-white text-sm font-medium line-clamp-2 group-hover:text-blue-400 mb-1">{a.title}</h4>
-                      <p className="text-gray-500 text-xs line-clamp-1 mb-2">{a.excerpt || ''}</p>
-                      <div className="flex items-center gap-2 text-xs text-gray-600">
-                        <span>{a.authorName || a.author || '匿名'}</span>
-                        <span className="ml-auto">{fmt(a.publishedAt||a.publishDate)}</span>
+                    <div className="bg-dark-800 border border-dark-700 rounded-lg overflow-hidden hover:border-blue-500/50 transition-all hover:-translate-y-0.5 h-full flex">
+                      <div className="w-20 h-full flex-shrink-0 bg-dark-700 overflow-hidden">
+                        {a.coverImageUrl ? <img src={a.coverImageUrl} alt="" className="w-full h-full object-cover" loading="lazy" /> : <div className="w-full h-full flex items-center justify-center text-xl">📄</div>}
+                      </div>
+                      <div className="flex-1 p-3 min-w-0">
+                        <Tag color="blue" className="text-[10px] mb-1">{a.category || '博客'}</Tag>
+                        <h4 className="text-white text-sm font-medium line-clamp-2 group-hover:text-blue-400 mb-1">{a.title}</h4>
+                        <div className="flex items-center gap-2 text-xs text-gray-600">
+                          <span className="truncate">{a.authorName || a.author || '匿名'}</span>
+                          <span className="ml-auto flex-shrink-0">{fmt(a.publishedAt||a.publishDate)}</span>
+                        </div>
                       </div>
                     </div>
                   </Link>
@@ -151,13 +155,17 @@ const BlogPage = () => {
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
               {spaceArticles[s.id].map((a: any) => (
                 <Link key={a.id} to={`/${lang}/blog/${a.id}`} className="no-underline group block">
-                  <div className="bg-dark-800 border border-dark-700 rounded-lg p-3 hover:border-blue-500/50 transition-all h-full">
-                    <h5 className="text-white text-sm font-medium line-clamp-2 group-hover:text-blue-400 mb-1">{a.title}</h5>
-                    <p className="text-gray-500 text-xs line-clamp-2 mb-2">{a.excerpt || ''}</p>
-                    <div className="flex items-center gap-2 text-xs text-gray-600">
-                      <EyeOutlined />{a.views||0}
-                      <LikeOutlined className="ml-2" />{a.likes||0}
-                      <span className="ml-auto">{fmt(a.publishedAt||a.publishDate)}</span>
+                  <div className="bg-dark-800 border border-dark-700 rounded-lg overflow-hidden hover:border-blue-500/50 transition-all h-full">
+                    <div className="h-28 bg-dark-700 overflow-hidden">
+                      {a.coverImageUrl ? <img src={a.coverImageUrl} alt="" className="w-full h-full object-cover" loading="lazy" /> : <div className="w-full h-full flex items-center justify-center text-3xl">📄</div>}
+                    </div>
+                    <div className="p-3">
+                      <h5 className="text-white text-sm font-medium line-clamp-2 group-hover:text-blue-400 mb-1">{a.title}</h5>
+                      <div className="flex items-center gap-2 text-xs text-gray-600">
+                        <EyeOutlined />{a.views||0}
+                        <LikeOutlined className="ml-2" />{a.likes||0}
+                        <span className="ml-auto">{fmt(a.publishedAt||a.publishDate)}</span>
+                      </div>
                     </div>
                   </div>
                 </Link>
