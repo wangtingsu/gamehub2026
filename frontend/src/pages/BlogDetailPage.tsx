@@ -71,6 +71,11 @@ const BlogDetailPage = () => {
       }
     } catch { /* ignore */ }
     setToggling(null);
+    // 重新拉取状态
+    fetch(`/api/v1/blogs/${id}/status`, { headers: { Authorization: `Bearer ${getToken()}` } })
+      .then(r => r.json()).then(d => {
+        if (d.success) { setLiked(d.data.liked); setFavorited(d.data.favorited); setStats({ likes: d.data.likes, favorites: d.data.favorites }); }
+      });
   };
 
   if (isLoading) return <div className="min-h-screen bg-dark-900 py-16"><div className="max-w-5xl mx-auto px-4"><Skeleton active paragraph={{rows:10}}/></div></div>;
