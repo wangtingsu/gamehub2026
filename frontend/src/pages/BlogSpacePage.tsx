@@ -10,6 +10,7 @@ import {
 import apiService from '../api';
 import SEO from '../components/SEO';
 import BlogRenderContent from '../components/blog/BlogRenderContent';
+import BlogSidebar from '../components/blog/BlogSidebar';
 
 const { Title, Text, Paragraph } = Typography;
 
@@ -269,38 +270,7 @@ const BlogSpacePage = () => {
             )}
           </div>
           {/* 右：相关空间 */}
-          <div className="lg:w-1/6 bg-dark-800 border border-dark-700 rounded-xl p-4 flex flex-col overflow-hidden space-scroll self-stretch"
-            style={{ maxHeight: rightHeight || undefined }}>
-            <Title level={3} className="!text-white !mb-4 !text-lg flex-shrink-0">🎮 探索更多空间</Title>
-            {loading ? (
-              <div className="space-y-2">
-                {[1, 2, 3, 4].map(i => <Skeleton key={i} active paragraph={{ rows: 1 }} />)}
-              </div>
-            ) : relatedSpaces.length === 0 ? (
-              <Empty description={t('blog.space.noOtherSpaces', '暂无其他空间')} image={Empty.PRESENTED_IMAGE_SIMPLE} />
-            ) : (
-              <div className="space-y-3 flex-1 overflow-y-auto space-scroll pr-1">
-                {relatedSpaces.map((s: any) => (
-                  <div key={s.id} onClick={() => navigate(`/${currentLang}/blog/space/${s.slug}`)}
-                    className="cursor-pointer rounded-lg overflow-hidden border border-dark-600 hover:border-blue-500/50 transition-all hover:-translate-y-0.5">
-                    {s.coverImageUrl ? (
-                      <div className="bg-dark-700">
-                        <img src={s.coverImageUrl} alt={s.name} className="w-full object-cover" loading="lazy" style={{ aspectRatio: '16/9' }} />
-                      </div>
-                    ) : (
-                      <div className="h-20 bg-dark-700 flex items-center justify-center">
-                        <span className="text-gray-500 text-2xl font-bold">{s.name?.charAt(0)}</span>
-                      </div>
-                    )}
-                    <div className="px-3 py-2 bg-dark-800">
-                      <div className="text-white text-sm font-medium truncate">{s.name}</div>
-                      <div className="text-gray-500 text-xs mt-0.5 line-clamp-2">{s.description}</div>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            )}
-          </div>
+          <BlogSidebar spaces={spaces} currentSlug={slug} lang={currentLang} />
         </div>
 
       </div>
