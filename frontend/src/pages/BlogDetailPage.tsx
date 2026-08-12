@@ -97,7 +97,7 @@ const BlogDetailPage = () => {
       <div className="py-8 max-w-[1400px] mx-auto px-4">
         <div className="flex gap-6">
           {/* ====== 左侧：目录 (TOC) ====== */}
-          <aside className="w-52 flex-shrink-0 hidden xl:block">
+          <aside className="w-40 flex-shrink-0 hidden xl:block">
             <div className="sticky top-4 bg-dark-800/80 backdrop-blur border border-dark-700/50 rounded-xl p-4 max-h-[calc(100vh-40px)] overflow-y-auto space-scroll">
               <Text className="!text-white !text-xs !font-bold !uppercase !tracking-wider block mb-3 opacity-60">目录</Text>
               {headings.length === 0 ? (
@@ -173,7 +173,7 @@ const BlogDetailPage = () => {
           </div>
 
           {/* ====== 右侧：相关推荐 ====== */}
-          <aside className="w-60 flex-shrink-0 hidden lg:block">
+          <aside className="w-64 flex-shrink-0 hidden lg:block">
             <div className="sticky top-4 bg-dark-800 border border-dark-700 rounded-xl p-4 max-h-[calc(100vh-40px)] overflow-y-auto space-scroll">
               <Text className="!text-white !text-sm !font-semibold block mb-3">相关推荐</Text>
               {related.length === 0 ? (
@@ -183,13 +183,13 @@ const BlogDetailPage = () => {
                   {related.map((a: any) => (
                     <Link key={a.id} to={`/${currentLang}/blog/${a.id}`} className="block no-underline group">
                       <div className="rounded-lg overflow-hidden border border-dark-700 hover:border-blue-500/50 transition-all">
-                        <div className="h-16 bg-dark-700 overflow-hidden">
+                        <div className="h-24 bg-dark-700 overflow-hidden">
                           {(a.coverImageUrl || a.coverImage) ? (
                             <img src={a.coverImageUrl || a.coverImage} alt="" className="w-full h-full object-cover" loading="lazy" />
                           ) : <div className="w-full h-full flex items-center justify-center text-xl">📄</div>}
                         </div>
                         <div className="p-2 bg-dark-800">
-                          <div className="text-white text-xs line-clamp-2 group-hover:text-blue-400">{a.title}</div>
+                          <div className="text-white text-sm line-clamp-2 group-hover:text-blue-400">{a.title}</div>
                           <div className="text-gray-500 text-[10px] mt-1 flex items-center gap-2">
                             <EyeOutlined />{a.views||0}
                             <span>{fmt(a.publishDate||a.publishedAt)}</span>
