@@ -27,7 +27,7 @@ const PressPage = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-dark-900">
+    <div className="bg-dark-900">
       <SEO
         title={t('pages.press.title')}
         description={t('pages.press.heroDescription')}
@@ -44,7 +44,7 @@ const PressPage = () => {
         </div>
       </div>
 
-      <div className="py-12">
+      <div className="py-2">
         <Row gutter={[32, 32]}>
           {sections.map((section, index) => (
             <Col xs={24} md={8} key={index}>

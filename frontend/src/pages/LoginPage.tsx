@@ -149,7 +149,7 @@ const LoginPage = () => {
   // 等待认证状态加载完成 或 已登录等待重定向
   if (authLoading || isAuthenticated) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-dark-900">
+      <div className="flex items-center justify-center bg-dark-900">
         <Spin size="large" />
       </div>
     );
@@ -316,7 +316,7 @@ const LoginPage = () => {
   ];
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-dark-900 p-4">
+    <div className="flex items-center justify-center bg-dark-900 p-4">
       <SEO
         title={`${t('auth.loginPage.loginButton')} | GameHub`}
         description={t('auth.loginPage.subtitle')}

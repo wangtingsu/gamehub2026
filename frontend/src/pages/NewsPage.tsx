@@ -60,7 +60,7 @@ const NewsPage = () => {
   };
 
   return (
-    <div className="min-h-screen bg-dark-900">
+    <div className="bg-dark-900">
       <SEO title={t('seo.newsTitle', '游戏新闻 | GameHub')}
         description={t('seo.newsDescription', '最新游戏资讯')}
         canonical={`/${currentLang}/news`} />

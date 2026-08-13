@@ -76,7 +76,7 @@ const OAuthCallbackPage = () => {
 
   if (status === 'loading') {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-50 to-gray-100">
+      <div className="flex items-center justify-center bg-gradient-to-br from-gray-50 to-gray-100">
         <SEO title="第三方登录 | GameHub" description="正在处理第三方账号登录..." keywords="OAuth登录,第三方登录,社交登录,GameHub" noindex />
         <div className="text-center">
           <Spin size="large" />
@@ -88,7 +88,7 @@ const OAuthCallbackPage = () => {
 
   if (status === 'error') {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-50 to-gray-100 p-4">
+      <div className="flex items-center justify-center bg-gradient-to-br from-gray-50 to-gray-100 p-4">
         <SEO title="登录失败 | GameHub" description="第三方登录失败" keywords="OAuth登录失败,第三方登录错误,GameHub" noindex />
         <Result
           status="error"
@@ -108,7 +108,7 @@ const OAuthCallbackPage = () => {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-50 to-gray-100">
+    <div className="flex items-center justify-center bg-gradient-to-br from-gray-50 to-gray-100">
       <SEO title="登录成功 | GameHub" description="第三方账号登录成功" keywords="OAuth登录成功,GameHub登录" noindex />
       <Result
         status="success"

@@ -51,7 +51,7 @@ const AiAssistantPage: React.FC = () => {
   // If there's a sub-route, render the Outlet (detail page)
   if (location.pathname.match(/\/ai\/(soul|npc|companion)/)) {
     return (
-      <div className="min-h-screen bg-dark-900 py-6">
+      <div className="bg-dark-900 py-6">
         <SEO title="AI 助手 | GameHub" description="GameHub AI 智能助手" keywords="AI助手, AI聊天, AI攻略, AI搜索, AI角色推荐" />
         <div className="px-8">
           <Outlet />
@@ -62,7 +62,7 @@ const AiAssistantPage: React.FC = () => {
 
   // Hub page showing all capabilities
   return (
-    <div className="min-h-screen bg-dark-900 py-8">
+    <div className="bg-dark-900 py-2">
       <SEO title="AI 助手 | GameHub" description="GameHub AI 智能助手 — AI 聊天、攻略、搜索、角色推荐、人物自画像" keywords="AI助手, AI聊天, AI攻略, AI搜索, AI角色推荐" />
 
       <div className="px-8">

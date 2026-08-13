@@ -130,7 +130,7 @@ const CommunityPage = () => {
   };
 
   return (
-    <div className="min-h-screen bg-dark-900">
+    <div className="bg-dark-900">
       <SEO title="社区论坛 | GameHub" description="玩家社区讨论" />
       <div className="py-6">
         <div className="flex items-center justify-between mb-4">

@@ -62,9 +62,9 @@ const PostNewPage = () => {
   };
 
   return (
-    <div className="min-h-screen bg-dark-900">
+    <div className="bg-dark-900">
       <SEO title="发帖子 | GameHub" description="在 GameHub 社区发布新帖子，与游戏玩家交流讨论" keywords="发帖子, 社区发帖, 游戏讨论, 新帖, GameHub社区" />
-      <div className="max-w-3xl mx-auto px-4 py-8">
+      <div className="max-w-3xl mx-auto px-4 py-2">
         <Button
           type="text"
           className="mb-4"

@@ -36,7 +36,7 @@ const AboutPage = () => {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-dark-900 flex justify-center items-center">
+      <div className="bg-dark-900 flex justify-center items-center">
         <Spin size="large" />
       </div>
     );
@@ -46,7 +46,7 @@ const AboutPage = () => {
   const showFallback = error || !aboutData;
 
   return (
-    <div className="min-h-screen bg-dark-900">
+    <div className="bg-dark-900">
       <SEO
         title={t('about.seoTitle', '关于 GameHub')}
         description={t('about.seoDescription', 'GameHub 是一个专注于游戏爱好者的社区平台')}
@@ -61,7 +61,7 @@ const AboutPage = () => {
         </div>
       )}
       {/* 主要内容 */}
-      <div className="py-12">
+      <div className="py-2">
         <Title level={1} className="text-center mb-4 !text-gray-100">{hero?.title || t('about.title', '关于 GameHub')}</Title>
         <Paragraph className="text-lg text-center max-w-3xl mx-auto text-gray-400 mb-12">
           {hero?.description || t('about.description', 'GameHub 是一个专注于游戏爱好者的社区平台')}

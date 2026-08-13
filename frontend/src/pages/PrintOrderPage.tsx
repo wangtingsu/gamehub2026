@@ -81,7 +81,7 @@ const PrintOrderPage = () => {
   };
 
   return (
-    <div className="min-h-screen bg-dark-900 py-12 px-4">
+    <div className="bg-dark-900 py-2 px-4">
       <SEO title="3D 打印服务 | GameHub" description="提交 3D 模型进行打印" keywords="3D打印, 模型打印, 打印服务, 3D模型, GameHub打印" noindex />
 
       <div className="max-w-3xl mx-auto">

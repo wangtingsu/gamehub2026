@@ -26,7 +26,7 @@ const GuideDetailPage = () => {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen flex items-center justify-center p-4">
+      <div className="flex items-center justify-center p-4">
         <Skeleton active paragraph={{ rows: 6 }} />
       </div>
     );
@@ -34,7 +34,7 @@ const GuideDetailPage = () => {
 
   if (error || !guide) {
     return (
-      <div className="min-h-screen flex items-center justify-center p-4">
+      <div className="flex items-center justify-center p-4">
         <Alert
           message="加载失败"
           description={error instanceof Error ? error.message : '攻略不存在'}
@@ -99,9 +99,9 @@ const GuideDetailPage = () => {
         { name: '攻略', url: `/${lang}/guides` },
         { name: guide.title, url: `/${lang}/guides/${guide.id}` },
       ]} />
-      <div className="min-h-screen bg-dark-900">
+      <div className="bg-dark-900">
         {/* 头部区域 */}
-        <div className="bg-gradient-to-r from-emerald-500 to-teal-600 text-white py-12">
+        <div className="bg-gradient-to-r from-emerald-500 to-teal-600 text-white py-2">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="flex flex-col md:flex-row items-start md:items-center justify-between">
               <div>
@@ -133,7 +133,7 @@ const GuideDetailPage = () => {
         </div>
 
         {/* 主要内容 */}
-        <div className="py-12">
+        <div className="py-2">
           <Row gutter={[32, 32]}>
             {/* 左侧内容区域 */}
             <Col xs={24} lg={16}>

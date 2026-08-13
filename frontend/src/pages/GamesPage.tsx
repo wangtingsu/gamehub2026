@@ -344,7 +344,7 @@ const GamesPage = () => {
       return (
         <section className="mb-10">
           <Title level={2} className="!mb-6 !text-white">{sectionTitle}</Title>
-          <div className="flex justify-center items-center py-12">
+          <div className="flex justify-center items-center py-2">
             <Spin size="large" />
           </div>
         </section>
@@ -397,7 +397,7 @@ const GamesPage = () => {
       />
 
       {/* 主要内容 */}
-      <div className="py-8">
+      <div className="py-2">
         {/* 搜索和筛选 */}
         <div className="mb-8">
           <h1 className="text-3xl font-bold !text-gray-100 mb-4">{t('title')}</h1>

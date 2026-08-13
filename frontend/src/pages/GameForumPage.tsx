@@ -132,11 +132,11 @@ const GameForumPage = () => {
     </div>
   );
 
-  if (loading) return <div className="min-h-screen bg-dark-900"><div className="py-6"><Sidebar><Skeleton active paragraph={{ rows: 8 }} /></Sidebar></div></div>;
-  if (isError || !game) return <div className="min-h-screen bg-dark-900"><div className="py-6"><Sidebar><Alert message="加载失败" type="error" showIcon /></Sidebar></div></div>;
+  if (loading) return <div className="bg-dark-900"><div className="py-6"><Sidebar><Skeleton active paragraph={{ rows: 8 }} /></Sidebar></div></div>;
+  if (isError || !game) return <div className="bg-dark-900"><div className="py-6"><Sidebar><Alert message="加载失败" type="error" showIcon /></Sidebar></div></div>;
 
   return (
-    <div className="min-h-screen bg-dark-900">
+    <div className="bg-dark-900">
       <SEO title={`${game.title} 论坛 | GameHub`} description={`参与 ${game.title} 讨论交流`} />
       <div className="py-6">
         <Button type="text" className="!text-gray-400 hover:!text-white mb-4" icon={<ArrowLeftOutlined />}

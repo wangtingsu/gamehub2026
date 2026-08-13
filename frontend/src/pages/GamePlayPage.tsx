@@ -179,7 +179,7 @@ const GamePlayPage = () => {
 
   if (!game) {
     return (
-      <div className="min-h-screen bg-dark-900 py-12">
+      <div className="bg-dark-900 py-2">
         <div className="max-w-4xl mx-auto px-4 text-center">
           <div className="text-6xl mb-4 opacity-30">🎮</div>
           <Title level={2} className="!text-gray-400">游戏不存在</Title>
@@ -192,7 +192,7 @@ const GamePlayPage = () => {
   }
 
   return (
-    <div className="min-h-screen bg-dark-900">
+    <div className="bg-dark-900">
       <SEO
         title={`${game.name} | GameHub 在线游戏`}
         description={game.description}
@@ -200,7 +200,7 @@ const GamePlayPage = () => {
         structuredData={structuredData}
       />
 
-      <div className="py-8">
+      <div className="py-2">
         {/* Back */}
         <Button
           type="text"

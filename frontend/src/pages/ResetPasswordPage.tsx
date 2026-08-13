@@ -81,7 +81,7 @@ const ResetPasswordPage = () => {
   // token无效页面
   if (tokenValid === false) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-dark-900 p-4">
+      <div className="flex items-center justify-center bg-dark-900 p-4">
         <div className="w-full max-w-md">
           <Result
             icon={<WarningOutlined className="text-yellow-500" />}
@@ -114,7 +114,7 @@ const ResetPasswordPage = () => {
   // 重置成功页面
   if (success) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-dark-900 p-4">
+      <div className="flex items-center justify-center bg-dark-900 p-4">
         <div className="w-full max-w-md">
           <Result
             icon={<CheckCircleOutlined className="text-green-500" />}
@@ -140,7 +140,7 @@ const ResetPasswordPage = () => {
   // 验证token中
   if (tokenValid === null) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
+      <div className="flex items-center justify-center">
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500 mx-auto mb-4"></div>
           <Text type="secondary">{t('auth.resetPasswordPage.verifyingToken')}</Text>
@@ -150,7 +150,7 @@ const ResetPasswordPage = () => {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-dark-900 p-4">
+    <div className="flex items-center justify-center bg-dark-900 p-4">
       <SEO
         title={`${t('auth.resetPasswordPage.title')} | GameHub`}
         description={t('auth.resetPasswordPage.subtitle')}

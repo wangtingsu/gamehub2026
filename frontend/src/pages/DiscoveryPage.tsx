@@ -37,7 +37,7 @@ const DiscoveryPage: React.FC = () => {
   const { data: community, isLoading: commLoading } = useCommunitySummary();
 
   return (
-    <div className=" py-8">
+    <div className=" py-2">
       <SEO
         title="发现 | GameHub"
         description="GameHub 发现页面 - 趋势分析、排行榜、数据报告"
@@ -158,7 +158,7 @@ const DiscoveryPage: React.FC = () => {
             </Col>
             <Col xs={24}>
               <Card title="社区概览" className="shadow-sm bg-dark-800 border-dark-700">
-                {commLoading ? <Spin className="flex justify-center py-10" />
+                {commLoading ? <Spin className="flex justify-center py-2" />
                 : community ? (
                   <Row gutter={[16, 16]}>
                     <Col xs={12} sm={8} md={4}>

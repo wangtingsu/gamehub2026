@@ -91,14 +91,14 @@ const ConversationPage: React.FC = () => {
 
   if (isLoading) {
     return (
-      <div className=" py-8">
-        <div className="text-center py-12"><Spin size="large" /></div>
+      <div className=" py-2">
+        <div className="text-center py-2"><Spin size="large" /></div>
       </div>
     );
   }
 
   return (
-    <div className=" py-8">
+    <div className=" py-2">
       <SEO title="消息 | GameHub" description="GameHub 即时通讯，查看和发送消息" keywords="私信,消息,聊天,即时通讯,GameHub消息" noindex />
 
       <Card className="shadow-sm">

@@ -105,7 +105,7 @@ const BlogEditPage = () => {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-dark-900 py-12">
+      <div className="bg-dark-900 py-2">
         <div className="max-w-4xl mx-auto px-4">
           <Skeleton active className="!text-gray-400" />
         </div>
@@ -115,7 +115,7 @@ const BlogEditPage = () => {
 
   if (isError || !post) {
     return (
-      <div className="min-h-screen bg-dark-900 py-12">
+      <div className="bg-dark-900 py-2">
         <div className="max-w-4xl mx-auto px-4">
           <Alert type="error" message="文章不存在或无权编辑" showIcon />
         </div>
@@ -126,10 +126,10 @@ const BlogEditPage = () => {
   const isDraftOrRejected = post.reviewStatus === 'draft' || post.reviewStatus === 'rejected';
 
   return (
-    <div className="min-h-screen bg-dark-900">
+    <div className="bg-dark-900">
       <SEO title={`编辑文章 | GameHub 博客`} description="编辑 GameHub 博客文章内容" keywords="编辑文章, 修改博客, GameHub博客, 编辑博客, 博客管理" />
 
-      <div className="py-8">
+      <div className="py-2">
         {/* Header */}
         <div className="flex items-center justify-between mb-6">
           <div className="flex items-center gap-4">

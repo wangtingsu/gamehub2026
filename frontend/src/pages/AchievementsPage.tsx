@@ -40,7 +40,7 @@ const AchievementsPage: React.FC = () => {
   const isLoading = loadingAll || loadingUser || loadingStats;
 
   return (
-    <div className=" py-8">
+    <div className=" py-2">
       <SEO title="成就 | GameHub" description="GameHub 成就系统" keywords="成就系统,成就列表,游戏成就,成就徽章,成就进度" />
 
       <Title level={1} className="mb-6 flex items-center">
@@ -103,9 +103,9 @@ const AchievementsPage: React.FC = () => {
         </Tabs>
 
         {isLoading ? (
-          <div className="text-center py-12"><Spin size="large" /></div>
+          <div className="text-center py-2"><Spin size="large" /></div>
         ) : categoryAchievements.length === 0 ? (
-          <Empty description="暂无成就" className="py-12" />
+          <Empty description="暂无成就" className="py-2" />
         ) : (
           <Row gutter={[16, 16]}>
             {categoryAchievements.map((item) => {

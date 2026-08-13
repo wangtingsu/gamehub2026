@@ -16,7 +16,7 @@ const CareersPage = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-dark-900">
+    <div className="bg-dark-900">
       <SEO
         title={t('pages.careers.title')}
         description={t('pages.careers.heroDescription')}
@@ -33,7 +33,7 @@ const CareersPage = () => {
         </div>
       </div>
 
-      <div className="py-12">
+      <div className="py-2">
         {/* Why Join Us */}
         <div className="mb-16">
           <Card variant="borderless" className="bg-dark-800 border border-dark-700">

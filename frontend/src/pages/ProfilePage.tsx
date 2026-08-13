@@ -239,14 +239,14 @@ const ProfilePage = () => {
 
   if (!user) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
+      <div className="flex items-center justify-center">
         <LoadingSpinner />
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-dark-900 p-4 profile-page">
+    <div className="bg-dark-900 p-4 profile-page">
       <SEO
         title="个人资料 | GameHub"
         description="管理您的 GameHub 账户信息和设置"
@@ -591,7 +591,7 @@ const ProfilePage = () => {
                 </TabPane>
 
                 <TabPane tab="活动记录" key="activity">
-                  <div className="text-center py-12">
+                  <div className="text-center py-2">
                     <HistoryOutlined className="text-4xl text-gray-500 mb-4" />
                     <Title level={4} className="text-gray-400">暂无活动记录</Title>
                     <Text className="text-gray-500">您还没有任何活动记录</Text>

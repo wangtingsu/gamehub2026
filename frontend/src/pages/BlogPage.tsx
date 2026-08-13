@@ -54,7 +54,7 @@ const BlogPage = () => {
     try { return new Date(d).toLocaleDateString('zh-CN', { month: 'short', day: 'numeric' }); } catch { return ''; }
   };
 
-  if (loading) return <div className="min-h-screen bg-dark-900 py-16"><div className="max-w-7xl mx-auto px-4"><Skeleton active paragraph={{rows:8}}/></div></div>;
+  if (loading) return <div className="bg-dark-900 py-16"><div className="max-w-7xl mx-auto px-4"><Skeleton active paragraph={{rows:8}}/></div></div>;
 
   const mainPick = picks[0];
   const sidePicks = picks.slice(1, 7);

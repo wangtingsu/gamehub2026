@@ -14,7 +14,7 @@ const LegalPage = ({ pageKey }: LegalPageProps) => {
   const sections = t(`${basePath}.sections`, { returnObjects: true }) as Array<{ title: string; content: string }>;
 
   return (
-    <div className="min-h-screen bg-dark-900">
+    <div className="bg-dark-900">
       <SEO title={t(`${basePath}.title`)} description={t(`${basePath}.title`)} keywords="隐私政策, 使用条款, Cookie政策, 行为准则, 法律条款, GameHub法律" />
 
       <div className="bg-gradient-to-r from-blue-600 to-purple-600 text-white py-16">
@@ -24,7 +24,7 @@ const LegalPage = ({ pageKey }: LegalPageProps) => {
         </div>
       </div>
 
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-2">
         <div className="bg-dark-800 border border-dark-700 rounded-lg shadow-sm p-8">
           {sections?.map((section, index) => (
             <div key={index}>

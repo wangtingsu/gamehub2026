@@ -78,7 +78,7 @@ const NewsDetailPage = () => {
 
   if (error || !article) {
     return (
-      <div className="min-h-screen flex items-center justify-center p-4">
+      <div className="flex items-center justify-center p-4">
         <Alert message="加载失败" description={error || '新闻不存在'} type="error" showIcon
           action={<Button type="primary" onClick={() => navigate(`/${lang}/news`)}>返回新闻列表</Button>} />
       </div>
@@ -93,13 +93,13 @@ const NewsDetailPage = () => {
         author={article.author} section={article.category} tags={article.tags} canonical={`/news/${article.id}`} />
       <SEOBreadcrumb items={[{ name: '首页', url: `/${lang}` }, { name: '新闻', url: `/${lang}/news` }, { name: article.title, url: `/${lang}/news/${article.id}` }]} />
       <article>
-        <div className="min-h-screen bg-dark-900">
+        <div className="bg-dark-900">
           <div className="bg-dark-800 border-b border-dark-700">
             <div className="py-4">
               <Button icon={<ArrowLeftOutlined />} onClick={() => navigate(`/${lang}/news`)} className="mb-4">返回新闻列表</Button>
             </div>
           </div>
-          <div className="mx-auto py-8">
+          <div className="mx-auto py-2">
             <Row gutter={[32, 32]}>
               {/* 左侧：文章内容 + 评论 */}
               <Col xs={24} lg={16}>
@@ -164,9 +164,9 @@ const NewsDetailPage = () => {
 };
 
 const NewsDetailSkeleton = () => (
-  <div className="min-h-screen bg-dark-900">
+  <div className="bg-dark-900">
     <div className="bg-dark-800 border-b border-dark-700"><div className="mx-auto py-4"><Skeleton.Button active size="small" /></div></div>
-    <div className="mx-auto py-8">
+    <div className="mx-auto py-2">
       <Card className="mb-8 border-0 shadow-lg bg-dark-800">
         <Skeleton active paragraph={{ rows: 2 }} className="mb-6" />
         <Skeleton active avatar paragraph={{ rows: 1 }} className="mb-8" />

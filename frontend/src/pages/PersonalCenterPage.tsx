@@ -28,11 +28,11 @@ const PersonalCenterPage: React.FC = () => {
   const { data: libraryStats } = useLibraryStats();
 
   return (
-    <div className="min-h-screen bg-dark-900 personal-center">
+    <div className="bg-dark-900 personal-center">
       <SEO title="个人中心 | GameHub" description="GameHub 个人中心" keywords="个人中心,个人资料,账户设置,用户中心,GameHub" noindex />
 
       {/* 用户信息头部 */}
-      <div className="bg-gradient-to-r from-primary-500 to-secondary-500 text-white py-10">
+      <div className="bg-gradient-to-r from-primary-500 to-secondary-500 text-white py-2">
         <div className="px-4">
           <div className="flex items-center justify-between">
           <div className="flex items-center space-x-6">

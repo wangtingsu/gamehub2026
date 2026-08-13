@@ -155,7 +155,7 @@ const VerifyEmailPage = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-dark-900 p-4">
+    <div className="flex items-center justify-center bg-dark-900 p-4">
       <SEO
         title="验证邮箱 | GGHubs"
         description="验证您的 GGHubs 邮箱地址"

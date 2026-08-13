@@ -177,7 +177,7 @@ const LeaderboardPage: React.FC = () => {
   ];
 
   return (
-    <div className=" py-8">
+    <div className=" py-2">
       <SEO
         title="排行榜 | GameHub"
         description="GameHub 排行榜 - 游戏排行和用户排行"

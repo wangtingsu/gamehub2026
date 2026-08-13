@@ -50,14 +50,14 @@ const CommunityForumHubPage = () => {
   };
 
   return (
-    <div className="min-h-screen bg-dark-900">
+    <div className="bg-dark-900">
       <SEO
         title={t('community.seoTitle', '社区论坛 | GameHub')}
         description={t('community.seoDesc', 'GameHub 社区论坛 — 按游戏浏览讨论帖、评测和攻略')}
         keywords={t('community.seoKeywords', '社区论坛,游戏讨论,游戏评测,游戏攻略,GameHub')}
       />
 
-      <div className="py-8">
+      <div className="py-2">
         {/* 头部 */}
         <div className="text-center mb-8">
           <div className="inline-flex items-center justify-center w-20 h-20 rounded-2xl bg-gradient-to-br from-blue-500 to-purple-500 mb-6 shadow-lg shadow-blue-500/20">

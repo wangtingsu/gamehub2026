@@ -20,7 +20,7 @@ const ReviewDetailPage = () => {
   // 加载状态
   if (reviewLoading || gameLoading) {
     return (
-      <div className="min-h-screen flex items-center justify-center p-4">
+      <div className="flex items-center justify-center p-4">
         <Skeleton active paragraph={{ rows: 6 }} />
       </div>
     );
@@ -29,7 +29,7 @@ const ReviewDetailPage = () => {
   // 错误处理
   if (reviewError || !review) {
     return (
-      <div className="min-h-screen flex items-center justify-center p-4">
+      <div className="flex items-center justify-center p-4">
         <Alert
           message="加载失败"
           description={reviewError instanceof Error ? reviewError.message : (reviewError || '评测不存在')}
@@ -151,9 +151,9 @@ const ReviewDetailPage = () => {
         { name: review.title, url: `/${lang}/community/reviews/${review.id}` },
       ]} />
       <article>
-      <div className="min-h-screen bg-dark-900">
+      <div className="bg-dark-900">
       {/* 头部区域 */}
-      <div className="bg-gradient-to-r from-blue-600 to-purple-600 text-white py-12">
+      <div className="bg-gradient-to-r from-blue-600 to-purple-600 text-white py-2">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col md:flex-row items-start md:items-center justify-between">
             <div>
@@ -186,7 +186,7 @@ const ReviewDetailPage = () => {
       </div>
 
       {/* 主要内容 */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-2">
         <Row gutter={[32, 32]}>
           {/* 左侧内容区域 */}
           <Col xs={24} lg={16}>

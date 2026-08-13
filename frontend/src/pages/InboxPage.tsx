@@ -51,7 +51,7 @@ const InboxPage: React.FC = () => {
   };
 
   return (
-    <div className=" py-8">
+    <div className=" py-2">
       <SEO title="私信 | GameHub" description="GameHub 私信系统" keywords="私信,消息,站内信,聊天,GameHub消息" noindex />
 
       <div className="flex items-center justify-between mb-6">
@@ -69,9 +69,9 @@ const InboxPage: React.FC = () => {
 
       <Card className="shadow-sm bg-dark-800 border-dark-700">
         {isLoading ? (
-          <div className="text-center py-12"><Spin size="large" /></div>
+          <div className="text-center py-2"><Spin size="large" /></div>
         ) : conversations.length === 0 ? (
-          <Empty description="暂无私信" className="py-12" />
+          <Empty description="暂无私信" className="py-2" />
         ) : (
           <List
             dataSource={conversations}

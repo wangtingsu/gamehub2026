@@ -109,7 +109,7 @@ const BlogDetailPage = () => {
         { name: post.title, url: `/${currentLang}/blog/${post.id}` },
       ]} />
 
-      <div className="py-8 max-w-[1600px] mx-auto px-1 sm:px-2">
+      <div className="py-2 max-w-[1600px] mx-auto px-1 sm:px-2">
         <div className="flex gap-6">
           {/* ====== 左侧：目录 (TOC) ====== */}
           <aside className="w-36 flex-shrink-0 hidden xl:block">

@@ -66,14 +66,14 @@ const GameForumHubPage = () => {
   };
 
   return (
-    <div className="min-h-screen bg-dark-900">
+    <div className="bg-dark-900">
       <SEO
         title="游戏论坛广场 | GGHubs"
         description="浏览所有游戏的官方论坛，参与游戏讨论与交流"
         keywords="游戏论坛, 游戏讨论, 官方论坛, 玩家社区, GGHubs"
       />
 
-      <div className="py-8">
+      <div className="py-2">
         {/* 头部区域 */}
         <div className="text-center mb-8">
           <div className="flex items-center justify-center gap-3 mb-4">

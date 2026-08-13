@@ -97,9 +97,9 @@ const GuidesPage = () => {
         keywords="游戏攻略, 攻略指南, 游戏教程, 游戏技巧"
         structuredData={guidesStructuredData}
       />
-      <div className="min-h-screen bg-dark-900">
+      <div className="bg-dark-900">
         {/* 头部区域 */}
-        <div className="bg-gradient-to-r from-emerald-500 to-teal-600 text-white py-12">
+        <div className="bg-gradient-to-r from-emerald-500 to-teal-600 text-white py-2">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center">
               <Title level={1} className="text-white mb-4">游戏攻略</Title>
@@ -119,7 +119,7 @@ const GuidesPage = () => {
           </div>
         </div>
 
-        <div className="py-12">
+        <div className="py-2">
           {/* 难度筛选 */}
           <div className="flex flex-wrap items-center gap-2 mb-8">
             <Text className="text-gray-400 mr-2">难度筛选：</Text>

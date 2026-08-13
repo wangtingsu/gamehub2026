@@ -96,10 +96,10 @@ const BlogNewPage = () => {
   };
 
   return (
-    <div className="min-h-screen bg-dark-900">
+    <div className="bg-dark-900">
       <SEO title="写文章 | GameHub 博客" description="在 GameHub 博客撰写新文章，分享游戏见解和心得" keywords="写文章, 发布博客, GameHub博客, 创建文章, 游戏博客" />
 
-      <div className="py-8">
+      <div className="py-2">
         {/* Header */}
         <div className="flex items-center justify-between mb-6">
           <div className="flex items-center gap-4">

@@ -19,7 +19,7 @@ export default function CozyGamesPage() {
   }, [games, search]);
 
   return (
-    <div className="min-h-screen bg-dark-900">
+    <div className="bg-dark-900">
       <SEO title="治愈游戏 | GameHub" description="温暖治愈的游戏推荐" />
 
       {/* Hero Banner */}
@@ -37,7 +37,7 @@ export default function CozyGamesPage() {
         </div>
       </div>
 
-      <div className="py-10 max-w-7xl mx-auto px-4">
+      <div className="py-2 max-w-7xl mx-auto px-4">
         {isLoading ? <div className="flex justify-center py-20"><Spin size="large" /></div> : (
           <>
             {/* Top 6 Featured */}

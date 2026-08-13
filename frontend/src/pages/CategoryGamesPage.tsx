@@ -181,7 +181,7 @@ const CategoryGamesPage = () => {
       ]} />
 
       {/* Banner */}
-      <div className="bg-gradient-to-r from-blue-600 to-purple-600 text-white py-12">
+      <div className="bg-gradient-to-r from-blue-600 to-purple-600 text-white py-2">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
             <Button
@@ -231,7 +231,7 @@ const CategoryGamesPage = () => {
       </div>
 
       {/* 主要内容 */}
-      <div className="py-8">
+      <div className="py-2">
         {/* 筛选工具栏 */}
         <motion.div
           initial={{ opacity: 0, y: -10 }}

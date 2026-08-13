@@ -60,7 +60,7 @@ const BlogCategoryPage = () => {
   };
 
   return (
-    <div className="min-h-screen bg-dark-900">
+    <div className="bg-dark-900">
       <SEO title={`${cat.label} | ${space?.name || slug} | GameHub`} canonical={`/${currentLang}/blog/space/${slug}/category/${postType}`} />
 
       <div className="py-6">

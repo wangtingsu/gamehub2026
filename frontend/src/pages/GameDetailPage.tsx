@@ -165,7 +165,7 @@ const GameDetailPage = () => {
 
   if (gameError || !game) {
     return (
-      <div className="min-h-screen flex items-center justify-center p-4">
+      <div className="flex items-center justify-center p-4">
         <Alert
           title="加载失败"
           description={gameError?.message || String(gameError) || '游戏不存在'}
@@ -242,9 +242,9 @@ const GameDetailPage = () => {
         { name: game.title, url: `/${lang || 'cn'}/games/${game.id}` },
       ]} />
       <article>
-      <div className="min-h-screen bg-dark-900">
+      <div className="bg-dark-900">
       {/* 头部区域 */}
-      <div className="bg-gradient-to-r from-blue-600 to-purple-600 text-white py-10">
+      <div className="bg-gradient-to-r from-blue-600 to-purple-600 text-white py-2">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col md:flex-row gap-6 items-start">
             {/* 游戏封面 */}
@@ -283,7 +283,7 @@ const GameDetailPage = () => {
       </div>
 
       {/* 主要内容 */}
-      <div className="py-8">
+      <div className="py-2">
         <Row gutter={[32, 32]}>
           {/* 左侧内容区域 */}
           <Col xs={24} lg={16}>
@@ -383,11 +383,11 @@ const GameDetailPage = () => {
 
                 <TabPane tab="评测" key="reviews">
                   {reviewsLoading ? (
-                    <div className="text-center py-12">
+                    <div className="text-center py-2">
                       <Skeleton active paragraph={{ rows: 4 }} />
                     </div>
                   ) : reviews.length === 0 ? (
-                    <div className="text-center py-12">
+                    <div className="text-center py-2">
                       <Title level={4} className="text-gray-400 mb-4">
                         暂无评测数据
                       </Title>
@@ -463,7 +463,7 @@ const GameDetailPage = () => {
 
                 <TabPane tab="论坛" key="forum">
                   {forumLoading ? (
-                    <div className="text-center py-12">
+                    <div className="text-center py-2">
                       <Skeleton active paragraph={{ rows: 4 }} />
                     </div>
                   ) : (
@@ -495,7 +495,7 @@ const GameDetailPage = () => {
                         </div>
                       </div>
                       {forumPosts.length === 0 ? (
-                        <div className="text-center py-12">
+                        <div className="text-center py-2">
                           <MessageOutlined className="text-5xl text-gray-600 mb-4" />
                           <Title level={4} className="text-gray-400 mb-2">
                             暂无论坛帖子
@@ -647,15 +647,15 @@ const GameDetailPage = () => {
 
 // 骨架屏组件
 const GameDetailSkeleton = () => (
-  <div className="min-h-screen bg-dark-900">
-    <div className="bg-gradient-to-r from-blue-600 to-purple-600 py-8">
+  <div className="bg-dark-900">
+    <div className="bg-gradient-to-r from-blue-600 to-purple-600 py-2">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <Skeleton.Input active size="large" style={{ width: 300, height: 40 }} />
         <Skeleton active paragraph={{ rows: 1 }} className="mt-4" />
       </div>
     </div>
 
-    <div className="py-8">
+    <div className="py-2">
       <Row gutter={[32, 32]}>
         <Col xs={24} lg={16}>
           <Card className="mb-8 bg-dark-800 border-dark-700">

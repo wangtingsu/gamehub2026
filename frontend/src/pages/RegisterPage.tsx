@@ -56,7 +56,7 @@ const RegisterPage = () => {
 
   if (isAuthenticated) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-dark-900">
+      <div className="flex items-center justify-center bg-dark-900">
         <Spin size="large" />
       </div>
     );
@@ -203,7 +203,7 @@ const RegisterPage = () => {
   // 注册成功页面
   if (success) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-dark-900 p-4">
+      <div className="flex items-center justify-center bg-dark-900 p-4">
         <div className="w-full max-w-md">
           <Card className="shadow-xl border border-dark-700 rounded-2xl bg-dark-800 text-center">
             <MailOutlined className="text-6xl text-blue-400 mb-6" />
@@ -496,7 +496,7 @@ const RegisterPage = () => {
   ];
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-dark-900 p-4">
+    <div className="flex items-center justify-center bg-dark-900 p-4">
       <SEO
         title={`${t('auth.registerPage.title')} | GameHub`}
         description={t('auth.registerPage.subtitle')}

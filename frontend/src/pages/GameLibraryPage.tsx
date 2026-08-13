@@ -157,7 +157,7 @@ const GameLibraryPage = () => {
       </div>
 
       {loading ? (
-        <div className="flex justify-center items-center py-12">
+        <div className="flex justify-center items-center py-2">
           <Spin size="large" />
         </div>
       ) : (
@@ -178,7 +178,7 @@ const GameLibraryPage = () => {
         keywords="游戏库, 推荐游戏, 直充游戏, 独立游戏, GGHubs"
       />
 
-      <div className=" py-8">
+      <div className=" py-2">
         {/* 页面标题 */}
         <motion.div
           initial={{ opacity: 0, y: -20 }}

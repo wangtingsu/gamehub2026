@@ -79,7 +79,7 @@ export default function AIGamingPage() {
   ];
 
   return (
-    <div className=" py-8 px-4 sm:px-6 lg:px-8">
+    <div className=" py-2 px-4 sm:px-6 lg:px-8">
       <SEO
         title={t('seo.aiGaming.title')}
         description={t('seo.aiGaming.description')}
@@ -191,7 +191,7 @@ export default function AIGamingPage() {
       </section>
 
       {/* CTA */}
-      <section className="text-center py-8">
+      <section className="text-center py-2">
         <Title level={3} className="!text-white !mb-3">{t('aiGame.cta.title')}</Title>
         <Paragraph className="text-gray-400 mb-6">{t('aiGame.cta.subtitle')}</Paragraph>
         <Link

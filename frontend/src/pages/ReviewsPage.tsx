@@ -102,14 +102,14 @@ const ReviewsPage = () => {
   };
 
   return (
-    <div className="min-h-screen bg-dark-900">
+    <div className="bg-dark-900">
       <SEO
         title={t('seo.reviewsTitle', '游戏评测 | GameHub')}
         description={t('seo.reviewsDescription', '专业、客观、深度的游戏评测')}
         keywords={t('seo.reviewsKeywords', '游戏评测, 游戏评价, 游戏推荐, 游戏评分, 客观评测, 游戏点评')}
       />
       {/* 头部区域 */}
-      <div className="bg-gradient-to-r from-blue-600 to-purple-600 text-white py-12">
+      <div className="bg-gradient-to-r from-blue-600 to-purple-600 text-white py-2">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <Title level={1} className="text-white text-center mb-6">游戏评测</Title>
           <Paragraph className="text-xl text-center max-w-3xl mx-auto mb-8">
@@ -131,7 +131,7 @@ const ReviewsPage = () => {
       </div>
 
       {/* 主要内容 */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-2">
         {/* 错误提示 */}
         {queryError && (
           <Alert

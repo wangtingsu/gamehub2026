@@ -20,7 +20,7 @@ const TrendingPage: React.FC = () => {
   };
 
   return (
-    <div className=" py-8">
+    <div className=" py-2">
       <SEO
         title="热门趋势 | GameHub"
         description="GameHub 热门内容 - 发现最受欢迎的游戏和内容"

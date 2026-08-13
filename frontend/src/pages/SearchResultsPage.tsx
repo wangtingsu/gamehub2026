@@ -121,7 +121,7 @@ const SearchResultsPage: React.FC = () => {
   const resultStats = getResultStats();
 
   return (
-    <div className=" py-8">
+    <div className=" py-2">
       <SEO
         title={query ? `${query} - 搜索 | GameHub` : '搜索 | GameHub'}
         description={`搜索"${query || ''}"的游戏、评测、新闻结果`}
@@ -214,7 +214,7 @@ const SearchResultsPage: React.FC = () => {
       {/* 搜索结果 */}
       <div className="mb-8">
         {isLoading ? (
-          <div className="flex justify-center py-12">
+          <div className="flex justify-center py-2">
             <Spin size="large" />
           </div>
         ) : error ? (
@@ -226,7 +226,7 @@ const SearchResultsPage: React.FC = () => {
                 <p className="text-gray-600 dark:text-gray-400">{error.message}</p>
               </div>
             }
-            className="py-12"
+            className="py-2"
           />
         ) : searchResult?.results && searchResult.results.length > 0 ? (
           <div className="space-y-4">
@@ -243,7 +243,7 @@ const SearchResultsPage: React.FC = () => {
                 <p className="text-gray-600 dark:text-gray-400">尝试使用其他关键词或筛选条件</p>
               </div>
             }
-            className="py-12"
+            className="py-2"
           />
         )}
       </div>

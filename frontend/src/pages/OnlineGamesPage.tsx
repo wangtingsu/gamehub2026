@@ -333,7 +333,7 @@ const OnlineGamesPage = () => {
   }, [filteredGames, currentPage]);
 
   return (
-    <div className="min-h-screen bg-dark-900">
+    <div className="bg-dark-900">
       <SEO
         title="免费在线小游戏 - 即点即玩无需下载 | GameHub"
         description="GameHub 提供20+款免费在线小游戏，包括贪吃蛇、俄罗斯方块、2048、五子棋、扫雷等经典游戏。无需下载，在浏览器中即点即玩，支持电脑和手机。"
@@ -342,7 +342,7 @@ const OnlineGamesPage = () => {
       />
 
       {/* Header */}
-      <div className="bg-gradient-to-r from-indigo-600 to-purple-600 text-white py-12">
+      <div className="bg-gradient-to-r from-indigo-600 to-purple-600 text-white py-2">
         <div className="">
           <div className="text-center">
             <Title level={1} className="!text-white mb-4">在线游戏</Title>
@@ -361,7 +361,7 @@ const OnlineGamesPage = () => {
         </div>
       </div>
 
-      <div className="py-8">
+      <div className="py-2">
         {/* Category */}
         <div className="flex flex-wrap gap-2 mb-8">
           {categories.map(cat => (

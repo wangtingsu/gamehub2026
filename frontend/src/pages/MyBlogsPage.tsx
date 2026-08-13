@@ -169,10 +169,10 @@ const MyBlogsPage = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-dark-900">
+    <div className="bg-dark-900">
       <SEO title="我的文章 | GameHub 博客" description="管理您发布的 GameHub 博客文章" keywords="我的文章, 博客管理, GameHub博客, 文章列表, 原创文章" />
 
-      <div className="py-8">
+      <div className="py-2">
         {/* Header */}
         <div className="flex items-center justify-between mb-6">
           <div className="flex items-center gap-4">

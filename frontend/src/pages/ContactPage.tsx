@@ -40,7 +40,7 @@ const ContactPage = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-dark-900">
+    <div className="bg-dark-900">
       <SEO
         title={t('pages.contact.title')}
         description={t('pages.contact.heroDescription')}
@@ -57,7 +57,7 @@ const ContactPage = () => {
         </div>
       </div>
 
-      <div className="py-12">
+      <div className="py-2">
         {/* Service Cards */}
         <Row gutter={[32, 32]} className="mb-16">
           {serviceCards.map((item, index) => (

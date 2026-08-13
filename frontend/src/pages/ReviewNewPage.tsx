@@ -31,9 +31,9 @@ const ReviewNewPage = () => {
   };
 
   return (
-    <div className="min-h-screen bg-dark-900">
+    <div className="bg-dark-900">
       <SEO title="写评测 | GameHub" description="发表游戏评测，分享您的游戏体验和观点" keywords="游戏评测, 写评测, 游戏评价, 游戏点评, 发表评测" />
-      <div className="max-w-3xl mx-auto px-4 py-8">
+      <div className="max-w-3xl mx-auto px-4 py-2">
         <Button
           type="text"
           className="mb-4"

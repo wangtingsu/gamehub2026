@@ -114,10 +114,10 @@ const CategoryNewsPage = () => {
   const formatDate = (dateString: string) => new Date(dateString).toLocaleDateString('zh-CN', { year: 'numeric', month: 'long', day: 'numeric' });
 
   return (
-    <div className="min-h-screen bg-dark-900">
+    <div className="bg-dark-900">
       <SEO title={config.seoTitle} description={config.seoDesc} keywords={config.seoKeywords} canonical={`/${lang}/news/category/${category}`} />
       <SEOBreadcrumb items={[{ name: 'Home', url: '/' }, { name: 'News', url: `/${lang}/news` }, { name: category || 'News', url: `/${lang}/news/category/${category}` }]} />
-      <div className="bg-gradient-to-r from-blue-600 to-purple-600 text-white py-12">
+      <div className="bg-gradient-to-r from-blue-600 to-purple-600 text-white py-2">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <Button type="text" className="text-white/80 hover:text-white mb-4 !p-0" icon={<ArrowLeftOutlined />} onClick={() => navigate(`/${lang}/news`)}>返回新闻中心</Button>
           <div className="flex items-center gap-3 mb-4"><span className="text-3xl">{config.icon}</span><h1 className="text-4xl font-bold text-white">{config.title}</h1></div>
@@ -130,7 +130,7 @@ const CategoryNewsPage = () => {
           </div></div>
         </div>
       </div>
-      <div className="py-8">
+      <div className="py-2">
         {isError && <Alert title="错误" description={queryError?.message || '获取新闻数据失败'} type="error" showIcon closable className="mb-6" />}
         {isLoading ? <div className="flex justify-center items-center h-64"><Spin size="large" /></div> :
           paginatedNews.length === 0 ? <div className="text-center py-16"><Title level={3} className="text-gray-400 mb-4">未找到相关新闻</Title><Paragraph className="text-gray-400 mb-8">尝试调整搜索关键词或选择其他分类</Paragraph><Button type="primary" size="large" onClick={() => { setSearchText(''); setSelectedCategory('all'); setCurrentPage(1); }}>重置筛选条件</Button></div> :

@@ -135,7 +135,7 @@ const iconBoxStyle: React.CSSProperties = {
   };
 
   return (
-    <div className="max-w-4xl mx-auto px-4 py-8">
+    <div className="max-w-4xl mx-auto px-4 py-2">
       <SEO
         title="通知中心 | GameHub"
         description="查看和管理您的 GameHub 通知"

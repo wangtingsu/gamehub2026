@@ -130,7 +130,7 @@ const HomePage = () => {
       >
         <section className="mb-12">
           <div className="bg-gradient-to-r from-purple-900/30 to-blue-900/30 rounded-2xl border border-dark-700">
-            <div className="py-10 px-6 md:px-12">
+            <div className="py-2 px-6 md:px-12">
               <Row align="middle" gutter={[48, 24]}>
                 <Col xs={24} lg={14}>
                   <Title level={2} className="!mb-4 !text-white">

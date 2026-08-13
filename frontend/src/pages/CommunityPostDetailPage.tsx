@@ -74,10 +74,10 @@ const CommunityPostDetailPage = () => {
     </div>
   );
 
-  if (isLoading) return <div className="min-h-screen bg-dark-900"><div className="py-6"><Sidebar><Skeleton active avatar paragraph={{ rows: 8 }} /></Sidebar></div></div>;
+  if (isLoading) return <div className="bg-dark-900"><div className="py-6"><Sidebar><Skeleton active avatar paragraph={{ rows: 8 }} /></Sidebar></div></div>;
 
   if (error || !post) return (
-    <div className="min-h-screen bg-dark-900"><div className="py-6"><Sidebar>
+    <div className="bg-dark-900"><div className="py-6"><Sidebar>
       <Alert message="加载失败" description={error instanceof Error ? error.message : '帖子不存在'} type="error" showIcon
         action={<Button type="primary" onClick={() => navigate(-1)}>返回</Button>} />
     </Sidebar></div></div>
@@ -92,7 +92,7 @@ const CommunityPostDetailPage = () => {
         { name: '社区', url: `/${currentLang}/community` },
         { name: post.title, url: `/${currentLang}/community/posts/${post.id}` },
       ]} />
-      <div className="min-h-screen bg-dark-900">
+      <div className="bg-dark-900">
         <div className="py-6">
           <Button type="text" icon={<ArrowLeftOutlined />} className="!text-gray-400 hover:!text-white mb-6" onClick={() => navigate(-1)}>返回</Button>
           <Sidebar>

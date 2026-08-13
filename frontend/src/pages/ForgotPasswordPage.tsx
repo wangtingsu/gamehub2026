@@ -43,7 +43,7 @@ const ForgotPasswordPage = () => {
   // 邮件已发送页面
   if (emailSent) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-dark-900 p-4">
+      <div className="flex items-center justify-center bg-dark-900 p-4">
         <div className="w-full max-w-md">
           <Result
             icon={<CheckCircleOutlined className="text-green-500" />}
@@ -77,7 +77,7 @@ const ForgotPasswordPage = () => {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-dark-900 p-4">
+    <div className="flex items-center justify-center bg-dark-900 p-4">
       <SEO
         title={`${t('auth.forgotPasswordPage.title')} | GameHub`}
         description={t('auth.forgotPasswordPage.subtitle')}
