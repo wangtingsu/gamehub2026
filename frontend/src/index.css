@@ -354,6 +354,9 @@ img {
  */
 .main-layout-inner {
   margin-left: 338px;
+  min-height: 100vh; /* 内容区至少占满视口高度，页脚贴底，消除底部留白 */
+  display: flex;
+  flex-direction: column;
 }
 .sub-nav-panel {
   left: 338px;

@@ -330,7 +330,7 @@ const Layout = () => {
 
           {/* Main Content + Footer — 点击内容区关闭子面板 */}
           <AntLayout className={`bg-dark-900 main-layout-inner${navMode !== 'main' ? ' has-subnav' : ''}`} onClick={() => { setNavMode('main'); }}>
-            <Content className="bg-dark-900 text-gray-100 main-content" style={{ flex: '0 0 auto' }}>
+            <Content className="bg-dark-900 text-gray-100 main-content" style={{ flex: '1 1 auto' }}>
               <div className="px-8 pb-2">
                 <Outlet />
               </div>
