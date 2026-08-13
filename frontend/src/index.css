@@ -432,9 +432,15 @@ img {
 /* ========== 触摸交互优化 ========== */
 
 /* 消除移动端 300ms 点击延迟 */
-html, body {
+/* overflow-x 只加在 html 上：加在 body 会让 overflow-y 隐式变为 auto，
+   使 body 变成第二个滚动容器，产生双滚动条 + 底部空白 */
+html {
   touch-action: manipulation;
   overflow-x: hidden;
+  -webkit-overflow-scrolling: touch;
+}
+body {
+  touch-action: manipulation;
   -webkit-overflow-scrolling: touch;
 }
 
