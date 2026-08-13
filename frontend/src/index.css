@@ -353,28 +353,28 @@ img {
  * 内容区用 margin-left 偏移到侧边栏右侧；子导航打开时再叠加其宽度。
  */
 .main-layout-inner {
-  margin-left: 338px;
-  min-height: 100vh; /* 内容区至少占满视口高度，页脚贴底，消除底部留白 */
-  display: flex;
-  flex-direction: column;
+  margin-left: 338px !important;
+  min-height: 100vh !important; /* 内容区至少占满视口高度，页脚贴底，消除底部留白（!important 覆盖 antd 的 min-height:0） */
+  display: flex !important;
+  flex-direction: column !important;
 }
 .sub-nav-panel {
   left: 338px;
 }
 @media (max-width: 1200px) {
   .main-layout-inner {
-    margin-left: 286px;
+    margin-left: 286px !important;
   }
   .sub-nav-panel {
     left: 286px;
   }
 }
 .main-layout-inner.has-subnav {
-  margin-left: 624px; /* 338 + 286 */
+  margin-left: 624px !important; /* 338 + 286 */
 }
 @media (max-width: 1200px) {
   .main-layout-inner.has-subnav {
-    margin-left: 572px; /* 286 + 286 */
+    margin-left: 572px !important; /* 286 + 286 */
   }
 }
 
