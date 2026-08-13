@@ -435,7 +435,6 @@ img {
 html, body {
   touch-action: manipulation;
   overflow-x: hidden;
-  overflow-y: auto;
   -webkit-overflow-scrolling: touch;
 }
 
