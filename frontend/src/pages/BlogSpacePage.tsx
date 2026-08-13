@@ -189,7 +189,7 @@ const BlogSpacePage = () => {
     <div className="bg-dark-900 pb-2">
       <SEO title={`${space?.name || slug} | GameHub 博客空间`} description={space?.description || ''} canonical={`/${currentLang}/blog/space/${slug}`} />
 
-      <div className="py-6">
+      <div className="py-2">
         <Button type="text" className="!text-gray-400 hover:!text-white !pl-0 mb-4" icon={<ArrowLeftOutlined />}
           onClick={() => navigate(`/${currentLang}/blog`)}>返回博客首页</Button>
 
@@ -220,7 +220,7 @@ const BlogSpacePage = () => {
         )}
 
         {/* 文章内容 + 相关空间（等高） */}
-        <div className="flex flex-col lg:flex-row gap-6 mb-8 lg:items-start">
+        <div className="flex flex-col lg:flex-row gap-6 mb-4 lg:items-start">
           {/* 左：完整文章内容 */}
           <div ref={leftRef} className="lg:w-5/6 bg-dark-800 border border-dark-700 rounded-xl p-6" id="article-content">
             {loading || articleLoading ? (

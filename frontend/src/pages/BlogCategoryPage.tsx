@@ -63,7 +63,7 @@ const BlogCategoryPage = () => {
     <div className="bg-dark-900">
       <SEO title={`${cat.label} | ${space?.name || slug} | GameHub`} canonical={`/${currentLang}/blog/space/${slug}/category/${postType}`} />
 
-      <div className="py-6">
+      <div className="py-2">
         <Button type="text" className="!text-gray-400 hover:!text-white !pl-0 mb-4" icon={<ArrowLeftOutlined />}
           onClick={() => navigate(`/${currentLang}/blog/space/${slug}`)}>返回 {space?.name || slug}</Button>
 
