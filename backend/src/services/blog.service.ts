@@ -97,7 +97,12 @@ export const getBlogById = async (id: string, type?: string) => {
 };
 
 export const createBlog = async (authorId: string, data: any) => {
-  const slug = data.slug || generateSlug(data.title);
+  let slug = data.slug || generateSlug(data.title);
+  // 确保 slug 唯一，避免同名/同 slug 标题触发 blog_articles_slug_key 唯一约束冲突
+  const existing = await query('SELECT id FROM blog_articles WHERE slug = ?', [slug]);
+  if (existing.length > 0) {
+    slug = `${slug}-${Date.now()}`;
+  }
   const now = new Date().toISOString();
   const r = await execute(
     `INSERT INTO blog_articles (title,slug,content,excerpt,cover_image_url,author_id,space_id,category,tags,is_published,is_pinned,published_at,review_status,created_at,updated_at)
