@@ -238,7 +238,7 @@ const Layout = () => {
   };
 
   return (
-    <AntLayout className="min-h-screen bg-dark-900">
+    <AntLayout className="bg-dark-900">
       {/* Layout SEO 基础标签 — 页面专用 SEO 在子组件中覆盖 */}
       <Helmet>
         <html lang={i18n.language} />
