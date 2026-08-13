@@ -348,6 +348,33 @@ img {
   color: var(--c-focus) !important;
 }
 
+/* ========== 固定侧边栏布局（消除底部留白） ==========
+ * 侧边栏/子导航改为 fixed 定位后不再强制页面 100vh 高度，
+ * 内容区用 margin-left 偏移到侧边栏右侧；子导航打开时再叠加其宽度。
+ */
+.main-layout-inner {
+  margin-left: 338px;
+}
+.sub-nav-panel {
+  left: 338px;
+}
+@media (max-width: 1200px) {
+  .main-layout-inner {
+    margin-left: 286px;
+  }
+  .sub-nav-panel {
+    left: 286px;
+  }
+}
+.main-layout-inner.has-subnav {
+  margin-left: 624px; /* 338 + 286 */
+}
+@media (max-width: 1200px) {
+  .main-layout-inner.has-subnav {
+    margin-left: 572px; /* 286 + 286 */
+  }
+}
+
 /* 子导航面板菜单项间距加倍、字号加倍 */
 .sub-nav-panel .sidebar-menu.ant-menu-dark .ant-menu-item {
   margin: 32px 8px !important;

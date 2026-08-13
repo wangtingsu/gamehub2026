@@ -270,7 +270,7 @@ const BlogSpacePage = () => {
             )}
           </div>
           {/* 右：相关空间 */}
-          <BlogSidebar spaces={spaces} currentSlug={slug} lang={currentLang} />
+          <BlogSidebar spaces={relatedSpaces} currentSlug={slug} lang={currentLang} />
         </div>
 
       </div>

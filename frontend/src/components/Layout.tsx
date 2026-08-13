@@ -267,10 +267,12 @@ const Layout = () => {
             className="main-sider"
             style={{
               borderRight: '1px solid rgba(51,65,85,0.5)',
-              position: 'sticky',
+              position: 'fixed',
               top: 0,
+              left: 0,
               height: '100vh',
               overflow: 'hidden',
+              zIndex: 100,
             }}
           >
             <Sidebar
@@ -294,9 +296,10 @@ const Layout = () => {
                 background: 'var(--c-bg)',
                 borderRight: '1px solid var(--c-border)',
                 height: '100vh',
-                position: 'sticky',
+                position: 'fixed',
                 top: 0,
                 overflow: 'hidden',
+                zIndex: 90,
               }}
             >
               <div className="flex items-center h-16 px-4 border-b border-dark-700 gap-3">
@@ -326,7 +329,7 @@ const Layout = () => {
           )}
 
           {/* Main Content + Footer — 点击内容区关闭子面板 */}
-          <AntLayout className="bg-dark-900" onClick={() => { setNavMode('main'); }}>
+          <AntLayout className={`bg-dark-900 main-layout-inner${navMode !== 'main' ? ' has-subnav' : ''}`} onClick={() => { setNavMode('main'); }}>
             <Content className="bg-dark-900 text-gray-100 main-content" style={{ flex: '0 0 auto' }}>
               <div className="px-8 pb-2">
                 <Outlet />
