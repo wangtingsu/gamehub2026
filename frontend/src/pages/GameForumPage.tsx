@@ -93,6 +93,7 @@ const GameForumPage = () => {
 
   const Sidebar = ({ children }: { children: React.ReactNode }) => (
     <div className="flex gap-6">
+      <div className="flex-1 min-w-0">{children}</div>
       <div className="w-64 flex-shrink-0 hidden lg:block">
         <div className="bg-dark-800 border border-dark-700 rounded-xl p-3 sticky top-4">
           <Text className="!text-white !text-sm !font-semibold block mb-3">我的关注</Text>
@@ -128,7 +129,6 @@ const GameForumPage = () => {
           </div>
         </div>
       </div>
-      <div className="flex-1 min-w-0">{children}</div>
     </div>
   );
 
