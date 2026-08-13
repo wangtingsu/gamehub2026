@@ -79,7 +79,7 @@ const Footer = () => {
 
   return (
     <footer className="bg-dark-800 border-t border-dark-700 px-8">
-      <div className="pt-8 pb-4">
+      <div className="pt-6 pb-2">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
           {/* Brand Section */}
           <div>
@@ -158,7 +158,7 @@ const Footer = () => {
         </div>
 
         {/* Bottom Bar — legal + copyright */}
-        <div className="mt-6 pt-4 border-t border-dark-700">
+        <div className="mt-4 pt-2 border-t border-dark-700">
           <div className="flex flex-col md:flex-row justify-between items-center gap-4">
             <div className="flex items-center flex-wrap gap-x-6 gap-y-1 text-sm text-gray-400">
               {footerLinks.legal.map((link) => (
