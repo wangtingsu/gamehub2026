@@ -186,7 +186,7 @@ const BlogSpacePage = () => {
 
   // ====== 渲染 ======
   return (
-    <div className="bg-dark-900 pb-8">
+    <div className="bg-dark-900 pb-2">
       <SEO title={`${space?.name || slug} | GameHub 博客空间`} description={space?.description || ''} canonical={`/${currentLang}/blog/space/${slug}`} />
 
       <div className="py-6">
