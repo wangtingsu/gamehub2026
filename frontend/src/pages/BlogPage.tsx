@@ -66,11 +66,11 @@ const BlogPage = () => {
       <div className="py-2 max-w-[1600px] mx-auto px-2 sm:px-4">
         {/* 标题 */}
         <Title level={1} className="!text-white !text-2xl md:!text-3xl !mb-2">{t('blog.title', 'GameHub Blog – News, Guides & More')}</Title>
-        <Paragraph className="!text-gray-400 !mb-10">游戏攻略、评测、资讯，尽在 GameHub 博客</Paragraph>
+        <Paragraph className="!text-gray-400 !mb-6">游戏攻略、评测、资讯，尽在 GameHub 博客</Paragraph>
 
         {/* ====== Editor's Picks ====== */}
         {mainPick && (
-          <section className="mb-12">
+          <section className="mb-6">
             <Title level={2} className="!text-white !text-xl !mb-6">Editor's Picks</Title>
             <div className="flex flex-col lg:flex-row gap-4">
               {/* 主推荐文章（大卡） */}
@@ -126,7 +126,7 @@ const BlogPage = () => {
 
         {/* ====== 空间文章推荐 ====== */}
         {spaces.map(s => spaceArticles[s.id]?.length > 0 && (
-          <section key={s.id} className="mb-10">
+          <section key={s.id} className="mb-6">
             <div className="flex items-center justify-between mb-4">
               <Title level={3} className="!text-white !text-lg !mb-0">{s.name}</Title>
               <Link to={`/${lang}/blog/space/${s.slug}`} className="text-blue-400 text-sm hover:text-blue-300 flex items-center gap-1">
