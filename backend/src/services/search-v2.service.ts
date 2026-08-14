@@ -78,17 +78,17 @@ function buildAdvancedFilters(filters: {
   const conditions: string[] = [];
   const params: any[] = [];
 
-  // 类型筛选：使用 jsonb_array_elements_text 展开 JSONB 数组匹配
+  // 类型筛选：使用 LIKE 匹配 JSON 数组元素（SQLite 兼容）
   if (filters.genres && filters.genres.length > 0) {
-    const placeholders = filters.genres.map(() => '?').join(',');
-    conditions.push(`EXISTS (SELECT 1 FROM jsonb_array_elements_text(${tableAlias}.genres::jsonb) AS elem WHERE elem IN (${placeholders}))`);
+    const genreConds = filters.genres.map(() => `${tableAlias}.genres LIKE '%"' || ? || '"%'`);
+    conditions.push(`(${genreConds.join(' OR ')})`);
     params.push(...filters.genres);
   }
 
   // 平台筛选（同类型筛选逻辑）
   if (filters.platforms && filters.platforms.length > 0) {
-    const placeholders = filters.platforms.map(() => '?').join(',');
-    conditions.push(`EXISTS (SELECT 1 FROM jsonb_array_elements_text(${tableAlias}.platforms::jsonb) AS elem WHERE elem IN (${placeholders}))`);
+    const platformConds = filters.platforms.map(() => `${tableAlias}.platforms LIKE '%"' || ? || '"%'`);
+    conditions.push(`(${platformConds.join(' OR ')})`);
     params.push(...filters.platforms);
   }
 
@@ -514,7 +514,7 @@ export const logSearchQuery = async (
   try {
     await execute(
       `INSERT INTO search_logs (query, result_count, user_id, ip_address, filters, created_at)
-       VALUES (?, ?, ?, ?, ?, NOW())`,
+       VALUES (?, ?, ?, ?, ?, datetime('now'))`,
       [queryText, resultCount, userId || null, ipAddress || null, filters || null]
     );
   } catch (error) {
@@ -765,7 +765,7 @@ export const getSearchTrends = async (
     const topKeywords = await query(
       `SELECT query, COUNT(*) as count
        FROM search_logs
-       WHERE created_at >= NOW() + ?::INTERVAL
+       WHERE created_at >= datetime('now', ?)
        GROUP BY query
        ORDER BY count DESC
        LIMIT ?`,
@@ -779,7 +779,7 @@ export const getSearchTrends = async (
       const trendData = await query(
         `SELECT date(created_at) as date, COUNT(*) as count
          FROM search_logs
-         WHERE query = ? AND created_at >= NOW() + ?::INTERVAL
+         WHERE query = ? AND created_at >= datetime('now', ?)
          GROUP BY date(created_at)
          ORDER BY date ASC`,
         [row.query, `-${days} days`]

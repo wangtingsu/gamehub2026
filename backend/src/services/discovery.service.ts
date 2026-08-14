@@ -165,7 +165,7 @@ export const getGameTrends = async (
       const trendData = await query(
         `SELECT date(published_at) as date, COUNT(*) as value
          FROM reviews
-         WHERE game_id = ? AND published_at >= NOW() + ?::INTERVAL
+         WHERE game_id = ? AND published_at >= datetime('now', ?)
          GROUP BY date(published_at)
          ORDER BY date ASC`,
         [game.id, `-${days} days`]
@@ -223,7 +223,7 @@ export const getSearchTrends = async (
               COUNT(*) as total_searches,
               COUNT(DISTINCT query) as unique_queries
        FROM search_logs
-       WHERE created_at >= NOW() + ?::INTERVAL
+       WHERE created_at >= datetime('now', ?)
        GROUP BY date(created_at)
        ORDER BY date ASC`,
       [`-${days} days`]
@@ -371,18 +371,18 @@ export const getCommunitySummary = async (): Promise<CommunitySummary> => {
 
     // 今日新增数据
     const [newUsers] = await query(
-      `SELECT COUNT(*) as total FROM users WHERE created_at >= NOW() - INTERVAL '1 day'`, []
+      `SELECT COUNT(*) as total FROM users WHERE created_at >= datetime('now', '-1 day')`, []
     );
     const [newReviews] = await query(
-      `SELECT COUNT(*) as total FROM reviews WHERE published_at >= NOW() - INTERVAL '1 day'`, []
+      `SELECT COUNT(*) as total FROM reviews WHERE published_at >= datetime('now', '-1 day')`, []
     );
     const [newPosts] = await query(
-      `SELECT COUNT(*) as total FROM community_posts WHERE published_at >= NOW() - INTERVAL '1 day'`, []
+      `SELECT COUNT(*) as total FROM community_posts WHERE published_at >= datetime('now', '-1 day')`, []
     );
 
     // 近 7 天活跃用户数（去重登录用户）
     const [activeUsers] = await query(
-      `SELECT COUNT(DISTINCT user_id) as total FROM login_logs WHERE login_time >= NOW() - INTERVAL '7 days'`, []
+      `SELECT COUNT(DISTINCT user_id) as total FROM login_logs WHERE login_time >= datetime('now', '-7 days')`, []
     );
 
     return {

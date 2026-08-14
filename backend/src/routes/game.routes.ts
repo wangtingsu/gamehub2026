@@ -257,7 +257,10 @@ router.get(
     const { id } = req.params;
     const { page = 1, limit = 20 } = req.query;
 
-    const { reviews, total, page: currentPage, limit: currentLimit } = await gameService.getGameReviews(id, {
+    // 支持 slug URL（如 /games/baldurs-gate-3/reviews），先解析为数字 ID
+    const gameId = await gameService.resolveGameId(id);
+
+    const { reviews, total, page: currentPage, limit: currentLimit } = await gameService.getGameReviews(gameId, {
       page: Number(page),
       limit: Number(limit),
     });
@@ -300,9 +303,12 @@ router.get(
     const { id } = req.params;
     const { page = 1, limit = 20 } = req.query;
 
+    // 支持 slug URL（如 /games/baldurs-gate-3/posts），先解析为数字 ID
+    const gameId = await gameService.resolveGameId(id);
+
     const { posts, total, page: currentPage, limit: currentLimit } = await communityService.getCommunityPosts(
       { page: Number(page), limit: Number(limit), sortBy: 'publishedAt', sortOrder: 'desc' },
-      { gameId: id }
+      { gameId }
     );
 
     const totalPages = Math.ceil(total / currentLimit);

@@ -29,24 +29,24 @@ export async function getUserGrowthTrend(
 ): Promise<Array<{ date: string; newUsers: number; cumulative: number }>> {
   // 根据统计周期选择对应的日期格式化模板
   let dateFormat: string;
-  if (period === 'daily') dateFormat = 'YYYY-MM-DD';
-  else if (period === 'weekly') dateFormat = 'YYYY-IW';  // ISO 周格式
-  else dateFormat = 'YYYY-MM';  // 月度格式
+  if (period === 'daily') dateFormat = '%Y-%m-%d';
+  else if (period === 'weekly') dateFormat = '%Y-%W';  // 周格式
+  else dateFormat = '%Y-%m';  // 月度格式
 
   // 查询统计周期内的新增用户分组数据
   const rows = await query(`
-    SELECT TO_CHAR(created_at, '${dateFormat}') as date,
+    SELECT strftime('${dateFormat}', created_at) as date,
            COUNT(*) as newUsers
     FROM users
-    WHERE created_at >= NOW() - INTERVAL '${days} days'
-    GROUP BY TO_CHAR(created_at, '${dateFormat}')
+    WHERE created_at >= datetime('now', '-${days} days')
+    GROUP BY strftime('${dateFormat}', created_at)
     ORDER BY date ASC
   `);
 
   // 查询统计起始时间之前的用户总数，作为累计基数值
   const totalBefore = await query(`
     SELECT COUNT(*) as total FROM users
-    WHERE created_at < NOW() - INTERVAL '${days} days'
+    WHERE created_at < datetime('now', '-${days} days')
   `);
 
   // 遍历每日数据，逐日累加计算累计用户数
@@ -139,40 +139,40 @@ export async function getContentEngagement(
   // 统计文章总浏览量
   const newsResult = await query(`
     SELECT COALESCE(SUM(views), 0) as total FROM news
-    WHERE created_at >= NOW() - INTERVAL '${days} days'
+    WHERE created_at >= datetime('now', '-${days} days')
   `);
 
   // 统计评测总数
   const reviewResult = await query(`
     SELECT COUNT(*) as total FROM reviews
-    WHERE created_at >= NOW() - INTERVAL '${days} days'
+    WHERE created_at >= datetime('now', '-${days} days')
   `);
 
   // 统计帖子总数
   const postResult = await query(`
     SELECT COUNT(*) as total FROM community_posts
-    WHERE created_at >= NOW() - INTERVAL '${days} days'
+    WHERE created_at >= datetime('now', '-${days} days')
   `);
 
   // 统计评论总数
   const commentResult = await query(`
     SELECT COUNT(*) as total FROM comments
-    WHERE created_at >= NOW() - INTERVAL '${days} days'
+    WHERE created_at >= datetime('now', '-${days} days')
   `);
 
   // 使用 UNION ALL 获取每日各类内容的生成数量
   const dailyRows = await query(`
-    SELECT TO_CHAR(created_at, 'YYYY-MM-DD') as date, 'reviews' as type, COUNT(*) as count
-    FROM reviews WHERE created_at >= NOW() - INTERVAL '${days} days'
-    GROUP BY TO_CHAR(created_at, 'YYYY-MM-DD')
+    SELECT strftime('%Y-%m-%d', created_at) as date, 'reviews' as type, COUNT(*) as count
+    FROM reviews WHERE created_at >= datetime('now', '-${days} days')
+    GROUP BY strftime('%Y-%m-%d', created_at)
     UNION ALL
-    SELECT TO_CHAR(created_at, 'YYYY-MM-DD') as date, 'posts' as type, COUNT(*) as count
-    FROM community_posts WHERE created_at >= NOW() - INTERVAL '${days} days'
-    GROUP BY TO_CHAR(created_at, 'YYYY-MM-DD')
+    SELECT strftime('%Y-%m-%d', created_at) as date, 'posts' as type, COUNT(*) as count
+    FROM community_posts WHERE created_at >= datetime('now', '-${days} days')
+    GROUP BY strftime('%Y-%m-%d', created_at)
     UNION ALL
-    SELECT TO_CHAR(created_at, 'YYYY-MM-DD') as date, 'comments' as type, COUNT(*) as count
-    FROM comments WHERE created_at >= NOW() - INTERVAL '${days} days'
-    GROUP BY TO_CHAR(created_at, 'YYYY-MM-DD')
+    SELECT strftime('%Y-%m-%d', created_at) as date, 'comments' as type, COUNT(*) as count
+    FROM comments WHERE created_at >= datetime('now', '-${days} days')
+    GROUP BY strftime('%Y-%m-%d', created_at)
     ORDER BY date ASC
   `);
 
@@ -268,23 +268,23 @@ export async function getActiveUsers(days: number = 30): Promise<{
     SELECT COUNT(*) as totalLogins,
            COUNT(DISTINCT user_id) as activeUsers
     FROM login_logs
-    WHERE login_time >= NOW() - INTERVAL '${days} days'
+    WHERE login_time >= datetime('now', '-${days} days')
   `);
 
   // 查询统计周期内的新增用户数
   const newUsersResult = await query(`
     SELECT COUNT(*) as total FROM users
-    WHERE created_at >= NOW() - INTERVAL '${days} days'
+    WHERE created_at >= datetime('now', '-${days} days')
   `);
 
   // 查询每日登录趋势（含去重活跃用户数）
   const dailyRows = await query(`
-    SELECT TO_CHAR(login_time, 'YYYY-MM-DD') as date,
+    SELECT strftime('%Y-%m-%d', login_time) as date,
            COUNT(*) as logins,
            COUNT(DISTINCT user_id) as activeUsers
     FROM login_logs
-    WHERE login_time >= NOW() - INTERVAL '${days} days'
-    GROUP BY TO_CHAR(login_time, 'YYYY-MM-DD')
+    WHERE login_time >= datetime('now', '-${days} days')
+    GROUP BY strftime('%Y-%m-%d', login_time)
     ORDER BY date ASC
   `);
 
@@ -329,19 +329,19 @@ export async function getDashboardStats(): Promise<any> {
   const commentCount = await query('SELECT COUNT(*) as total FROM comments');
 
   // 今日新增数据
-  const newUsersToday = await query("SELECT COUNT(*) as count FROM users WHERE created_at::date = ?::date", [today]);
-  const newReviewsToday = await query("SELECT COUNT(*) as count FROM reviews WHERE created_at::date = ?::date", [today]);
+  const newUsersToday = await query("SELECT COUNT(*) as count FROM users WHERE date(created_at) = date(?)", [today]);
+  const newReviewsToday = await query("SELECT COUNT(*) as count FROM reviews WHERE date(created_at) = date(?)", [today]);
 
   // 上月同期总量数据（用于计算环比增长率）
-  const prevUserCount = await query("SELECT COUNT(*) as total FROM users WHERE created_at < ?::date", [lastMonthDate]);
-  const prevGameCount = await query("SELECT COUNT(*) as total FROM games WHERE created_at < ?::date", [lastMonthDate]);
-  const prevReviewCount = await query("SELECT COUNT(*) as total FROM reviews WHERE created_at < ?::date", [lastMonthDate]);
+  const prevUserCount = await query("SELECT COUNT(*) as total FROM users WHERE date(created_at) < date(?)", [lastMonthDate]);
+  const prevGameCount = await query("SELECT COUNT(*) as total FROM games WHERE date(created_at) < date(?)", [lastMonthDate]);
+  const prevReviewCount = await query("SELECT COUNT(*) as total FROM reviews WHERE date(created_at) < date(?)", [lastMonthDate]);
 
   // 最近 7 天用户增长趋势
   const weeklyUserTrend = await query(`
-    SELECT TO_CHAR(created_at, 'YYYY-MM-DD') as date, COUNT(*) as count
-    FROM users WHERE created_at >= NOW() - INTERVAL '7 days'
-    GROUP BY TO_CHAR(created_at, 'YYYY-MM-DD') ORDER BY date ASC
+    SELECT strftime('%Y-%m-%d', created_at) as date, COUNT(*) as count
+    FROM users WHERE created_at >= datetime('now', '-7 days')
+    GROUP BY strftime('%Y-%m-%d', created_at) ORDER BY date ASC
   `);
 
   /**
@@ -394,7 +394,7 @@ export async function getDashboardStats(): Promise<any> {
 export async function getAuditLogStats(days: number = 30): Promise<Array<{ action: string; count: number }>> {
   const rows = await query(`
     SELECT action, COUNT(*) as count FROM audit_logs
-    WHERE created_at >= NOW() - INTERVAL '${days} days'
+    WHERE created_at >= datetime('now', '-${days} days')
     GROUP BY action ORDER BY count DESC
   `);
   return rows as any[];

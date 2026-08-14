@@ -381,8 +381,11 @@ class ApiClient {
             const failedUrl = error.config?.url || '';
             const originalRequest = error.config;
 
-            // 管理员API直接跳登录，不刷新
-            if (failedUrl.includes('/admin/')) {
+            // 管理员上下文（URL 含 /admin/、客户端为 admin、或当前在 /admin 页面）直接跳管理登录，不刷新
+            const isAdminContext = failedUrl.includes('/admin/') ||
+              this.config.isAdmin ||
+              (typeof window !== 'undefined' && window.location.pathname.includes('/admin'));
+            if (isAdminContext) {
               localStorage.removeItem('adminToken');
               if (!window.location.pathname.includes('/admin/login')) {
                 window.location.href = '/admin/login';

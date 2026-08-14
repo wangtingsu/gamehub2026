@@ -19,6 +19,17 @@ import {
 import { NotFoundError } from '../middlewares/error.middleware';
 
 /**
+ * 生成文章 slug（满足 blog_articles.slug 唯一约束）
+ * @param title - 标题
+ * @returns 小写连字符 slug
+ */
+const generateSlug = (title: string): string => {
+  let slug = title.toLowerCase().replace(/[^\w\s一-鿿-]/g, '').replace(/\s+/g, '-').replace(/--+/g, '-').trim();
+  if (!slug) slug = `guide-${Date.now()}`;
+  return slug;
+};
+
+/**
  * 从数据库行映射到 Guide 对象
  * 将 snake_case 数据库字段和 JSON 字符串字段转换为 camelCase 的 Guide 类型。
  * @param dbGuide - 数据库查询结果行
@@ -28,14 +39,14 @@ const mapGuideFromDb = (dbGuide: any): Guide => ({
   id: dbGuide.id.toString(),
   title: dbGuide.title,
   content: dbGuide.content,
-  summary: dbGuide.summary || undefined,
+  summary: dbGuide.excerpt || dbGuide.summary || undefined,
   difficulty: dbGuide.difficulty || 'medium',
-  gameId: dbGuide.game_id.toString(),
-  authorId: dbGuide.author_id.toString(),
+  gameId: dbGuide.game_id ? dbGuide.game_id.toString() : undefined,
+  authorId: dbGuide.author_id ? dbGuide.author_id.toString() : undefined,
   coverImageUrl: dbGuide.cover_image_url || undefined,
   tags: typeof dbGuide.tags === 'string' ? JSON.parse(dbGuide.tags) : dbGuide.tags || [],
   steps: typeof dbGuide.steps === 'string' ? JSON.parse(dbGuide.steps) : dbGuide.steps || [],
-  isFeatured: Boolean(dbGuide.is_featured),
+  isFeatured: Boolean(dbGuide.is_pinned ?? dbGuide.is_featured),
   isPublished: Boolean(dbGuide.is_published),
   likes: dbGuide.likes,
   views: dbGuide.views,
@@ -88,10 +99,6 @@ export const getGuides = async (
     queryParams.push(filters.gameId);
   }
 
-  if (filters.difficulty) {
-    conditions.push('g.difficulty = ?');
-    queryParams.push(filters.difficulty);
-  }
 
   if (filters.featuredOnly !== undefined) {
     conditions.push('g.is_pinned = ?');
@@ -170,10 +177,10 @@ export const searchGuides = async (
   let whereClause = '';
   const queryParams: any[] = [];
 
-  const conditions: string[] = ['g.is_published = 1'];
+  const conditions: string[] = ['g.is_published = 1', "g.post_type = 'guide'"];
 
   if (searchQuery) {
-    conditions.push('(g.title LIKE ? OR g.content LIKE ? OR g.summary LIKE ?)');
+    conditions.push('(g.title LIKE ? OR g.content LIKE ? OR g.excerpt LIKE ?)');
     queryParams.push(`%${searchQuery}%`, `%${searchQuery}%`, `%${searchQuery}%`);
   }
 
@@ -182,10 +189,6 @@ export const searchGuides = async (
     queryParams.push(filters.gameId);
   }
 
-  if (filters.difficulty) {
-    conditions.push('g.difficulty = ?');
-    queryParams.push(filters.difficulty);
-  }
 
   // 公开搜索仅显示已审核通过的内容；管理端传入reviewStatus覆盖
   if (filters.reviewStatus === 'all') {
@@ -201,14 +204,14 @@ export const searchGuides = async (
     whereClause = `WHERE ${conditions.join(' AND ')}`;
   }
 
-  const countSql = `SELECT COUNT(*) as total FROM guides g ${whereClause}`;
+  const countSql = `SELECT COUNT(*) as total FROM blog_articles g ${whereClause}`;
   const countResult = await query(countSql, queryParams);
   const total = parseInt(countResult[0]?.total || 0);
 
   const dataSql = `
     SELECT g.*, u.username as author_name, u.display_name as author_display_name, u.avatar_url as author_avatar,
            game.title as game_title, game.slug as game_slug
-    FROM guides g
+    FROM blog_articles g
     LEFT JOIN users u ON g.author_id = u.id
     LEFT JOIN games game ON g.game_id = game.id
     ${whereClause}
@@ -250,10 +253,10 @@ export const getGuideById = async (id: string): Promise<any> => {
   const result = await query(
     `SELECT g.*, u.username as author_name, u.display_name as author_display_name, u.avatar_url as author_avatar,
             game.title as game_title, game.slug as game_slug, game.cover_image_url as game_cover
-     FROM guides g
+     FROM blog_articles g
      LEFT JOIN users u ON g.author_id = u.id
      LEFT JOIN games game ON g.game_id = game.id
-     WHERE g.id = ?`,
+     WHERE g.id = ? AND g.post_type = 'guide'`,
     [id]
   );
 
@@ -304,32 +307,41 @@ export const createGuide = async (authorId: string, guideData: GuideCreateInput)
       throw new NotFoundError(`游戏ID ${guideData.gameId} 不存在`);
     }
 
+    // 生成 slug，确保唯一（blog_articles.slug 有唯一约束）
+    let slug = generateSlug(guideData.title);
+    const slugExists = await query('SELECT id FROM blog_articles WHERE slug = ?', [slug]);
+    if (slugExists.length > 0) {
+      slug = `${slug}-${Date.now()}`;
+    }
+
     const result = await execute(
-      `INSERT INTO guides (
-        title, content, summary, difficulty, game_id, author_id,
-        cover_image_url, tags, steps, estimated_minutes, space_id, is_published, review_status, created_at, updated_at
-      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+      `INSERT INTO blog_articles (
+        title, slug, content, excerpt, cover_image_url, author_id, space_id, category, tags,
+        is_published, is_pinned, published_at, review_status, post_type, game_id, created_at, updated_at
+      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
       [
         guideData.title,
+        slug,
         guideData.content,
-        guideData.summary || null,
-        guideData.difficulty || 'medium',
-        guideData.gameId,
-        authorId,
+        guideData.summary || '',
         guideData.coverImageUrl || null,
+        authorId,
+        (guideData as any).spaceId || 1,
+        '攻略',
         JSON.stringify(guideData.tags || []),
-        JSON.stringify(guideData.steps || []),
-        guideData.estimatedMinutes || null,
-        (guideData as any).spaceId || null,
         0, // is_published = 0，待审核
+        0, // is_pinned = 0
+        null, // published_at（未发布）
         'pending',
+        'guide',
+        guideData.gameId,
         new Date().toISOString(),
         new Date().toISOString(),
       ]
     );
 
     const inserted = await query(
-      'SELECT * FROM guides WHERE id = ?',
+      'SELECT * FROM blog_articles WHERE id = ?',
       [result.lastInsertRowid]
     );
 
@@ -366,13 +378,8 @@ export const updateGuide = async (
   }
 
   if (updateData.summary !== undefined) {
-    updates.push('summary = ?');
+    updates.push('excerpt = ?');
     values.push(updateData.summary);
-  }
-
-  if (updateData.difficulty !== undefined) {
-    updates.push('difficulty = ?');
-    values.push(updateData.difficulty);
   }
 
   if (updateData.coverImageUrl !== undefined) {
@@ -385,23 +392,13 @@ export const updateGuide = async (
     values.push(JSON.stringify(updateData.tags));
   }
 
-  if (updateData.steps !== undefined) {
-    updates.push('steps = ?');
-    values.push(JSON.stringify(updateData.steps));
-  }
-
-  if (updateData.estimatedMinutes !== undefined) {
-    updates.push('estimated_minutes = ?');
-    values.push(updateData.estimatedMinutes);
-  }
-
   if ((updateData as any).spaceId !== undefined) {
     updates.push('space_id = ?');
     values.push((updateData as any).spaceId);
   }
 
   if (updateData.isFeatured !== undefined) {
-    updates.push('is_featured = ?');
+    updates.push('is_pinned = ?');
     values.push(updateData.isFeatured ? 1 : 0);
   }
 
@@ -430,7 +427,7 @@ export const updateGuide = async (
   values.push(id);
 
   const result = await execute(
-    `UPDATE guides SET ${updates.join(', ')} WHERE id = ?`,
+    `UPDATE blog_articles SET ${updates.join(', ')} WHERE id = ? AND post_type = 'guide'`,
     values
   );
 
@@ -450,13 +447,13 @@ export const updateGuide = async (
  * @throws NotFoundError - 攻略不存在时抛出
  */
 export const deleteGuide = async (id: string): Promise<void> => {
-  const rows = await query('SELECT content FROM guides WHERE id = ?', [id]) as any[];
+  const rows = await query("SELECT content FROM blog_articles WHERE id = ? AND post_type = 'guide'", [id]) as any[];
   if (rows.length > 0 && rows[0].content) {
     const { cleanupContentImages } = require('./image-cleanup.service');
     cleanupContentImages(rows[0].content);
   }
   const result = await execute(
-    'DELETE FROM guides WHERE id = ?',
+    "DELETE FROM blog_articles WHERE id = ? AND post_type = 'guide'",
     [id]
   );
 
@@ -476,12 +473,12 @@ export const deleteGuide = async (id: string): Promise<void> => {
  */
 export const likeGuide = async (id: string): Promise<{ likes: number }> => {
   await execute(
-    'UPDATE guides SET likes = likes + 1 WHERE id = ?',
+    "UPDATE blog_articles SET likes = likes + 1 WHERE id = ? AND post_type = 'guide'",
     [id]
   );
 
   const result = await query(
-    'SELECT likes FROM guides WHERE id = ?',
+    "SELECT likes FROM blog_articles WHERE id = ? AND post_type = 'guide'",
     [id]
   );
 
@@ -504,7 +501,7 @@ export const likeGuide = async (id: string): Promise<{ likes: number }> => {
  */
 export const featureGuide = async (id: string, isFeatured: boolean): Promise<Guide> => {
   const result = await execute(
-    'UPDATE guides SET is_featured = ? WHERE id = ?',
+    "UPDATE blog_articles SET is_pinned = ? WHERE id = ? AND post_type = 'guide'",
     [isFeatured ? 1 : 0, id]
   );
 
@@ -526,7 +523,7 @@ export const featureGuide = async (id: string, isFeatured: boolean): Promise<Gui
  */
 export const incrementViewCount = async (id: string): Promise<void> => {
   await execute(
-    'UPDATE guides SET views = views + 1 WHERE id = ?',
+    "UPDATE blog_articles SET views = views + 1 WHERE id = ? AND post_type = 'guide'",
     [id]
   );
 };

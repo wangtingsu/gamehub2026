@@ -1,25 +1,4 @@
 services:
-  # PostgreSQL数据库
-  postgres:
-    image: postgres:16-alpine
-    container_name: gamehub-postgres
-    environment:
-      POSTGRES_USER: ${DB_USER:-gamehub}
-      POSTGRES_PASSWORD: ${DB_PASSWORD:-gamehub_password}
-      POSTGRES_DB: ${DB_NAME:-gamehub}
-    volumes:
-      - postgres_data:/var/lib/postgresql/data
-    ports:
-      - "127.0.0.1:5432:5432"
-    networks:
-      - gamehub-network
-    healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U ${DB_USER:-gamehub}"]
-      interval: 10s
-      timeout: 5s
-      retries: 5
-    restart: unless-stopped
-
   # Redis缓存
   redis:
     image: redis:7-alpine
@@ -46,13 +25,8 @@ services:
     container_name: gamehub-backend
     environment:
       NODE_ENV: production
-      DB_TYPE: postgres
-      DB_HOST: postgres
-      DB_PORT: 5432
-      DB_USER: ${DB_USER:-gamehub}
-      DB_PASSWORD: ${DB_PASSWORD:-gamehub_password}
-      DB_NAME: ${DB_NAME:-gamehub}
-      DB_SSL: "false"
+      DB_TYPE: sqlite
+      DB_PATH: /app/data/gamehub.db
       REDIS_HOST: redis
       REDIS_PORT: 6379
       REDIS_PASSWORD: ${REDIS_PASSWORD:-redis_password}
@@ -100,11 +74,10 @@ services:
       - backend_uploads:/app/uploads
       - backend_backups:/app/backups
       - frontend_dist_data:/app/frontend-dist
+      - sqlite_data:/app/data
     ports:
       - "127.0.0.1:3000:3000"
     depends_on:
-      postgres:
-        condition: service_healthy
       redis:
         condition: service_healthy
     networks:
@@ -126,13 +99,8 @@ services:
     container_name: gamehub-admin-backend
     environment:
       NODE_ENV: production
-      DB_TYPE: postgres
-      DB_HOST: postgres
-      DB_PORT: 5432
-      DB_USER: ${DB_USER:-gamehub}
-      DB_PASSWORD: ${DB_PASSWORD:-gamehub_password}
-      DB_NAME: ${DB_NAME:-gamehub}
-      DB_SSL: "false"
+      DB_TYPE: sqlite
+      DB_PATH: /app/data/gamehub.db
       REDIS_HOST: redis
       REDIS_PORT: 6379
       REDIS_PASSWORD: ${REDIS_PASSWORD:-redis_password}
@@ -178,10 +146,11 @@ services:
     volumes:
       - backend_uploads:/app/uploads
       - backend_backups:/app/backups
+      - sqlite_data:/app/data
     ports:
       - "127.0.0.1:3002:3000"
     depends_on:
-      postgres:
+      backend:
         condition: service_healthy
       redis:
         condition: service_healthy
@@ -250,7 +219,7 @@ networks:
 
 # 数据卷配置
 volumes:
-  postgres_data:
+  sqlite_data:
     driver: local
   redis_data:
     driver: local

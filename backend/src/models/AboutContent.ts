@@ -267,7 +267,7 @@ export class AboutModel {
       if (data.description !== undefined) { fields.push('description = ?'); params.push(data.description); }
       if (data.imageUrl !== undefined) { fields.push('image_url = ?'); params.push(data.imageUrl); }
       if (fields.length === 0) return true;
-      fields.push('updated_at = NOW()');
+      fields.push("updated_at = datetime('now')");
       params.push(key);
       const result = await execute(`UPDATE about_sections SET ${fields.join(', ')} WHERE section_key = ?`, params);
       return result.changes > 0;
@@ -314,7 +314,7 @@ export class AboutModel {
       if (data.title !== undefined) { fields.push('title = ?'); params.push(data.title); }
       if (data.description !== undefined) { fields.push('description = ?'); params.push(data.description); }
       if (fields.length === 0) return true;
-      fields.push('updated_at = NOW()');
+      fields.push("updated_at = datetime('now')");
       params.push(id);
       const result = await execute(`UPDATE about_values SET ${fields.join(', ')} WHERE id = ?`, params);
       return result.changes > 0;
@@ -362,7 +362,7 @@ export class AboutModel {
       if (data.avatarUrl !== undefined) { fields.push('avatar_url = ?'); params.push(data.avatarUrl); }
       if (data.description !== undefined) { fields.push('description = ?'); params.push(data.description); }
       if (fields.length === 0) return true;
-      fields.push('updated_at = NOW()');
+      fields.push("updated_at = datetime('now')");
       params.push(id);
       const result = await execute(`UPDATE about_team_members SET ${fields.join(', ')} WHERE id = ?`, params);
       return result.changes > 0;
@@ -409,7 +409,7 @@ export class AboutModel {
       if (data.title !== undefined) { fields.push('title = ?'); params.push(data.title); }
       if (data.description !== undefined) { fields.push('description = ?'); params.push(data.description); }
       if (fields.length === 0) return true;
-      fields.push('updated_at = NOW()');
+      fields.push("updated_at = datetime('now')");
       params.push(id);
       const result = await execute(`UPDATE about_timeline SET ${fields.join(', ')} WHERE id = ?`, params);
       return result.changes > 0;
@@ -455,7 +455,7 @@ export class AboutModel {
       if (data.label !== undefined) { fields.push('label = ?'); params.push(data.label); }
       if (data.value !== undefined) { fields.push('value = ?'); params.push(data.value); }
       if (fields.length === 0) return true;
-      fields.push('updated_at = NOW()');
+      fields.push("updated_at = datetime('now')");
       params.push(id);
       const result = await execute(`UPDATE about_contacts SET ${fields.join(', ')} WHERE id = ?`, params);
       return result.changes > 0;

@@ -41,6 +41,7 @@ import adminCategoryRoutes from './routes/admin-category.routes';
 import adminTemplateRoutes from './routes/admin-template.routes';
 import adminGuideRoutes from './routes/admin-guide.routes';
 import adminReviewRoutes from './routes/admin-review.routes';
+import adminRecommendRoutes from './routes/admin-recommend.routes';
 
 // 公共数据路由（在管理服务器上受全局 admin 认证保护）
 import gameRoutes from './routes/game.routes';
@@ -108,6 +109,7 @@ app.use(`${config.apiPrefix}/admin`, adminCategoryRoutes);
 app.use(`${config.apiPrefix}/admin`, adminTemplateRoutes);
 app.use(`${config.apiPrefix}/admin`, adminGuideRoutes);
 app.use(`${config.apiPrefix}/admin`, adminReviewRoutes);
+app.use(`${config.apiPrefix}/admin`, adminRecommendRoutes);
 
 // ========== 管理员图片上传（仅需 admin 认证，不走普通用户 auth）==========
 import multer from 'multer';

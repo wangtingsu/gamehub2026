@@ -2,7 +2,7 @@
 set -e
 
 # 修复 volume 挂载目录权限（Docker volume 挂载后可能属于 root）
-for dir in /app/uploads /app/backups; do
+for dir in /app/uploads /app/backups /app/data; do
   if [ -d "$dir" ]; then
     chown -R nodejs:nodejs "$dir" 2>/dev/null || true
   fi

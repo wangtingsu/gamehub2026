@@ -8,7 +8,7 @@ const router = Router();
 // 获取 Banner
 router.get('/banners', asyncHandler(async (req: Request, res: Response) => {
   const { position } = req.query;
-  let sql = 'SELECT * FROM banners WHERE is_active=1';
+  let sql = 'SELECT * FROM banners WHERE is_active=true';
   const params: any[] = [];
   if (position) { sql += ' AND position=?'; params.push(position); }
   sql += ' ORDER BY sort_order ASC LIMIT 10';
@@ -22,7 +22,7 @@ router.get('/featured', asyncHandler(async (req: Request, res: Response) => {
   let sql = 'SELECT * FROM featured_content WHERE 1=1';
   const params: any[] = [];
   if (type) { sql += ' AND feature_type=?'; params.push(type); }
-  sql += ' AND (expires_at IS NULL OR expires_at > datetime("now")) ORDER BY sort_order ASC LIMIT 20';
+  sql += " AND (expires_at IS NULL OR expires_at > datetime('now')) ORDER BY sort_order ASC LIMIT 20";
   const data = await query(sql, params);
   res.json({ success: true, data });
 }));
@@ -35,7 +35,7 @@ router.get('/guess-you-like', optionalAuthenticate, asyncHandler(async (req: Req
   // 有用户时返回个性化推荐，否则返回热门推荐
   if (userId) {
     const history = await query(
-      'SELECT content_type, content_id FROM user_recommendations WHERE user_id=? AND is_clicked=1 ORDER BY created_at DESC LIMIT 10',
+      'SELECT content_type, content_id FROM user_recommendations WHERE user_id=? AND is_clicked=true ORDER BY created_at DESC LIMIT 10',
       [userId]
     );
     if (history.length > 0) {

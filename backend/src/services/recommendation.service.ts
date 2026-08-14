@@ -10,9 +10,6 @@ import logger from '../utils/logger';
 import { query } from '../db';
 import type { RecommendationItem } from '../types/discovery-types';
 import { getWeightedRatingSubquery } from './level.service';
-import config from '../config';
-
-const isPostgres = config.database?.type === 'postgres';
 
 /**
  * 获取个性化推荐（基于用户收藏/游戏库/评测历史）
@@ -88,8 +85,8 @@ export const getPersonalizedRecommendations = async (
 
     // 4. 构建推荐查询：使用 JSONB 数组元素匹配类型和平台
     // 使用 EXISTS 子查询判断游戏是否匹配用户的偏好类型/平台
-    const genreConditions = genres.map(() => `EXISTS (SELECT 1 FROM jsonb_array_elements_text(g.genres::jsonb) AS gen WHERE gen = ?)`);
-    const platformConditions = platforms.map(() => `EXISTS (SELECT 1 FROM jsonb_array_elements_text(g.platforms::jsonb) AS plat WHERE plat = ?)`);
+    const genreConditions = genres.map(() => `g.genres LIKE '%"' || ? || '"%'`);
+    const platformConditions = platforms.map(() => `g.platforms LIKE '%"' || ? || '"%'`);
 
     // 排除用户已拥有或已评测的游戏
     const excludeIds = Array.from(ownedGameIds).filter(Boolean);
@@ -175,8 +172,8 @@ export const getRelatedContent = async (
       if (!genres.length && !platforms.length) return [];
 
       // 同类型加权 +3，同平台加权 +1
-      const genreConds = genres.map(() => `EXISTS (SELECT 1 FROM jsonb_array_elements_text(g.genres::jsonb) AS gen WHERE gen = ?)`);
-      const platformConds = platforms.map(() => `EXISTS (SELECT 1 FROM jsonb_array_elements_text(g.platforms::jsonb) AS plat WHERE plat = ?)`);
+      const genreConds = genres.map(() => `g.genres LIKE '%"' || ? || '"%'`);
+      const platformConds = platforms.map(() => `g.platforms LIKE '%"' || ? || '"%'`);
 
       const scoreGenre = genreConds.length > 0
         ? `(${genreConds.map(c => `CASE WHEN ${c} THEN 3 ELSE 0 END`).join(' + ')})`
@@ -257,9 +254,7 @@ export const getRelatedContent = async (
  * @returns 热门游戏推荐列表
  */
 export const getTrendingContent = async (limit: number = 10): Promise<RecommendationItem[]> => {
-  const newGameBonus = isPostgres
-    ? `CASE WHEN g.created_at > NOW() - INTERVAL '30 days' THEN 50 ELSE 0 END`
-    : `CASE WHEN g.created_at > datetime('now', '-30 days') THEN 50 ELSE 0 END`;
+  const newGameBonus = `CASE WHEN g.created_at > datetime('now', '-30 days') THEN 50 ELSE 0 END`;
 
   try {
     const results = await query(

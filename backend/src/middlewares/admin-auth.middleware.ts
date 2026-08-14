@@ -54,17 +54,19 @@ export const adminAuthenticate = (req: Request, res: Response, next: NextFunctio
 
     return next();
   } catch (error) {
-    if (error instanceof jwt.JsonWebTokenError) {
-      return res.status(401).json({
-        success: false,
-        error: '无效的管理员认证令牌',
-      });
-    }
-
+    // TokenExpiredError 继承自 JsonWebTokenError，必须先判断"过期"，
+    // 否则会被 JsonWebTokenError 分支误报为"无效的管理员认证令牌"。
     if (error instanceof jwt.TokenExpiredError) {
       return res.status(401).json({
         success: false,
         error: '管理员认证令牌已过期，请重新登录',
+      });
+    }
+
+    if (error instanceof jwt.JsonWebTokenError) {
+      return res.status(401).json({
+        success: false,
+        error: '无效的管理员认证令牌',
       });
     }
 

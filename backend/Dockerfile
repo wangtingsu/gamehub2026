@@ -8,6 +8,7 @@ COPY package*.json ./
 RUN npm ci --omit=dev --legacy-peer-deps
 
 COPY dist/ ./dist/
+COPY migrations/ ./migrations/
 COPY .env.example .env
 
 RUN addgroup -g 1001 -S nodejs && \

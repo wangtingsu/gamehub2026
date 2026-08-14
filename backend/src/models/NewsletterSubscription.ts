@@ -197,7 +197,7 @@ export class NewsletterSubscriptionModel extends BaseModel<
         // 如果存在但不活跃，则激活它
         if (!existing.isActive) {
           // 直接使用底层 query 激活，避免 BaseModel.update() 的驼峰->下划线转换问题
-          const sql = `UPDATE ${this.tableName} SET is_active = 1, unsubscribed_at = NULL, updated_at = NOW() WHERE id = $1 AND deleted_at IS NULL`;
+          const sql = `UPDATE ${this.tableName} SET is_active = 1, unsubscribed_at = NULL, updated_at = datetime('now') WHERE id = $1 AND deleted_at IS NULL`;
           await query(sql, [existing.id]);
           const updated = await this.findById(existing.id);
           if (!updated) {
@@ -237,7 +237,7 @@ export class NewsletterSubscriptionModel extends BaseModel<
       }
 
       // 直接使用底层 query 更新，避免 BaseModel.update() 的驼峰->下划线转换问题
-      const sql = `UPDATE ${this.tableName} SET is_active = $1, unsubscribed_at = $2, updated_at = NOW() WHERE id = $3 AND deleted_at IS NULL`;
+      const sql = `UPDATE ${this.tableName} SET is_active = $1, unsubscribed_at = $2, updated_at = datetime('now') WHERE id = $3 AND deleted_at IS NULL`;
       const result = await query(sql, [0, new Date().toISOString(), subscription.id]);
 
       return result && result.length > 0;

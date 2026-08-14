@@ -56,14 +56,24 @@ export const authenticate = async (req: Request, res: Response, next: NextFuncti
         decoded = jwt.verify(token, config.admin.jwtSecret) as any;
         isAdminToken = true;
       } catch (adminJwtError) {
-        // 两种密钥都验证失败
+        // TokenExpiredError 继承自 JsonWebTokenError，必须先判断"过期"，
+        // 否则会被下面的 JsonWebTokenError 判断误报为"无效的认证令牌"。
+        // 管理员 token 已过期：抛给外层 catch 统一返回"认证令牌已过期"
+        if (adminJwtError instanceof jwt.TokenExpiredError) {
+          throw adminJwtError;
+        }
+        // 用户 token 已过期：同样按过期处理
+        if (userJwtError instanceof jwt.TokenExpiredError) {
+          throw userJwtError;
+        }
+        // 两种密钥都验证失败且非过期 → 无效令牌
         if (userJwtError instanceof jwt.JsonWebTokenError) {
           return res.status(401).json({
             success: false,
             error: '无效的认证令牌',
           });
         }
-        // 其他错误（如过期）继续抛出
+        // 其他错误继续抛出
         throw userJwtError;
       }
     }
@@ -130,17 +140,19 @@ export const authenticate = async (req: Request, res: Response, next: NextFuncti
     logger.debug('用户认证成功', { userId: user.id, role: user.role });
     return next();
   } catch (error) {
-    if (error instanceof jwt.JsonWebTokenError) {
-      return res.status(401).json({
-        success: false,
-        error: '无效的认证令牌',
-      });
-    }
-
+    // TokenExpiredError 继承自 JsonWebTokenError，必须先判断"过期"，
+    // 否则会被 JsonWebTokenError 分支误报为"无效的认证令牌"。
     if (error instanceof jwt.TokenExpiredError) {
       return res.status(401).json({
         success: false,
         error: '认证令牌已过期',
+      });
+    }
+
+    if (error instanceof jwt.JsonWebTokenError) {
+      return res.status(401).json({
+        success: false,
+        error: '无效的认证令牌',
       });
     }
 

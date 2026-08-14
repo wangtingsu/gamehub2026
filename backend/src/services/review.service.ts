@@ -22,6 +22,17 @@ import xpService from './xp.service';
 import achievementService from './achievement.service';
 
 /**
+ * 生成文章 slug（满足 blog_articles.slug 唯一约束）
+ * @param title - 标题
+ * @returns 小写连字符 slug
+ */
+const generateSlug = (title: string): string => {
+  let slug = title.toLowerCase().replace(/[^\w\s一-鿿-]/g, '').replace(/\s+/g, '-').replace(/--+/g, '-').trim();
+  if (!slug) slug = `review-${Date.now()}`;
+  return slug;
+};
+
+/**
  * 将数据库行映射为 Review 对象
  *
  * 处理 JSON 字符串字段的解析（如 scores、sections、tags）、
@@ -43,7 +54,7 @@ const mapReviewFromDb = (dbReview: any): Review => ({
   tags: typeof dbReview.tags === 'string' ? JSON.parse(dbReview.tags) : dbReview.tags || [],
   likes: dbReview.likes ? parseInt(dbReview.likes, 10) : 0,
   comments: dbReview.comments ? parseInt(dbReview.comments, 10) : 0,
-  isFeatured: Boolean(dbReview.is_featured),
+  isFeatured: Boolean(dbReview.is_pinned ?? dbReview.is_featured),
   publishedAt: new Date(dbReview.published_at),
   createdAt: new Date(dbReview.created_at),
   updatedAt: new Date(dbReview.updated_at),
@@ -211,10 +222,14 @@ export const searchReviews = async (
     whereClause = `WHERE ${conditions.join(' AND ')}`;
   }
 
+  // 添加 post_type 筛选（从 blog_articles 统一表读）
+  conditions.push("r.post_type = 'review'");
+  whereClause = `WHERE ${conditions.join(' AND ')}`;
+
   // 获取总数
   const countSql = `
     SELECT COUNT(*) as total
-    FROM reviews r
+    FROM blog_articles r
     ${whereClause}
   `;
   const countResult = await query(countSql, queryParams);
@@ -223,7 +238,7 @@ export const searchReviews = async (
   // 获取分页数据
   const dataSql = `
     SELECT r.*, u.username as author_name, u.display_name as author_display_name, g.title as game_title
-    FROM reviews r
+    FROM blog_articles r
     LEFT JOIN users u ON r.author_id = u.id
     LEFT JOIN games g ON r.game_id = g.id
     ${whereClause}
@@ -265,10 +280,10 @@ export const getReviewById = async (id: string): Promise<any> => {
   const result = await query(
     `SELECT r.*, u.username as author_name, u.display_name as author_display_name, u.avatar_url as author_avatar,
             g.title as game_title, g.slug as game_slug, g.cover_image_url as game_cover
-     FROM reviews r
+     FROM blog_articles r
      LEFT JOIN users u ON r.author_id = u.id
      LEFT JOIN games g ON r.game_id = g.id
-     WHERE r.id = ?`,
+     WHERE r.id = ? AND r.post_type = 'review'`,
     [id]
   );
 
@@ -327,7 +342,7 @@ export const createReview = async (authorId: string, reviewData: ReviewCreateInp
 
     // 检查用户是否已为同一游戏写过评测（每人仅限一篇）
     const existingReview = await query(
-      'SELECT id FROM reviews WHERE author_id = ? AND game_id = ?',
+      "SELECT id FROM blog_articles WHERE author_id = ? AND game_id = ? AND post_type = 'review'",
       [authorId, reviewData.gameId]
     );
 
@@ -335,31 +350,43 @@ export const createReview = async (authorId: string, reviewData: ReviewCreateInp
       throw new ConflictError('您已经为这款游戏写过评测');
     }
 
+    // 生成 slug，确保唯一（blog_articles.slug 有唯一约束）
+    let slug = generateSlug(reviewData.title);
+    const slugExists = await query('SELECT id FROM blog_articles WHERE slug = ?', [slug]);
+    if (slugExists.length > 0) {
+      slug = `${slug}-${Date.now()}`;
+    }
+
     // 插入评测记录
     const result = await execute(
-      `INSERT INTO reviews (
-        title, content, rating, scores, template_id, sections, game_id, author_id,
-        tags, space_id, published_at, review_status
-      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+      `INSERT INTO blog_articles (
+        title, slug, content, excerpt, rating, game_id, author_id, category, tags, space_id,
+        is_published, is_pinned, published_at, review_status, post_type, created_at, updated_at
+      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
       [
         reviewData.title,
+        slug,
         reviewData.content,
+        '',
         reviewData.rating,
-        reviewData.scores ? JSON.stringify(reviewData.scores) : null,
-        reviewData.templateId || null,
-        reviewData.sections ? JSON.stringify(reviewData.sections) : null,
         reviewData.gameId,
         authorId,
+        '评测',
         JSON.stringify(reviewData.tags || []),
-        (reviewData as any).spaceId || null,
+        (reviewData as any).spaceId || 1,
+        0, // is_published = 0，待审核
+        0, // is_pinned = 0
         new Date().toISOString(),
         'pending',
+        'review',
+        new Date().toISOString(),
+        new Date().toISOString(),
       ]
     );
 
     // 查询刚插入的完整记录
     const inserted = await query(
-      'SELECT * FROM reviews WHERE id = ?',
+      'SELECT * FROM blog_articles WHERE id = ?',
       [result.lastInsertRowid]
     );
 
@@ -408,21 +435,6 @@ export const updateReview = async (
     values.push(updateData.rating);
   }
 
-  if (updateData.scores !== undefined) {
-    updates.push(`scores = ?`);
-    values.push(JSON.stringify(updateData.scores));
-  }
-
-  if (updateData.templateId !== undefined) {
-    updates.push(`template_id = ?`);
-    values.push(updateData.templateId);
-  }
-
-  if (updateData.sections !== undefined) {
-    updates.push(`sections = ?`);
-    values.push(JSON.stringify(updateData.sections));
-  }
-
   if (updateData.tags !== undefined) {
     updates.push(`tags = ?`);
     values.push(JSON.stringify(updateData.tags));
@@ -455,9 +467,9 @@ export const updateReview = async (
   values.push(id);
 
   const result = await execute(
-    `UPDATE reviews
+    `UPDATE blog_articles
      SET ${updates.join(', ')}
-     WHERE id = ?`,
+     WHERE id = ? AND post_type = 'review'`,
     values
   );
 
@@ -480,13 +492,13 @@ export const updateReview = async (
  * @throws 当评测不存在时抛出 NotFoundError
  */
 export const deleteReview = async (id: string): Promise<void> => {
-  const rows = await query('SELECT content FROM reviews WHERE id = ?', [id]) as any[];
+  const rows = await query("SELECT content FROM blog_articles WHERE id = ? AND post_type = 'review'", [id]) as any[];
   if (rows.length > 0 && rows[0].content) {
     const { cleanupContentImages } = require('./image-cleanup.service');
     cleanupContentImages(rows[0].content);
   }
   const result = await execute(
-    'DELETE FROM reviews WHERE id = ?',
+    "DELETE FROM blog_articles WHERE id = ? AND post_type = 'review'",
     [id]
   );
 
@@ -508,12 +520,12 @@ export const deleteReview = async (id: string): Promise<void> => {
  */
 export const likeReview = async (id: string): Promise<{ likes: number }> => {
   await execute(
-    'UPDATE reviews SET likes = likes + 1 WHERE id = ?',
+    "UPDATE blog_articles SET likes = likes + 1 WHERE id = ? AND post_type = 'review'",
     [id]
   );
 
   const result = await query(
-    'SELECT likes FROM reviews WHERE id = ?',
+    "SELECT likes FROM blog_articles WHERE id = ? AND post_type = 'review'",
     [id]
   );
 
@@ -537,7 +549,7 @@ export const likeReview = async (id: string): Promise<{ likes: number }> => {
  */
 export const featureReview = async (id: string, isFeatured: boolean): Promise<Review> => {
   const result = await execute(
-    'UPDATE reviews SET is_featured = ? WHERE id = ?',
+    "UPDATE blog_articles SET is_pinned = ? WHERE id = ? AND post_type = 'review'",
     [isFeatured ? 1 : 0, id]
   );
 

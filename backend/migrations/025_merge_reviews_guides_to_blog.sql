@@ -46,7 +46,7 @@ SELECT
   g.title,
   'guide-' || g.id || '-' || substr(hex(randomblob(4)),1,8) as slug,
   g.content,
-  g.excerpt,
+  g.summary as excerpt,
   g.cover_image_url,
   g.author_id,
   (SELECT COALESCE(bs.id, (SELECT id FROM blog_spaces WHERE slug='guides' LIMIT 1), 1) FROM blog_spaces bs WHERE bs.slug = 'guides' LIMIT 1) as space_id,

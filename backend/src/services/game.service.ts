@@ -240,6 +240,27 @@ export const getGameBySlug = async (slug: string): Promise<Game> => {
 };
 
 /**
+ * 将游戏引用（数字 ID 或 slug）解析为数字 ID
+ * 用于 /games/:id/reviews、/games/:id/posts 等子路由，
+ * 支持 SEO 友好的 slug URL（如 /games/baldurs-gate-3/reviews）。
+ * @param ref - 游戏数字 ID 或 slug
+ * @returns 数字 ID 字符串
+ * @throws NotFoundError - 对应的游戏不存在时抛出
+ */
+export const resolveGameId = async (ref: string): Promise<string> => {
+  // 数字 ID 直接返回
+  if (/^\d+$/.test(ref)) {
+    return ref;
+  }
+  // 否则按 slug 查找真实 ID
+  const rows = await query('SELECT id FROM games WHERE slug = ?', [ref]);
+  if (rows.length === 0) {
+    throw new NotFoundError(`游戏 ${ref} 不存在`);
+  }
+  return String(rows[0].id);
+};
+
+/**
  * 创建游戏（管理员操作）
  * 在事务中生成 slug，检查唯一性后插入新游戏记录。
  * @param gameData - 游戏创建数据（标题、描述、类型、平台、价格等）
@@ -550,6 +571,7 @@ export default {
   searchGames,
   getGameById,
   getGameBySlug,
+  resolveGameId,
   createGame,
   updateGame,
   deleteGame,

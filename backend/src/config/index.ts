@@ -58,7 +58,7 @@ const config = {
   // ======================================================================
 
   database: {
-    /** 数据库类型：sqlite / postgres / mysql / mongodb 等 */
+    /** 数据库类型：sqlite（默认，本地与生产统一）/ postgres（可选，未维护） */
     type: process.env.DB_TYPE || 'sqlite',
 
     /** 数据库连接 URL（优先使用，支持 SQLite 和 PostgreSQL） */

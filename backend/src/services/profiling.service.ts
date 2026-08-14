@@ -63,7 +63,7 @@ export async function deleteTag(id: number): Promise<void> {
 /**
  * 为用户分配标签
  *
- * 将指定标签分配给用户，使用 ON CONFLICT DO NOTHING 避免重复分配。
+ * 将指定标签分配给用户，使用 INSERT OR IGNORE 避免重复分配。
  *
  * @param userId - 用户 ID
  * @param tagId - 标签 ID
@@ -71,7 +71,7 @@ export async function deleteTag(id: number): Promise<void> {
  */
 export async function assignTagToUser(userId: string, tagId: number, assignedBy?: string): Promise<void> {
   await execute(
-    'INSERT INTO user_tag_assignments (user_id, tag_id, assigned_by) VALUES (?, ?, ?) ON CONFLICT DO NOTHING',
+    'INSERT OR IGNORE INTO user_tag_assignments (user_id, tag_id, assigned_by) VALUES (?, ?, ?)',
     [userId, tagId, assignedBy || null]
   );
 }
@@ -184,7 +184,7 @@ export async function updateSegment(id: number, data: {
   if (data.isDynamic !== undefined) { sets.push('is_dynamic = ?'); params.push(data.isDynamic); }
 
   if (sets.length > 0) {
-    sets.push("updated_at = NOW()");
+    sets.push("updated_at = datetime('now')");
     params.push(id);
     await execute(`UPDATE user_segments SET ${sets.join(', ')} WHERE id = ?`, params);
   }
@@ -207,7 +207,7 @@ export async function deleteSegment(id: number): Promise<void> {
 /**
  * 向分组添加成员
  *
- * 使用 ON CONFLICT DO NOTHING 避免重复添加。
+ * 使用 INSERT OR IGNORE 避免重复添加。
  *
  * @param segmentId - 分组 ID
  * @param userId - 用户 ID
@@ -215,7 +215,7 @@ export async function deleteSegment(id: number): Promise<void> {
  */
 export async function addMemberToSegment(segmentId: number, userId: string, addedBy?: string): Promise<void> {
   await execute(
-    'INSERT INTO segment_members (segment_id, user_id, added_by) VALUES (?, ?, ?) ON CONFLICT DO NOTHING',
+    'INSERT OR IGNORE INTO segment_members (segment_id, user_id, added_by) VALUES (?, ?, ?)',
     [segmentId, userId, addedBy || null]
   );
 }
@@ -324,11 +324,11 @@ export async function evaluateDynamicSegment(segmentId: number): Promise<{ affec
     }
     // 按最近登录天数筛选（超过指定天数未登录的用户）
     if (criteria.daysSinceLogin) {
-      whereClause += `${whereClause ? ' AND ' : ''} (u.last_login IS NULL OR u.last_login < NOW() - INTERVAL '${criteria.daysSinceLogin} days')`;
+      whereClause += `${whereClause ? ' AND ' : ''} (u.last_login IS NULL OR u.last_login < datetime('now', '-${criteria.daysSinceLogin} days'))`;
     }
     // 按注册天数筛选（指定天数内注册的用户）
     if (criteria.daysSinceRegister) {
-      whereClause += `${whereClause ? ' AND ' : ''} u.created_at >= NOW() - INTERVAL '${criteria.daysSinceRegister} days'`;
+      whereClause += `${whereClause ? ' AND ' : ''} u.created_at >= datetime('now', '-${criteria.daysSinceRegister} days')`;
     }
   } catch {
     throw new Error('无效的筛选条件');
@@ -348,7 +348,7 @@ export async function evaluateDynamicSegment(segmentId: number): Promise<{ affec
   // 逐个插入匹配的用户
   for (const user of matchingUsers as any[]) {
     await execute(
-      'INSERT INTO segment_members (segment_id, user_id) VALUES (?, ?) ON CONFLICT DO NOTHING',
+      'INSERT OR IGNORE INTO segment_members (segment_id, user_id) VALUES (?, ?)',
       [segmentId, user.id]
     );
   }
@@ -411,12 +411,12 @@ export async function getUserBehaviorProfile(userId: string): Promise<BehaviorPr
   // 获取近 30 天登录次数
   const logins30 = await query(`
     SELECT COUNT(*) as count FROM login_logs
-    WHERE user_id = ? AND login_time >= NOW() - INTERVAL '30 days'
+    WHERE user_id = ? AND login_time >= datetime('now', '-30 days')
   `, [userId]);
 
   // 获取活跃时段（登录最集中的小时）
   const peakHourResult = await query(`
-    SELECT EXTRACT(HOUR FROM login_time)::int as hour,
+    SELECT CAST(strftime('%H', login_time) AS INTEGER) as hour,
            COUNT(*) as count
     FROM login_logs WHERE user_id = ?
     GROUP BY hour ORDER BY count DESC LIMIT 1
@@ -479,7 +479,7 @@ export async function getLoginFrequencyDistribution(): Promise<{ high: number; m
       SELECT u.id, COUNT(ll.id) as count
       FROM users u
       LEFT JOIN login_logs ll ON u.id = ll.user_id
-        AND ll.login_time >= NOW() - INTERVAL '30 days'
+        AND ll.login_time >= datetime('now', '-30 days')
       GROUP BY u.id
     ) l
   `);
@@ -519,9 +519,9 @@ export async function getLevelDistribution(): Promise<Array<{ level: number; cou
  */
 export async function getPeakLoginHours(days: number = 30): Promise<Array<{ hour: number; count: number }>> {
   const rows = await query(`
-    SELECT EXTRACT(HOUR FROM login_time)::int as hour, COUNT(*) as count
+    SELECT CAST(strftime('%H', login_time) AS INTEGER) as hour, COUNT(*) as count
     FROM login_logs
-    WHERE login_time >= NOW() - INTERVAL '${days} days'
+    WHERE login_time >= datetime('now', '-${days} days')
     GROUP BY hour ORDER BY hour ASC
   `);
   return rows as any[];

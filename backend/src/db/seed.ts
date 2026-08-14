@@ -19,7 +19,7 @@
  */
 
 import bcrypt from 'bcryptjs';
-import { connectDatabase, query, execute, runMigrations } from './index';
+import { connectDatabase, execute, runMigrations } from './index';
 import config from '../config';
 import logger from '../utils/logger';
 
@@ -121,12 +121,11 @@ const seedUsers = async (): Promise<Record<string, number>> => {
   for (const user of users) {
     const passwordHash = await hashPassword(user.password);
 
-    const result = await query(
+    const result = await execute(
       `INSERT INTO users (
         username, email, password_hash, display_name,
         role, email_verified, is_active, bio
-      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?)
-      RETURNING id`,
+      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
       [
         user.username,
         user.email,
@@ -139,8 +138,8 @@ const seedUsers = async (): Promise<Record<string, number>> => {
       ]
     );
 
-    userIds[user.username] = result[0].id;
-    logger.debug(`用户创建成功: ${user.username} (ID: ${result[0].id})`);
+    userIds[user.username] = result.lastInsertRowid;
+    logger.debug(`用户创建成功: ${user.username} (ID: ${result.lastInsertRowid})`);
   }
 
   logger.info(`用户数据插入完成，共 ${users.length} 个用户`);
@@ -280,13 +279,12 @@ const seedGames = async (): Promise<Record<string, number>> => {
   const gameIds: Record<string, number> = {};
 
   for (const game of games) {
-    const result = await query(
+    const result = await execute(
       `INSERT INTO games (
         title, slug, description, release_date, developer, publisher,
         genres, platforms, rating, price, discount, cover_image_url,
         screenshots, steam_app_id, rawg_id, is_featured, display_zone
-      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-      RETURNING id`,
+      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
       [
         game.title,
         game.slug,
@@ -308,8 +306,8 @@ const seedGames = async (): Promise<Record<string, number>> => {
       ]
     );
 
-    gameIds[game.slug] = result[0].id;
-    logger.debug(`游戏创建成功: ${game.title} (ID: ${result[0].id})`);
+    gameIds[game.slug] = result.lastInsertRowid;
+    logger.debug(`游戏创建成功: ${game.title} (ID: ${result.lastInsertRowid})`);
   }
 
   logger.info(`游戏数据插入完成，共 ${games.length} 个游戏`);
@@ -528,9 +526,8 @@ const seedEmailTemplates = async (): Promise<void> => {
 
   for (const template of templates) {
     await execute(
-      `INSERT INTO email_templates (name, description, template_type, subject, body, variables, is_active, version_string, created_at, updated_at)
-       VALUES (?, ?, ?, ?, ?, ?, 1, '1.0.0', NOW(), NOW())
-       ON CONFLICT(name) DO NOTHING`,
+      `INSERT OR IGNORE INTO email_templates (name, description, template_type, subject, body, variables, is_active, version_string, created_at, updated_at)
+       VALUES (?, ?, ?, ?, ?, ?, 1, '1.0.0', datetime('now'), datetime('now'))`,
       [
         template.name,
         template.description,
@@ -673,11 +670,11 @@ const seedNews = async (userIds: Record<string, number>): Promise<void> => {
 
   for (const news of newsList) {
     const authorId = userIds['admin'];
-    const result = await query(
-      'INSERT INTO news (title, slug, content, excerpt, author_id, category, tags, is_published, published_at, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, NOW(), NOW()) RETURNING id',
+    const result = await execute(
+      'INSERT INTO news (title, slug, content, excerpt, author_id, category, tags, is_published, published_at, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, datetime(\'now\'), datetime(\'now\'))',
       [news.title, news.slug, news.content, news.excerpt, authorId, news.category, JSON.stringify(news.tags), news.isPublished ? 1 : 0, news.publishedAt]
     );
-    logger.debug('新闻创建成功: ' + news.title + ' (ID: ' + result[0].id + ')');
+    logger.debug('新闻创建成功: ' + news.title + ' (ID: ' + result.lastInsertRowid + ')');
   }
 
   logger.info('新闻数据插入完成，共 ' + newsList.length + ' 条新闻');
