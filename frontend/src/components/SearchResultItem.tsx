@@ -1,5 +1,5 @@
 import { Card, Tag, Rate, Avatar } from 'antd';
-import { Link } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import {
   VideoCameraOutlined,
   FileTextOutlined,
@@ -42,6 +42,9 @@ interface SearchResultItemProps {
  * @returns 根据搜索结果类型返回对应的卡片 JSX 元素
  */
 const SearchResultItem: React.FC<SearchResultItemProps> = ({ item, query }) => {
+  const { lang } = useParams<{ lang: string }>();
+  const langPrefix = lang || 'cn';
+
   /**
    * 根据搜索结果类型获取对应的图标、颜色主题、中文标签和路由路径
    *
@@ -61,35 +64,35 @@ const SearchResultItem: React.FC<SearchResultItemProps> = ({ item, query }) => {
           icon: <VideoCameraOutlined style={{ fontSize: '20px' }} />,
           color: 'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-300',
           label: '游戏',
-          route: `/games/${item.id}`,
+          route: `/${langPrefix}/games/${item.id}`,
         };
       case 'review':
         return {
           icon: <FileTextOutlined style={{ fontSize: '20px' }} />,
           color: 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300',
           label: '评测',
-          route: `/reviews/${item.id}`,
+          route: `/${langPrefix}/reviews/${item.id}`,
         };
       case 'news':
         return {
           icon: <ReadOutlined style={{ fontSize: '20px' }} />,
           color: 'bg-purple-100 text-purple-800 dark:bg-purple-900 dark:text-purple-300',
           label: '新闻',
-          route: `/news/${item.id}`,
+          route: `/${langPrefix}/news/${item.id}`,
         };
       case 'community_post':
         return {
           icon: <MessageOutlined style={{ fontSize: '20px' }} />,
           color: 'bg-orange-100 text-orange-800 dark:bg-orange-900 dark:text-orange-300',
           label: '帖子',
-          route: `/community/${item.id}`,
+          route: `/${langPrefix}/community/${item.id}`,
         };
       case 'user':
         return {
           icon: <UserOutlined style={{ fontSize: '20px' }} />,
           color: 'bg-pink-100 text-pink-800 dark:bg-pink-900 dark:text-pink-300',
           label: '用户',
-          route: `/users/${item.id}`,
+          route: `/${langPrefix}/users/${item.id}`,
         };
       default:
         return {

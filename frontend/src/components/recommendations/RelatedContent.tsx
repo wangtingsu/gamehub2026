@@ -54,11 +54,12 @@ const RelatedContent: React.FC<RelatedContentProps> = ({
     );
   }
 
-  /** 根据内容类型导航到对应详情页 */
+  /** 根据内容类型导航到对应详情页（保留语言前缀，避免丢失 /cn/ 等） */
   const handleClick = (item: RecommendationItem) => {
-    if (item.type === 'game') navigate(`/games/${item.id}`);
-    else if (item.type === 'review') navigate(`/reviews/${item.id}`);
-    else if (item.type === 'news') navigate(`/news/${item.id}`);
+    const lang = window.location.pathname.split('/')[1] || 'cn';
+    if (item.type === 'game') navigate(`/${lang}/games/${item.id}`);
+    else if (item.type === 'review') navigate(`/${lang}/reviews/${item.id}`);
+    else if (item.type === 'news') navigate(`/${lang}/news/${item.id}`);
   };
 
   return (

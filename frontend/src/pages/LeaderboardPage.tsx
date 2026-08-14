@@ -49,7 +49,7 @@ const LeaderboardPage: React.FC = () => {
       dataIndex: 'title',
       key: 'title',
       render: (title: string, record: LeaderboardEntry) => (
-        <div className="flex items-center space-x-3 cursor-pointer" onClick={() => navigate(`/games/${record.id}`)}>
+        <div className="flex items-center space-x-3 cursor-pointer" onClick={() => navigate(`/${window.location.pathname.split('/')[1] || 'cn'}/games/${record.id}`)}>
           <div className="w-10 h-10 rounded bg-gradient-to-br from-gray-600 to-gray-700 flex-shrink-0 overflow-hidden">
             {record.coverImageUrl ? (
               <img src={record.coverImageUrl} alt={record.title} className="w-full h-full object-cover" loading="lazy" onError={(e) => { const el = e.target as HTMLImageElement; el.onerror = null; el.style.display = 'none'; el.parentElement!.classList.add('flex', 'items-center', 'justify-center'); el.parentElement!.textContent = '🎮'; }} />
