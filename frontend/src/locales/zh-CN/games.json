@@ -57,5 +57,16 @@
     "topUp": "直充游戏",
     "indie": "独立游戏",
     "recommended": "推荐游戏"
+  },
+  "freeGames": {
+    "title": "免费游戏",
+    "subtitle": "精选免费好游，无需付费即可畅玩。从MOBA到FPS，从卡牌到开放世界，总有一款适合你。",
+    "searchPlaceholder": "搜索免费游戏...",
+    "count": "{{count}} 款免费游戏等你来玩",
+    "featured": "热门推荐",
+    "badge": "免费",
+    "allGames": "全部免费游戏",
+    "seoTitle": "免费游戏 | GameHub",
+    "seoDescription": "精选免费游戏推荐"
   }
 }

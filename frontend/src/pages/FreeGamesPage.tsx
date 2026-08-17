@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { Card, Row, Col, Tag, Typography, Rate, Spin, Input } from 'antd';
 import { ThunderboltOutlined, RightOutlined, FireOutlined, CrownOutlined, SearchOutlined } from '@ant-design/icons';
 import { useGames } from '../api/hooks';
+import { useTranslation } from 'react-i18next';
 import SEO from '../components/SEO';
 
 const { Title, Paragraph, Text } = Typography;
@@ -11,6 +12,7 @@ export default function FreeGamesPage() {
   const navigate = useNavigate();
   const [search, setSearch] = useState('');
   const { data: games = [], isLoading } = useGames({ limit: 50 });
+  const { t } = useTranslation('games');
   const lang = window.location.pathname.split('/')[1] || 'cn';
   const freeGames = useMemo(() => {
     let list = (games || []).filter((g: any) => g.displayZone === 'free' || g.price === 0);
@@ -20,20 +22,20 @@ export default function FreeGamesPage() {
 
   return (
     <div className="bg-dark-900">
-      <SEO title="免费游戏 | GameHub" description="精选免费游戏推荐" />
+      <SEO title={t('freeGames.seoTitle')} description={t('freeGames.seoDescription')} />
 
       {/* Hero Banner */}
       <div className="bg-gradient-to-br from-emerald-800 via-teal-900 to-cyan-900 py-16">
         <div className="max-w-7xl mx-auto px-4 text-center">
           <ThunderboltOutlined className="text-6xl text-emerald-400 mb-4" />
-          <Title level={1} className="!text-white !mb-3 !text-4xl">免费游戏</Title>
+          <Title level={1} className="!text-white !mb-3 !text-4xl">{t('freeGames.title')}</Title>
           <Paragraph className="!text-emerald-200 !text-lg !mb-6 max-w-2xl mx-auto">
-            精选免费好游，无需付费即可畅玩。从MOBA到FPS，从卡牌到开放世界，总有一款适合你。
+            {t('freeGames.subtitle')}
           </Paragraph>
-          <Input size="large" placeholder="搜索免费游戏..." prefix={<SearchOutlined />}
+          <Input size="large" placeholder={t('freeGames.searchPlaceholder')} prefix={<SearchOutlined />}
             value={search} onChange={e => setSearch(e.target.value)} allowClear
             className="max-w-md mx-auto !bg-white/10 !border-emerald-400/30 !text-white placeholder:!text-emerald-300" />
-          <Text className="!text-emerald-300 block mt-3">{freeGames.length} 款免费游戏等你来玩</Text>
+          <Text className="!text-emerald-300 block mt-3">{t('freeGames.count', { count: freeGames.length })}</Text>
         </div>
       </div>
 
@@ -45,7 +47,7 @@ export default function FreeGamesPage() {
               <section className="mb-14">
                 <div className="flex items-center justify-between mb-6">
                   <Title level={2} className="!text-white !mb-0 !text-2xl">
-                    <CrownOutlined className="mr-2 text-yellow-400" />热门推荐
+                    <CrownOutlined className="mr-2 text-yellow-400" />{t('freeGames.featured')}
                   </Title>
                 </div>
                 <Row gutter={[24, 24]}>
@@ -58,7 +60,7 @@ export default function FreeGamesPage() {
                           <div className="h-48 overflow-hidden relative">
                             <img src={game.imageUrl || game.coverImageUrl} alt={game.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" loading="lazy" />
                             <div className="absolute top-3 left-3 bg-emerald-500 text-white text-xs font-bold px-2 py-1 rounded-full flex items-center gap-1">
-                              <FireOutlined /> 免费
+                              <FireOutlined /> {t('freeGames.badge')}
                             </div>
                             {idx < 3 && <div className="absolute top-3 right-3 bg-yellow-500 text-black text-xs font-bold w-8 h-8 rounded-full flex items-center justify-center">TOP{idx+1}</div>}
                           </div>
@@ -84,7 +86,7 @@ export default function FreeGamesPage() {
 
             {/* All Free Games Grid */}
             <section>
-              <Title level={2} className="!text-white !mb-6 !text-2xl">全部免费游戏</Title>
+              <Title level={2} className="!text-white !mb-6 !text-2xl">{t('freeGames.allGames')}</Title>
               <Row gutter={[16, 16]}>
                 {freeGames.map((game: any) => (
                   <Col key={game.id} xs={12} sm={8} md={6} lg={4}>

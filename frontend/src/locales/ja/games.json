@@ -57,5 +57,16 @@
     "topUp": "チャージゲーム",
     "indie": "インディーゲーム",
     "recommended": "おすすめゲーム"
+  },
+  "freeGames": {
+    "title": "無料ゲーム",
+    "subtitle": "お金を払わずに楽しめる厳選された無料ゲーム。MOBAからFPS、カードゲームからオープンワールドまで、きっと見つかる。",
+    "searchPlaceholder": "無料ゲームを検索...",
+    "count": "{{count}}件の無料ゲームがあなたを待っています",
+    "featured": "おすすめ",
+    "badge": "無料",
+    "allGames": "すべての無料ゲーム",
+    "seoTitle": "無料ゲーム | GameHub",
+    "seoDescription": "厳選された無料ゲームのおすすめ"
   }
 }

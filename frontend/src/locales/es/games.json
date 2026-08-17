@@ -57,5 +57,16 @@
     "topUp": "Juegos de recarga",
     "indie": "Juegos indie",
     "recommended": "Juegos recomendados"
+  },
+  "freeGames": {
+    "title": "Juegos Gratis",
+    "subtitle": "Juegos gratuitos seleccionados que puedes disfrutar sin pagar. De MOBA a FPS, de juegos de cartas a mundos abiertos, hay algo para ti.",
+    "searchPlaceholder": "Buscar juegos gratis...",
+    "count": "{{count}} juegos gratis te esperan",
+    "featured": "Recomendados",
+    "badge": "Gratis",
+    "allGames": "Todos los Juegos Gratis",
+    "seoTitle": "Juegos Gratis | GameHub",
+    "seoDescription": "Recomendaciones de juegos gratuitos seleccionados"
   }
 }

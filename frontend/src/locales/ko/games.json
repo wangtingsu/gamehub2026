@@ -57,5 +57,16 @@
     "topUp": "충전 게임",
     "indie": "인디 게임",
     "recommended": "추천 게임"
+  },
+  "freeGames": {
+    "title": "무료 게임",
+    "subtitle": "결제 없이 즐길 수 있는 엄선된 무료 게임. MOBA부터 FPS, 카드 게임부터 오픈월드까지, 취향에 맞는 게임을 만나보세요.",
+    "searchPlaceholder": "무료 게임 검색...",
+    "count": "{{count}}개의 무료 게임이 기다리고 있어요",
+    "featured": "인기 추천",
+    "badge": "무료",
+    "allGames": "모든 무료 게임",
+    "seoTitle": "무료 게임 | GameHub",
+    "seoDescription": "엄선된 무료 게임 추천"
   }
 }

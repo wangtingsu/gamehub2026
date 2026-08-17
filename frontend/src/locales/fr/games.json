@@ -57,5 +57,16 @@
     "topUp": "Jeux à recharger",
     "indie": "Jeux indépendants",
     "recommended": "Jeux recommandés"
+  },
+  "freeGames": {
+    "title": "Jeux Gratuits",
+    "subtitle": "Des jeux gratuits sélectionnés à apprécier sans payer. Des MOBA aux FPS, des jeux de cartes aux mondes ouverts, il y en a pour tous les goûts.",
+    "searchPlaceholder": "Rechercher des jeux gratuits...",
+    "count": "{{count}} jeux gratuits vous attendent",
+    "featured": "Recommandations",
+    "badge": "Gratuit",
+    "allGames": "Tous les Jeux Gratuits",
+    "seoTitle": "Jeux Gratuits | GameHub",
+    "seoDescription": "Recommandations de jeux gratuits sélectionnés"
   }
 }

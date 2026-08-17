@@ -57,5 +57,16 @@
     "topUp": "Top-Up Games",
     "indie": "Indie Games",
     "recommended": "Recommended Games"
+  },
+  "freeGames": {
+    "title": "Free Games",
+    "subtitle": "Hand-picked free games you can enjoy without paying. From MOBA to FPS, from card games to open worlds, there's something for everyone.",
+    "searchPlaceholder": "Search free games...",
+    "count": "{{count}} free games waiting for you",
+    "featured": "Top Picks",
+    "badge": "Free",
+    "allGames": "All Free Games",
+    "seoTitle": "Free Games | GameHub",
+    "seoDescription": "Hand-picked free game recommendations"
   }
 }
