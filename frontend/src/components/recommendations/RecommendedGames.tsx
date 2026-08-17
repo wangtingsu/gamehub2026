@@ -33,7 +33,7 @@ interface RecommendedGamesProps {
  * - 点击"查看更多"跳转到推荐游戏分类页
  */
 const RecommendedGames: React.FC<RecommendedGamesProps> = ({
-  title = '为你推荐',
+  title = 'Recommended for You',
   recommendations,
   loading,
   variant = 'horizontal',
@@ -84,7 +84,7 @@ const RecommendedGames: React.FC<RecommendedGamesProps> = ({
           className="text-sm text-white hover:text-gray-300 flex items-center cursor-pointer"
           onClick={() => navigate(`/${lang || 'cn'}/games/category/recommended`)}
         >
-          查看更多 <RightOutlined />
+          View More <RightOutlined />
         </a>
       </div>
 

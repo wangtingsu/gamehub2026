@@ -60,7 +60,7 @@ const GameForumPage = () => {
     try {
       await fetch('/api/v1/community/posts', {
         method: 'POST', headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
-        body: JSON.stringify({ title: postTitle, content: postContent, category: '讨论', gameId: Number(id) }),
+        body: JSON.stringify({ title: postTitle, content: postContent, category: 'Discussion', gameId: Number(id) }),
       });
       message.success('发帖成功');
       setPostModal(false); setPostTitle(''); setPostContent('');

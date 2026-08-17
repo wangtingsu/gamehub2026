@@ -54,7 +54,7 @@ const CommentForm: React.FC<CommentFormProps> = ({
   onCancel,
   showCancel = true,
   autoFocus = false,
-  placeholder = '发表你的评论...',
+  placeholder = 'Write your comment...',
 }) => {
   const { user } = useAuth();
   const { lang: paramLang } = useParams<{ lang?: string }>();
@@ -77,12 +77,12 @@ const CommentForm: React.FC<CommentFormProps> = ({
   /** 提交评论：校验内容非空和登录状态，调用创建或更新接口 */
   const handleSubmit = async () => {
     if (!content.trim()) {
-      message.warning('评论内容不能为空');
+      message.warning('Comment cannot be empty');
       return;
     }
 
     if (!user) {
-      message.warning('请先登录');
+      message.warning('Please sign in first');
       return;
     }
 
@@ -95,7 +95,7 @@ const CommentForm: React.FC<CommentFormProps> = ({
           commentId: commentId!,
           content: content.trim(),
         });
-        message.success('评论更新成功');
+        message.success('Comment updated');
       } else {
         // 新建模式：调用创建接口
         await createCommentMutation.mutateAsync({
@@ -104,13 +104,13 @@ const CommentForm: React.FC<CommentFormProps> = ({
           parentCommentId,
           content: content.trim(),
         });
-        message.success('评论发表成功');
+        message.success('Comment posted');
       }
 
       setContent('');
       onSuccess?.();
     } catch (error: any) {
-      message.error(error.message || '操作失败');
+      message.error(error.message || 'Operation failed');
     } finally {
       setSubmitting(false);
     }
@@ -133,9 +133,9 @@ const CommentForm: React.FC<CommentFormProps> = ({
   if (!user && !isEditMode) {
     return (
       <div className="comment-form-login-prompt p-4 rounded-lg text-center" style={{ backgroundColor: 'var(--c-card)' }}>
-        <p className="mb-2" style={{ color: 'var(--c-text2)' }}>登录后即可发表评论</p>
+        <p className="mb-2" style={{ color: 'var(--c-text2)' }}>Sign in to post a comment</p>
         <Button type="primary" onClick={() => navigate(`/${lang}/login`)}>
-          立即登录
+          Sign in
         </Button>
       </div>
     );
@@ -167,13 +167,13 @@ const CommentForm: React.FC<CommentFormProps> = ({
           {/* 底部操作栏：提示文案 + 取消/提交按钮 */}
           <div className="flex justify-between items-center mt-3">
             <div className="text-sm" style={{ color: 'var(--c-text2)' }}>
-              支持 Markdown 语法，Ctrl + Enter 快速提交
+              Supports Markdown. Ctrl + Enter to submit
             </div>
 
             <div className="space-x-2">
               {showCancel && onCancel && (
                 <Button onClick={handleCancel} disabled={submitting}>
-                  取消
+                  Cancel
                 </Button>
               )}
               <Button
@@ -182,7 +182,7 @@ const CommentForm: React.FC<CommentFormProps> = ({
                 loading={submitting}
                 disabled={!content.trim()}
               >
-                {isEditMode ? '更新评论' : '发表评论'}
+                {isEditMode ? 'Update' : 'Post comment'}
               </Button>
             </div>
           </div>

@@ -326,7 +326,7 @@ const Blogs: React.FC = () => {
             style={{ color: '#3b82f6' }}
             onClick={() =>
               window.open(
-                `/${record.category === '博客' ? 'blog' : 'news'}/${record.id}`,
+                `/${(record.postType || 'blog') === 'blog' ? 'blog' : 'news'}/${record.id}`,
                 '_blank'
               )
             }

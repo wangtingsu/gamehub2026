@@ -14,7 +14,7 @@
 import { Request, Response, NextFunction } from 'express'
 import crypto from 'crypto'
 import logger from '../utils/logger'
-import { getPageWithISR, getPageType, getTTLForPageType } from '../services/isr.service'
+import { getPageWithISR } from '../services/isr.service'
 
 /**
  * SSR 中间件处理函数
@@ -81,10 +81,11 @@ export async function ssrMiddleware(req: Request, res: Response, next: NextFunct
     }
 
     // 添加缓存控制头
+    // 注意：SSR HTML 内联引用了带内容哈希的 JS/CSS bundle，每次前端重新构建哈希都会变化。
+    // 若允许浏览器/CDN 直接复用旧 HTML，会引用已被删除的 bundle 导致白屏。
+    // 因此这里使用 no-cache + must-revalidate 强制每次校验（配合 ETag 返回 304，开销极小）。
     if (process.env.NODE_ENV === 'production') {
-      const pageType = getPageType(req.path)
-      const ttlConfig = getTTLForPageType(pageType)
-      headers['Cache-Control'] = `public, max-age=${ttlConfig.fresh}, stale-while-revalidate=${ttlConfig.stale - ttlConfig.fresh}`
+      headers['Cache-Control'] = 'public, no-cache, must-revalidate'
     }
 
     res.status(200).set(headers).end(html)

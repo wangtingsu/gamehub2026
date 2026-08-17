@@ -75,7 +75,7 @@ const CommunityForumHubPage = () => {
               value={searchText}
               onChange={(e) => { setSearchText(e.target.value); setCurrentPage(1); }}
               onSearch={(v) => setSearchText(v)}
-              enterButton="搜索"
+              enterButton="Search"
               allowClear
             />
           </div>

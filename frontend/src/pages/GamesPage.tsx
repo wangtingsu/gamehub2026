@@ -19,33 +19,33 @@ const { Title } = Typography;
 
 // 备用推荐数据（API 不可用时展示，使用真实游戏 slug 以支持点击跳转）
 const fallbackRecommendations = [
-  { id: 'elden-ring', type: 'game' as const, title: '艾尔登法环', rating: 4.8, reason: '热门推荐', score: 95, likes: 1500 },
-  { id: 'cyberpunk-2077', type: 'game' as const, title: '赛博朋克2077', rating: 4.5, reason: '玩家最爱', score: 88, likes: 980 },
-  { id: 'baldurs-gate-3', type: 'game' as const, title: '博德之门3', rating: 4.9, reason: '经典必玩', score: 92, likes: 1300 },
-  { id: 'stardew-valley', type: 'game' as const, title: '星露谷物语', rating: 4.9, reason: '好评如潮', score: 96, likes: 2000 },
-  { id: 'hollow-knight', type: 'game' as const, title: '空洞骑士', rating: 4.7, reason: '魂系经典', score: 85, likes: 1100 },
+  { id: 'elden-ring', type: 'game' as const, title: 'Elden Ring', rating: 4.8, reason: 'Trending', score: 95, likes: 1500 },
+  { id: 'cyberpunk-2077', type: 'game' as const, title: 'Cyberpunk 2077', rating: 4.5, reason: 'Player Favorite', score: 88, likes: 980 },
+  { id: 'baldurs-gate-3', type: 'game' as const, title: "Baldur's Gate 3", rating: 4.9, reason: 'Classic Must-Play', score: 92, likes: 1300 },
+  { id: 'stardew-valley', type: 'game' as const, title: 'Stardew Valley', rating: 4.9, reason: 'Overwhelmingly Positive', score: 96, likes: 2000 },
+  { id: 'hollow-knight', type: 'game' as const, title: 'Hollow Knight', rating: 4.7, reason: 'Souls Classic', score: 85, likes: 1100 },
 ];
 
 const fallbackTopUpGames: Game[] = [
-  { id: 'elden-ring', title: '艾尔登法环', description: '', releaseDate: '', developer: '', publisher: '', genres: ['动作角色扮演', '开放世界'], platforms: ['PC', 'PlayStation'], rating: 4.8, price: 398, discount: 10, imageUrl: 'https://images.unsplash.com/photo-1534423861386-85a16f5d13fd?w=400&auto=format&fit=crop', screenshots: [] },
-  { id: 'cyberpunk-2077', title: '赛博朋克2077', description: '', releaseDate: '', developer: '', publisher: '', genres: ['动作角色扮演', '开放世界'], platforms: ['PC', 'PlayStation'], rating: 4.5, price: 298, discount: 30, imageUrl: 'https://images.unsplash.com/photo-1550745165-9bc0b252726f?w=400&auto=format&fit=crop', screenshots: [] },
-  { id: 'baldurs-gate-3', title: '博德之门3', description: '', releaseDate: '', developer: '', publisher: '', genres: ['角色扮演', '策略'], platforms: ['PC'], rating: 4.9, price: 349, discount: 10, imageUrl: 'https://images.unsplash.com/photo-1518709268805-4e9042af2176?w=400&auto=format&fit=crop', screenshots: [] },
-  { id: 'stardew-valley', title: '星露谷物语', description: '', releaseDate: '', developer: '', publisher: '', genres: ['模拟', '休闲'], platforms: ['PC', 'Nintendo Switch'], rating: 4.8, price: 48, discount: 0, imageUrl: 'https://images.unsplash.com/photo-1550745165-9bc0b252726f?w=400&auto=format&fit=crop', screenshots: [] },
-  { id: 'hollow-knight', title: '空洞骑士', description: '', releaseDate: '', developer: '', publisher: '', genres: ['动作', '冒险'], platforms: ['PC', 'Nintendo Switch'], rating: 4.7, price: 68, discount: 0, imageUrl: 'https://images.unsplash.com/photo-1511512578047-dfb367046420?w=400&auto=format&fit=crop', screenshots: [] },
+  { id: 'elden-ring', title: 'Elden Ring', description: '', releaseDate: '', developer: '', publisher: '', genres: ['Action RPG', 'Open World'], platforms: ['PC', 'PlayStation'], rating: 4.8, price: 398, discount: 10, imageUrl: 'https://images.unsplash.com/photo-1534423861386-85a16f5d13fd?w=400&auto=format&fit=crop', screenshots: [] },
+  { id: 'cyberpunk-2077', title: 'Cyberpunk 2077', description: '', releaseDate: '', developer: '', publisher: '', genres: ['Action RPG', 'Open World'], platforms: ['PC', 'PlayStation'], rating: 4.5, price: 298, discount: 30, imageUrl: 'https://images.unsplash.com/photo-1550745165-9bc0b252726f?w=400&auto=format&fit=crop', screenshots: [] },
+  { id: 'baldurs-gate-3', title: "Baldur's Gate 3", description: '', releaseDate: '', developer: '', publisher: '', genres: ['RPG', 'Strategy'], platforms: ['PC'], rating: 4.9, price: 349, discount: 10, imageUrl: 'https://images.unsplash.com/photo-1518709268805-4e9042af2176?w=400&auto=format&fit=crop', screenshots: [] },
+  { id: 'stardew-valley', title: 'Stardew Valley', description: '', releaseDate: '', developer: '', publisher: '', genres: ['Simulation', 'Casual'], platforms: ['PC', 'Nintendo Switch'], rating: 4.8, price: 48, discount: 0, imageUrl: 'https://images.unsplash.com/photo-1550745165-9bc0b252726f?w=400&auto=format&fit=crop', screenshots: [] },
+  { id: 'hollow-knight', title: 'Hollow Knight', description: '', releaseDate: '', developer: '', publisher: '', genres: ['Action', 'Adventure'], platforms: ['PC', 'Nintendo Switch'], rating: 4.7, price: 68, discount: 0, imageUrl: 'https://images.unsplash.com/photo-1511512578047-dfb367046420?w=400&auto=format&fit=crop', screenshots: [] },
 ];
 
 const fallbackIndieGames: Game[] = [
-  { id: 'hollow-knight', title: '空洞骑士', description: '', releaseDate: '', developer: '', publisher: '', genres: ['动作', '独立', '冒险'], platforms: ['PC', 'Nintendo Switch'], rating: 4.7, price: 68, discount: 0, imageUrl: 'https://images.unsplash.com/photo-1534423861386-85a16f5d13fd?w=400&auto=format&fit=crop', screenshots: [] },
-  { id: 'stardew-valley', title: '星露谷物语', description: '', releaseDate: '', developer: '', publisher: '', genres: ['模拟', '独立'], platforms: ['PC', 'Nintendo Switch'], rating: 4.8, price: 48, discount: 0, imageUrl: 'https://images.unsplash.com/photo-1550745165-9bc0b252726f?w=400&auto=format&fit=crop', screenshots: [] },
+  { id: 'hollow-knight', title: 'Hollow Knight', description: '', releaseDate: '', developer: '', publisher: '', genres: ['Action', 'Indie', 'Adventure'], platforms: ['PC', 'Nintendo Switch'], rating: 4.7, price: 68, discount: 0, imageUrl: 'https://images.unsplash.com/photo-1534423861386-85a16f5d13fd?w=400&auto=format&fit=crop', screenshots: [] },
+  { id: 'stardew-valley', title: 'Stardew Valley', description: '', releaseDate: '', developer: '', publisher: '', genres: ['Simulation', 'Indie'], platforms: ['PC', 'Nintendo Switch'], rating: 4.8, price: 48, discount: 0, imageUrl: 'https://images.unsplash.com/photo-1550745165-9bc0b252726f?w=400&auto=format&fit=crop', screenshots: [] },
 ];
 
 const { Search } = Input;
 const { Option } = Select;
 
 
-// 筛选选项
-const genreOptions = ['全部', 'RPG', '动作', '冒险', '策略', '科幻', '奇幻', '魂类', '魔法'];
-const platformOptions = ['全部', 'PC', 'PS4', 'PS5', 'Xbox One', 'Xbox Series X', 'Nintendo Switch'];
+// Filter options
+const genreOptions = ['All', 'RPG', 'Action', 'Adventure', 'Strategy', 'Simulation', 'FPS', 'Sci-Fi', 'Fantasy', 'Indie'];
+const platformOptions = ['All', 'PC', 'PS4', 'PS5', 'Xbox One', 'Xbox Series X', 'Nintendo Switch'];
 
 const GamesPage = () => {
   const navigate = useNavigate();
@@ -55,8 +55,8 @@ const GamesPage = () => {
   const { t } = useTranslation('games');
   const [searchText, setSearchText] = useState('');
   const debouncedSearchText = useDebounce(searchText, 300);
-  const [selectedGenre, setSelectedGenre] = useState('全部');
-  const [selectedPlatform, setSelectedPlatform] = useState('全部');
+  const [selectedGenre, setSelectedGenre] = useState('All');
+  const [selectedPlatform, setSelectedPlatform] = useState('All');
   const [priceRange, setPriceRange] = useState([0, 500]);
   const [ratingFilter, setRatingFilter] = useState(0);
 
@@ -211,12 +211,12 @@ const GamesPage = () => {
     }
 
     // 类型筛选
-    if (selectedGenre !== '全部') {
+    if (selectedGenre !== 'All') {
       result = result.filter(game => game.genres.includes(selectedGenre));
     }
 
     // 平台筛选
-    if (selectedPlatform !== '全部') {
+    if (selectedPlatform !== 'All') {
       result = result.filter(game => game.platforms.includes(selectedPlatform));
     }
 
@@ -256,8 +256,8 @@ const GamesPage = () => {
 
   const handleResetFilters = () => {
     setSearchText('');
-    setSelectedGenre('全部');
-    setSelectedPlatform('全部');
+    setSelectedGenre('All');
+    setSelectedPlatform('All');
     setPriceRange([0, 500]);
     setRatingFilter(0);
   };
@@ -358,7 +358,7 @@ const GamesPage = () => {
             <Title level={2} className="!mb-0 !text-white">{sectionTitle}</Title>
           </div>
           <Button type="link" className="!text-white" onClick={() => navigate(`/${currentLang}/games/category/${categoryPath}`)}>
-            查看更多 <RightOutlined />
+            View More <RightOutlined />
           </Button>
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-5 gap-5">
@@ -368,8 +368,8 @@ const GamesPage = () => {
     );
   };
 
-  const renderTopUpSection = () => renderHorizontalSection(t('sections.topUp', '直充游戏'), <DollarOutlined className="text-green-500" />, topUpGames, isLoading, 'top-up');
-  const renderIndieSection = () => renderHorizontalSection(t('sections.indie', '独立游戏'), <RocketOutlined className="text-purple-500" />, indieGames, isLoading, 'indie');
+  const renderTopUpSection = () => renderHorizontalSection(t('sections.topUp', 'Top-Up Games'), <DollarOutlined className="text-green-500" />, topUpGames, isLoading, 'top-up');
+  const renderIndieSection = () => renderHorizontalSection(t('sections.indie', 'Indie Games'), <RocketOutlined className="text-purple-500" />, indieGames, isLoading, 'indie');
 
   const siteUrl = import.meta.env.VITE_SITE_URL || 'https://www.gghubs.com';
   const structuredData = [
@@ -392,7 +392,7 @@ const GamesPage = () => {
       <SEO
         title={t('seo.gamesTitle', 'Games | GameHub')}
         description={t('seo.gamesDescription', 'Browse our extensive game library.')}
-        keywords={t('seo.gamesKeywords', '游戏列表, 游戏库, 热门游戏, 最新游戏, 游戏大全, 游戏推荐')}
+        keywords={t('seo.gamesKeywords', 'games, game list, popular games, new games, game library')}
         structuredData={structuredData}
       />
 
@@ -405,12 +405,12 @@ const GamesPage = () => {
           <Row gutter={[16, 16]} align="middle">
             <Col xs={24} md={16}>
               <Search
-                placeholder="搜索游戏..."
+                placeholder="Search games..."
                 size="large"
                 value={searchText}
                 onChange={(e) => setSearchText(e.target.value)}
                 onSearch={handleSearch}
-                enterButton={<Button type="primary" icon={<SearchOutlined />}>搜索</Button>}
+                enterButton={<Button type="primary" icon={<SearchOutlined />}>Search</Button>}
               />
             </Col>
             <Col xs={24} md={8}>
@@ -419,7 +419,7 @@ const GamesPage = () => {
                 style={{ width: '100%' }}
                 value={selectedGenre}
                 onChange={setSelectedGenre}
-                placeholder="选择类型"
+                placeholder="Select genre"
               >
                 {genreOptions.map(genre => (
                   <Option key={genre} value={genre}>{genre}</Option>
@@ -432,7 +432,7 @@ const GamesPage = () => {
       {/* 板块1: 推荐游戏 */}
       <section className="mb-10">
         <RecommendedGames
-          title={t('sections.recommended', '推荐游戏')}
+          title={t('sections.recommended', 'Recommended Games')}
           recommendations={displayRecommendations}
           loading={recLoading && !recError}
           variant="grid"
@@ -454,8 +454,8 @@ const GamesPage = () => {
           className="mb-6"
         >
           <Alert
-            title="错误"
-            description={queryError?.message || '获取游戏数据失败'}
+            title="Error"
+            description={queryError?.message || 'Failed to load game data'}
             type="error"
             showIcon
             closable
@@ -545,7 +545,7 @@ const GamesPage = () => {
             <div className="flex justify-between mb-2">
               <span className="text-gray-300 font-medium">{t('filters.minRating')}</span>
               <span className="text-gray-100 font-semibold">
-                {ratingFilter > 0 ? `${ratingFilter}+ 星` : '不限'}
+                {ratingFilter > 0 ? `${ratingFilter}+ stars` : 'No limit'}
               </span>
             </div>
             <Rate
@@ -561,7 +561,7 @@ const GamesPage = () => {
       {/* 游戏列表 */}
       {isLoading ? (
         <div className="flex justify-center items-center h-64">
-          <Spin size="large" description="加载游戏中..." />
+          <Spin size="large" description="Loading games..." />
         </div>
       ) : filteredGames.length === 0 ? (
         <Empty

@@ -71,8 +71,8 @@ const CommentList: React.FC<CommentListProps> = ({
   if (error) {
     return (
       <Alert
-        message="加载评论失败"
-        description={error instanceof Error ? error.message : '未知错误'}
+        message="Failed to load comments"
+        description={error instanceof Error ? error.message : 'Unknown error'}
         type="error"
         showIcon
         className="mb-4"
@@ -101,7 +101,7 @@ const CommentList: React.FC<CommentListProps> = ({
       <div className="space-y-4">
         {comments.length === 0 ? (
           <Empty
-            description="暂无评论"
+            description="No comments yet"
             image={Empty.PRESENTED_IMAGE_SIMPLE}
           />
         ) : (
@@ -129,7 +129,7 @@ const CommentList: React.FC<CommentListProps> = ({
             onChange={handlePageChange}
             showSizeChanger={false}
             showQuickJumper
-            showTotal={(total) => `共 ${total} 条评论`}
+            showTotal={(total) => `${total} comments`}
           />
         </div>
       )}

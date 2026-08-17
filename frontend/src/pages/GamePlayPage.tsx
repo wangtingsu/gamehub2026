@@ -8,98 +8,98 @@ const { Title, Paragraph, Text } = Typography;
 
 const gameRegistry: Record<string, { name: string; description: string; category: string; icon: string; color: string; instructions: string; players: number; rating: number; component: React.LazyExoticComponent<React.ComponentType<any>> }> = {
   snake: {
-    name: '贪吃蛇', description: '经典贪吃蛇游戏，控制蛇吃食物不断成长', category: '休闲', icon: '🐍', color: 'from-green-500 to-emerald-600',
-    instructions: '方向键控制蛇的移动方向，吃到食物增长身体，撞墙或撞到自己游戏结束', players: 2341, rating: 4.5,
+    name: 'Snake', description: 'Classic Snake — eat food to grow your snake', category: 'Casual', icon: '🐍', color: 'from-green-500 to-emerald-600',
+    instructions: 'Use the arrow keys to steer, eat food to grow, and avoid hitting the walls or yourself', players: 2341, rating: 4.5,
     component: lazy(() => import('../components/games/SnakeGame')),
   },
   tetris: {
-    name: '俄罗斯方块', description: '经典俄罗斯方块，消除方块挑战高分', category: '益智', icon: '🧱', color: 'from-blue-500 to-cyan-600',
-    instructions: '方向键←→移动，↑旋转，↓加速下落，空格直接落底', players: 3892, rating: 4.8,
+    name: 'Tetris', description: 'Classic Tetris — clear lines to chase the high score', category: 'Puzzle', icon: '🧱', color: 'from-blue-500 to-cyan-600',
+    instructions: '← → move, ↑ rotate, ↓ speed up, Space to drop', players: 3892, rating: 4.8,
     component: lazy(() => import('../components/games/TetrisGame')),
   },
   'brick-breaker': {
-    name: '打砖块', description: '控制挡板反弹小球，击碎所有砖块', category: '动作', icon: '🧱', color: 'from-orange-500 to-red-600',
-    instructions: '移动鼠标控制挡板，反弹小球击碎所有砖块即可过关', players: 1876, rating: 4.3,
+    name: 'Brick Breaker', description: 'Control the paddle and bounce the ball to break every brick', category: 'Action', icon: '🧱', color: 'from-orange-500 to-red-600',
+    instructions: 'Move the mouse to control the paddle and break all the bricks to clear the level', players: 1876, rating: 4.3,
     component: lazy(() => import('../components/games/BrickBreakerGame')),
   },
   gobang: {
-    name: '五子棋', description: '与AI对战的五子棋，黑子先行五子连珠', category: '策略', icon: '⚫', color: 'from-purple-500 to-indigo-600',
-    instructions: '点击棋盘交叉点落子，黑子先手，横竖斜任意方向五子连珠即可获胜', players: 4567, rating: 4.7,
+    name: 'Gomoku', description: 'Play Gomoku against the AI — black moves first, connect five', category: 'Strategy', icon: '⚫', color: 'from-purple-500 to-indigo-600',
+    instructions: 'Click an intersection to place your stone; line up five in a row horizontally, vertically, or diagonally to win', players: 4567, rating: 4.7,
     component: lazy(() => import('../components/games/GobangGame')),
   },
   minesweeper: {
-    name: '扫雷', description: '经典扫雷游戏，揭开所有安全格子避开地雷', category: '益智', icon: '💣', color: 'from-gray-600 to-gray-800',
-    instructions: '左键翻开格子，右键标记地雷，数字表示周围地雷数量', players: 2987, rating: 4.4,
+    name: 'Minesweeper', description: 'Classic Minesweeper — reveal safe cells and avoid the mines', category: 'Puzzle', icon: '💣', color: 'from-gray-600 to-gray-800',
+    instructions: 'Left-click to reveal a cell, right-click to flag a mine; the number shows nearby mines', players: 2987, rating: 4.4,
     component: lazy(() => import('../components/games/MinesweeperGame')),
   },
   game2048: {
-    name: '2048', description: '滑动合并数字方块，挑战2048', category: '益智', icon: '🔢', color: 'from-amber-500 to-yellow-600',
-    instructions: '方向键或滑动操作，合并相同数字达到2048', players: 5432, rating: 4.9,
+    name: '2048', description: 'Slide and merge number tiles to reach 2048', category: 'Puzzle', icon: '🔢', color: 'from-amber-500 to-yellow-600',
+    instructions: 'Use arrow keys or swipe to merge matching numbers until you reach 2048', players: 5432, rating: 4.9,
     component: lazy(() => import('../components/games/Game2048')),
   },
   memory: {
-    name: '记忆翻牌', description: '翻牌配对游戏，考验你的记忆力', category: '休闲', icon: '🃏', color: 'from-pink-500 to-rose-600',
-    instructions: '点击卡片翻面，找到相同图案的卡片配对', players: 1567, rating: 4.2,
+    name: 'Memory Match', description: 'A card-matching game that tests your memory', category: 'Casual', icon: '🃏', color: 'from-pink-500 to-rose-600',
+    instructions: 'Flip cards and find matching pairs', players: 1567, rating: 4.2,
     component: lazy(() => import('../components/games/MemoryGame')),
   },
   pong: {
-    name: '乒乓球', description: '经典乒乓球游戏，与AI对战', category: '动作', icon: '🏓', color: 'from-teal-500 to-green-600',
-    instructions: '移动鼠标控制球拍，先得5分获胜', players: 3210, rating: 4.6,
+    name: 'Pong', description: 'Classic Pong against the AI', category: 'Action', icon: '🏓', color: 'from-teal-500 to-green-600',
+    instructions: 'Move the mouse to control the paddle; first to 5 points wins', players: 3210, rating: 4.6,
     component: lazy(() => import('../components/games/PongGame')),
   },
   'tank-battle': {
-    name: '坦克大战', description: '经典坦克对战，消灭敌军保护基地', category: '动作', icon: '🎮', color: 'from-green-700 to-yellow-600',
-    instructions: '方向键/WASD移动，空格/Enter射击，消灭所有敌军坦克，保护己方基地', players: 1876, rating: 4.7,
+    name: 'Tank Battle', description: 'Classic tank battle — destroy the enemy and protect your base', category: 'Action', icon: '🎮', color: 'from-green-700 to-yellow-600',
+    instructions: 'Arrow keys/WASD to move, Space/Enter to shoot; destroy all enemy tanks while protecting your base', players: 1876, rating: 4.7,
     component: lazy(() => import('../components/games/TankBattle')),
   },
   'magic-trampoline': {
-    name: '魔力蹦蹦床', description: '弹跳收集星星，躲避障碍冲向高空', category: '休闲', icon: '☀️', color: 'from-pink-500 to-purple-600',
-    instructions: '方向键左右移动，收集金色星星，躲避红色尖刺，跳得越高分数越高', players: 1234, rating: 4.5,
+    name: 'Magic Trampoline', description: 'Bounce and collect stars while dodging spikes', category: 'Casual', icon: '☀️', color: 'from-pink-500 to-purple-600',
+    instructions: 'Use ← → to move, collect golden stars, dodge red spikes — the higher you bounce, the better the score', players: 1234, rating: 4.5,
     component: lazy(() => import('../components/games/MagicTrampoline')),
   },
   'space-shooter': {
-    name: '飞机大战', description: '驾驶星际战机，消灭外星入侵者', category: '动作', icon: '✈️', color: 'from-cyan-500 to-blue-700',
-    instructions: '方向键移动，自动开火射击敌人，收集道具增强火力，躲避敌机攻击', players: 3456, rating: 4.8,
+    name: 'Space Shooter', description: 'Pilot a starfighter and repel the alien invasion', category: 'Action', icon: '✈️', color: 'from-cyan-500 to-blue-700',
+    instructions: 'Arrow keys to move; you auto-fire, collect power-ups, and dodge enemy attacks', players: 3456, rating: 4.8,
     component: lazy(() => import('../components/games/SpaceShooter')),
   },
   'whack-a-mole': {
-    name: '打地鼠', description: '快速敲击地鼠，考验你的反应速度', category: '休闲', icon: '🔨', color: 'from-yellow-700 to-green-700',
-    instructions: '点击冒出地鼠的洞敲打，30秒内尽可能多地打到地鼠', players: 2345, rating: 4.4,
+    name: 'Whack-a-Mole', description: 'Whack moles as fast as you can to test your reflexes', category: 'Casual', icon: '🔨', color: 'from-yellow-700 to-green-700',
+    instructions: 'Tap the moles when they pop up; hit as many as you can in 30 seconds', players: 2345, rating: 4.4,
     component: lazy(() => import('../components/games/WhackAMole')),
   },
   'match-three': {
-    name: '消消乐', description: '交换宝石三消配对，挑战高分', category: '益智', icon: '💎', color: 'from-red-500 to-orange-500',
-    instructions: '点击选中宝石，再点击相邻宝石交换，三个以上同色相连即可消除得分', players: 4567, rating: 4.9,
+    name: 'Match-3', description: 'Swap gems and match three to chase a high score', category: 'Puzzle', icon: '💎', color: 'from-red-500 to-orange-500',
+    instructions: 'Select a gem, then tap an adjacent gem to swap; match 3+ of the same color to clear and score', players: 4567, rating: 4.9,
     component: lazy(() => import('../components/games/MatchThree')),
   },
   'speed-racer': {
-    name: '极速赛车', description: '在高速公路上躲避车辆，挑战极限速度', category: '动作', icon: '🏎️', color: 'from-red-600 to-orange-600',
-    instructions: '左右方向键切换车道，躲避前方来车，速度越来越快', players: 2876, rating: 4.6,
+    name: 'Speed Racer', description: 'Dodge traffic on the highway and push for top speed', category: 'Action', icon: '🏎️', color: 'from-red-600 to-orange-600',
+    instructions: '← → to switch lanes and dodge oncoming cars; it gets faster and faster', players: 2876, rating: 4.6,
     component: lazy(() => import('../components/games/SpeedRacer')),
   },
   'bubble-shooter': {
-    name: '泡泡龙', description: '瞄准射击彩色泡泡，消除全部过关', category: '益智', icon: '🫧', color: 'from-blue-400 to-purple-500',
-    instructions: '鼠标移动瞄准，点击发射泡泡，三个以上同色相连即可消除', players: 1987, rating: 4.5,
+    name: 'Bubble Shooter', description: 'Aim and shoot bubbles to clear the board', category: 'Puzzle', icon: '🫧', color: 'from-blue-400 to-purple-500',
+    instructions: 'Move the mouse to aim, click to shoot; match 3+ of the same color to pop them', players: 1987, rating: 4.5,
     component: lazy(() => import('../components/games/BubbleShooter')),
   },
   'sliding-puzzle': {
-    name: '数字华容道', description: '滑动数字方块，恢复正确顺序', category: '益智', icon: '🔢', color: 'from-blue-600 to-indigo-600',
-    instructions: '点击方块滑入空格，将数字按1-15顺序排列即可过关', players: 1654, rating: 4.3,
+    name: 'Sliding Puzzle', description: 'Slide the tiles to restore the correct order', category: 'Puzzle', icon: '🔢', color: 'from-blue-600 to-indigo-600',
+    instructions: 'Tap a tile to slide it into the empty space and arrange the numbers 1–15 in order', players: 1654, rating: 4.3,
     component: lazy(() => import('../components/games/SlidingPuzzle')),
   },
   'jump-adventure': {
-    name: '跳一跳', description: '跳跃前进跨越平台，收集金币勇往直前', category: '动作', icon: '🦘', color: 'from-teal-400 to-green-500',
-    instructions: '点击/空格跳跃，按住蓄力跳更远，落在平台上继续前进，掉入缝隙则游戏结束', players: 3120, rating: 4.7,
+    name: 'Jump Adventure', description: 'Leap across platforms and collect coins', category: 'Action', icon: '🦘', color: 'from-teal-400 to-green-500',
+    instructions: 'Click/Space to jump, hold to charge for a longer jump, land on platforms to keep going, and avoid the gaps', players: 3120, rating: 4.7,
     component: lazy(() => import('../components/games/JumpAdventure')),
   },
   'archery-master': {
-    name: '射箭大师', description: '瞄准靶心射箭，挑战精准度极限', category: '休闲', icon: '🏹', color: 'from-amber-600 to-yellow-500',
-    instructions: '按住鼠标蓄力，松开射箭，注意风向影响，瞄准靶心获得高分', players: 1432, rating: 4.4,
+    name: 'Archery Master', description: 'Aim for the bullseye and test your precision', category: 'Casual', icon: '🏹', color: 'from-amber-600 to-yellow-500',
+    instructions: 'Hold to draw, release to shoot; watch the wind and aim for the bullseye', players: 1432, rating: 4.4,
     component: lazy(() => import('../components/games/ArcheryMaster')),
   },
   'guandan': {
-    name: '掼蛋', description: '四人组队升级制扑克游戏，两副牌108张，从2打到A', category: '策略', icon: '🃏', color: 'from-red-600 to-orange-500',
-    instructions: '四人两两组队，按牌型出牌，先出完的队伍获胜。支持：单张、对子、三同张、三带二、顺子、钢板、夯、炸弹、同花顺、火箭', players: 5680, rating: 4.8,
+    name: 'Guandan', description: 'Four-player team card game with two decks (108 cards), from 2 to A', category: 'Strategy', icon: '🃏', color: 'from-red-600 to-orange-500',
+    instructions: 'Play in teams of two, meld by card type, first team to empty their hand wins. Supports singles, pairs, triples, triples-with-pair, straights, steel plates, bundles, bombs, straight flushes, and rockets', players: 5680, rating: 4.8,
     component: lazy(() => import('../components/games/GuandanGame')),
   },
 };
@@ -127,7 +127,7 @@ const GamePlayPage = () => {
       .slice(0, 4);
   }, [gameId]);
 
-  // 结构化数据：VideoGame + HowTo + BreadcrumbList
+  // Structured data: VideoGame + HowTo + BreadcrumbList
   const structuredData = useMemo(() => {
     if (!game) return [];
     const siteUrl = import.meta.env.VITE_SITE_URL || 'https://www.gghubs.com';
@@ -182,9 +182,9 @@ const GamePlayPage = () => {
       <div className="bg-dark-900 py-2">
         <div className="max-w-4xl mx-auto px-4 text-center">
           <div className="text-6xl mb-4 opacity-30">🎮</div>
-          <Title level={2} className="!text-gray-400">游戏不存在</Title>
+          <Title level={2} className="!text-gray-400">Game not found</Title>
           <Button type="primary" onClick={() => navigate(`/${lang || 'cn'}/library/online`)}>
-            <ArrowLeftOutlined /> 返回游戏列表
+            <ArrowLeftOutlined /> Back to Games
           </Button>
         </div>
       </div>
@@ -194,9 +194,9 @@ const GamePlayPage = () => {
   return (
     <div className="bg-dark-900">
       <SEO
-        title={`${game.name} | GameHub 在线游戏`}
+        title={`${game.name} | GameHub Online Games`}
         description={game.description}
-        keywords={`${game.name}, ${game.category}, 在线游戏, 小游戏, GameHub在线游戏, 网页游戏`}
+        keywords={`${game.name}, ${game.category}, online games, mini games, GameHub online games, browser games`}
         structuredData={structuredData}
       />
 
@@ -207,7 +207,7 @@ const GamePlayPage = () => {
           className="!text-gray-400 hover:!text-white mb-6 !flex !items-center !gap-1 !pl-0"
           onClick={() => navigate(`/${lang || 'cn'}/library/online`)}
         >
-          <ArrowLeftOutlined /> 返回游戏列表
+          <ArrowLeftOutlined /> Back to Games
         </Button>
 
         {/* Game Header */}
@@ -219,7 +219,7 @@ const GamePlayPage = () => {
             <Title level={1} className="!text-white !text-2xl !mb-1">{game.name}</Title>
             <div className="flex flex-wrap items-center gap-3 text-sm text-gray-400">
               <Tag color="default" className="bg-dark-700 text-gray-300 border-0">{game.category}</Tag>
-              <span><UserOutlined /> {game.players.toLocaleString()} 人在玩</span>
+              <span><UserOutlined /> {game.players.toLocaleString()} players</span>
               <Rate disabled value={game.rating / 2} allowHalf className="text-xs" />
             </div>
           </div>
@@ -243,13 +243,13 @@ const GamePlayPage = () => {
 
         {/* Instructions */}
         <div className="bg-dark-800 rounded-xl border border-dark-700 p-6 mb-8">
-          <Title level={2} className="!text-white !text-lg !mb-3">游戏说明</Title>
+          <Title level={2} className="!text-white !text-lg !mb-3">How to Play</Title>
           <Paragraph className="!text-gray-400">{game.instructions}</Paragraph>
         </div>
 
         {/* Other Games */}
         <div>
-          <Title level={2} className="!text-white !text-lg !mb-4">其他游戏</Title>
+          <Title level={2} className="!text-white !text-lg !mb-4">More Games</Title>
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
             {otherGames.map(([id, g]) => (
               <Card

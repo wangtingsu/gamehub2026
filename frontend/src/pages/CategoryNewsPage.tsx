@@ -98,7 +98,7 @@ const CategoryNewsPage = () => {
   const displayNews = useMemo(() => {
     if (!isError && news.length > 0) {
       if (category === 'hot') return [...news].sort((a, b) => b.views - a.views);
-      if (category === 'industry') { const f = news.filter(n => n.category.includes('行业')); return f.length > 0 ? f : news; }
+      if (category === 'industry') { const f = news.filter(n => n.category === 'Industry News'); return f.length > 0 ? f : news; }
       if (category === 'trend') return [...news].sort((a, b) => new Date(b.publishDate).getTime() - new Date(a.publishDate).getTime());
       return news;
     }

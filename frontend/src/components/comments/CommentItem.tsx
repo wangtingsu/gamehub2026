@@ -16,12 +16,11 @@ import {
 } from '@ant-design/icons';
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
-import 'dayjs/locale/zh-cn';
 import CommentForm from './CommentForm';
 import LevelBadge from '../LevelBadge';
 
 dayjs.extend(relativeTime);
-dayjs.locale('zh-cn');
+dayjs.locale('en');
 
 interface CommentItemProps {
   comment: any;
@@ -63,20 +62,20 @@ const CommentItem: React.FC<CommentItemProps> = ({
   const maxLevel = 3;
 
   const handleLike = async () => {
-    if (!user) { message.info('请先登录后再点赞'); return; }
+    if (!user) { message.info('Please sign in to like'); return; }
     try {
       await likeCommentMutation.mutateAsync(comment.id);
       setLiked(!liked);
       setLikesCount(liked ? Math.max(0, likesCount - 1) : likesCount + 1);
-    } catch { message.error('点赞失败'); }
+    } catch { message.error('Failed to like'); }
   };
 
   const handleDelete = async () => {
     try {
       await deleteCommentMutation.mutateAsync(comment.id);
-      message.success('删除成功');
+      message.success('Deleted');
       onDelete?.();
-    } catch { message.error('删除失败'); }
+    } catch { message.error('Failed to delete'); }
   };
 
   const handleReplyAdded = () => {
@@ -89,12 +88,12 @@ const CommentItem: React.FC<CommentItemProps> = ({
       <Avatar src={comment.author?.avatarUrl} icon={!comment.author?.avatarUrl && <UserOutlined />} size="small" />
       <div className="flex flex-col">
         <div className="flex items-center gap-5">
-          <span className="font-medium text-sm">{comment.author?.displayName || comment.author?.username || '匿名用户'}</span>
+          <span className="font-medium text-sm">{comment.author?.displayName || comment.author?.username || 'Anonymous'}</span>
           {comment.author?.level && <LevelBadge level={comment.author.level} size="small" showIcon={false} />}
         </div>
         <span className="text-xs text-[var(--c-text5)]">
           {dayjs(comment.createdAt).fromNow()}
-          {comment.isEdited && <span className="ml-5 text-gray-400">(已编辑)</span>}
+          {comment.isEdited && <span className="ml-5 text-gray-400">(edited)</span>}
         </span>
       </div>
     </div>
@@ -102,7 +101,7 @@ const CommentItem: React.FC<CommentItemProps> = ({
 
   const renderActions = () => (
     <div className="flex items-center space-x-4 mt-5">
-      <Tooltip title={liked ? '取消点赞' : '点赞'}>
+      <Tooltip title={liked ? 'Unlike' : 'Like'}>
         <Button type="text" size="small"
           icon={liked ? <LikeFilled /> : <LikeOutlined />}
           className={liked ? 'text-blue-500' : ''}
@@ -111,13 +110,13 @@ const CommentItem: React.FC<CommentItemProps> = ({
         </Button>
       </Tooltip>
       {allowReplies && level < maxLevel && (
-        <Tooltip title="回复">
-          <Button type="text" size="small" icon={<MessageOutlined />} onClick={() => setShowReplyForm(!showReplyForm)}>回复</Button>
+        <Tooltip title="Reply">
+          <Button type="text" size="small" icon={<MessageOutlined />} onClick={() => setShowReplyForm(!showReplyForm)}>Reply</Button>
         </Tooltip>
       )}
       {canDelete && (
-        <Popconfirm title="确定要删除这条评论吗？" onConfirm={handleDelete} okText="确定" cancelText="取消">
-          <Button type="text" size="small" danger icon={<DeleteOutlined />}>删除</Button>
+        <Popconfirm title="Delete this comment?" onConfirm={handleDelete} okText="Delete" cancelText="Cancel">
+          <Button type="text" size="small" danger icon={<DeleteOutlined />}>Delete</Button>
         </Popconfirm>
       )}
     </div>
@@ -129,13 +128,13 @@ const CommentItem: React.FC<CommentItemProps> = ({
         <div className="flex justify-between">
           {renderAuthorInfo()}
           {level === 0 && comment.replyCount > 0 && (
-            <div className="text-sm text-[var(--c-text5)]">共 {comment.replyCount} 条回复</div>
+            <div className="text-sm text-[var(--c-text5)]">{comment.replyCount} replies</div>
           )}
         </div>
         <div className="mt-5">
           <p className="whitespace-pre-wrap" style={{ color: 'var(--c-text)' }}>
             {level > 0 && (
-              <span className="text-blue-500 text-xs block mb-1">回复 @{comment.parentAuthorName || comment.parentAuthor?.username || '评论'}</span>
+              <span className="text-blue-500 text-xs block mb-1">Reply to @{comment.parentAuthorName || comment.parentAuthor?.username || 'comment'}</span>
             )}
             {comment.content}
           </p>
@@ -158,7 +157,7 @@ const CommentItem: React.FC<CommentItemProps> = ({
             ))}
             {hasMore && (
               <Button type="link" size="small" onClick={() => setReplyLimit(replyLimit + 5)}>
-                查看更多回复 ({sortedReplies.length - replyLimit} 条)
+                View more replies ({sortedReplies.length - replyLimit} more)
               </Button>
             )}
           </div>

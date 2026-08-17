@@ -6,7 +6,7 @@
 
 import { Request } from 'express'
 import { getRedisClient, setCacheWithMetadata, getCacheWithMetadata, getStaleCache, tagCache, acquireLock, releaseLock } from './redis.service'
-import { renderPageToHtml } from './ssr-render.service'
+import { renderPageToHtml, getBuildFingerprint } from './ssr-render.service'
 import config from '../config'
 import logger from '../utils/logger'
 
@@ -111,7 +111,9 @@ export function getTTLForPageType(pageType: PageType): { fresh: number; stale: n
 export function generateCacheKey(req: Request): string {
   const lang = req.headers['accept-language'] || 'zh-CN'
   const simplifiedLang = lang.includes('zh') ? 'zh-CN' : 'en'
-  return `ssr:${req.path}:${simplifiedLang}`
+  // 缓存键加入前端构建指纹：前端重新构建后 bundle 哈希变化，
+  // 旧的 SSR 缓存键自然失效，避免返回引用了已删除 bundle 的过期 HTML。
+  return `ssr:${req.path}:${simplifiedLang}:${getBuildFingerprint()}`
 }
 
 /**

@@ -11,6 +11,7 @@
 import { Request, Response } from 'express'
 import path from 'path'
 import fs from 'fs'
+import crypto from 'crypto'
 import logger from '../utils/logger'
 
 /**
@@ -47,6 +48,12 @@ let cachedManifest: any = null
  * 用于避免客户端路由运行时冲突
  */
 let cachedHydrateManifest: any = null
+
+/**
+ * 前端构建指纹缓存（含内容哈希的入口文件名）
+ * 作为 ISR 缓存键的一部分，前端重新构建后自动失效
+ */
+let cachedBuildFingerprint: { value: string; checkedAt: number } | null = null
 
 /**
  * 从 Vite 8 / Rolldown 的 assets.json 中读取 client 端入口资源
@@ -286,6 +293,40 @@ function getClientAssets(): { headTags: string; bodyScripts: string } {
     logger.error('读取 client 资源失败:', error)
     return { headTags: '', bodyScripts: '' }
   }
+}
+
+/**
+ * 获取前端构建指纹
+ * 对构建清单（hydrate manifest 或 assets.json）整份内容做 MD5 摘要。
+ * 清单记录了每个模块（含懒加载页面分块）到其哈希文件名的映射，
+ * 因此任何源码改动都会改变清单内容 → 改变指纹 → 旧的 ISR 缓存键自动失效。
+ * 结果缓存 5 秒，避免每个请求都读磁盘。
+ */
+export function getBuildFingerprint(): string {
+  const now = Date.now()
+  if (cachedBuildFingerprint && now - cachedBuildFingerprint.checkedAt < 5000) {
+    return cachedBuildFingerprint.value
+  }
+
+  let fingerprint = 'unknown'
+  try {
+    const possiblePaths = [
+      '/app/frontend-dist/hydrate/.vite/manifest.json',
+      '/app/frontend-dist/.vite/manifest.json',
+      '/app/frontend-dist/assets.json',
+    ]
+    for (const p of possiblePaths) {
+      if (!fs.existsSync(p)) continue
+      const raw = fs.readFileSync(p, 'utf-8')
+      fingerprint = crypto.createHash('md5').update(raw).digest('hex').slice(0, 16)
+      break
+    }
+  } catch (error) {
+    logger.warn('获取前端构建指纹失败，ISR 缓存键将不含指纹', { error })
+  }
+
+  cachedBuildFingerprint = { value: fingerprint, checkedAt: now }
+  return fingerprint
 }
 
 /**

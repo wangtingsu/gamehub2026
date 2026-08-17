@@ -10,259 +10,259 @@ const { Title, Paragraph, Text } = Typography;
 const onlineGames: OnlineGame[] = [
   {
     id: 'snake',
-    name: '贪吃蛇',
-    description: '操控一条不断游走的贪吃蛇，在封闭的场地中四处觅食。每吃到一个食物，蛇身就会增长一截，速度也随之加快。随着身体越来越长，走位空间逐渐缩小，需要精准预判路线，在狭窄空间中闪转腾挪，避免撞墙或咬到自己尾巴。',
-    category: '休闲',
+    name: 'Snake',
+    description: 'Control a snake that keeps moving, eating food in an enclosed arena. Each piece of food makes your snake grow and speed up. As your body grows longer, your room to maneuver shrinks — plan your path precisely to avoid hitting the walls or your own tail.',
+    category: 'Casual',
     icon: '🐍',
     color: 'from-green-500 to-emerald-600',
     component: 'SnakeGame',
     players: 2341,
     rating: 4.5,
-    instructions: '使用键盘方向键（↑↓←→）或 WASD 控制蛇的移动方向，蛇会持续向前移动无法停止。吃到红色食物得 10 分，蛇身增长一格，移动速度小幅提升。屏幕上方显示当前分数和历史最高分。蛇头碰到四周墙壁或身体任意部位即游戏结束，按空格键或点击"重新开始"可以再来一局。小技巧：尽量贴着场地外围绕圈，留出更大的中间空间。',
+    instructions: 'Use the arrow keys (↑↓←→) or WASD to steer. The snake moves forward continuously and cannot stop. Eat red food for 10 points; your snake grows one segment and speeds up slightly. The current score and high score are shown at the top. The game ends when your head hits a wall or any part of your body — press Space or click "Restart" to play again. Tip: hug the outer edge in loops to leave more room in the middle.',
   },
   {
     id: 'tetris',
-    name: '俄罗斯方块',
-    description: '不同形状的七种方块从屏幕顶部匀速下落，你需要快速判断每一块的最佳落点。将方块整齐排列填满一行即可消除得分，连续消除多行触发 combo 加分。随着消除行数增加，下落速度逐渐提升，紧张感层层递进。',
-    category: '益智',
+    name: 'Tetris',
+    description: 'Seven differently-shaped pieces fall steadily from the top of the screen, and you must quickly decide the best spot for each. Line up the blocks to fill an entire row and clear it for points; clearing multiple rows at once triggers combo bonuses. As you clear rows, the fall speed increases, ramping up the tension.',
+    category: 'Puzzle',
     icon: '🧱',
     color: 'from-blue-500 to-cyan-600',
     component: 'TetrisGame',
     players: 3892,
     rating: 4.8,
-    instructions: '← → 方向键左右移动当前方块，↑ 键旋转方块改变朝向，↓ 键加速下落，空格键让方块直接落底。每填满一整行即自动消除，上方所有方块整体下移一行。右侧预览区会显示下一个方块的形状，提前规划摆放策略。顶部积压到天花板则游戏结束。小技巧：尽量保持底部平整，预留一条竖列给长条 I 方块，一次消除四行可触发"俄罗斯方块"最高加分。',
+    instructions: '← → move the current piece, ↑ rotates it, ↓ speeds up the fall, and Space drops it instantly. Filling an entire row clears it and shifts everything above down one row. The preview panel on the right shows the next piece so you can plan ahead. The game ends if the stack reaches the ceiling. Tip: keep the bottom flat and reserve one column for the long I piece — clearing four rows at once triggers a "Tetris" for maximum points.',
   },
   {
     id: 'brick-breaker',
-    name: '打砖块',
-    description: '屏幕底部有一块可移动的挡板，一个小球在挡板和砖块之间来回弹跳。你需要操控挡板接住并反弹小球，让小球撞击上方的彩色砖块群。每击碎一块砖得分，砖块全部清除即过关。不同颜色的砖块分值不同，部分砖块需要多次击打才会碎裂。',
-    category: '动作',
+    name: 'Brick Breaker',
+    description: 'A paddle sits at the bottom of the screen while a ball bounces between the paddle and a wall of bricks. Move the paddle to catch and bounce the ball back up to smash the colorful bricks. Every brick you break scores points; clear them all to pass the level. Different colors are worth different points, and some bricks need several hits to shatter.',
+    category: 'Action',
     icon: '🧱',
     color: 'from-orange-500 to-red-600',
     component: 'BrickBreakerGame',
     players: 1876,
     rating: 4.3,
-    instructions: '左右移动鼠标（或手指在触屏上滑动）控制底部挡板，挡板跟随光标水平移动。小球碰到挡板会以不同角度反弹——击中挡板中间垂直弹出，击中边缘则以大角度斜飞。小球碰到左右墙壁和顶部会反弹，但从底部漏出则扣一条命，共 3 条命。部分砖块被击碎后会掉落道具：加宽挡板、减速小球、额外一条命等，用挡板接住即可生效。',
+    instructions: 'Move your mouse (or slide your finger on touch screens) to steer the paddle horizontally. The ball bounces at different angles depending on where it hits the paddle — center hits bounce straight up, edge hits fly off at sharp angles. The ball bounces off the left, right, and top walls, but you lose a life (3 total) if it falls past the bottom. Some bricks drop power-ups when destroyed — wider paddle, slower ball, an extra life — catch them with the paddle to activate.',
   },
   {
     id: 'gobang',
-    name: '五子棋',
-    description: '在 15×15 的围棋棋盘上与 AI 进行五子棋对决。你执黑子先手落子，AI 执白子应对。双方轮流在棋盘交叉点上落子，目标是让自己的棋子率先在横、竖、斜任一方向上连成五颗。AI 拥有多级难度，会主动进攻同时也会防守你的活三、冲四等威胁。',
-    category: '策略',
+    name: 'Gomoku',
+    description: 'Play Gomoku (Five in a Row) against the AI on a 15×15 board. You play black and move first; the AI plays white. Take turns placing stones on the intersections, aiming to be the first to connect five in a row horizontally, vertically, or diagonally. The AI has multiple difficulty levels and will attack while also defending against your open threes and fours.',
+    category: 'Strategy',
     icon: '⚫',
     color: 'from-purple-500 to-indigo-600',
     component: 'GobangGame',
     players: 4567,
     rating: 4.7,
-    instructions: '点击棋盘上任一交叉点即可在该位置落子，你的棋子显示为黑色实心圆，AI 的棋子为白色空心圆。当前轮到谁落子会在顶部状态栏提示。任意一方在水平、垂直或两条对角线方向上率先连成五颗即获胜，若棋盘下满无人连五则为平局。点击"新游戏"按钮清空棋盘重开。小技巧：同时制造两个方向的活三（双活三）是必胜手段，对手无法同时封堵两路。',
+    instructions: 'Click any intersection to place your stone — yours are solid black circles, the AI\'s are hollow white circles. The top status bar shows whose turn it is. The first player to line up five in a row wins; if the board fills with no winner it\'s a draw. Click "New Game" to reset. Tip: creating two open threes at once (a double-three) is a winning tactic — your opponent can\'t block both.',
   },
   {
     id: 'minesweeper',
-    name: '扫雷',
-    description: '在一个布满隐藏地雷的方格矩阵中，你需要通过数字线索推断每个格子下方是否有雷。每个已翻开的格子上显示的数字，代表其周围 8 个相邻格子中隐藏的地雷数量。运用逻辑排除法，一步步标记雷区、翻开安全区域，直到揭开所有非雷格子即为胜利。',
-    category: '益智',
+    name: 'Minesweeper',
+    description: 'A grid of squares hides hidden mines, and you must use the number clues to deduce which squares are safe. Each revealed number tells you how many mines are in the 8 surrounding squares. Use logic to flag the mines and reveal the safe area, until every non-mine square is uncovered.',
+    category: 'Puzzle',
     icon: '💣',
     color: 'from-gray-600 to-gray-800',
     component: 'MinesweeperGame',
     players: 2987,
     rating: 4.4,
-    instructions: '左键点击未翻开的格子进行翻开操作——如果下方有雷，游戏立刻结束，所有地雷显形。如果下方无雷，格子翻开并显示数字（0-8），表示周围雷数。右键点击格子插上红旗标记为地雷，再次右键切换为问号（不确定），第三次右键取消标记。翻开的数字如果周围红旗数已匹配，双击该数字可自动翻开周围剩余未标记的格子。顶部左侧显示剩余雷数，右侧为计时器。',
+    instructions: 'Left-click an unrevealed square to open it — if it holds a mine, the game ends instantly and all mines are revealed. If not, it shows a number (0-8) indicating nearby mines. Right-click to plant a red flag marking a mine, click again for a question mark, and a third time to clear. If a revealed number already has matching flags around it, double-click it to auto-reveal the remaining squares. The top-left shows mines remaining, the top-right is a timer.',
   },
   {
     id: 'game2048',
     name: '2048',
-    description: '在一个 4×4 的方格面板上，每次操作会让所有数字方块向一个方向整体滑动，相邻的相同数字会合并为它们的和。例如 2 和 2 合并为 4，4 和 4 合并为 8，以此类推。每次操作后会在随机空格出现一个新的 2 或 4。目标是不断合成更大的数字，最终拼出 2048 甚至 4096、8192。',
-    category: '益智',
+    description: 'On a 4×4 board, each move slides all number tiles in one direction, merging adjacent equal numbers into their sum — 2 and 2 become 4, 4 and 4 become 8, and so on. After each move a new 2 or 4 appears in a random empty cell. Keep merging to build bigger numbers, aiming for 2048 and beyond.',
+    category: 'Puzzle',
     icon: '🔢',
     color: 'from-amber-500 to-yellow-600',
     component: 'Game2048',
     players: 5432,
     rating: 4.9,
-    instructions: '按键盘方向键（↑↓←→）或在触屏上滑动，所有方块会向指定方向整体移动，直到碰到墙壁或不同数字的方块。相邻且数字相同的两个方块在移动中合并为一个新方块，值为两数之和。每次有效操作后，空白处随机生成 2（大概率）或 4（小概率）。当方格被填满且无可合并的相邻数字时游戏结束。顶部显示当前分数和历史最高分。小技巧：选定一个角落（推荐右下角），尽量让大数字固定在那里不动，从小数字一侧往大数字方向推。',
+    instructions: 'Press the arrow keys (↑↓←→) or swipe to slide all tiles in that direction until they hit a wall or a different number. Adjacent equal tiles merge into one with their sum. After each valid move, a 2 (likely) or 4 (less likely) spawns in an empty cell. The game ends when the board is full and no adjacent tiles can merge. The top shows your score and high score. Tip: pick one corner (bottom-right works well), keep your biggest number pinned there, and push from the small-number side toward it.',
   },
   {
     id: 'memory',
-    name: '记忆翻牌',
-    description: '若干对图案相同的卡片面朝下随机排列在桌面上。每次翻开两张卡片，如果图案相同则配对成功、保持翻开状态；如果不同则两张卡片翻回背面。你需要记住每张卡片的位置和图案，在有限的翻牌次数内找出所有配对。随着关卡推进，卡片数量逐渐增加，挑战记忆力极限。',
-    category: '休闲',
+    name: 'Memory Match',
+    description: 'Pairs of matching cards lie face-down, shuffled on the table. Flip two cards at a time — if they match, they stay face-up; if not, they flip back. Memorize each card\'s position and picture to find all pairs within a limited number of flips. As levels advance, more cards are added to test your memory.',
+    category: 'Casual',
     icon: '🃏',
     color: 'from-pink-500 to-rose-600',
     component: 'MemoryGame',
     players: 1567,
     rating: 4.2,
-    instructions: '点击任意一张背面朝上的卡片翻开它，显示卡片正面的图案。再点击另一张卡片——如果两张图案完全相同（颜色、形状一致），配对成功，两张卡片保持翻开状态并高亮显示。如果两张图案不同，约 0.8 秒后两张卡片同时翻回。顶部显示当前翻开次数和已配对数量。当所有卡片配对完成即为通关，用时越短、翻牌次数越少评分越高。小技巧：先从四个角开始记，每次翻第一张时优先选择印象中见过的位置。',
+    instructions: 'Click a face-down card to reveal its picture, then click another. If the two pictures are identical, the pair stays revealed and highlighted. If not, both flip back after about 0.8 seconds. The top shows your flip count and matched pairs. Clear all pairs to win — fewer flips and faster times earn a higher score. Tip: start by memorizing the four corners, and prioritize cards you recognize when flipping.',
   },
   {
     id: 'pong',
-    name: '乒乓球',
-    description: '经典双人对打乒乓球的单人版——你控制左侧球拍，AI 控制右侧球拍。小球在球桌上来回弹跳，你需要精准移动到小球的落点位置，用球拍将球打回对方半场。如果球飞过你的球拍落入身后，对方得分。AI 的难度适中，会故意打出大角度刁钻回球考验你的反应。',
-    category: '动作',
+    name: 'Pong',
+    description: 'The classic two-player Pong, solo — you control the left paddle, the AI controls the right. Keep the ball in play by moving to its landing spot and returning it to the opponent\'s side. If the ball gets past your paddle, the opponent scores. The AI plays at a fair difficulty and will send tricky angled shots to test your reflexes.',
+    category: 'Action',
     icon: '🏓',
     color: 'from-teal-500 to-green-600',
     component: 'PongGame',
     players: 3210,
     rating: 4.6,
-    instructions: '上下移动鼠标（或手指在触屏右侧上下滑动）控制左侧绿色球拍的纵向位置，球拍紧贴左边缘移动。小球碰到球拍后会根据撞击位置以不同角度反弹：打到球拍中心小球垂直弹出，打到边缘小球以锐角斜飞。小球碰到上下墙壁正常反弹。右侧 AI 球拍会自动追踪小球位置，但你打出的大角度球 AI 不一定能接到。先得到 5 分者获胜，屏幕上方显示双方比分。',
+    instructions: 'Move your mouse up and down (or slide on the right side of the screen) to control your green paddle\'s vertical position, hugging the left edge. The ball bounces at different angles depending on where it hits the paddle — center hits return straight, edge hits fly off at sharp angles. The ball bounces off the top and bottom walls normally. The right-side AI tracks the ball but won\'t always reach your sharpest shots. First to 5 points wins; the score is shown at the top.',
   },
   {
     id: 'tank-battle',
-    name: '坦克大战',
-    description: '操控一辆黄色坦克在砖墙迷宫般的地图中移动，对抗不断出现的红色敌军坦克。地图中分布着可被子弹摧毁的砖墙和不可摧毁的钢铁墙，你可以利用地形掩护躲避敌人子弹，也可以开火摧毁砖墙开辟新路线。屏幕底部是你的基地（鹰形图标），一旦基地被摧毁游戏立即结束。你需要消灭地图上的全部敌军坦克来过关。',
-    category: '动作',
+    name: 'Tank Battle',
+    description: 'Drive a yellow tank through a brick-walled maze, battling waves of red enemy tanks. The map mixes destructible brick walls with indestructible steel walls — use cover to dodge enemy fire, or shoot through bricks to open new routes. Your base (an eagle icon) sits at the bottom; if it\'s destroyed, the game ends. Clear every enemy tank to pass the level.',
+    category: 'Action',
     icon: '🎮',
     color: 'from-green-700 to-yellow-600',
     component: 'TankBattle',
     players: 1876,
     rating: 4.7,
-    instructions: '方向键或 WASD 四个键控制坦克上下左右移动（可在左上、右上等八个方向自由移动）。空格键或 Enter 键发射子弹，每次只能发射一发，子弹碰到墙壁或敌方坦克后消失，之后才能再次发射。红色敌军坦克会随机移动并朝你所在方向射击。部分闪光的红色坦克被消灭后会掉落道具（★ 星形图标）：加一条命、暂时无敌、冰冻所有敌人、加固基地围墙等，驾驶坦克碰到道具即可拾取。屏幕左上角显示剩余敌军数量，左下角显示剩余生命数。',
+    instructions: 'Use the arrow keys or WASD to move in eight directions. Press Space or Enter to fire — one shot at a time; it disappears on hitting a wall or enemy before you can fire again. Red enemy tanks move randomly and shoot toward you. Some flashing red tanks drop power-ups (★) when destroyed — extra life, temporary invincibility, freeze all enemies, or fortify your base — drive over them to collect. The top-left shows enemies remaining, the bottom-left your lives.',
   },
   {
     id: 'magic-trampoline',
-    name: '魔力蹦蹦床',
-    description: '一个小角色站在蹦床上不停上下弹跳，你需要左右移动蹦床接住角色，同时收集空中飘浮的金色星星。随着高度不断攀升，红色尖刺障碍越来越多，一旦角色碰到尖刺就会飞出去。弹跳节奏轻快，画面色彩明亮，上手简单但高分不易，适合闲暇时随手来一局。',
-    category: '休闲',
+    name: 'Magic Trampoline',
+    description: 'A little character bounces endlessly on a trampoline. Move the trampoline left and right to catch them while collecting golden stars floating in the air. As you climb higher, red spike obstacles grow more frequent — one touch sends your character flying. Bright visuals and bouncy rhythm make it easy to pick up but hard to master, perfect for a quick session.',
+    category: 'Casual',
     icon: '☀️',
     color: 'from-pink-500 to-purple-600',
     component: 'MagicTrampoline',
     players: 1234,
     rating: 4.5,
-    instructions: '← → 方向键（或在触屏左右两侧滑动）控制蹦床水平移动。角色从高处落下碰到蹦床会自动弹起，弹起高度取决于你接住角色时蹦床的位置——蹦床正中心弹起最高，越靠近边缘弹力越小。空中散布的金色星星碰到即可收集，每颗加 10 分。红色尖刺障碍碰到立刻导致角色飞出、游戏结束。左侧显示当前高度（米）和累计分数。小技巧：落到很低的位置时不要急着接，让角色再弹几下爬升到安全高度再说。',
+    instructions: 'Use ← → (or slide on the sides of the screen) to move the trampoline. The character bounces automatically — bounce height depends on where you catch them: the trampoline\'s center launches highest, the edges barely bounce. Golden stars in the air are collected on contact for 10 points each. Touching a red spike sends the character flying and ends the game. The left side shows your height (meters) and score. Tip: when falling low, don\'t rush to catch — let a few bounces climb you back to safety.',
   },
   {
     id: 'space-shooter',
-    name: '飞机大战',
-    description: '驾驶一架星际战机在太空中迎战源源不断的外星舰队。你的战机会自动连续开火，敌人从屏幕上方一波波出现，有普通小兵、快速俯冲机和厚血 Boss。击毁敌机会随机掉落火力升级道具、护盾和加分星星。随着分数提高，敌人密度和弹幕强度逐步升级，弹幕地狱般的战斗体验让你肾上腺素飙升。',
-    category: '动作',
+    name: 'Space Shooter',
+    description: 'Pilot a starfighter against endless waves of alien ships. Your fighter fires automatically while enemies stream in from the top — grunts, fast divers, and tanky bosses. Destroying enemies drops firepower upgrades, shields, and bonus stars. As your score climbs, enemy density and bullet patterns escalate into a bullet-hell frenzy that gets your adrenaline pumping.',
+    category: 'Action',
     icon: '✈️',
     color: 'from-cyan-500 to-blue-700',
     component: 'SpaceShooter',
     players: 3456,
     rating: 4.8,
-    instructions: '↑↓←→ 方向键（或手指在屏幕上滑动）控制战机自由移动。战机自动向前方发射子弹，无需手动开火。击毁红色小敌机 +10 分，击毁金色大敌机 +50 分且掉落道具。道具类型：黄色 S 图标——子弹变为三连发散弹，蓝色 P 图标——子弹威力增强，绿色盾图标——获得一层护盾可抵消一次撞击伤害，紫色星图标——额外加分。屏幕顶部显示分数，左上角显示剩余生命数。被敌机或子弹击中扣一条命，生命归零游戏结束。',
+    instructions: 'Use ↑↓←→ (or swipe) to fly freely. Your fighter auto-fires forward — no manual shooting. Destroying red small enemies scores +10; golden large enemies score +50 and drop items. Items: yellow S — spread three-way shot, blue P — stronger bullets, green shield — one hit absorbed, purple star — bonus points. The top shows your score, the top-left your lives. Getting hit by enemies or bullets costs a life; at zero, the game ends.',
   },
   {
     id: 'whack-a-mole',
-    name: '打地鼠',
-    description: '9 个地洞整齐排列在桌面上，可爱又狡猾的地鼠随机从洞中探出头来，你需要以最快的速度点击敲打它们。地鼠探头的位置和时间完全随机，有时候一个洞里会连续冒出，有时候好几个洞同时冒头。偶尔还会有戴头盔的金色地鼠出现，打中它能获得额外加分！考验你的手速和反应力的经典街机玩法。',
-    category: '休闲',
+    name: 'Whack-a-Mole',
+    description: 'Nine holes line up on the table, and cute-but-sneaky moles pop up at random — whack them as fast as you can! Moles appear at unpredictable spots and times, sometimes one after another in the same hole, sometimes several at once. Occasionally a golden helmeted mole appears for bonus points. A classic arcade test of speed and reflexes.',
+    category: 'Casual',
     icon: '🔨',
     color: 'from-yellow-700 to-green-700',
     component: 'WhackAMole',
     players: 2345,
     rating: 4.4,
-    instructions: '倒计时 30 秒，游戏开始后地鼠会从 3×3 的 9 个洞中随机钻出，停留约 0.8-1.5 秒后自动缩回。在地鼠缩回之前用鼠标点击（或手指点击）它的头部即可得分——普通棕色地鼠 +10 分，戴金色头盔的地鼠 +30 分。如果点到空无一物的洞口不扣分但也不得分。计时结束后显示本局得分和最高分记录。小技巧：把鼠标停在中心区域不要来回大幅移动，用小幅度滑动手腕覆盖附近几个洞口效率最高。',
+    instructions: 'With a 30-second countdown, moles pop out of the 3×3 grid of 9 holes and retreat after about 0.8–1.5 seconds. Click (or tap) a mole before it retreats to score — normal brown moles are +10, golden-helmet moles are +30. Clicking an empty hole scores nothing but costs nothing. When time runs out, your score and high score are shown. Tip: keep your cursor near the center and use small wrist movements rather than sweeping across the whole board.',
   },
   {
     id: 'match-three',
-    name: '消消乐',
-    description: '8×8 的棋盘上布满五颜六色的宝石方块。你需要交换相邻两颗宝石的位置，使得横排或竖排出现至少三颗同色宝石相连，它们就会"叮"一声消除，上方宝石落下填充空隙，新的宝石从顶部生成。一次消除 4 颗同色产生条纹宝石（消除整行/列），5 颗产生彩虹宝石（消除全屏同色）。连锁消除触发 combo 连击，得分成倍增加。',
-    category: '益智',
+    name: 'Match-3',
+    description: 'An 8×8 board is filled with colorful gems. Swap two adjacent gems so three or more of the same color line up — they\'ll pop and clear, gems above fall into place, and new gems drop from the top. Matching 4 creates a striped gem (clears a whole row/column); matching 5 creates a rainbow gem (clears every gem of one color). Chain reactions trigger combos that multiply your score.',
+    category: 'Puzzle',
     icon: '💎',
     color: 'from-red-500 to-orange-500',
     component: 'MatchThree',
     players: 4567,
     rating: 4.9,
-    instructions: '点击棋盘上任意一颗宝石选中它（宝石会有放大闪烁动画），再点击其上下左右相邻的任意一颗宝石，两颗宝石交换位置。如果交换后形成横向或纵向 3 颗及以上同色连线，连线部分消除并得分；如果交换后没有形成有效连线，两颗宝石弹回原位，不扣分。消除 4 颗同色生成条纹宝石，消除时触发整行或整列清空。消除 5 颗同色生成彩虹宝石，与任意颜色相邻宝石交换即可清空全屏该色宝石。右上角显示步数和目标分数，达到目标分即过关。',
+    instructions: 'Click a gem to select it (it pulses), then click an adjacent gem to swap them. If the swap forms a line of 3+ matching gems, they clear and score; if not, the gems bounce back at no cost. Matching 4 creates a striped gem that clears an entire row or column. Matching 5 creates a rainbow gem — swap it with any neighboring gem to clear all gems of that color. The top-right shows your moves and target score; reach the target to pass.',
   },
   {
     id: 'speed-racer',
-    name: '极速赛车',
-    description: '驾驶赛车在笔直的三车道高速公路上疾驰，前方不断有慢速车辆出现挡住去路。你需要灵活切换车道穿梭于车流之间，同时尽可能贴近其他车辆超车获取额外加分。速度会随着行驶距离持续提升，从悠闲巡航到极限狂飙，一旦撞上前方车辆车毁人亡。',
-    category: '动作',
+    name: 'Speed Racer',
+    description: 'Race down a straight three-lane highway as slower cars keep appearing ahead of you. Switch lanes to weave through traffic while passing as close as possible for extra points. Speed rises with distance, going from a relaxing cruise to a full-on rush — hit a car and you\'re done.',
+    category: 'Action',
     icon: '🏎️',
     color: 'from-red-600 to-orange-600',
     component: 'SpeedRacer',
     players: 2876,
     rating: 4.6,
-    instructions: '← 和 → 方向键（或触屏左右滑动）将赛车切换到左车道或右车道，每次切换一个车道。赛车自动向前行驶，前方会随机出现在不同车道上的慢速车辆（轿车、卡车等），你需要提前判断并变道躲避。从紧邻其他车辆旁边经过（间距极小但未碰撞）判定为"惊险超车"，额外加分并显示 COOL 提示。速度条在屏幕顶部显示，随行驶距离逐渐增加。撞到前方任何车辆立刻游戏结束，屏幕显示本次行驶距离和最高纪录。',
+    instructions: 'Use ← and → (or swipe) to switch one lane left or right. Your car drives forward automatically while slower vehicles (sedans, trucks) appear randomly across the lanes — read the road and change lanes to dodge. Passing extremely close to another car without colliding counts as a "near miss" for bonus points and a COOL prompt. The speed bar at the top fills as you drive. Hitting any vehicle ends the game instantly, showing your distance and best record.',
   },
   {
     id: 'bubble-shooter',
-    name: '泡泡龙',
-    description: '屏幕顶部悬垂着一大片五颜六色的泡泡群，底部有一门泡泡发射器。你用发射器瞄准上方同色泡泡，发射新泡泡去触碰它们——当 3 个及以上同色泡泡相连时，它们会啪地炸裂消除。如果射出的泡泡没有形成消除，它会粘在顶部泡泡群上，让泡泡群持续向下生长。泡泡群一旦越过底部警戒线即为失败。',
-    category: '益智',
+    name: 'Bubble Shooter',
+    description: 'A cluster of colorful bubbles hangs from the top, and a shooter sits at the bottom. Aim at bubbles of the same color and fire to connect them — when 3 or more matching bubbles touch, they pop. A shot that doesn\'t form a match sticks to the cluster and pushes it downward. Once the bubbles cross the bottom warning line, you lose.',
+    category: 'Puzzle',
     icon: '🫧',
     color: 'from-blue-400 to-purple-500',
     component: 'BubbleShooter',
     players: 1987,
     rating: 4.5,
-    instructions: '移动鼠标（或手指滑动）左右调整发射器的瞄准方向，屏幕会显示虚线辅助线指示弹道路径。点击鼠标左键（或轻触屏幕）发射当前炮弹泡泡。泡泡碰到顶部墙壁或已有泡泡后停止，如果该位置与同色泡泡形成 3 颗及以上连通，所有连通的同色泡泡一起消除。悬挂在消除泡泡下方、不再与顶部相连的泡泡也会整体掉落消除，掉落消除同样计分。发射器旁边预览下一个泡泡的颜色，方便提前规划。顶部泡泡群每降低一行，警戒线警告愈发紧迫。',
+    instructions: 'Move your mouse (or swipe) to aim, with a dotted guideline showing your shot\'s path. Click (or tap) to fire the current bubble. It stops on hitting the ceiling or existing bubbles; if it forms a group of 3+ same-colored bubbles, they all pop. Bubbles left hanging below the cleared group with no connection to the top also drop and score. A preview beside the shooter shows the next bubble\'s color. The warning line grows more urgent each row the cluster descends.',
   },
   {
     id: 'sliding-puzzle',
-    name: '数字华容道',
-    description: '一个 4×4 共 16 格的方格盘，其中 15 个格子放着数字 1 到 15，1 个格子为空。数字初始顺序被打乱，你需要通过滑动相邻数字填入空格的方式，一步步将所有数字恢复为从上到下、从左到右 1-15 的正确顺序排列。看似简单，实则极度考验耐心和逻辑规划能力。',
-    category: '益智',
+    name: 'Sliding Puzzle',
+    description: 'A 4×4 board with 16 cells holds tiles numbered 1 through 15, leaving one empty space. The tiles are scrambled, and you must slide adjacent tiles into the gap to restore the numbers to their correct 1–15 order, top-to-bottom, left-to-right. Looks simple, but it\'s a serious test of patience and planning.',
+    category: 'Puzzle',
     icon: '🔢',
     color: 'from-blue-600 to-indigo-600',
     component: 'SlidingPuzzle',
     players: 1654,
     rating: 4.3,
-    instructions: '点击空格上下左右相邻的任意一个数字方块，该方块会滑入空格位置，原来方块所在位置变成新的空格。只能点击与空格相邻的方块（上下左右四个方向），对角方块和对角之外的方块无法直接移动，需要规划多步迂回。顶部显示当前步数和最低步数记录。当数字按 1、2、3、4 在第一行，5、6、7、8 在第二行，9、10、11、12 在第三行，13、14、15 在第四行排列时即为通关。小技巧：先拼好第一行和第一列，再处理中间的 2×2 和 3×3，最后右下角的 2×2 旋转几次就能解开。',
+    instructions: 'Click a numbered tile adjacent to the empty space (up, down, left, or right) to slide it into the gap; its old spot becomes the new gap. Only tiles touching the gap can move — diagonal and distant tiles can\'t be moved directly, so plan multi-step routes. The top shows your move count and best record. You win when 1–4 fill the first row, 5–8 the second, 9–12 the third, and 13–15 the fourth. Tip: solve the first row and column first, then handle the inner blocks, and finally rotate the bottom-right 2×2 a few times to finish.',
   },
   {
     id: 'jump-adventure',
-    name: '跳一跳',
-    description: '一个小方块站在平台上，前方是下一个平台。你需要按住蓄力、松开跳跃，让方块精准落在下一个平台上。平台之间的距离和大小各不相同——有的近在咫尺只许轻跳，有的远在天边需要蓄满力量。落在平台正中心有完美加成，落在边缘摇摇欲坠，落空则坠入深渊。每跳一步分数 +1，距离把控是唯一的关键。',
-    category: '动作',
+    name: 'Jump Adventure',
+    description: 'A small cube stands on a platform with the next one ahead. Hold to charge and release to jump, landing the cube precisely on the next platform. Gaps and platform sizes vary — some are close and need a light tap, others are far and need full power. Landing dead-center earns a perfect bonus; landing on the edge leaves you teetering; overshooting sends you into the void. Each jump is +1, and judging the distance is everything.',
+    category: 'Action',
     icon: '🦘',
     color: 'from-teal-400 to-green-500',
     component: 'JumpAdventure',
     players: 3120,
     rating: 4.7,
-    instructions: '按住鼠标左键不放（或手指按住屏幕不放），小方块会开始下蹲蓄力，屏幕上出现一个动态伸缩的力量条——蓄力越久条越长，松开时跳跃距离越远。松开鼠标/手指，小方块以抛物线轨迹跳出。如果落在下一个平台的正中心区域（约平台宽度的中间 20%），触发"完美着陆"，额外 +2 分并伴有特效。如果落在平台边缘之外则坠入深渊，游戏结束，屏幕显示本次得分和最高纪录。小技巧：前几个平台间距差不多，注意观察力量条的长度与平台间距的对应关系，掌握了手感就能跳很远。',
+    instructions: 'Hold the left mouse button (or press and hold on the screen) to crouch and charge — a dynamic power bar stretches longer as you hold, and a longer bar means a farther jump. Release to leap in an arc. Landing in the center zone (the middle ~20% of the platform) triggers a "Perfect Landing" for +2 and a special effect. Land past the edge and you fall into the void, ending the game with your score and best record shown. Tip: the first few gaps are similar — learn how bar length maps to gap distance and you\'ll soon be flying.',
   },
   {
     id: 'archery-master',
-    name: '射箭大师',
-    description: '站在弓箭位上，前方一定距离处悬挂着圆形标靶。你需要拉弓、瞄准、放箭，让箭矢正中靶心。靶子分为 10 环，从外圈 1 分到正中心的 10 分——越靠近靶心分数越高。风向会随机改变，影响箭矢飞行轨迹，需要根据风向标调整瞄准点。10 支箭为一局，总分最高者为胜。',
-    category: '休闲',
+    name: 'Archery Master',
+    description: 'Stand at the firing line with a circular target hanging at a set distance. Draw, aim, and release to hit the bullseye. The target is divided into 10 rings, from 1 point at the outer edge to 10 at the center — the closer to the bullseye, the higher the score. Wind shifts randomly and bends your arrow\'s path, so adjust your aim to the wind gauge. Each round is 10 arrows; highest total wins.',
+    category: 'Casual',
     icon: '🏹',
     color: 'from-amber-600 to-yellow-500',
     component: 'ArcheryMaster',
     players: 1432,
     rating: 4.4,
-    instructions: '按住鼠标左键（或手指按住屏幕）开始拉弓，屏幕上的弓弦和力量条会逐渐向后拉伸——蓄力越久射得越远力道越大，但蓄满后弓身开始抖动，命中精度降低。松开鼠标/手指释放箭矢，箭矢飞向靶子。屏幕左上角有风向标和风速指示——风从左边吹来箭头偏右，从右边吹来箭头偏左，需要根据风力大小反向偏移瞄准。每支箭命中后靶子上显示该箭得分（1-10），右上角显示已射箭数和累计总分。10 支箭全部射出后显示总分评级：90 分以上 S 级，80-89 分 A 级。',
+    instructions: 'Hold the left mouse button (or press and hold) to draw — the bowstring and power bar stretch back as you hold; longer draws fly farther and harder, but at full draw the bow starts to tremble and accuracy drops. Release to fire. The top-left shows the wind gauge — wind from the left pushes arrows right, from the right pushes left, so offset your aim accordingly. Each hit shows its ring score (1–10); the top-right shows arrows fired and total. After all 10 arrows, you get a rating: 90+ is S-rank, 80–89 is A-rank.',
   },
   {
     id: 'guandan',
-    name: '掼蛋',
-    description: '四人两两组队的升级制扑克牌游戏，使用两副共 108 张扑克牌（含大小王各两张）。你和对面坐着的 AI 是队友，另外两家 AI 是对手。从 2 开始打，每一局赢家升一级（2→3→4...→A）。牌型丰富多样，既有常规的单张对子顺子，也有炸弹、同花顺、火箭等压制利器。炸弹可以压制普通牌型，更大的炸弹可以压制小炸弹，配牌出牌的策略深度极高。',
-    category: '策略',
+    name: 'Guandan',
+    description: 'A four-player, two-team trick-taking card game using two decks (108 cards, two jokers each). You and the AI across from you are partners; the other two AIs are your opponents. Starting from 2, the winning side levels up each round (2→3→4…→A). The card type system is rich — singles, pairs, straights, plus bombs, straight flushes, and rockets for dominance. Bombs beat normal plays, bigger bombs beat smaller ones, and the strategy of how you meld and play runs deep.',
+    category: 'Strategy',
     icon: '🃏',
     color: 'from-red-600 to-orange-500',
     component: 'GuandanGame',
     players: 5680,
     rating: 4.8,
-    instructions: '四人围坐，你和对面的 AI 为队友（东西阵营），另外两家 AI 为对手（南北阵营）。发牌后每轮由上一轮的胜出者先出牌（第一局随机指定），按逆时针方向轮流出牌。你可以选择出比上家更大的同类型牌型，也可以选择"过牌"不出。当其他三人连续过牌后，最后出牌者获得下一轮的出牌权。支持全部牌型：单张、对子、三同张（3 张相同）、三带二（3 张 + 任意对子）、顺子（5 张连续单牌）、钢板（连续两个三同张）、夯（连续三个对子）、普通炸弹（4 张相同）、同花顺（5 张同花色连续牌）、火箭（4 张王）。炸弹可以压制任何非炸弹牌型，更大的炸弹压制小炸弹。一方两人全部出完手中的牌即为获胜，获胜方下一局升级，升到 A 后再次获胜即赢得整场游戏。',
+    instructions: 'You and the AI across from you form one team (East-West); the other two AIs are your opponents (North-South). Each round the winner of the previous trick leads (the first round is random), with play proceeding counter-clockwise. You may play a higher combination of the same type or pass. When the other three players pass consecutively, the last player to play leads the next trick. All card types are supported: single, pair, triple, triple-with-pair, straight (5 consecutive singles), steel plate (two consecutive triples), bundle (three consecutive pairs), bomb (4 of a kind), straight flush (5 consecutive same-suit), and rocket (4 jokers). Bombs beat any non-bomb play; bigger bombs beat smaller ones. The first team to empty both players\' hands wins the round and levels up; win again at A to take the whole game.',
   },
 ];
 
-const categories = ['全部', '休闲', '益智', '动作', '策略'];
+const categories = ['All', 'Casual', 'Puzzle', 'Action', 'Strategy'];
 
 const OnlineGamesPage = () => {
   const navigate = useNavigate();
   const { lang } = useParams<{ lang: string }>();
   const currentLang = lang || 'cn';
   const [searchText, setSearchText] = useState('');
-  const [selectedCategory, setSelectedCategory] = useState('全部');
+  const [selectedCategory, setSelectedCategory] = useState('All');
   const [currentPage, setCurrentPage] = useState(1);
   const pageSize = 8;
   const siteUrl = import.meta.env.VITE_SITE_URL || 'https://www.gghubs.com';
 
-  // 在线游戏 FAQ 结构化数据
+  // Online games FAQ structured data
   const structuredData = [
     {
       '@type': 'BreadcrumbList',
       'itemListElement': [
-        { '@type': 'ListItem', 'position': 1, 'name': '首页', 'item': 'https://www.gghubs.com' },
-        { '@type': 'ListItem', 'position': 2, 'name': '在线游戏', 'item': `${siteUrl}/${currentLang}/library/online` },
+        { '@type': 'ListItem', 'position': 1, 'name': 'Home', 'item': 'https://www.gghubs.com' },
+        { '@type': 'ListItem', 'position': 2, 'name': 'Online Games', 'item': `${siteUrl}/${currentLang}/library/online` },
       ],
     },
     {
       '@type': 'ItemList',
-      'name': '免费在线小游戏合集',
-      'description': 'GameHub提供20+款免费在线小游戏',
+      'name': 'Free Online Mini Games Collection',
+      'description': 'GameHub offers 20+ free online mini games',
       'itemListElement': onlineGames.map((game, index) => ({
         '@type': 'ListItem',
         'position': index + 1,
@@ -281,34 +281,34 @@ const OnlineGamesPage = () => {
       'mainEntity': [
         {
           '@type': 'Question',
-          'name': '这些在线游戏需要下载吗？',
+          'name': 'Do these online games need to be downloaded?',
           'acceptedAnswer': {
             '@type': 'Answer',
-            'text': '完全不需要！所有游戏都在浏览器中直接运行，点击即可开始游玩，无需任何下载或安装。',
+            'text': 'Not at all! All games run directly in your browser — click to play with no downloads or installation.',
           },
         },
         {
           '@type': 'Question',
-          'name': '在线游戏是免费的吗？',
+          'name': 'Are the online games free?',
           'acceptedAnswer': {
             '@type': 'Answer',
-            'text': '是的，GameHub上的所有在线小游戏完全免费，无需付费即可畅玩全部游戏。',
+            'text': 'Yes, all mini games on GameHub are completely free — play everything without paying a cent.',
           },
         },
         {
           '@type': 'Question',
-          'name': '可以在手机上玩这些游戏吗？',
+          'name': 'Can I play these games on my phone?',
           'acceptedAnswer': {
             '@type': 'Answer',
-            'text': '可以！所有游戏都针对电脑和手机浏览器进行了适配优化，随时随地即可开始游戏。',
+            'text': 'Yes! All games are optimized for desktop and mobile browsers, so you can play anytime, anywhere.',
           },
         },
         {
           '@type': 'Question',
-          'name': '需要注册账号才能玩吗？',
+          'name': 'Do I need an account to play?',
           'acceptedAnswer': {
             '@type': 'Answer',
-            'text': '不需要注册，所有游戏无需登录即可直接游玩。注册账号后可以保存游戏进度和参与社区讨论。',
+            'text': 'No registration required — play without logging in. Registering an account lets you save progress and join community discussions.',
           },
         },
       ],
@@ -321,7 +321,7 @@ const OnlineGamesPage = () => {
       const q = searchText.toLowerCase();
       result = result.filter(g => g.name.includes(q) || g.description.includes(q));
     }
-    if (selectedCategory !== '全部') {
+    if (selectedCategory !== 'All') {
       result = result.filter(g => g.category === selectedCategory);
     }
     return result;
@@ -335,9 +335,9 @@ const OnlineGamesPage = () => {
   return (
     <div className="bg-dark-900">
       <SEO
-        title="免费在线小游戏 - 即点即玩无需下载 | GameHub"
-        description="GameHub 提供20+款免费在线小游戏，包括贪吃蛇、俄罗斯方块、2048、五子棋、扫雷等经典游戏。无需下载，在浏览器中即点即玩，支持电脑和手机。"
-        keywords="在线游戏, 免费小游戏, 网页游戏, 贪吃蛇, 俄罗斯方块, 2048, 五子棋, 扫雷, HTML5游戏, 浏览器游戏, 即点即玩, 无需下载"
+        title="Free Online Mini Games - Instant Play, No Download | GameHub"
+        description="GameHub offers 20+ free online mini games, including Snake, Tetris, 2048, Gomoku, Minesweeper and more classics. No download needed — play instantly in your browser, on desktop or mobile."
+        keywords="online games, free mini games, web games, snake, tetris, 2048, gomoku, minesweeper, HTML5 games, browser games, instant play, no download"
         structuredData={structuredData}
       />
 
@@ -345,12 +345,12 @@ const OnlineGamesPage = () => {
       <div className="bg-gradient-to-r from-indigo-600 to-purple-600 text-white py-2">
         <div className="">
           <div className="text-center">
-            <Title level={1} className="!text-white mb-4">在线游戏</Title>
-            <Paragraph className="!text-indigo-100 !text-lg mb-8">无需下载，即点即玩</Paragraph>
+            <Title level={1} className="!text-white mb-4">Online Games</Title>
+            <Paragraph className="!text-indigo-100 !text-lg mb-8">No download, play instantly</Paragraph>
             <div className="max-w-xl mx-auto">
               <Input
                 size="large"
-                placeholder="搜索游戏..."
+                placeholder="Search games..."
                 prefix={<SearchOutlined />}
                 value={searchText}
                 onChange={e => { setSearchText(e.target.value); setCurrentPage(1); }}
@@ -418,8 +418,8 @@ const OnlineGamesPage = () => {
         ) : (
           <div className="text-center py-16">
             <div className="text-6xl mb-4 opacity-30">🎮</div>
-            <Title level={3} className="!text-gray-400">没有找到匹配的游戏</Title>
-            <Paragraph className="!text-gray-500">试试其他关键词或分类</Paragraph>
+            <Title level={3} className="!text-gray-400">No matching games found</Title>
+            <Paragraph className="!text-gray-500">Try another keyword or category</Paragraph>
           </div>
         )}
 
