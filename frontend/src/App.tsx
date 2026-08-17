@@ -66,15 +66,15 @@ const urlLangToPrefix: Record<string, string> = { 'en': 'en', 'zh-CN': 'cn', 'ja
  * 检测优先级：
  * 1. localStorage 中存储的 i18n 语言偏好
  * 2. 浏览器 navigator.language
- * 3. 默认中文（cn）
+ * 3. 默认英文（en）
  *
  * @param props.path - 可选路径后缀，如 "login" 则跳转到 "/en/login"
  * @returns 在 SSR 中返回 null，在浏览器中执行重定向导航
  */
 function RootRedirect({ path }: { path?: string }) {
   if (typeof window === 'undefined') return null;
-  const detected = localStorage.getItem('i18nextLng') || navigator.language || 'zh-CN';
-  const prefix = urlLangToPrefix[detected] || urlLangToPrefix[detected.split('-')[0]] || 'cn';
+  const detected = localStorage.getItem('i18nextLng') || navigator.language || 'en';
+  const prefix = urlLangToPrefix[detected] || urlLangToPrefix[detected.split('-')[0]] || 'en';
   const suffix = path ? `/${path}` : '';
   return <Navigate to={`/${prefix}${suffix}`} replace />;
 }
@@ -303,7 +303,7 @@ function App() {
                 {/* /login 重定向到带语言前缀的登录页 */}
                 <Route path="/login" element={<RootRedirect path="login" />} />
                 {/* /verify-email 重定向到带语言前缀的验证邮箱页（保留 query 参数） */}
-                <Route path="/verify-email" element={<SafeNavigateWithQuery to="/cn/verify-email" replace />} />
+                <Route path="/verify-email" element={<SafeNavigateWithQuery to="/en/verify-email" replace />} />
 
                 {/* OAuth 回调页面 */}
                 <Route path="/oauth/callback" element={

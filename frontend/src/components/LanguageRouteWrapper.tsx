@@ -28,8 +28,8 @@ interface LanguageRouteWrapperProps {
  */
 const supportedLanguages = ['en', 'cn', 'ja', 'ko', 'es', 'fr'];
 
-/** 默认语言（中文），当语言参数无效时回退到此值 */
-const defaultLanguage = 'cn';
+/** 默认语言（英文），当语言参数无效时回退到此值 */
+const defaultLanguage = 'en';
 
 /**
  * URL 路径代码到 i18n 语言代码的映射表

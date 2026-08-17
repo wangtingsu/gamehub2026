@@ -15,7 +15,7 @@ const BlogRenderContent: React.FC<BlogRenderContentProps> = ({ content }) => {
       <style>{`
         .blog-markdown-body img { max-width: 100%; border-radius: 12px; margin: 12px 0; }
         .blog-markdown-body pre { border-radius: 8px; }
-        .blog-markdown-body code { font-size: 14px; }
+        .blog-markdown-body code { font-size: 15px; }
         .blog-markdown-body h1, .blog-markdown-body h2, .blog-markdown-body h3 { margin-top: 1.5em; margin-bottom: 0.5em; color: var(--c-text); }
         .blog-markdown-body p { line-height: 1.9; color: var(--c-text); }
         .blog-markdown-body blockquote { border-left-color: var(--c-focus); }
@@ -26,7 +26,7 @@ const BlogRenderContent: React.FC<BlogRenderContentProps> = ({ content }) => {
       `}</style>
       <MDEditor.Markdown
         source={content}
-        style={{ backgroundColor: 'transparent', color: 'var(--c-text)', fontSize: 16, lineHeight: 1.9 }}
+        style={{ backgroundColor: 'transparent', color: 'var(--c-text)', fontSize: 18, lineHeight: 1.9 }}
       />
     </div>
   );

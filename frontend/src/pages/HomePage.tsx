@@ -36,9 +36,9 @@ const HomePage = () => {
     <div className="home-page bg-dark-900 pt-6">
       {/* SEO 配置 */}
       <SEO
-        title={i18n.language?.startsWith("en") ? "GameHub - Game Reviews & Recommendations | Find Your Next Favorite Game" : "GameHub - 专业游戏推荐与评测平台 | 发现你的下一款最爱游戏"}
-        description={i18n.language?.startsWith("en") ? "GameHub is a professional game recommendation and review community platform. Discover game reviews, trending recommendations, in-depth guides, and join gaming discussions." : "GameHub（好游聚）是专业的游戏推荐与评测社区平台，提供最新游戏评测、热门游戏推荐、深度游戏攻略和玩家社区讨论。"}
-        keywords={i18n.language?.startsWith("en") ? "game reviews, game recommendations, gaming community, game guides, GameHub, PC games" : "游戏推荐, 游戏评测, 游戏攻略, 游戏社区, GameHub, 好游聚, PC游戏"}
+        title={i18n.t('seo.defaultTitle')}
+        description={i18n.t('seo.defaultDescription')}
+        keywords={i18n.t('seo.defaultKeywords')}
         structuredData={[
           {
             '@type': 'FAQPage',
@@ -58,7 +58,7 @@ const HomePage = () => {
         ]}
       />
       {/* 页面主标题（仅 SEO 可见） */}
-      <h1 className="sr-only">{i18n.language?.startsWith("en") ? "GameHub - Game Reviews & Recommendations, Find Your Next Favorite Game" : "GameHub - 发现游戏推荐与游戏评测，找到你的下一款最爱游戏"}</h1>
+      <h1 className="sr-only">{i18n.t('seo.defaultTitle')}</h1>
       <SEOBreadcrumb items={[{ name: "Home", url: "/" }]} />
 
       {/* SEO 平台介绍（仅搜索引擎可见） */}

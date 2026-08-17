@@ -38,7 +38,7 @@ export { render }
  * 根据 URL 路径返回页面特定的 SEO 元数据
  *
  * 根据当前请求的 URL 路径，返回对应的页面标题（title）、描述（description）、
- * Open Graph 标题和描述。支持中英文双语返回。
+ * Open Graph 标题和描述。支持全部六种语言（en/zh-CN/ja/ko/es/fr）。
  *
  * 页面路由匹配规则：
  * - /（首页）→ 首页 SEO
@@ -52,102 +52,72 @@ export { render }
  * - /ai-gaming|ai/* → AI 游戏专题
  *
  * @param urlPathname - 当前请求的 URL 路径（例如 "/cn/games/elden-ring"）
- * @param isEn - 是否为英文语言
+ * @param lang - i18n 语言代码（如 "en"、"zh-CN"、"ja"、"ko"、"es"、"fr"）
  * @returns SEO 元数据对象，包含 title、description、ogTitle、ogDescription
  */
-function getPageMeta(urlPathname: string, isEn: boolean) {
-  const path = urlPathname.replace(/^\/(en|cn|ja|ko|es|fr)\/?/i, '/')
+
+/** URL 短语言代码 → i18n 语言代码映射 */
+const LANG_CODE_TO_I18N: Record<string, string> = {
+  en: 'en',
+  cn: 'zh-CN',
+  ja: 'ja',
+  ko: 'ko',
+  es: 'es',
+  fr: 'fr',
+}
+
+function getPageMeta(urlPathname: string, lang: string) {
+  const t = i18n.getFixedT(lang)
+  const path = urlPathname.replace(/^\/(en|cn|ja|ko|es|fr)\/?/i, '/').replace(/^\/+/, '')
+
+  // 组装 SEO 元数据（ogTitle/ogDescription 复用 title/description）
+  const build = (title: string, description: string) => ({
+    title,
+    description,
+    ogTitle: title,
+    ogDescription: description,
+  })
 
   if (path === '/' || path === '') {
-    return {
-      title: isEn ? 'GameHub - Game Reviews & Recommendations' : 'GameHub - 专业游戏推荐与评测平台 | 发现你的下一款最爱游戏',
-      description: isEn ? 'GameHub gaming community platform - Game reviews, recommendations, guides and discussion. Discover your next favorite game.' : 'GameHub（好游聚）是专业的游戏推荐与评测社区平台，提供最新游戏评测、热门游戏推荐、深度游戏攻略和玩家社区讨论。',
-      ogTitle: isEn ? 'GameHub - Game Reviews & Recommendations' : 'GameHub - 专业游戏推荐与评测平台',
-      ogDescription: isEn ? 'GameHub gaming community platform - Game reviews, recommendations, guides and discussion.' : 'GameHub（好游聚）是专业的游戏推荐与评测社区平台，提供最新游戏评测、热门游戏推荐、深度游戏攻略。',
-    }
+    return build(t('seo.defaultTitle'), t('seo.defaultDescription'))
   }
   if (path.startsWith('games')) {
-    const gameSlug = path.replace('games/', '').replace('/category/', '')
-    if (gameSlug && !gameSlug.includes('category')) {
-      return {
-        title: isEn ? `${decodeURIComponent(gameSlug)} - Game Details | GameHub` : `${decodeURIComponent(gameSlug)} - 游戏详情 | GameHub`,
-        description: isEn ? `View detailed information about ${decodeURIComponent(gameSlug)} on GameHub` : `查看${decodeURIComponent(gameSlug)}的详细信息、评分、评测和攻略 | GameHub`,
-        ogTitle: isEn ? `${decodeURIComponent(gameSlug)} | GameHub` : `${decodeURIComponent(gameSlug)} | GameHub`,
-        ogDescription: isEn ? `Game details for ${decodeURIComponent(gameSlug)}` : `${decodeURIComponent(gameSlug)} 游戏详情`,
-      }
+    const rest = path.slice('games'.length).replace(/^\//, '')
+    if (rest && !rest.startsWith('category')) {
+      const slug = decodeURIComponent(rest)
+      return build(
+        t('seo.gameDetails.title', { slug }),
+        t('seo.gameDetails.description', { slug }),
+      )
     }
-    return {
-      title: isEn ? 'Game Library | GameHub' : '游戏库 | GameHub',
-      description: isEn ? 'Browse our complete game library on GameHub' : '浏览 GameHub 的完整游戏库',
-      ogTitle: isEn ? 'Game Library | GameHub' : '游戏库 | GameHub',
-      ogDescription: isEn ? 'Browse games on GameHub' : '浏览 GameHub 游戏库',
-    }
+    return build(t('seo.gamesTitle'), t('seo.gamesDescription'))
   }
   if (path.startsWith('news')) {
-    if (path.includes('/category/') || path === 'news') {
-      return {
-        title: isEn ? 'Game News | GameHub' : '游戏新闻 | GameHub',
-        description: isEn ? 'Latest gaming news, updates, and announcements' : '最新游戏新闻、资讯和公告',
-        ogTitle: isEn ? 'Game News | GameHub' : '游戏新闻 | GameHub',
-        ogDescription: isEn ? 'Latest gaming news on GameHub' : 'GameHub 最新游戏新闻',
-      }
-    }
+    return build(t('seo.newsTitle'), t('seo.newsDescription'))
+  }
+  if (path.startsWith('reviews')) {
+    return build(t('seo.reviewsTitle'), t('seo.reviewsDescription'))
   }
   if (path.startsWith('community')) {
-    return {
-      title: isEn ? 'Community | GameHub' : '社区 | GameHub',
-      description: isEn ? 'Join the GameHub community - discuss games, share experiences' : '加入 GameHub 社区，讨论游戏、分享经验',
-      ogTitle: isEn ? 'Community | GameHub' : '社区 | GameHub',
-      ogDescription: isEn ? 'GameHub community discussions' : 'GameHub 社区讨论',
-    }
+    return build(t('seo.communityTitle'), t('seo.communityDescription'))
   }
   if (path.startsWith('about')) {
-    return {
-      title: isEn ? 'About GameHub' : '关于 GameHub',
-      description: isEn ? 'Learn more about GameHub, our mission and team' : '了解更多关于 GameHub 的信息',
-      ogTitle: isEn ? 'About GameHub' : '关于 GameHub',
-      ogDescription: isEn ? 'About GameHub gaming platform' : '关于 GameHub 游戏平台',
-    }
+    return build(t('seo.aboutTitle'), t('seo.aboutDescription'))
   }
   if (path.startsWith('legal') || path.startsWith('privacy') || path.startsWith('terms')) {
-    return {
-      title: isEn ? 'Legal | GameHub' : '法律条款 | GameHub',
-      description: isEn ? 'GameHub legal information, privacy policy and terms of service' : 'GameHub 法律信息、隐私政策和服务条款',
-      ogTitle: isEn ? 'Legal | GameHub' : '法律条款 | GameHub',
-      ogDescription: isEn ? 'GameHub legal information' : 'GameHub 法律信息',
-    }
+    return build(t('seo.legal.title'), t('seo.legal.description'))
   }
   if (path.startsWith('cozy-games') || path.startsWith('cozy')) {
-    return {
-      title: isEn ? 'Cozy Games 2026 - Relaxing & Casual Games | GameHub' : '2026年最佳治愈游戏推荐 - 放松解压游戏 | GameHub',
-      description: isEn ? 'Discover the best cozy and relaxing games for 2026' : '发现最受欢迎的治愈系放松游戏',
-      ogTitle: isEn ? 'Cozy Games | GameHub' : '治愈游戏 | GameHub',
-      ogDescription: isEn ? 'Best cozy games collection' : '最佳治愈游戏合集',
-    }
+    return build(t('seo.cozyGames.title'), t('seo.cozyGames.description'))
   }
   if (path.startsWith('free-games') || path.startsWith('free')) {
-    return {
-      title: isEn ? 'Free Online Games 2026 - Play Free | GameHub' : '免费在线游戏 2026 - 无需下载免费玩 | GameHub',
-      description: isEn ? 'Play the best free online games on GameHub' : '在 GameHub 畅玩最佳免费在线游戏',
-      ogTitle: isEn ? 'Free Games | GameHub' : '免费游戏 | GameHub',
-      ogDescription: isEn ? 'Free online games collection' : '免费在线游戏合集',
-    }
+    return build(t('seo.freeGames.title'), t('seo.freeGames.description'))
   }
   if (path.startsWith('ai-gaming') || path.startsWith('ai')) {
-    return {
-      title: isEn ? 'AI Gaming 2026 - AI-Powered Games & Smart NPCs | GameHub' : '2026年AI游戏 - AI驱动游戏与智能NPC | GameHub',
-      description: isEn ? 'Explore how AI is transforming gaming' : '探索人工智能如何改变游戏世界',
-      ogTitle: isEn ? 'AI Gaming | GameHub' : 'AI 游戏 | GameHub',
-      ogDescription: isEn ? 'AI-powered games and tools' : 'AI 驱动游戏和工具',
-    }
+    return build(t('seo.aiGaming.title'), t('seo.aiGaming.description'))
   }
   // 默认首页 SEO
-  return {
-    title: isEn ? 'GameHub - Game Reviews & Recommendations' : 'GameHub - 专业游戏推荐与评测平台 | 发现你的下一款最爱游戏',
-    description: isEn ? 'GameHub gaming community platform' : 'GameHub（好游聚）是专业的游戏推荐与评测社区平台',
-    ogTitle: isEn ? 'GameHub - Game Reviews & Recommendations' : 'GameHub - 专业游戏推荐与评测平台',
-    ogDescription: isEn ? 'GameHub gaming community platform' : 'GameHub 游戏社区平台',
-  }
+  return build(t('seo.defaultTitle'), t('seo.defaultDescription'))
 }
 
 /**
@@ -250,10 +220,10 @@ async function render(pageContext: PageContextServer) {
   const langMatch = urlPathname.match(/^\/([a-z]{2}(-[A-Z]{2})?)\//)
   const detectedLang = langMatch?.[1]
   const validLang = detectedLang && knownLangs.includes(detectedLang) ? detectedLang : null
+  const i18nLang = validLang ? (LANG_CODE_TO_I18N[validLang] || 'en') : 'en'
   if (validLang) {
-    i18n.changeLanguage(validLang)
+    i18n.changeLanguage(i18nLang)
   }
-  const isEn = validLang === 'en'
 
   const serverQueryClient = new QueryClient({
     defaultOptions: {
@@ -274,7 +244,7 @@ async function render(pageContext: PageContextServer) {
   }).replace(/</g, "\\u003c")
 
   // 根据 URL 获取页面特定的 SEO 元数据
-  const pageMeta = getPageMeta(urlPathname, isEn)
+  const pageMeta = getPageMeta(urlPathname, i18nLang)
 
   const clientScript = isProduction
     ? '<!-- SSR_CLIENT_SCRIPTS_PLACEHOLDER -->'
@@ -282,7 +252,7 @@ async function render(pageContext: PageContextServer) {
 
   return {
     documentHtml: `<!DOCTYPE html>
-<html lang="${langMatch?.[1] === 'en' ? 'en' : langMatch?.[1] === 'cn' ? 'zh-CN' : langMatch?.[1] || 'zh-CN'}">
+<html lang="${i18nLang}">
   <head>
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
@@ -314,7 +284,7 @@ async function render(pageContext: PageContextServer) {
       "@type": "WebSite",
       "name": "GameHub",
       "url": "https://www.gghubs.com",
-      "description": "${isEn ? 'GameHub gaming community platform - Discover, review, and share games' : 'GameHub 游戏社区平台 - 发现、评测、分享游戏'}",
+      "description": ${JSON.stringify(pageMeta.description)},
       "potentialAction": {
         "@type": "SearchAction",
         "target": {

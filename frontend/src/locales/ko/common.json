@@ -26,7 +26,16 @@
     "discovery": "발견",
     "more": "더 보기",
     "blog": "블로그",
-    "myBlogs": "내 글"
+    "myBlogs": "내 글",
+    "library": "내 라이브러리",
+    "messages": "메시지",
+    "achievements": "업적",
+    "login": "로그인",
+    "profile": "프로필",
+    "dashboard": "대시보드",
+    "users": "사용자 관리",
+    "content": "콘텐츠 관리",
+    "settings": "시스템 설정"
   },
   "language": {
     "en": "영어",
@@ -34,13 +43,29 @@
     "ja": "일본어",
     "ko": "한국어",
     "es": "스페인어",
-    "fr": "프랑스어"
+    "fr": "프랑스어",
+    "select": "언어 선택"
   },
   "app": {
     "name": "GameHub",
     "slogan": "Your Ultimate Gaming Community",
     "loading": "Loading...",
-    "search": "Search"
+    "search": "Search",
+    "back": "뒤로",
+    "cancel": "취소",
+    "confirm": "확인",
+    "delete": "삭제",
+    "edit": "편집",
+    "error": "오류가 발생했습니다",
+    "filter": "필터",
+    "next": "다음",
+    "previous": "이전",
+    "readMore": "더 보기",
+    "reset": "재설정",
+    "save": "저장",
+    "submit": "제출",
+    "success": "작업 성공",
+    "viewDetails": "자세히 보기"
   },
   "auth": {
     "login": "로그인",
@@ -173,7 +198,13 @@
       "privacyPolicy": "Privacy Policy",
       "termsOfService": "Terms of Service",
       "cookiePolicy": "Cookie Policy",
-      "codeOfConduct": "Code of Conduct"
+      "codeOfConduct": "Code of Conduct",
+      "cozyGames": "힐링 게임",
+      "onlineGames": "온라인 게임",
+      "freeGames": "무료 게임",
+      "aiGaming": "AI 게임",
+      "trending": "트렌드",
+      "leaderboard": "리더보드"
     },
     "brand": {
       "tagline": "Your ultimate gaming destination. Discover, review, and discuss the latest games with our passionate community."
@@ -198,7 +229,30 @@
     "communityTitle": "커뮤니티 | GameHub",
     "communityDescription": "게임 커뮤니티에 참여하세요. 게임에 대해 토론하고 경험을 공유하며 다른 게이머들과 소통하세요.",
     "aboutTitle": "GameHub 소개",
-    "aboutDescription": "GameHub, 우리의 미션 및 팀에 대해 자세히 알아보세요."
+    "aboutDescription": "GameHub, 우리의 미션 및 팀에 대해 자세히 알아보세요.",
+    "cozyGames": {
+      "title": "2026년 최고의 힐링 게임 추천 - 휴식·스트레스 해소 게임 | GameHub",
+      "description": "인기 있는 힐링·휴식 게임을 만나보세요. 농장 시뮬레이션, 생활 시뮬레이션, 편안한 건설 게임을 엄선했습니다. 스트레스 해소에 좋은 PC·콘솔 게임 모음.",
+      "keywords": "힐링 게임,휴식 게임,스트레스 해소 게임,농장 시뮬레이션,생활 시뮬레이션,스타듀 밸리 비슷한 게임,편안한 게임,치유 게임"
+    },
+    "freeGames": {
+      "title": "무료 온라인 게임 2026 - 다운로드 없이 무료 플레이 | GameHub",
+      "description": "GameHub에서 최고의 무료 온라인 게임을 즐기세요. 액션, 전략, 멀티플레이, 캐주얼 게임을 다운로드 없이 매일 업데이트됩니다.",
+      "keywords": "무료 온라인 게임,다운로드 없는 무료 게임,웹 게임,온라인 무료 게임,무료 플레이,무료 웹 게임,무료 멀티플레이 게임"
+    },
+    "aiGaming": {
+      "title": "2026년 AI 게임 - AI 기반 게임과 스마트 NPC | GameHub",
+      "description": "인공지능이 게임 세계를 어떻게 바꾸는지 살펴보세요. AI NPC, 절차적 생성 세계, 지능형 게임 동반자, AI 기반 게임 도구.",
+      "keywords": "AI 게임,게임 AI,인공지능 게임,AI NPC,절차적 생성 게임,AI 게임 동반자,스마트 NPC,AI 게임 도구"
+    },
+    "gameDetails": {
+      "title": "{{slug}} - 게임 상세 | GameHub",
+      "description": "GameHub에서 {{slug}}의 상세 정보, 평점, 리뷰, 공략을 확인하세요"
+    },
+    "legal": {
+      "title": "법적 고지 | GameHub",
+      "description": "GameHub 법적 정보, 개인정보 처리방침 및 서비스 약관"
+    }
   },
   "pages": {
     "careers": {
@@ -383,18 +437,236 @@
     "hero": {
       "title": "힐링 게임 추천",
       "subtitle": "편안한 게임 세계로 떠나보세요"
+    },
+    "categories": {
+      "title": "힐링 게임 카테고리",
+      "farming": "농장 시뮬레이션",
+      "lifeSim": "생활 시뮬레이션",
+      "relaxing": "휴식·명상",
+      "building": "건설·공예"
+    },
+    "popular": {
+      "title": "인기 힐링 게임",
+      "viewAll": "모든 게임 보기"
+    },
+    "desc": {
+      "stardew": "농장을 가꾸고 마을 사람들과 친해지며 매력적인 시골 세계를 탐험하세요.",
+      "animalCrossing": "나만의 섬 낙원을 만들고 사랑스러운 동물 친구들과 편안히 지내세요.",
+      "palia": "함께 짓고 요리하고 탐험하는 MMO 힐링 게임.",
+      "spiritfarer": "놓아 보내는 것과 앞으로 나아가는 것에 관한 아름다운 경영 게임.",
+      "hozy": "버려진 집을 수리하고 아늑한 공간을 만들어 마음을 편안히 하세요.",
+      "unpacking": "짐을 풀며 인생 이야기를 경험하는 선(Zen)적인 퍼즐 게임."
+    },
+    "why": {
+      "title": "왜 힐링 게임이 점점 인기를 얻을까요",
+      "content": "힐링 게임 열풍이 2026년 전 세계를 휩쓸며 Steam에서 \"cozy\" 키워드 검색량이 675% 급증했습니다. 이 게임들은 스트레스가 높은 경쟁 게임에서 벗어날 피난처를 제공하며, 편안한 플레이, 차분한 음악, 따뜻한 커뮤니티가 특징입니다. 농사를 짓든, 꾸미든, 여유롭게 탐험하든 힐링 게임은 승리보다 당신의 심신 건강을 최우선으로 합니다.",
+      "stats": {
+        "stress": {
+          "value": "68%",
+          "label": "휴식을 위해 플레이"
+        },
+        "creative": {
+          "value": "52%",
+          "label": "창의적인 플레이 선호"
+        },
+        "community": {
+          "value": "41%",
+          "label": "커뮤니티 참여"
+        },
+        "accessibility": {
+          "value": "73%",
+          "label": "낮은 스트레스 매력"
+        }
+      }
+    },
+    "faq": {
+      "title": "자주 묻는 질문",
+      "q1": "힐링 게임이란 무엇인가요?",
+      "a1": "힐링 게임은 도전이나 경쟁보다 휴식, 부드러운 플레이, 긍정적인 감정을 우선합니다. 농사, 공예, 꾸미기, 탐험, 교류 등이 일반적이며 모두 자신의 속도로 진행됩니다.",
+      "q2": "초보자에게 좋은 힐링 게임은 무엇인가요?",
+      "a2": "스타듀 밸리가 시작하기에 가장 좋습니다. 모여봐요 동물의 숲, Unpacking, Dorfromantik도 진입 장벽이 낮은 훌륭한 선택입니다.",
+      "q3": "PC에서 힐링 게임을 할 수 있나요?",
+      "a3": "대부분의 힐링 게임은 PC(Steam, itch.io), Nintendo Switch, 최신 콘솔에서 즐길 수 있으며, 많은 게임이 모바일도 지원합니다.",
+      "q4": "힐링 게임은 멀티플레이가 되나요?",
+      "a4": "많은 힐링 게임이 멀티플레이를 지원합니다. Palia는 무료 MMO 힐링 게임이고, 모여봐요 동물의 숲은 섬 방문, 스타듀 밸리는 협동 농장 모드가 있습니다."
+    },
+    "cta": {
+      "title": "이제 쉴 준비가 되셨나요?",
+      "subtitle": "다음으로 좋아할 힐링 게임을 찾아보세요",
+      "button": "힐링 게임 탐색"
     }
   },
   "freeGame": {
     "hero": {
       "title": "무료 온라인 게임",
       "subtitle": "다운로드 없이 바로 플레이"
+    },
+    "categories": {
+      "title": "카테고리별 탐색",
+      "action": {
+        "name": "액션",
+        "games": [
+          "Subway Surfers",
+          "Temple Run",
+          "Stickman Hook"
+        ]
+      },
+      "strategy": {
+        "name": "전략",
+        "games": [
+          "Chess",
+          "8 Ball Pool",
+          "Plague Inc."
+        ]
+      },
+      "multiplayer": {
+        "name": "멀티플레이",
+        "games": [
+          "Agar.io",
+          "Slither.io",
+          "Shell Shockers"
+        ]
+      },
+      "casual": {
+        "name": "캐주얼",
+        "games": [
+          "Candy Crush",
+          "Angry Birds",
+          "2048"
+        ]
+      }
+    },
+    "top": {
+      "0": {
+        "title": "포트나이트",
+        "desc": "건설 메커니즘을 갖춘 배틀로얄로 지속적인 콘텐츠 업데이트."
+      },
+      "1": {
+        "title": "리그 오브 레전드",
+        "desc": "깊은 전략적 플레이를 갖춘 세계 최고 인기 MOBA."
+      },
+      "2": {
+        "title": "원신",
+        "desc": "뽑기 육성 시스템을 갖춘 무료 오픈월드 액션 RPG."
+      },
+      "3": {
+        "title": "하스스톤",
+        "desc": "정기적인 확장팩이 나오는 블리자드의 디지털 카드 게임."
+      },
+      "4": {
+        "title": "로켓 리그",
+        "desc": "축구와 드라이빙이 결합된 무료의 빠른 스포츠 게임."
+      },
+      "5": {
+        "title": "로스트아크",
+        "desc": "화려한 전투와 탐험을 즐기는 대규모 멀티플레이 ARPG."
+      },
+      "title": "2026년 인기 무료 게임"
+    },
+    "why": {
+      "title": "왜 무료 게임을 선택할까요?",
+      "content": "무료 온라인 게임은 그 어느 때보다 접근하기 쉬워졌습니다. 웹 게임이든 모든 플랫폼의 무료 타이틀이든, 한 푼도 쓰지 않고 훌륭한 게임 경험을 즐길 수 있습니다. 이제 많은 무료 게임이 콘솔급 그래픽과 깊이 있는 플레이를 제공합니다.",
+      "points": {
+        "noCost": {
+          "title": "100% 무료",
+          "desc": "선불 비용 없음"
+        },
+        "noDownload": {
+          "title": "즉시 플레이",
+          "desc": "설치 불필요"
+        },
+        "crossPlatform": {
+          "title": "모든 기기",
+          "desc": "PC·모바일·태블릿 지원"
+        },
+        "social": {
+          "title": "소셜",
+          "desc": "친구와 온라인 플레이"
+        }
+      }
+    },
+    "faq": {
+      "title": "자주 묻는 질문",
+      "q0": "이 게임들은 정말 무료인가요?",
+      "a0": "네! 나열된 모든 게임은 완전히 무료로 플레이할 수 있습니다. 일부는 선택적 인앱 구매를 제공할 수 있지만 핵심 경험은 항상 무료입니다.",
+      "q1": "다운로드가 필요한가요?",
+      "a1": "브라우저 기반 게임은 다운로드가 전혀 필요 없습니다. 포트나이트나 원신 같은 무료 게임은 게임 클라이언트를 설치해야 합니다.",
+      "q2": "모바일에서 플레이할 수 있나요?",
+      "a2": "많은 무료 게임이 모바일 플레이를 지원합니다. 브라우저 게임은 모든 기기에서 작동하고, 원신 같은 인기 타이틀은 훌륭한 모바일 버전이 있습니다.",
+      "q3": "무료 게임은 안전한가요?",
+      "a3": "GameHub에 소개된 모든 게임은 신뢰할 수 있는 퍼블리셔와 플랫폼에서 제공됩니다. 안전한 게임 경험을 보장하기 위해 신중하게 선별합니다."
+    },
+    "cta": {
+      "title": "지금 플레이 시작",
+      "subtitle": "수백만 플레이어와 함께 무료 온라인 게임을 즐기세요",
+      "button": "무료 게임 보기"
     }
   },
   "aiGame": {
     "hero": {
       "title": "AI 게임",
       "subtitle": "AI가 변화시키는 게임의 미래"
+    },
+    "features": {
+      "title": "AI가 게임을 바꾼다",
+      "npc": {
+        "title": "AI NPC",
+        "desc": "학습하고 자연스럽게 반응하는 지능형 캐릭터"
+      },
+      "companion": {
+        "title": "AI 동반자",
+        "desc": "플레이 스타일에 맞춰 적응하는 스마트한 친구"
+      },
+      "procedural": {
+        "title": "절차적 세계",
+        "desc": "AI가 생성하는 무한한 지도와 퀘스트"
+      },
+      "assistant": {
+        "title": "AI 게임 도구",
+        "desc": "AI 기반 창작 및 게임 마스터링 도구"
+      }
+    },
+    "tools": {
+      "title": "GameHub AI 도구",
+      "desc": "내장된 AI 기능으로 미래형 게임 경험을 만나보세요.",
+      "portrait": "AI 캐릭터 초상",
+      "soul": "AI 소울 스테이션",
+      "npc": "AI 게임 NPC"
+    },
+    "games": {
+      "0": {
+        "desc": "역동적인 대화와 적응형 행동을 갖춘 AI 기반 NPC."
+      },
+      "1": {
+        "desc": "당신의 선택에서 배우고 진화하는 AI 동반자."
+      },
+      "2": {
+        "desc": "독특한 생태계를 지닌 절차적으로 생성된 무한 세계."
+      },
+      "3": {
+        "desc": "즉석에서 분기형 스토리를 만들어내는 AI 스토리 시스템."
+      },
+      "title": "AI 기반 게임"
+    },
+    "future": {
+      "title": "AI 게임의 미래",
+      "content": "2026년까지 AI는 게임 업계에서 가장 혁신적인 힘이 되었습니다. 선택을 기억하는 NPC부터 플레이 스타일에 맞춰 스스로 생성되는 세계까지, AI는 게임을 더 개인적이고 몰입감 있으며 다시 플레이하기 좋게 만듭니다. 스크립트된 경험과 살아있는 세계의 경계가 흐려지고 있습니다."
+    },
+    "faq": {
+      "title": "자주 묻는 질문",
+      "q0": "AI는 현대 게임에서 어떻게 사용되나요?",
+      "a0": "AI는 NPC 행동, 절차적 콘텐츠 생성, 동적 난이도 조정, 음성 인식, 개인화된 게임 경험을 지원합니다. 현대 게임의 AI는 적 전술부터 세계 전체 생성까지 모든 수준에 활용됩니다.",
+      "q1": "AI가 게임 캐릭터를 만들 수 있나요?",
+      "a1": "네! AI는 독특한 캐릭터 초상, 목소리, 성격, 배경 스토리를 생성할 수 있습니다. GameHub의 캐릭터 초상 3D 같은 도구로 AI 기반 게임 캐릭터를 만들 수 있습니다.",
+      "q2": "AI NPC란 무엇인가요?",
+      "a2": "AI NPC는 언어 모델과 행동 트리로 구동되는 논플레이어 캐릭터입니다. 기존의 스크립트된 NPC와 달리 자연스러운 대화를 나누고, 과거 상호작용을 기억하며, 행동을 동적으로 조정합니다.",
+      "q3": "AI가 게임 개발자를 대체할까요?",
+      "a3": "아니요. AI는 개발자가 더 풍부한 경험을 만들도록 돕는 도구입니다. 반복 작업을 자동화하고 새로운 게임 형태를 가능하게 하지만, 인간의 창의성은 게임 디자인에 여전히 필수적입니다."
+    },
+    "cta": {
+      "title": "AI 게임 체험",
+      "subtitle": "GameHub의 AI 기반 게임 도구를 사용해 보세요",
+      "button": "AI 기능 탐색"
     }
   },
   "common": {
@@ -736,7 +1008,9 @@
     "recommended": {
       "title": "추천",
       "desc": "엄선 추천 게임",
-      "seoTitle": "추천 | GGHubs"
+      "seoTitle": "추천 | GGHubs",
+      "seoDesc": "GGHubs가 추천하는 인기 게임 살펴보기",
+      "seoKeywords": "추천 게임,인기 게임,게임 추천"
     },
     "topUp": {
       "title": "충전",

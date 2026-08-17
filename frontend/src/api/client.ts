@@ -399,7 +399,7 @@ class ApiClient {
               localStorage.removeItem('refreshToken');
               localStorage.removeItem('user');
               if (!window.location.pathname.includes('/login')) {
-                const savedLang = localStorage.getItem('i18nextLng') || 'zh-CN';
+                const savedLang = localStorage.getItem('i18nextLng') || 'en';
                 const i18nToUrl = { 'zh-CN': 'cn', en: 'en', ja: 'ja', ko: 'ko', es: 'es', fr: 'fr' };
                 const urlLang = i18nToUrl[savedLang] || savedLang;
                 window.location.href = '/' + urlLang + '/login';
@@ -412,7 +412,7 @@ class ApiClient {
               localStorage.removeItem('accessToken');
               localStorage.removeItem('user');
               if (!window.location.pathname.includes('/login')) {
-                const savedLang = localStorage.getItem('i18nextLng') || 'zh-CN';
+                const savedLang = localStorage.getItem('i18nextLng') || 'en';
                 const i18nToUrl = { 'zh-CN': 'cn', en: 'en', ja: 'ja', ko: 'ko', es: 'es', fr: 'fr' };
                 const urlLang = i18nToUrl[savedLang] || savedLang;
                 window.location.href = '/' + urlLang + '/login';
@@ -463,7 +463,7 @@ class ApiClient {
               localStorage.removeItem('refreshToken');
               localStorage.removeItem('user');
               if (!window.location.pathname.includes('/login')) {
-                const savedLang = localStorage.getItem('i18nextLng') || 'zh-CN';
+                const savedLang = localStorage.getItem('i18nextLng') || 'en';
                 const i18nToUrl = { 'zh-CN': 'cn', en: 'en', ja: 'ja', ko: 'ko', es: 'es', fr: 'fr' };
                 const urlLang = i18nToUrl[savedLang] || savedLang;
                 window.location.href = '/' + urlLang + '/login';

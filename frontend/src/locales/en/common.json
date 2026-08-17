@@ -268,6 +268,14 @@
       "title": "AI in Gaming 2026 - AI-Powered Games & Smart NPCs | GameHub",
       "description": "Explore how artificial intelligence is transforming gaming in 2026. AI NPCs, procedural worlds, intelligent game companions, and AI-powered gaming tools.",
       "keywords": "AI gaming, AI in games, artificial intelligence gaming, AI NPC, procedural generation games, AI game companions, smart NPC, AI game tools"
+    },
+    "gameDetails": {
+      "title": "{{slug}} - Game Details | GameHub",
+      "description": "View detailed information about {{slug}} on GameHub"
+    },
+    "legal": {
+      "title": "Legal | GameHub",
+      "description": "GameHub legal information, privacy policy and terms of service"
     }
   },
   "pages": {
@@ -402,7 +410,7 @@
           },
           {
             "title": "Expected Behavior",
-            "content": "Encouraged behaviors: Respect others' viewpoints, engage in constructive discussion, share useful content, help new users. Prohibited behaviors: Personal attacks, harassment, discriminatory言论, posting inappropriate content, spamming, revealing others' privacy, impersonation, spreading misinformation."
+            "content": "Encouraged behaviors: Respect others' viewpoints, engage in constructive discussion, share useful content, help new users. Prohibited behaviors: Personal attacks, harassment, discriminatory remarks, posting inappropriate content, spamming, revealing others' privacy, impersonation, spreading misinformation."
           },
           {
             "title": "Content Guidelines",
@@ -519,7 +527,7 @@
         "name": "Casual",
         "games": [
           "Candy Crush",
-          "Flappy Bird",
+          "Angry Birds",
           "2048"
         ]
       }

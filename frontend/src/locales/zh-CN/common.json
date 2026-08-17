@@ -268,6 +268,14 @@
       "title": "2026年AI游戏 - AI驱动游戏与智能NPC | GameHub",
       "description": "探索人工智能如何改变游戏世界。AI NPC、程序生成世界、智能游戏伴侣和AI驱动的游戏工具。",
       "keywords": "AI游戏,游戏AI,人工智能游戏,AI NPC,程序生成游戏,AI游戏伴侣,智能NPC,AI游戏工具"
+    },
+    "gameDetails": {
+      "title": "{{slug}} - 游戏详情 | GameHub",
+      "description": "查看{{slug}}的详细信息、评分、评测和攻略 | GameHub"
+    },
+    "legal": {
+      "title": "法律条款 | GameHub",
+      "description": "GameHub 法律信息、隐私政策和服务条款"
     }
   },
   "pages": {

@@ -432,10 +432,66 @@ export async function renderPageToHtml(url: string, req?: Request): Promise<stri
 /**
  * 获取降级HTML（客户端渲染）
  */
-/** 从URL路径提取语言 */
-function detectLang(url: string): 'en' | 'zh' {
-  const match = url.match(/^\/(en|zh-cn|cn)\b/i)
-  return match?.[1]?.startsWith('en') ? 'en' : 'zh'
+/** 从URL路径提取语言（返回 i18n 完整语言代码） */
+function detectLang(url: string): string {
+  const match = url.match(/^\/(en|zh-cn|cn|ja|ko|es|fr)\b/i)
+  const code = (match?.[1] || '').toLowerCase()
+  const map: Record<string, string> = {
+    en: 'en',
+    'zh-cn': 'zh-CN',
+    cn: 'zh-CN',
+    ja: 'ja',
+    ko: 'ko',
+    es: 'es',
+    fr: 'fr',
+  }
+  return map[code] || 'en'
+}
+
+/** 各语言降级 HTML 元数据（SSR 渲染失败时的兜底） */
+const FALLBACK_META: Record<string, { title: string; description: string; ogTitle: string; ogDescription: string; prerendered: string }> = {
+  en: {
+    title: 'GameHub - Game Reviews & Recommendations | Find Your Next Favorite Game',
+    description: 'GameHub is a professional game recommendation and review community platform. Discover game reviews, trending recommendations, in-depth guides, and join gaming discussions.',
+    ogTitle: 'GameHub - Game Reviews & Recommendations',
+    ogDescription: 'GameHub gaming community platform - Game reviews, recommendations, guides and discussion.',
+    prerendered: 'GameHub is a comprehensive gaming community platform — discover game reviews, recommendations, guides, and connect with millions of gamers worldwide.',
+  },
+  'zh-CN': {
+    title: 'GameHub - 专业游戏推荐与评测平台 | 发现你的下一款最爱游戏',
+    description: 'GameHub（好游聚）是专业的游戏推荐与评测社区平台，提供最新游戏评测、热门游戏推荐、深度游戏攻略和玩家社区讨论。',
+    ogTitle: 'GameHub - 专业游戏推荐与评测平台',
+    ogDescription: 'GameHub（好游聚）是专业的游戏推荐与评测社区平台，提供最新游戏评测、热门游戏推荐、深度游戏攻略。',
+    prerendered: 'GameHub（好游聚）是一个综合性游戏社区平台 — 在这里发现游戏评测、推荐、攻略，并与全球数百万玩家交流互动。',
+  },
+  ja: {
+    title: 'GameHub - ゲームレビュー・おすすめプラットフォーム | 次のお気に入りを見つけよう',
+    description: 'GameHubはゲームレビュー・おすすめ・攻略を提供する総合ゲームコミュニティプラットフォームです。最新のゲームレビュー、人気ゲームのおすすめ、詳しい攻略、プレイヤー同士の交流を楽しめます。',
+    ogTitle: 'GameHub - ゲームレビュー・おすすめプラットフォーム',
+    ogDescription: 'GameHubゲーミングコミュニティプラットフォーム - ゲームレビュー、おすすめ、攻略、ディスカッション。',
+    prerendered: 'GameHubは総合ゲーミングコミュニティプラットフォームです。ゲームレビュー、おすすめ、攻略を発見し、世界中の何百万人ものゲーマーとつながりましょう。',
+  },
+  ko: {
+    title: 'GameHub - 게임 리뷰·추천 플랫폼 | 다음 최애 게임을 찾아보세요',
+    description: 'GameHub는 게임 리뷰, 추천, 공략을 제공하는 종합 게임 커뮤니티 플랫폼입니다. 최신 게임 리뷰, 인기 게임 추천, 자세한 공략, 플레이어 간 소통을 즐기세요.',
+    ogTitle: 'GameHub - 게임 리뷰·추천 플랫폼',
+    ogDescription: 'GameHub 게이밍 커뮤니티 플랫폼 - 게임 리뷰, 추천, 공략, 토론.',
+    prerendered: 'GameHub는 종합 게이밍 커뮤니티 플랫폼입니다. 게임 리뷰, 추천, 공략을 발견하고 전 세계 수백만 게이머와 소통하세요.',
+  },
+  es: {
+    title: 'GameHub - Plataforma de reseñas y recomendaciones de juegos | Encuentra tu próximo juego favorito',
+    description: 'GameHub es una plataforma comunitaria profesional de recomendación y reseñas de juegos. Descubre reseñas, recomendaciones de tendencias, guías detalladas y únete a las discusiones.',
+    ogTitle: 'GameHub - Plataforma de reseñas y recomendaciones de juegos',
+    ogDescription: 'Plataforma comunitaria de juegos GameHub - Reseñas, recomendaciones, guías y discusión.',
+    prerendered: 'GameHub es una plataforma comunitaria integral de juegos: descubre reseñas, recomendaciones y guías, y conéctate con millones de jugadores de todo el mundo.',
+  },
+  fr: {
+    title: 'GameHub - Plateforme de tests et recommandations de jeux | Trouvez votre prochain jeu préféré',
+    description: 'GameHub est une plateforme communautaire professionnelle de recommandation et de tests de jeux. Découvrez des tests, des recommandations tendance, des guides détaillés et rejoignez les discussions.',
+    ogTitle: 'GameHub - Plateforme de tests et recommandations de jeux',
+    ogDescription: 'Plateforme communautaire de jeux GameHub - Tests, recommandations, guides et discussions.',
+    prerendered: 'GameHub est une plateforme communautaire de jeux complète : découvrez des tests, des recommandations et des guides, et connectez-vous avec des millions de joueurs.',
+  },
 }
 
 function getFallbackHtml(url: string): string {
@@ -450,10 +506,8 @@ function getFallbackHtml(url: string): string {
     : [path.join(__dirname, '../../../frontend/index.html')]
 
   const fbLang = detectLang(url)
-  const fbIsEn = fbLang === 'en'
-  const fbPrerendered = fbIsEn
-    ? 'GameHub is a comprehensive gaming community platform — discover game reviews, recommendations, guides, and connect with millions of gamers worldwide.'
-    : 'GameHub（好游聚）是一个综合性游戏社区平台 — 在这里发现游戏评测、推荐、攻略，并与全球数百万玩家交流互动。'
+  const fbMeta = FALLBACK_META[fbLang] || FALLBACK_META.en
+  const fbPrerendered = fbMeta.prerendered
 
   for (const templatePath of possiblePaths) {
     try {
@@ -472,21 +526,18 @@ function getFallbackHtml(url: string): string {
   // 降级：从 assets.json 注入客户端入口 JS/CSS 确保页面可加载
   const { headTags, bodyScripts } = getClientEntryAssets()
 
-  const prerenderedContent = fbIsEn
-    ? 'GameHub is a comprehensive gaming community platform — discover game reviews, recommendations, guides, and connect with millions of gamers worldwide. Browse thousands of games across PC, PlayStation, Xbox, Nintendo Switch, and mobile platforms.'
-    : 'GameHub（好游聚）是一个综合性游戏社区平台 — 在这里发现游戏评测、推荐、攻略，并与全球数百万玩家交流互动。浏览涵盖 PC、PlayStation、Xbox、Nintendo Switch 和手机平台的海量游戏库。'
   return `<!DOCTYPE html>
-	<html lang="${fbIsEn ? 'en' : 'zh-CN'}">
+	<html lang="${fbLang}">
 	<head>
 	  <meta charset="UTF-8">
 	  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 	  <meta name="google-site-verification" content="VpzrtWz7zu_7rhXSfkHQY7SiM-tCQmYwcqh4hz7m-aU" />
-	  <title>${fbIsEn ? 'GameHub - Game Reviews & Recommendations | Find Your Next Favorite Game' : 'GameHub - 专业游戏推荐与评测平台 | 发现你的下一款最爱游戏'}</title>
-	  <meta name="description" content="${fbIsEn ? 'GameHub is a professional game recommendation and review community platform. Discover game reviews, trending recommendations, in-depth guides, and join gaming discussions.' : 'GameHub（好游聚）是专业的游戏推荐与评测社区平台，提供最新游戏评测、热门游戏推荐、深度游戏攻略和玩家社区讨论。'}" />
+	  <title>${fbMeta.title}</title>
+	  <meta name="description" content="${fbMeta.description}" />
 	  <meta name="robots" content="index, follow" />
 	  <link rel="canonical" href="https://www.gghubs.com/" />
-	  <meta property="og:title" content="${fbIsEn ? 'GameHub - Game Reviews & Recommendations' : 'GameHub - 专业游戏推荐与评测平台'}" />
-	  <meta property="og:description" content="${fbIsEn ? 'GameHub gaming community platform - Game reviews, recommendations, guides and discussion.' : 'GameHub（好游聚）是专业的游戏推荐与评测社区平台，提供最新游戏评测、热门游戏推荐、深度游戏攻略。'}" />
+	  <meta property="og:title" content="${fbMeta.ogTitle}" />
+	  <meta property="og:description" content="${fbMeta.ogDescription}" />
 	  <meta property="og:type" content="website" />
 	  <meta property="og:url" content="https://www.gghubs.com/" />
 	  <meta name="twitter:card" content="summary_large_image" />

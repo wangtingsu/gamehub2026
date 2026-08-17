@@ -65,7 +65,7 @@ i18n
   .use(LanguageDetector)
   .use(initReactI18next)
   .init({
-    fallbackLng: 'zh-CN',
+    fallbackLng: 'en',
     debug: process.env.NODE_ENV === 'development',
     interpolation: {
       escapeValue: false,
@@ -147,7 +147,7 @@ i18n
           'en': 'en', 'zh': 'zh-CN', 'ja': 'ja', 'ko': 'ko', 'es': 'es', 'fr': 'fr',
           'zh-CN': 'zh-CN', 'zh-TW': 'zh-CN', 'zh-HK': 'zh-CN',
         };
-        return map[lng] || 'zh-CN';
+        return map[lng] || 'en';
       },
     },
     react: {

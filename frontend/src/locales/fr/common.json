@@ -26,7 +26,16 @@
     "discovery": "Découvrir",
     "more": "Plus",
     "blog": "Blog",
-    "myBlogs": "Mes articles"
+    "myBlogs": "Mes articles",
+    "library": "Ma bibliothèque",
+    "messages": "Messages",
+    "achievements": "Succès",
+    "login": "Connexion",
+    "profile": "Profil",
+    "dashboard": "Tableau de bord",
+    "users": "Gestion des utilisateurs",
+    "content": "Gestion du contenu",
+    "settings": "Paramètres système"
   },
   "language": {
     "en": "Anglais",
@@ -41,7 +50,22 @@
     "name": "GameHub",
     "slogan": "Votre destination de jeux ultime",
     "loading": "Chargement...",
-    "search": "Rechercher"
+    "search": "Rechercher",
+    "back": "Retour",
+    "cancel": "Annuler",
+    "confirm": "Confirmer",
+    "delete": "Supprimer",
+    "edit": "Modifier",
+    "error": "Une erreur est survenue",
+    "filter": "Filtrer",
+    "next": "Suivant",
+    "previous": "Précédent",
+    "readMore": "Lire la suite",
+    "reset": "Réinitialiser",
+    "save": "Enregistrer",
+    "submit": "Soumettre",
+    "success": "Opération réussie",
+    "viewDetails": "Voir les détails"
   },
   "auth": {
     "login": "Connexion",
@@ -174,7 +198,13 @@
       "privacyPolicy": "Politique de confidentialité",
       "termsOfService": "Conditions d'utilisation",
       "cookiePolicy": "Politique des cookies",
-      "codeOfConduct": "Code de conduite"
+      "codeOfConduct": "Code de conduite",
+      "cozyGames": "Jeux cosy",
+      "onlineGames": "Jeux en ligne",
+      "freeGames": "Jeux gratuits",
+      "aiGaming": "Jeux IA",
+      "trending": "Tendances",
+      "leaderboard": "Classement"
     },
     "brand": {
       "tagline": "Votre destination de jeux ultime. Découvrez, évaluez et discutez des derniers jeux avec notre communauté passionnée."
@@ -199,7 +229,30 @@
     "communityTitle": "Communauté | GameHub",
     "communityDescription": "Rejoignez la communauté de jeux. Discutez des jeux, partagez des expériences et connectez-vous avec d'autres joueurs.",
     "aboutTitle": "À propos de GameHub",
-    "aboutDescription": "En savoir plus sur GameHub, notre mission et notre équipe."
+    "aboutDescription": "En savoir plus sur GameHub, notre mission et notre équipe.",
+    "cozyGames": {
+      "title": "Meilleurs jeux cosy 2026 - Jeux relaxants et apaisants | GameHub",
+      "description": "Découvrez les meilleurs jeux cosy pour vous détendre et évacuer le stress. Une sélection de simulateurs de ferme, de simulateurs de vie et de jeux de construction paisibles pour PC et console.",
+      "keywords": "jeux cosy,jeux relaxants,jeux apaisants,simulateurs de ferme,jeux de simulation de vie,alternatives à stardew valley,jeux paisibles,jeux pour décompresser"
+    },
+    "freeGames": {
+      "title": "Jeux en ligne gratuits 2026 - Jouez gratuitement sans téléchargement | GameHub",
+      "description": "Jouez aux meilleurs jeux en ligne gratuits sur GameHub. Parcourez des jeux d’action, de stratégie, multijoueurs et casual. Aucun téléchargement requis. Mis à jour quotidiennement.",
+      "keywords": "jeux en ligne gratuits,jeux gratuits sans téléchargement,jeux de navigateur,jeux en ligne gratuits,jouer gratuitement,jeux de navigateur gratuits,jeux multijoueurs gratuits"
+    },
+    "aiGaming": {
+      "title": "L’IA dans les jeux 2026 - Jeux propulsés par l’IA et PNJ intelligents | GameHub",
+      "description": "Découvrez comment l’intelligence artificielle transforme le jeu vidéo. PNJ IA, mondes procéduraux, compagnons intelligents et outils de jeu propulsés par l’IA.",
+      "keywords": "jeux IA,IA dans les jeux,jeux d’intelligence artificielle,PNJ IA,jeux à génération procédurale,compagnons de jeu IA,PNJ intelligents,outils de jeu IA"
+    },
+    "gameDetails": {
+      "title": "{{slug}} - Détails du jeu | GameHub",
+      "description": "Consultez les informations détaillées, notes, avis et guides sur {{slug}} sur GameHub"
+    },
+    "legal": {
+      "title": "Mentions légales | GameHub",
+      "description": "Informations légales de GameHub, politique de confidentialité et conditions d’utilisation"
+    }
   },
   "pages": {
     "careers": {
@@ -384,18 +437,236 @@
     "hero": {
       "title": "Jeux apaisants recommandés",
       "subtitle": "Détendez-vous dans un monde de jeux paisibles"
+    },
+    "categories": {
+      "title": "Catégories de jeux cosy",
+      "farming": "Simulateurs de ferme",
+      "lifeSim": "Simulation de vie",
+      "relaxing": "Relaxants et méditatifs",
+      "building": "Construction et artisanat"
+    },
+    "popular": {
+      "title": "Jeux cosy les plus populaires",
+      "viewAll": "Voir tous les jeux"
+    },
+    "desc": {
+      "stardew": "Cultivez votre ferme, liez-vous d’amitié avec les villageois et découvrez un charmant monde rural.",
+      "animalCrossing": "Créez votre île paradisiaque et détendez-vous avec d’adorables amis animaux.",
+      "palia": "Un MMO cosy où construire, cuisiner et explorer ensemble.",
+      "spiritfarer": "Un magnifique jeu de gestion sur le lâcher-prise et le fait d’aller de l’avant.",
+      "hozy": "Restaurez des maisons abandonnées et créez des espaces cosy dans ce jeu relaxant.",
+      "unpacking": "Un jeu de puzzle zen où déballer des cartons et construire une vie."
+    },
+    "why": {
+      "title": "Pourquoi les jeux cosy cartonnent",
+      "content": "La tendance des jeux cosy a explosé en 2026, avec une hausse de 675 % des recherches « cosy » sur Steam. Ces jeux offrent un refuge face aux titres compétitifs stressants, avec des mécaniques relaxantes, des bandes-son apaisantes et des communautés accueillantes. Que vous cultiviez, décoriez ou exploriez à votre rythme, les jeux cosy privilégient votre bien-être plutôt que la victoire.",
+      "stats": {
+        "stress": {
+          "value": "68%",
+          "label": "Jouent pour se détendre"
+        },
+        "creative": {
+          "value": "52%",
+          "label": "Aiment la créativité"
+        },
+        "community": {
+          "value": "41%",
+          "label": "Rejoignent des communautés"
+        },
+        "accessibility": {
+          "value": "73%",
+          "label": "Attrait à faible stress"
+        }
+      }
+    },
+    "faq": {
+      "title": "Questions fréquentes",
+      "q1": "Qu’est-ce qui définit un « jeu cosy » ?",
+      "a1": "Les jeux cosy privilégient la détente, un gameplay doux et des émotions positives plutôt que le défi ou la compétition. On y retrouve souvent la culture, l’artisanat, la décoration, l’exploration et les relations, le tout à votre rythme.",
+      "q2": "Quels sont les meilleurs jeux cosy pour débutants ?",
+      "a2": "Stardew Valley est le point de départ idéal. Animal Crossing: New Horizons, Unpacking et Dorfromantik sont aussi d’excellents choix avec une prise en main douce.",
+      "q3": "Puis-je jouer aux jeux cosy sur PC ?",
+      "a3": "La plupart sont disponibles sur PC (Steam, itch.io), Nintendo Switch et consoles modernes. Beaucoup sont également disponibles sur mobile.",
+      "q4": "Les jeux cosy sont-ils multijoueurs ?",
+      "a4": "Beaucoup proposent des modes multijoueurs. Palia est un MMO cosy gratuit, Animal Crossing permet les visites d’îles, et Stardew Valley a une ferme coopérative."
+    },
+    "cta": {
+      "title": "Prêt à vous détendre ?",
+      "subtitle": "Découvrez votre prochain jeu cosy préféré",
+      "button": "Explorer les jeux cosy"
     }
   },
   "freeGame": {
     "hero": {
       "title": "Jeux en ligne gratuits",
       "subtitle": "Pas de téléchargement, jouez instantanément"
+    },
+    "categories": {
+      "title": "Parcourir par catégorie",
+      "action": {
+        "name": "Action",
+        "games": [
+          "Subway Surfers",
+          "Temple Run",
+          "Stickman Hook"
+        ]
+      },
+      "strategy": {
+        "name": "Stratégie",
+        "games": [
+          "Chess",
+          "8 Ball Pool",
+          "Plague Inc."
+        ]
+      },
+      "multiplayer": {
+        "name": "Multijoueur",
+        "games": [
+          "Agar.io",
+          "Slither.io",
+          "Shell Shockers"
+        ]
+      },
+      "casual": {
+        "name": "Casual",
+        "games": [
+          "Candy Crush",
+          "Angry Birds",
+          "2048"
+        ]
+      }
+    },
+    "top": {
+      "0": {
+        "title": "Fortnite",
+        "desc": "Battle royale avec mécaniques de construction et mises à jour constantes."
+      },
+      "1": {
+        "title": "League of Legends",
+        "desc": "Le MOBA le plus populaire au monde avec un gameplay stratégique profond."
+      },
+      "2": {
+        "title": "Genshin Impact",
+        "desc": "RPG d’action en monde ouvert gratuit avec des mécaniques gacha."
+      },
+      "3": {
+        "title": "Hearthstone",
+        "desc": "Le jeu de cartes numérique de Blizzard avec des extensions régulières."
+      },
+      "4": {
+        "title": "Rocket League",
+        "desc": "Football et conduite réunis dans ce jeu sportif gratuit et rythmé."
+      },
+      "5": {
+        "title": "Lost Ark",
+        "desc": "ARPG multijoueur massif avec des combats et une exploration époustouflants."
+      },
+      "title": "Meilleurs jeux gratuits en 2026"
+    },
+    "why": {
+      "title": "Pourquoi jouer aux jeux gratuits ?",
+      "content": "Les jeux en ligne gratuits n’ont jamais été aussi accessibles. Avec les jeux de navigateur et les titres gratuits sur toutes les plateformes, vous pouvez vivre des expériences incroyables sans dépenser un centime. Beaucoup de jeux gratuits offrent désormais des graphismes de qualité console et un gameplay profond.",
+      "points": {
+        "noCost": {
+          "title": "100 % gratuits",
+          "desc": "Aucun coût initial"
+        },
+        "noDownload": {
+          "title": "Jeu instantané",
+          "desc": "Aucune installation"
+        },
+        "crossPlatform": {
+          "title": "Tout appareil",
+          "desc": "Jouez sur PC, mobile, tablette"
+        },
+        "social": {
+          "title": "Social",
+          "desc": "Jouez avec des amis en ligne"
+        }
+      }
+    },
+    "faq": {
+      "title": "Questions fréquentes",
+      "q0": "Ces jeux sont-ils vraiment gratuits ?",
+      "a0": "Oui ! Tous les jeux listés sont entièrement gratuits. Certains peuvent proposer des achats intégrés optionnels, mais l’expérience principale reste toujours gratuite.",
+      "q1": "Dois-je télécharger quelque chose ?",
+      "a1": "Les jeux de navigateur ne nécessitent aucun téléchargement. Pour les titres gratuits comme Fortnite ou Genshin Impact, vous devrez installer le client du jeu.",
+      "q2": "Puis-je jouer sur mobile ?",
+      "a2": "De nombreux jeux gratuits sont compatibles mobile. Les jeux de navigateur fonctionnent sur n’importe quel appareil. Des titres populaires comme Genshin Impact ont d’excellentes versions mobiles.",
+      "q3": "Les jeux gratuits sont-ils sûrs ?",
+      "a3": "Tous les jeux présentés sur GameHub proviennent d’éditeurs et de plateformes de confiance. Nous sélectionnons soigneusement notre collection pour garantir une expérience sûre."
+    },
+    "cta": {
+      "title": "Commencez à jouer maintenant",
+      "subtitle": "Rejoignez des millions de joueurs profitant de jeux en ligne gratuits",
+      "button": "Voir les jeux gratuits"
     }
   },
   "aiGame": {
     "hero": {
       "title": "Jeux IA",
       "subtitle": "Découvrez comment l'IA révolutionne le jeu"
+    },
+    "features": {
+      "title": "L’IA transforme les jeux",
+      "npc": {
+        "title": "PNJ IA",
+        "desc": "Des personnages qui apprennent et réagissent naturellement"
+      },
+      "companion": {
+        "title": "Compagnons IA",
+        "desc": "Des amis intelligents qui s’adaptent à votre style de jeu"
+      },
+      "procedural": {
+        "title": "Mondes procéduraux",
+        "desc": "Des paysages et quêtes infinis générés par l’IA"
+      },
+      "assistant": {
+        "title": "Outils de jeu IA",
+        "desc": "Outils de création et de maîtrise de jeu propulsés par l’IA"
+      }
+    },
+    "tools": {
+      "title": "Outils IA GameHub",
+      "desc": "Vivez le futur du jeu vidéo grâce à nos fonctions IA intégrées.",
+      "portrait": "Portrait de personnage IA",
+      "soul": "Station d’âme IA",
+      "npc": "PNJ de jeu IA"
+    },
+    "games": {
+      "0": {
+        "desc": "Des PNJ IA avec dialogue dynamique et comportement adaptatif."
+      },
+      "1": {
+        "desc": "Un compagnon IA qui apprend de vos choix et évolue."
+      },
+      "2": {
+        "desc": "Des mondes infinis générés procéduralement avec des écosystèmes uniques."
+      },
+      "3": {
+        "desc": "Un narrateur IA qui crée des histoires ramifiées à la volée."
+      },
+      "title": "Jeux propulsés par l’IA"
+    },
+    "future": {
+      "title": "L’avenir du jeu IA",
+      "content": "En 2026, l’IA est devenue la force la plus transformatrice du jeu vidéo. Des PNJ qui se souviennent de vos choix aux mondes qui se génèrent selon votre style de jeu, l’IA rend les jeux plus personnels, immersifs et rejouables. La frontière entre les expériences scénarisées et les mondes vivants s’estompe."
+    },
+    "faq": {
+      "title": "Questions fréquentes",
+      "q0": "Comment l’IA est-elle utilisée dans les jeux modernes ?",
+      "a0": "L’IA alimente le comportement des PNJ, la génération de contenu procédural, l’ajustement dynamique de la difficulté, la reconnaissance vocale et les expériences personnalisées. Les jeux modernes utilisent l’IA pour tout, des tactiques ennemies à la génération de mondes entiers.",
+      "q1": "L’IA peut-elle créer des personnages de jeu ?",
+      "a1": "Oui ! L’IA peut générer des portraits, des voix, des personnalités et des histoires uniques. Des outils comme Portrait de personnage 3D de GameHub vous permettent de créer des personnages propulsés par l’IA.",
+      "q2": "Que sont les PNJ IA ?",
+      "a2": "Les PNJ IA sont des personnages non jouables propulsés par des modèles de langage et des arbres de comportement. Contrairement aux PNJ scénarisés, ils peuvent tenir des conversations naturelles, se souvenir des interactions passées et adapter leur comportement.",
+      "q3": "L’IA remplacera-t-elle les développeurs ?",
+      "a3": "Non : l’IA est un outil qui permet aux développeurs de créer des expériences plus riches. Elle automatise les tâches répétitives et ouvre de nouvelles formes de jeu, mais la créativité humaine reste essentielle."
+    },
+    "cta": {
+      "title": "Vivez le jeu IA",
+      "subtitle": "Essayez les outils de jeu propulsés par l’IA de GameHub",
+      "button": "Explorer les fonctions IA"
     }
   },
   "common": {
@@ -737,7 +1008,9 @@
     "recommended": {
       "title": "Recommandes",
       "desc": "Selection de qualite",
-      "seoTitle": "Recommandes | GGHubs"
+      "seoTitle": "Recommandes | GGHubs",
+      "seoDesc": "Parcourez les jeux populaires recommandés par GGHubs",
+      "seoKeywords": "jeux recommandés,jeux populaires,recommandations de jeux"
     },
     "topUp": {
       "title": "Recharger",

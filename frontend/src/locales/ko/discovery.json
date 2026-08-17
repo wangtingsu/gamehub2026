@@ -99,9 +99,9 @@
     "title": "리더보드",
     "tabs": {
       "topRated": "최고 평점",
-      "mostReviewed": "리뷰最多",
-      "mostFavorited": "찜最多",
-      "mostDiscussed": "토론最多"
+      "mostReviewed": "리뷰 최다",
+      "mostFavorited": "찜 최다",
+      "mostDiscussed": "토론 최다"
     },
     "columns": {
       "rank": "순위",

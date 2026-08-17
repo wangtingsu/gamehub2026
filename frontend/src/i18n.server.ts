@@ -14,7 +14,7 @@ import es from './locales/es/common.json';
 i18n
   .use(initReactI18next)
   .init({
-    fallbackLng: 'zh-CN',
+    fallbackLng: 'en',
     interpolation: {
       escapeValue: false,
     },
@@ -28,7 +28,7 @@ i18n
     },
     ns: ['translation', 'games', 'auth', 'news', 'reviews', 'community', 'admin', 'home', 'discovery'],
     defaultNS: 'translation',
-    lng: 'zh-CN',
+    lng: 'en',
     react: {
       useSuspense: false,
     },

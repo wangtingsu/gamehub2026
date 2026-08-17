@@ -112,16 +112,16 @@ const BlogDetailPage = () => {
       <div className="py-2 max-w-[1600px] mx-auto px-1 sm:px-2">
         <div className="flex gap-6">
           {/* ====== 左侧：目录 (TOC) ====== */}
-          <aside className="w-36 flex-shrink-0 hidden xl:block">
+          <aside className="w-52 flex-shrink-0 hidden xl:block">
             <div className="sticky top-4 max-h-[calc(100vh-40px)] overflow-y-auto space-scroll pt-2">
-              <Text className="!text-gray-500 !text-[10px] !font-bold !uppercase !tracking-widest block mb-4 pl-2">目录</Text>
+              <Text className="!text-gray-500 !text-xs !font-bold !uppercase !tracking-widest block mb-4 pl-2">目录</Text>
               {headings.length === 0 ? (
                 <Text className="!text-gray-600 !text-xs pl-2">暂无目录</Text>
               ) : (
                 <nav className="space-y-0 border-l border-dark-700/30">
                   {headings.map((h, i) => (
                     <a key={i} href={`#${h.id}`}
-                      className={`block text-xs py-1.5 transition-all duration-200 border-l-2 -ml-px ${
+                      className={`block text-base py-1.5 transition-all duration-200 border-l-2 -ml-px ${
                         h.level === 2
                           ? 'pl-3 text-gray-400 hover:text-blue-400 hover:border-blue-400 border-transparent'
                           : 'pl-6 text-gray-500 hover:text-blue-400 hover:border-blue-400 border-transparent'
@@ -147,7 +147,7 @@ const BlogDetailPage = () => {
               {spaceName && <Link to={`/${currentLang}/blog/space/${spaceSlug}`}><Tag color="cyan" className="!text-xs">🎮 {spaceName}</Tag></Link>}
             </div>
 
-            <Title level={1} className="!text-white !text-2xl md:!text-3xl !mb-4 !leading-relaxed">{post.title}</Title>
+            <Title level={1} className="!text-white !text-3xl md:!text-4xl !mb-4 !leading-relaxed">{post.title}</Title>
 
             <div className="flex items-center gap-3 mb-6 pb-6 border-b border-dark-700">
               <Avatar size={36} icon={<UserOutlined />} className="bg-blue-600 flex-shrink-0" />
@@ -188,7 +188,7 @@ const BlogDetailPage = () => {
           </div>
 
           {/* ====== 右侧：相关推荐 ====== */}
-          <aside className="w-72 flex-shrink-0 hidden lg:block">
+          <aside className="w-96 flex-shrink-0 hidden lg:block">
             <div className="sticky top-4 max-h-[calc(100vh-40px)] overflow-y-auto space-scroll pt-2">
               <Text className="!text-gray-500 !text-[10px] !font-bold !uppercase !tracking-widest block mb-4">相关推荐</Text>
               {related.length === 0 ? (
@@ -204,8 +204,8 @@ const BlogDetailPage = () => {
                           ) : <div className="w-full h-full flex items-center justify-center text-3xl">📄</div>}
                         </div>
                         <div className="p-3 bg-dark-800/50">
-                          <div className="text-white text-sm font-medium line-clamp-2 group-hover:text-blue-400 mb-1">{a.title}</div>
-                          <div className="text-gray-500 text-[11px] flex items-center gap-2">
+                          <div className="text-white text-base font-medium line-clamp-2 group-hover:text-blue-400 mb-1">{a.title}</div>
+                          <div className="text-gray-500 text-xs flex items-center gap-2">
                             <EyeOutlined />{a.views||0}
                             <span className="ml-auto">{fmt(a.publishDate||a.publishedAt)}</span>
                           </div>
