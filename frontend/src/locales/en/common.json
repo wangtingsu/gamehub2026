@@ -665,6 +665,170 @@
       "button": "Explore AI Features"
     }
   },
+  "aiAssistant": {
+    "seo": {
+      "title": "AI Assistant | GameHub",
+      "description": "GameHub AI Assistant — AI chat, guides, search, character recommendations, and 3D avatar customization.",
+      "keywords": "AI assistant, AI chat, AI guides, AI search, AI character recommendation"
+    },
+    "hero": {
+      "title": "AI Assistant",
+      "subtitle": "GameHub AI Assistant brings you game chat companionship, guide search, intelligent Q&A, character recommendations, 3D avatar customization, and a full range of AI capabilities."
+    },
+    "capabilities": {
+      "chat": {
+        "title": "Soul Station",
+        "desc": "A game soul station — share your game stories and chat with AI about anything game-related"
+      },
+      "guides": {
+        "title": "AI Guides",
+        "desc": "Search game guides, reviews, and video tutorials — a one-stop game knowledge base"
+      },
+      "companion": {
+        "title": "Character Matchmaker",
+        "desc": "Take a personality test and let AI recommend the game character and playstyle that suit you best"
+      }
+    },
+    "tips": {
+      "title": "Tips",
+      "chat": "AI Chat",
+      "chatDesc": "Pick a game and mood, then chat with AI about your game experiences and feelings",
+      "guides": "AI Guides",
+      "guidesDesc": "Search any game name for guides, videos, and fan-created content"
+    },
+    "soul": {
+      "title": "Soul Station",
+      "subtitle": "No judgment here — just listening. Come share your game stories",
+      "moodLabel": "Today's mood:",
+      "moods": {
+        "happy": "Happy",
+        "angry": "Angry",
+        "sad": "Sad",
+        "calm": "Calm",
+        "excited": "Excited",
+        "tired": "Tired"
+      },
+      "gameLabel": "Game you're playing:",
+      "gamePlaceholder": "Select or search a game...",
+      "clear": "Clear",
+      "topics": {
+        "t0": "Roast teammates",
+        "t1": "Bad gacha luck",
+        "t2": "Boss too hard",
+        "t3": "Funny moments",
+        "t4": "Got crushed",
+        "t5": "Finally cleared it",
+        "t6": "Story discussion",
+        "t7": "Game suggestions"
+      },
+      "welcome": "Hi! I'm your game Soul Station 🌟 Did anything fun or frustrating happen in your games today? Feel free to chat with me~",
+      "newChat": "+ New Chat",
+      "newConversation": "New conversation",
+      "typing": "AI is typing...",
+      "inputPlaceholder": "Share your thoughts...",
+      "send": "Send",
+      "error": "Sorry, AI is temporarily unavailable. Please try again later 🙏",
+      "gameContext": "(Currently discussing \"{{game}}\", please respond around this game)",
+      "topicPrompt": "Let's talk about \"{{topic}}\"!"
+    },
+    "npc": {
+      "title": "AI Game Encyclopedia",
+      "subtitle": "Your game encyclopedia — guides, exciting videos, and player creations, all in one place",
+      "searchPlaceholder": "Search game guides, videos, or fan creations...",
+      "searchButton": "Search",
+      "tabGuides": "Guides",
+      "tabVideos": "Videos",
+      "tabFanart": "Fan Creations",
+      "noGuidesFound": "No matching guides found",
+      "noGuides": "No guides available",
+      "noVideosFound": "No matching videos found",
+      "noVideos": "No videos available",
+      "noFanartFound": "No matching fan creations found",
+      "noFanart": "No fan creations available",
+      "viewsUnit": "views",
+      "playsUnit": "plays",
+      "videosUnit": "videos",
+      "hotRecommendation": "Hot Pick",
+      "playerCreation": "Player Creation",
+      "fanartTypes": {
+        "illustration": "Illustration",
+        "fanart": "Fan Art",
+        "cosplay": "Cosplay",
+        "figure": "Figure"
+      },
+      "viewOriginal": "View Original",
+      "guideDetail": "Guide Details",
+      "general": "General",
+      "noDescription": "No detailed description",
+      "other": "Other"
+    },
+    "companion": {
+      "title": "AI Character Matchmaker",
+      "subtitle": "Enter a game name + take a personality test for tailored character and playstyle recommendations",
+      "startTitle": "Discover Your Main Character",
+      "startDesc": "First enter the game you're playing, then take a personality test — AI will recommend the character and playstyle that suit you best!",
+      "gamePlaceholder": "Enter a game name, e.g. Genshin Impact, Elden Ring, League of Legends...",
+      "more": "More...",
+      "presetGames": {
+        "g0": "Genshin Impact",
+        "g1": "Elden Ring",
+        "g2": "Black Myth: Wukong",
+        "g3": "Honor of Kings",
+        "g4": "League of Legends",
+        "g5": "Honkai: Star Rail"
+      },
+      "start": "Start Test",
+      "enterGameFirst": "Please enter a game name first",
+      "currentGame": "Current game: {{game}}",
+      "question": "Question {{current}}/{{total}}",
+      "generating": "AI is generating recommendations based on your personality test...",
+      "matchedTitle": "\"{{game}}\" best character recommendations for you",
+      "completedTitle": "Test complete! Your character recommendations:",
+      "basedOn": "Based on your personality test results, here are the characters in {{game}} that suit you best",
+      "notCollected": "No dedicated data for \"{{game}}\" yet — here are general recommendations based on your personality",
+      "matchRate": "Match rate",
+      "playStyle": "🎯 Fun Playstyle",
+      "restart": "Retake Test",
+      "questions": {
+        "q0": {
+          "question": "Which playstyle do you prefer in games?",
+          "options": {
+            "combat": "Fierce Combat",
+            "strategy": "Strategic Planning",
+            "explore": "Free Exploration",
+            "social": "Social Interaction"
+          }
+        },
+        "q1": {
+          "question": "What's your favorite game style?",
+          "options": {
+            "action": "Fast-paced Action",
+            "rpg": "Role-playing",
+            "simulation": "Simulation & Management",
+            "puzzle": "Mind-bending Puzzles"
+          }
+        },
+        "q2": {
+          "question": "What role do you usually play in a team?",
+          "options": {
+            "leader": "Team Leader",
+            "damage": "Main DPS",
+            "support": "Support",
+            "solo": "Solo Player"
+          }
+        },
+        "q3": {
+          "question": "What difficulty do you prefer?",
+          "options": {
+            "easy": "Casual",
+            "medium": "Moderate Challenge",
+            "hard": "Hardcore",
+            "expert": "Extreme Difficulty"
+          }
+        }
+      }
+    }
+  },
   "common": {
     "confirm": "Confirm",
     "cancel": "Cancel",

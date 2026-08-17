@@ -11,43 +11,48 @@ import { useState } from 'react';
 import { Card, Button, Typography, Row, Col, Progress, Tag, Input, Divider, Spin } from 'antd';
 import { ThunderboltOutlined, ReloadOutlined, PlayCircleOutlined } from '@ant-design/icons';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useTranslation } from 'react-i18next';
 import { useGameCompanionRecommend } from '../../api/hooks';
 
 const { Title, Text, Paragraph } = Typography;
 
-/** 性格测试问题列表：每个问题包含 4 个选项 */
+/** 性格测试问题列表：每个问题包含 4 个选项（选项 value 用于提交给后端） */
 const QUESTIONS = [
-  { id: 1, question: '你在游戏中更偏好哪种玩法？', options: [
-    { value: 'combat', label: '热血战斗', icon: '⚔️' },
-    { value: 'strategy', label: '运筹帷幄', icon: '🧠' },
-    { value: 'explore', label: '自由探索', icon: '🗺️' },
-    { value: 'social', label: '社交互动', icon: '🤝' },
+  { options: [
+    { value: 'combat', icon: '⚔️' },
+    { value: 'strategy', icon: '🧠' },
+    { value: 'explore', icon: '🗺️' },
+    { value: 'social', icon: '🤝' },
   ]},
-  { id: 2, question: '你最喜欢的游戏风格是？', options: [
-    { value: 'action', label: '动作快节奏', icon: '💥' },
-    { value: 'rpg', label: '角色扮演', icon: '👥' },
-    { value: 'simulation', label: '模拟经营', icon: '🏗️' },
-    { value: 'puzzle', label: '解谜烧脑', icon: '🧩' },
+  { options: [
+    { value: 'action', icon: '💥' },
+    { value: 'rpg', icon: '👥' },
+    { value: 'simulation', icon: '🏗️' },
+    { value: 'puzzle', icon: '🧩' },
   ]},
-  { id: 3, question: '你在团队中通常扮演什么角色？', options: [
-    { value: 'leader', label: '团队领袖', icon: '👑' },
-    { value: 'damage', label: '输出主力', icon: '🔥' },
-    { value: 'support', label: '辅助支援', icon: '💚' },
-    { value: 'solo', label: '独狼玩家', icon: '🐺' },
+  { options: [
+    { value: 'leader', icon: '👑' },
+    { value: 'damage', icon: '🔥' },
+    { value: 'support', icon: '💚' },
+    { value: 'solo', icon: '🐺' },
   ]},
-  { id: 4, question: '你对游戏难度的偏好？', options: [
-    { value: 'easy', label: '轻松休闲', icon: '🌿' },
-    { value: 'medium', label: '适中挑战', icon: '⚡' },
-    { value: 'hard', label: '硬核挑战', icon: '💀' },
-    { value: 'expert', label: '极致难度', icon: '🔥' },
+  { options: [
+    { value: 'easy', icon: '🌿' },
+    { value: 'medium', icon: '⚡' },
+    { value: 'hard', icon: '💀' },
+    { value: 'expert', icon: '🔥' },
   ]},
 ];
+
+const PRESET_GAME_KEYS = ['g0', 'g1', 'g2', 'g3', 'g4', 'g5'];
 
 /**
  * GameCompanion 主组件
  * 分三步进行：开始界面(输入游戏名称) -> 测试问卷(4道题) -> 推荐结果展示
  */
 const GameCompanion: React.FC = () => {
+  const { t } = useTranslation();
+
   /* ====== 流程状态 ====== */
   const [step, setStep] = useState<'start' | 'quiz' | 'result'>('start'); // 当前步骤
   const [gameName, setGameName] = useState('');        // 用户输入的游戏名称
@@ -96,8 +101,8 @@ const GameCompanion: React.FC = () => {
   return (
     <div className="space-y-6 ai-companion-page">
       <div className="text-center mb-4">
-        <Title level={4} className="!mb-2 !text-white" style={{ fontSize: '3rem' }}>🎮 AI 命理师</Title>
-        <Text className="text-gray-300" style={{ fontSize: '1.8rem' }}>输入游戏名称 + 性格测试，精准推荐最适合你的角色和玩法</Text>
+        <Title level={4} className="!mb-2 !text-white" style={{ fontSize: '3rem' }}>🎮 {t('aiAssistant.companion.title')}</Title>
+        <Text className="text-gray-300" style={{ fontSize: '1.8rem' }}>{t('aiAssistant.companion.subtitle')}</Text>
       </div>
 
       <AnimatePresence mode="wait">
@@ -105,32 +110,35 @@ const GameCompanion: React.FC = () => {
           <motion.div key="start" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
             <Card className="text-center bg-gradient-to-b from-blue-900/20 to-purple-900/20 border-dark-700">
               <div className="text-6xl mb-4">🧙</div>
-              <Title level={3} className="!text-gray-100">发现你的本命角色</Title>
+              <Title level={3} className="!text-gray-100">{t('aiAssistant.companion.startTitle')}</Title>
               <Paragraph className="text-gray-300 max-w-lg mx-auto">
-                先输入你正在玩的游戏名称，再通过性格测试，AI 将为你精准推荐最适合的角色和开心玩法！
+                {t('aiAssistant.companion.startDesc')}
               </Paragraph>
 
               <div className="max-w-md mx-auto mb-6">
                 <Input
                   size="large"
-                  placeholder="输入游戏名称，如：原神、艾尔登法环、王者荣耀..."
+                  placeholder={t('aiAssistant.companion.gamePlaceholder')}
                   value={gameName}
                   onChange={(e) => setGameName(e.target.value)}
                   prefix={<PlayCircleOutlined />}
                   className="mb-2"
                 />
                 <div className="flex flex-wrap gap-1 justify-center mt-2">
-                  {['原神', '艾尔登法环', '黑神话：悟空', '王者荣耀', '英雄联盟', '崩坏：星穹铁道'].map(g => (
-                    <Tag
-                      key={g}
-                      className="cursor-pointer hover:scale-105 transition-transform"
-                      color={gameName === g ? 'blue' : 'default'}
-                      onClick={() => setGameName(g)}
-                    >
-                      {g}
-                    </Tag>
-                  ))}
-                  <Tag className="text-gray-400">更多...</Tag>
+                  {PRESET_GAME_KEYS.map(k => {
+                    const g = t(`aiAssistant.companion.presetGames.${k}`);
+                    return (
+                      <Tag
+                        key={k}
+                        className="cursor-pointer hover:scale-105 transition-transform"
+                        color={gameName === g ? 'blue' : 'default'}
+                        onClick={() => setGameName(g)}
+                      >
+                        {g}
+                      </Tag>
+                    );
+                  })}
+                  <Tag className="text-gray-400">{t('aiAssistant.companion.more')}</Tag>
                 </div>
               </div>
 
@@ -142,9 +150,9 @@ const GameCompanion: React.FC = () => {
                 disabled={!gameName.trim()}
                 className="!bg-primary-700 !border-primary-700 hover:!bg-primary-800"
               >
-                开始测试
+                {t('aiAssistant.companion.start')}
               </Button>
-              {!gameName.trim() && <Text className="block mt-2 text-sm text-gray-400">请先输入游戏名称</Text>}
+              {!gameName.trim() && <Text className="block mt-2 text-sm text-gray-400">{t('aiAssistant.companion.enterGameFirst')}</Text>}
             </Card>
           </motion.div>
         )}
@@ -154,20 +162,20 @@ const GameCompanion: React.FC = () => {
             <Card className="mb-4 bg-gradient-to-r from-blue-900/20 to-purple-900/20 border-dark-700">
               <div className="flex items-center gap-2">
                 <PlayCircleOutlined className="text-lg text-white" />
-                <Text strong className="text-white">当前游戏：{gameName}</Text>
+                <Text strong className="text-white">{t('aiAssistant.companion.currentGame', { game: gameName })}</Text>
               </div>
             </Card>
 
             <div className="mb-4">
               <div className="flex justify-between items-center mb-2">
-                <Text className="text-gray-400">问题 {currentQ + 1}/{QUESTIONS.length}</Text>
+                <Text className="text-gray-400">{t('aiAssistant.companion.question', { current: currentQ + 1, total: QUESTIONS.length })}</Text>
                 <Text className="text-gray-400">{Math.round(((currentQ + 1) / QUESTIONS.length) * 100)}%</Text>
               </div>
               <Progress percent={Math.round(((currentQ + 1) / QUESTIONS.length) * 100)} showInfo={false} strokeColor="#722ed1" />
             </div>
 
             <Card className="bg-dark-800 border-dark-700">
-              <Title level={4} className="text-center mb-6 !text-white">{QUESTIONS[currentQ].question}</Title>
+              <Title level={4} className="text-center mb-6 !text-white">{t(`aiAssistant.companion.questions.q${currentQ}.question`)}</Title>
               <Row gutter={[16, 16]}>
                 {QUESTIONS[currentQ].options.map((opt) => (
                   <Col xs={12} key={opt.value}>
@@ -178,7 +186,7 @@ const GameCompanion: React.FC = () => {
                         onClick={() => handleAnswer(opt.value)}
                       >
                         <div className="text-3xl mb-2">{opt.icon}</div>
-                        <Text strong className="text-white">{opt.label}</Text>
+                        <Text strong className="text-white">{t(`aiAssistant.companion.questions.q${currentQ}.options.${opt.value}`)}</Text>
                       </Card>
                     </motion.div>
                   </Col>
@@ -194,7 +202,7 @@ const GameCompanion: React.FC = () => {
               <Card className="text-center py-16 bg-dark-800 border-dark-700">
                 <Spin size="large" />
                 <div className="mt-4">
-                  <Text className="text-lg text-gray-300">AI 正在根据你的性格测试结果生成推荐...</Text>
+                  <Text className="text-lg text-gray-300">{t('aiAssistant.companion.generating')}</Text>
                 </div>
               </Card>
             ) : (
@@ -203,17 +211,17 @@ const GameCompanion: React.FC = () => {
                   <div className="text-5xl mb-3">🎉</div>
                   <Title level={3} className="!text-white">
                     {matchedGame
-                      ? `「${matchedGame}」最适合你的角色推荐`
-                      : '测试完成！你的角色推荐：'}
+                      ? t('aiAssistant.companion.matchedTitle', { game: matchedGame })
+                      : t('aiAssistant.companion.completedTitle')}
                   </Title>
                   {matchedGame && (
                     <Paragraph className="text-gray-300 mb-0">
-                      基于你的性格测试结果，以下是在 <Tag color="blue">{matchedGame}</Tag> 中最适合你的角色
+                      {t('aiAssistant.companion.basedOn', { game: matchedGame })}
                     </Paragraph>
                   )}
                   {!matchedGame && gameName && (
                     <Paragraph className="text-gray-300 mb-0">
-                      暂未收录「{gameName}」的专属数据，以下是基于性格的通用推荐
+                      {t('aiAssistant.companion.notCollected', { game: gameName })}
                     </Paragraph>
                   )}
                 </Card>
@@ -234,12 +242,12 @@ const GameCompanion: React.FC = () => {
                           </div>
                           <Paragraph className="text-gray-300 text-center">{r.description}</Paragraph>
                           <div className="mb-3">
-                            <Text className="text-white">匹配度</Text>
+                            <Text className="text-white">{t('aiAssistant.companion.matchRate')}</Text>
                             <Progress percent={r.matchScore} strokeColor="#722ed1" size="small" />
                           </div>
                           <Divider className="my-3 border-dark-600" />
                           <div>
-                            <Text className="font-medium block mb-1 text-white">🎯 开心玩法</Text>
+                            <Text className="font-medium block mb-1 text-white">{t('aiAssistant.companion.playStyle')}</Text>
                             <Paragraph className="text-gray-400 mb-0">{r.playStyle}</Paragraph>
                           </div>
                         </Card>
@@ -251,7 +259,7 @@ const GameCompanion: React.FC = () => {
             )}
 
             <div className="text-center mt-6">
-              <Button icon={<ReloadOutlined />} onClick={handleRestart}>重新测试</Button>
+              <Button icon={<ReloadOutlined />} onClick={handleRestart}>{t('aiAssistant.companion.restart')}</Button>
             </div>
           </motion.div>
         )}

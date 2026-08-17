@@ -669,6 +669,170 @@
       "button": "AI機能を探す"
     }
   },
+  "aiAssistant": {
+    "seo": {
+      "title": "AI アシスタント | GameHub",
+      "description": "GameHub AI アシスタント — AI チャット、攻略、検索、キャラクター推薦、3D アバター作成。",
+      "keywords": "AIアシスタント, AIチャット, AI攻略, AI検索, AIキャラクター推薦"
+    },
+    "hero": {
+      "title": "AI アシスタント",
+      "subtitle": "GameHub AI アシスタントは、ゲームチャットの相手、攻略検索、スマートな Q&A、キャラクター推薦、3D アバター作成など、多彩な AI 機能をお届けします。"
+    },
+    "capabilities": {
+      "chat": {
+        "title": "ソウルステーション",
+        "desc": "ゲームのソウルステーション — ゲームの物語を語り、AI とゲームの話題を語り合いましょう"
+      },
+      "guides": {
+        "title": "AI 攻略",
+        "desc": "ゲーム攻略・レビュー・動画チュートリアルを検索 — ゲーム知識のワンストップライブラリ"
+      },
+      "companion": {
+        "title": "キャラクターマッチング",
+        "desc": "性格テストで、あなたにぴったりのゲームキャラクターと遊び方を AI が推薦します"
+      }
+    },
+    "tips": {
+      "title": "ヒント",
+      "chat": "AI チャット",
+      "chatDesc": "ゲームと気分を選んで、AI とゲーム体験や感情を語り合いましょう",
+      "guides": "AI 攻略",
+      "guidesDesc": "任意のゲーム名を検索して、攻略・動画・二次創作コンテンツを取得"
+    },
+    "soul": {
+      "title": "ソウルステーション",
+      "subtitle": "正解も不正解もありません。ただ話を聞くだけ。ゲームの物語を語ってください",
+      "moodLabel": "今日の気分：",
+      "moods": {
+        "happy": "嬉しい",
+        "angry": "怒っている",
+        "sad": "悲しい",
+        "calm": "落ち着いている",
+        "excited": "興奮",
+        "tired": "疲れた"
+      },
+      "gameLabel": "プレイ中のゲーム：",
+      "gamePlaceholder": "ゲームを選択または検索...",
+      "clear": "クリア",
+      "topics": {
+        "t0": "味方をいじる",
+        "t1": "ガチャ爆死",
+        "t2": "ボスが難しすぎる",
+        "t3": "面白い瞬間",
+        "t4": "ボコボコにされた",
+        "t5": "ついにクリア",
+        "t6": "ストーリー考察",
+        "t7": "ゲームのおすすめ"
+      },
+      "welcome": "こんにちは！私はゲームのソウルステーションです 🌟 今日のゲームで嬉しかったことや悩んだことはありますか？お気軽に話しかけてくださいね~",
+      "newChat": "+ 新しい会話",
+      "newConversation": "新しい会話",
+      "typing": "AI が入力中...",
+      "inputPlaceholder": "考えを書いてみてください...",
+      "send": "送信",
+      "error": "申し訳ありません、AI が一時的に応答できません。後でもう一度お試しください 🙏",
+      "gameContext": "(現在「{{game}}」について話しています。このゲームに沿って応答してください)",
+      "topicPrompt": "「{{topic}}」について話しましょう！"
+    },
+    "npc": {
+      "title": "AI ゲーム百科",
+      "subtitle": "ゲームの百科事典 — 攻略検索、注目の動画、プレイヤーの二次創作をワンストップで",
+      "searchPlaceholder": "ゲーム攻略・動画・二次創作を検索...",
+      "searchButton": "検索",
+      "tabGuides": "攻略",
+      "tabVideos": "動画",
+      "tabFanart": "二次創作",
+      "noGuidesFound": "該当する攻略が見つかりません",
+      "noGuides": "攻略データがありません",
+      "noVideosFound": "該当する動画が見つかりません",
+      "noVideos": "動画データがありません",
+      "noFanartFound": "該当する二次創作が見つかりません",
+      "noFanart": "二次創作データがありません",
+      "viewsUnit": "閲覧",
+      "playsUnit": "再生",
+      "videosUnit": "件の動画",
+      "hotRecommendation": "おすすめ",
+      "playerCreation": "プレイヤー作品",
+      "fanartTypes": {
+        "illustration": "イラスト",
+        "fanart": "二次創作",
+        "cosplay": "コスプレ",
+        "figure": "フィギュア"
+      },
+      "viewOriginal": "原文を見る",
+      "guideDetail": "攻略詳細",
+      "general": "一般",
+      "noDescription": "詳細な説明はありません",
+      "other": "その他"
+    },
+    "companion": {
+      "title": "AI キャラクターマッチング",
+      "subtitle": "ゲーム名を入力 + 性格テストで、あなたに最適なキャラクターと遊び方を推薦",
+      "startTitle": "あなたの本命キャラクターを見つけよう",
+      "startDesc": "まずプレイ中のゲーム名を入力し、性格テストに答えると、AI が最適なキャラクターと楽しい遊び方を推薦します！",
+      "gamePlaceholder": "ゲーム名を入力（例：原神、エルデンリング、リーグ・オブ・レジェンド...）",
+      "more": "もっと見る...",
+      "presetGames": {
+        "g0": "原神",
+        "g1": "エルデンリング",
+        "g2": "黒神話：悟空",
+        "g3": "王者栄耀",
+        "g4": "リーグ・オブ・レジェンド",
+        "g5": "崩壊：スターレイル"
+      },
+      "start": "テスト開始",
+      "enterGameFirst": "先にゲーム名を入力してください",
+      "currentGame": "現在のゲーム：{{game}}",
+      "question": "質問 {{current}}/{{total}}",
+      "generating": "AI が性格テストの結果に基づいて推薦を生成中...",
+      "matchedTitle": "「{{game}}」であなたに最適なキャラクター推薦",
+      "completedTitle": "テスト完了！あなたのキャラクター推薦：",
+      "basedOn": "性格テストの結果に基づくと、{{game}} であなたに最適なキャラクターはこちらです",
+      "notCollected": "「{{game}}」の専用データはまだありません。性格に基づく一般的な推薦です",
+      "matchRate": "マッチ度",
+      "playStyle": "🎯 楽しい遊び方",
+      "restart": "もう一度テスト",
+      "questions": {
+        "q0": {
+          "question": "ゲームでどのプレイスタイルを好みますか？",
+          "options": {
+            "combat": "熱血バトル",
+            "strategy": "戦略的な頭脳プレイ",
+            "explore": "自由探索",
+            "social": "ソーシャル交流"
+          }
+        },
+        "q1": {
+          "question": "好きなゲームスタイルは？",
+          "options": {
+            "action": "テンポの速いアクション",
+            "rpg": "ロールプレイング",
+            "simulation": "シミュレーション経営",
+            "puzzle": "謎解き"
+          }
+        },
+        "q2": {
+          "question": "チームでは通常どの役割を担いますか？",
+          "options": {
+            "leader": "チームリーダー",
+            "damage": "メイン火力",
+            "support": "サポート",
+            "solo": "ソロプレイヤー"
+          }
+        },
+        "q3": {
+          "question": "ゲームの難易度はどれが好み？",
+          "options": {
+            "easy": "のんびり",
+            "medium": "適度なチャレンジ",
+            "hard": "ハードコア",
+            "expert": "極限の難易度"
+          }
+        }
+      }
+    }
+  },
   "common": {
     "confirm": "確認",
     "cancel": "キャンセル",

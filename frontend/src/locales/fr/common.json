@@ -669,6 +669,170 @@
       "button": "Explorer les fonctions IA"
     }
   },
+  "aiAssistant": {
+    "seo": {
+      "title": "Assistant IA | GameHub",
+      "description": "Assistant IA de GameHub — chat IA, guides, recherche, recommandations de personnages et avatars 3D.",
+      "keywords": "assistant IA, chat IA, guides IA, recherche IA, recommandation de personnage IA"
+    },
+    "hero": {
+      "title": "Assistant IA",
+      "subtitle": "L'assistant IA de GameHub vous apporte de la compagnie pour discuter de jeux, la recherche de guides, des questions-réponses intelligentes, des recommandations de personnages, la personnalisation d'avatars 3D et toute une gamme de capacités IA."
+    },
+    "capabilities": {
+      "chat": {
+        "title": "Station de l'Âme",
+        "desc": "La station de l'âme des jeux — partagez vos histoires de jeu et discutez avec l'IA de tout sujet"
+      },
+      "guides": {
+        "title": "Guides IA",
+        "desc": "Recherchez des guides, des critiques et des tutoriels vidéo — votre bibliothèque complète de connaissances de jeu"
+      },
+      "companion": {
+        "title": "Matchmaker de Personnages",
+        "desc": "Faites un test de personnalité et laissez l'IA recommander le personnage et le style de jeu qui vous conviennent"
+      }
+    },
+    "tips": {
+      "title": "Astuces",
+      "chat": "Chat IA",
+      "chatDesc": "Choisissez un jeu et une humeur, puis discutez avec l'IA de vos expériences et de vos émotions",
+      "guides": "Guides IA",
+      "guidesDesc": "Recherchez n'importe quel nom de jeu pour obtenir des guides, des vidéos et des créations de fans"
+    },
+    "soul": {
+      "title": "Station de l'Âme",
+      "subtitle": "Ici, pas de jugement — juste une oreille attentive. Venez partager vos histoires de jeu",
+      "moodLabel": "Humeur du jour :",
+      "moods": {
+        "happy": "Content",
+        "angry": "En colère",
+        "sad": "Triste",
+        "calm": "Calme",
+        "excited": "Excité",
+        "tired": "Fatigué"
+      },
+      "gameLabel": "Jeu auquel vous jouez :",
+      "gamePlaceholder": "Sélectionnez ou recherchez un jeu...",
+      "clear": "Effacer",
+      "topics": {
+        "t0": "Critiquer ses coéquipiers",
+        "t1": "Gacha malchanceux",
+        "t2": "Boss trop dur",
+        "t3": "Moments drôles",
+        "t4": "Je me suis fait écraser",
+        "t5": "Enfin terminé",
+        "t6": "Discussion sur l'histoire",
+        "t7": "Suggestions de jeux"
+      },
+      "welcome": "Salut ! Je suis ta Station de l'Âme des jeux 🌟 Quelque chose d'amusant ou de frustrant s'est-il passé dans tes jeux aujourd'hui ? N'hésite pas à discuter avec moi~",
+      "newChat": "+ Nouvelle discussion",
+      "newConversation": "Nouvelle conversation",
+      "typing": "L'IA est en train d'écrire...",
+      "inputPlaceholder": "Partagez vos pensées...",
+      "send": "Envoyer",
+      "error": "Désolé, l'IA est temporairement indisponible. Réessayez plus tard 🙏",
+      "gameContext": "(Vous discutez actuellement de \"{{game}}\", veuillez répondre autour de ce jeu)",
+      "topicPrompt": "Parlons de \"{{topic}}\" !"
+    },
+    "npc": {
+      "title": "Encyclopédie de Jeux IA",
+      "subtitle": "Votre encyclopédie des jeux — guides, vidéos passionnantes et créations de joueurs, au même endroit",
+      "searchPlaceholder": "Recherchez des guides, des vidéos ou des créations de fans...",
+      "searchButton": "Rechercher",
+      "tabGuides": "Guides",
+      "tabVideos": "Vidéos",
+      "tabFanart": "Créations de fans",
+      "noGuidesFound": "Aucun guide correspondant trouvé",
+      "noGuides": "Aucun guide disponible",
+      "noVideosFound": "Aucune vidéo correspondante trouvée",
+      "noVideos": "Aucune vidéo disponible",
+      "noFanartFound": "Aucune création correspondante trouvée",
+      "noFanart": "Aucune création disponible",
+      "viewsUnit": "vues",
+      "playsUnit": "lectures",
+      "videosUnit": "vidéos",
+      "hotRecommendation": "Sélection",
+      "playerCreation": "Création de joueur",
+      "fanartTypes": {
+        "illustration": "Illustration",
+        "fanart": "Fan Art",
+        "cosplay": "Cosplay",
+        "figure": "Figurine"
+      },
+      "viewOriginal": "Voir l'original",
+      "guideDetail": "Détails du guide",
+      "general": "Général",
+      "noDescription": "Aucune description détaillée",
+      "other": "Autre"
+    },
+    "companion": {
+      "title": "Matchmaker de Personnages IA",
+      "subtitle": "Entrez un nom de jeu + faites un test de personnalité pour des recommandations de personnage et de style de jeu",
+      "startTitle": "Découvrez votre personnage principal",
+      "startDesc": "Entrez d'abord le jeu auquel vous jouez, puis faites le test de personnalité — l'IA vous recommandera le personnage et le style de jeu parfaits !",
+      "gamePlaceholder": "Entrez un nom de jeu, ex. Genshin Impact, Elden Ring, League of Legends...",
+      "more": "Plus...",
+      "presetGames": {
+        "g0": "Genshin Impact",
+        "g1": "Elden Ring",
+        "g2": "Black Myth: Wukong",
+        "g3": "Honor of Kings",
+        "g4": "League of Legends",
+        "g5": "Honkai: Star Rail"
+      },
+      "start": "Commencer le test",
+      "enterGameFirst": "Veuillez d'abord saisir un nom de jeu",
+      "currentGame": "Jeu actuel : {{game}}",
+      "question": "Question {{current}}/{{total}}",
+      "generating": "L'IA génère des recommandations selon votre test de personnalité...",
+      "matchedTitle": "Recommandations de personnages pour \"{{game}}\"",
+      "completedTitle": "Test terminé ! Vos recommandations de personnages :",
+      "basedOn": "D'après votre test de personnalité, voici les personnages de {{game}} qui vous conviennent le mieux",
+      "notCollected": "Pas encore de données dédiées pour \"{{game}}\" — voici des recommandations générales selon votre personnalité",
+      "matchRate": "Taux de correspondance",
+      "playStyle": "🎯 Style de jeu amusant",
+      "restart": "Refaire le test",
+      "questions": {
+        "q0": {
+          "question": "Quel style de jeu préférez-vous ?",
+          "options": {
+            "combat": "Combat intense",
+            "strategy": "Planification stratégique",
+            "explore": "Exploration libre",
+            "social": "Interaction sociale"
+          }
+        },
+        "q1": {
+          "question": "Quel est votre style de jeu préféré ?",
+          "options": {
+            "action": "Action rapide",
+            "rpg": "Jeux de rôle",
+            "simulation": "Simulation et gestion",
+            "puzzle": "Casse-têtes"
+          }
+        },
+        "q2": {
+          "question": "Quel rôle jouez-vous habituellement en équipe ?",
+          "options": {
+            "leader": "Chef d'équipe",
+            "damage": "DPS principal",
+            "support": "Soutien",
+            "solo": "Joueur solo"
+          }
+        },
+        "q3": {
+          "question": "Quelle difficulté préférez-vous ?",
+          "options": {
+            "easy": "Décontracté",
+            "medium": "Défi modéré",
+            "hard": "Hardcore",
+            "expert": "Difficulté extrême"
+          }
+        }
+      }
+    }
+  },
   "common": {
     "confirm": "Confirmer",
     "cancel": "Annuler",

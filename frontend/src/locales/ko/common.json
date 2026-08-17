@@ -669,6 +669,170 @@
       "button": "AI 기능 탐색"
     }
   },
+  "aiAssistant": {
+    "seo": {
+      "title": "AI 어시스턴트 | GameHub",
+      "description": "GameHub AI 어시스턴트 — AI 채팅, 공략, 검색, 캐릭터 추천, 3D 아바타 제작.",
+      "keywords": "AI 어시스턴트, AI 채팅, AI 공략, AI 검색, AI 캐릭터 추천"
+    },
+    "hero": {
+      "title": "AI 어시스턴트",
+      "subtitle": "GameHub AI 어시스턴트는 게임 채팅 동반자, 공략 검색, 스마트 Q&A, 캐릭터 추천, 3D 아바타 커스터마이징 등 다양한 AI 기능을 제공합니다."
+    },
+    "capabilities": {
+      "chat": {
+        "title": "소울 스테이션",
+        "desc": "게임 소울 스테이션 — 게임 이야기를 나누고 AI와 게임 주제에 대해 대화하세요"
+      },
+      "guides": {
+        "title": "AI 공략",
+        "desc": "게임 공략·리뷰·영상 튜토리얼 검색 — 원스톱 게임 지식 라이브러리"
+      },
+      "companion": {
+        "title": "캐릭터 매칭",
+        "desc": "성격 테스트를 마치면 AI가 가장 잘 맞는 게임 캐릭터와 플레이 스타일을 추천합니다"
+      }
+    },
+    "tips": {
+      "title": "사용 팁",
+      "chat": "AI 채팅",
+      "chatDesc": "게임과 기분을 고르고 AI와 게임 경험과 감정을 나눠보세요",
+      "guides": "AI 공략",
+      "guidesDesc": "아무 게임 이름이나 검색해 공략·영상·2차 창작 콘텐츠를 확인하세요"
+    },
+    "soul": {
+      "title": "소울 스테이션",
+      "subtitle": "옳고 그름은 없습니다. 그저 들어드릴 뿐이에요. 게임 이야기를 들려주세요",
+      "moodLabel": "오늘의 기분:",
+      "moods": {
+        "happy": "기쁨",
+        "angry": "화남",
+        "sad": "슬픔",
+        "calm": "평온",
+        "excited": "신남",
+        "tired": "피곤"
+      },
+      "gameLabel": "플레이 중인 게임:",
+      "gamePlaceholder": "게임을 선택하거나 검색...",
+      "clear": "지우기",
+      "topics": {
+        "t0": "팀원 디스하기",
+        "t1": "가챠 폭망",
+        "t2": "보스 너무 어려움",
+        "t3": "웃긴 순간",
+        "t4": "완전 털림",
+        "t5": "드디어 클리어",
+        "t6": "스토리 토론",
+        "t7": "게임 추천"
+      },
+      "welcome": "안녕하세요! 저는 게임 소울 스테이션이에요 🌟 오늘 게임에서 즐겁거나 속상한 일이 있었나요? 편하게 얘기해 주세요~",
+      "newChat": "+ 새 대화",
+      "newConversation": "새 대화",
+      "typing": "AI 입력 중...",
+      "inputPlaceholder": "생각을 적어보세요...",
+      "send": "보내기",
+      "error": "죄송합니다. AI가 일시적으로 응답할 수 없어요. 잠시 후 다시 시도해 주세요 🙏",
+      "gameContext": "(현재 「{{game}}」에 대해 이야기 중입니다. 이 게임에 맞춰 응답해 주세요)",
+      "topicPrompt": "「{{topic}}」에 대해 이야기해 볼까요!"
+    },
+    "npc": {
+      "title": "AI 게임 백과",
+      "subtitle": "게임 백과사전 — 공략 검색, 멋진 영상, 플레이어 2차 창작을 한곳에서",
+      "searchPlaceholder": "게임 공략·영상·2차 창작 검색...",
+      "searchButton": "검색",
+      "tabGuides": "공략",
+      "tabVideos": "영상",
+      "tabFanart": "2차 창작",
+      "noGuidesFound": "관련 공략을 찾지 못했습니다",
+      "noGuides": "공략 데이터 없음",
+      "noVideosFound": "관련 영상을 찾지 못했습니다",
+      "noVideos": "영상 데이터 없음",
+      "noFanartFound": "관련 2차 창작을 찾지 못했습니다",
+      "noFanart": "2차 창작 데이터 없음",
+      "viewsUnit": "조회",
+      "playsUnit": "재생",
+      "videosUnit": "개의 영상",
+      "hotRecommendation": "인기 추천",
+      "playerCreation": "플레이어 창작",
+      "fanartTypes": {
+        "illustration": "일러스트",
+        "fanart": "2차 창작",
+        "cosplay": "코스프레",
+        "figure": "피규어"
+      },
+      "viewOriginal": "원문 보기",
+      "guideDetail": "공략 상세",
+      "general": "일반",
+      "noDescription": "상세 설명 없음",
+      "other": "기타"
+    },
+    "companion": {
+      "title": "AI 캐릭터 매칭",
+      "subtitle": "게임 이름 입력 + 성격 테스트로 나에게 꼭 맞는 캐릭터와 플레이 스타일 추천",
+      "startTitle": "나의 본캐를 찾아보세요",
+      "startDesc": "먼저 플레이 중인 게임 이름을 입력하고 성격 테스트를 진행하면, AI가 가장 잘 맞는 캐릭터와 재미있는 플레이 스타일을 추천해 드려요!",
+      "gamePlaceholder": "게임 이름 입력, 예: 원신, 엘든 링, 리그 오브 레전드...",
+      "more": "더 보기...",
+      "presetGames": {
+        "g0": "원신",
+        "g1": "엘든 링",
+        "g2": "검은 신화: 오공",
+        "g3": "왕자영요",
+        "g4": "리그 오브 레전드",
+        "g5": "붕괴: 스타레일"
+      },
+      "start": "테스트 시작",
+      "enterGameFirst": "먼저 게임 이름을 입력해 주세요",
+      "currentGame": "현재 게임: {{game}}",
+      "question": "질문 {{current}}/{{total}}",
+      "generating": "AI가 성격 테스트 결과를 바탕으로 추천을 생성 중...",
+      "matchedTitle": "「{{game}}」에서 나에게 가장 잘 맞는 캐릭터 추천",
+      "completedTitle": "테스트 완료! 나의 캐릭터 추천:",
+      "basedOn": "성격 테스트 결과를 바탕으로, {{game}}에서 나에게 가장 잘 맞는 캐릭터는 다음과 같습니다",
+      "notCollected": "「{{game}}」의 전용 데이터가 아직 없어요. 성격 기반 일반 추천입니다",
+      "matchRate": "매칭도",
+      "playStyle": "🎯 재미있는 플레이 스타일",
+      "restart": "다시 테스트",
+      "questions": {
+        "q0": {
+          "question": "게임에서 어떤 플레이 스타일을 선호하나요?",
+          "options": {
+            "combat": "격렬한 전투",
+            "strategy": "전략적 두뇌 플레이",
+            "explore": "자유 탐험",
+            "social": "소셜 교류"
+          }
+        },
+        "q1": {
+          "question": "가장 좋아하는 게임 스타일은?",
+          "options": {
+            "action": "빠른 템포 액션",
+            "rpg": "롤플레잉",
+            "simulation": "시뮬레이션 경영",
+            "puzzle": "두뇌 퍼즐"
+          }
+        },
+        "q2": {
+          "question": "팀에서 보통 어떤 역할을 맡나요?",
+          "options": {
+            "leader": "팀 리더",
+            "damage": "메인 딜러",
+            "support": "서포터",
+            "solo": "솔로 플레이어"
+          }
+        },
+        "q3": {
+          "question": "게임 난이도 선호는?",
+          "options": {
+            "easy": "가볍게 즐기기",
+            "medium": "적당한 도전",
+            "hard": "하드코어",
+            "expert": "극한 난이도"
+          }
+        }
+      }
+    }
+  },
   "common": {
     "confirm": "확인",
     "cancel": "취소",

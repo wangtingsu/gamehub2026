@@ -12,6 +12,7 @@ import { useState, useMemo } from 'react';
 import { Card, Input, Tabs, Tag, Typography, Row, Col, Empty, Button, Spin, Modal } from 'antd';
 import { SearchOutlined, PlayCircleOutlined, FileTextOutlined, HeartOutlined, RightOutlined, LoadingOutlined } from '@ant-design/icons';
 import { motion } from 'framer-motion';
+import { useTranslation } from 'react-i18next';
 import { useGameNpcSearch, useGuides, useTrendingContent } from '../../api/hooks';
 
 const { Title, Text } = Typography;
@@ -21,6 +22,8 @@ const { Title, Text } = Typography;
  * 管理搜索、标签页切换、视频播放弹窗和攻略详情弹窗
  */
 const GameNPC: React.FC = () => {
+  const { t } = useTranslation();
+
   /* ====== 搜索状态 ====== */
   const [searchText, setSearchText] = useState('');       // 搜索输入文本
   const [hasSearched, setHasSearched] = useState(false);   // 是否已执行过搜索
@@ -38,27 +41,32 @@ const GameNPC: React.FC = () => {
   const defaultVideos = useMemo(() => {
     return trendingData.slice(0, 6).map((item) => ({
       title: item.title,
-      author: '热门推荐',
+      author: t('aiAssistant.npc.hotRecommendation'),
       views: Math.floor((item.likes || 0) / 10),
       duration: `${Math.floor(Math.random() * 15) + 3}:${String(Math.floor(Math.random() * 60)).padStart(2, '0')}`,
       coverImageUrl: item.coverImageUrl,
       url: '',
     }));
-  }, [trendingData]);
+  }, [trendingData, t]);
 
   /**
    * 将 trending 内容映射为二创格式
-   * 取第 6-12 条数据，随机分配创作类型（插画、同人、Cosplay、手办）
+   * 取第 6-12 条数据，随机分配创作类型
    */
   const defaultFanart = useMemo(() => {
-    const types = ['插画', '同人', 'Cosplay', '手办'];
+    const types = [
+      t('aiAssistant.npc.fanartTypes.illustration'),
+      t('aiAssistant.npc.fanartTypes.fanart'),
+      t('aiAssistant.npc.fanartTypes.cosplay'),
+      t('aiAssistant.npc.fanartTypes.figure'),
+    ];
     return trendingData.slice(6, 12).map((item) => ({
       title: item.title,
-      author: '玩家创作',
+      author: t('aiAssistant.npc.playerCreation'),
       type: types[Math.floor(Math.random() * types.length)],
       likes: item.likes || Math.floor(Math.random() * 500) + 100,
     }));
-  }, [trendingData]);
+  }, [trendingData, t]);
 
   const handleSearch = (value: string) => {
     const trimmed = value.trim();
@@ -81,30 +89,30 @@ const GameNPC: React.FC = () => {
   const groupedVideos = useMemo(() => {
     const grouped: Record<string, any[]> = {};
     videos.forEach((v: any) => {
-      const p = v.platform || '其他';
+      const p = v.platform || t('aiAssistant.npc.other');
       if (!grouped[p]) grouped[p] = [];
       grouped[p].push(v);
     });
     return Object.entries(grouped);
-  }, [videos]);
+  }, [videos, t]);
 
   return (
     <div className="space-y-5 ai-npc-page">
       <div className="text-center mb-4">
-        <Title level={4} className="!mb-2 !text-white" style={{ fontSize: '3rem' }}>🤖 AI 游戏百科</Title>
-        <Text className="text-gray-300" style={{ fontSize: '1.8rem' }}>你的游戏百科全书 — 攻略查询、精彩视频、玩家二创，一站式搞定</Text>
+        <Title level={4} className="!mb-2 !text-white" style={{ fontSize: '3rem' }}>🤖 {t('aiAssistant.npc.title')}</Title>
+        <Text className="text-gray-300" style={{ fontSize: '1.8rem' }}>{t('aiAssistant.npc.subtitle')}</Text>
       </div>
 
       {/* 搜索 */}
       <div style={{ maxWidth: 600, margin: '0 auto' }}>
         <Input.Search
-          placeholder="搜索游戏攻略、视频或二创..."
+          placeholder={t('aiAssistant.npc.searchPlaceholder')}
           size="large"
           value={searchText}
           onChange={(e) => setSearchText(e.target.value)}
           onSearch={handleSearch}
           loading={isPending}
-          enterButton="搜索"
+          enterButton={t('aiAssistant.npc.searchButton')}
         />
       </div>
 
@@ -116,11 +124,11 @@ const GameNPC: React.FC = () => {
         items={[
           {
             key: 'guides',
-            label: <span><FileTextOutlined /> 攻略 ({guides.length})</span>,
+            label: <span><FileTextOutlined /> {t('aiAssistant.npc.tabGuides')} ({guides.length})</span>,
             children: isLoadingDefault ? (
               <div className="flex justify-center py-12"><Spin size="large" /></div>
             ) : guides.length === 0 ? (
-              <Empty description={hasSearched ? '未找到相关攻略' : '暂无攻略数据'} />
+              <Empty description={hasSearched ? t('aiAssistant.npc.noGuidesFound') : t('aiAssistant.npc.noGuides')} />
             ) : (
               <Row gutter={[16, 16]}>
                 {guides.map((item: any, idx: number) => (
@@ -133,7 +141,7 @@ const GameNPC: React.FC = () => {
                             <Text className="font-medium block truncate">{item.title}</Text>
                             <div className="flex items-center gap-2 mt-1">
                               <Tag color={item.difficulty === '简单' ? 'green' : item.difficulty === '中等' ? 'orange' : item.difficulty === '困难' ? 'red' : 'purple'}>{item.difficulty}</Tag>
-                              <Text type="secondary" className="text-xs text-gray-400">{item.views}w 浏览</Text>
+                              <Text type="secondary" className="text-xs text-gray-400">{item.views}w {t('aiAssistant.npc.viewsUnit')}</Text>
                             </div>
                           </div>
                         </div>
@@ -146,18 +154,18 @@ const GameNPC: React.FC = () => {
           },
           {
             key: 'videos',
-            label: <span><PlayCircleOutlined /> 视频 ({videos.length})</span>,
+            label: <span><PlayCircleOutlined /> {t('aiAssistant.npc.tabVideos')} ({videos.length})</span>,
             children: isLoadingDefault ? (
               <div className="flex justify-center py-12"><Spin size="large" /></div>
             ) : videos.length === 0 ? (
-              <Empty description={hasSearched ? '未找到相关视频' : '暂无视频数据'} />
+              <Empty description={hasSearched ? t('aiAssistant.npc.noVideosFound') : t('aiAssistant.npc.noVideos')} />
             ) : (
               <div className="space-y-6">
                 {groupedVideos.map(([platform, items]: [string, any[]]) => (
                   <div key={platform}>
                     <div className="flex items-center gap-2 mb-3">
                       <Tag color={platform==='B站'?'pink':platform==='抖音'?'cyan':platform==='腾讯视频'?'blue':platform==='YouTube'?'red':'purple'} className="text-sm px-3 py-0.5">{platform}</Tag>
-                      <Text type="secondary" className="text-sm">{items.length} 个视频</Text>
+                      <Text type="secondary" className="text-sm">{items.length} {t('aiAssistant.npc.videosUnit')}</Text>
                     </div>
                     <Row gutter={[16, 16]}>
                       {items.map((item: any, idx: number) => (
@@ -183,7 +191,7 @@ const GameNPC: React.FC = () => {
                         <div className="text-sm font-medium text-gray-200 line-clamp-2 mb-2" title={item.title}>{item.title}</div>
                         <div className="flex items-center justify-between text-xs text-gray-500">
                           <span className="truncate mr-2">{item.author}</span>
-                          <span>{item.views}w 播放</span>
+                          <span>{item.views}w {t('aiAssistant.npc.playsUnit')}</span>
                         </div>
                       </Card>
                     </motion.div>
@@ -197,11 +205,11 @@ const GameNPC: React.FC = () => {
           },
           {
             key: 'fanart',
-            label: <span><HeartOutlined /> 二创 ({fanart.length})</span>,
+            label: <span><HeartOutlined /> {t('aiAssistant.npc.tabFanart')} ({fanart.length})</span>,
             children: isLoadingDefault ? (
               <div className="flex justify-center py-12"><Spin size="large" /></div>
             ) : fanart.length === 0 ? (
-              <Empty description={hasSearched ? '未找到相关二创' : '暂无二创数据'} />
+              <Empty description={hasSearched ? t('aiAssistant.npc.noFanartFound') : t('aiAssistant.npc.noFanart')} />
             ) : (
               <Row gutter={[16, 16]}>
                 {fanart.map((item: any, idx: number) => (
@@ -234,12 +242,12 @@ const GameNPC: React.FC = () => {
 
       {/* 攻略详情弹窗 */}
       <Modal
-        title={readingGuide?.title || '攻略详情'}
+        title={readingGuide?.title || t('aiAssistant.npc.guideDetail')}
         open={!!readingGuide}
         onCancel={() => setReadingGuide(null)}
         footer={readingGuide?.url ? (
           <a href={readingGuide.url} target="_blank" rel="noopener noreferrer">
-            <Button type="primary" icon={<RightOutlined />}>查看原文</Button>
+            <Button type="primary" icon={<RightOutlined />}>{t('aiAssistant.npc.viewOriginal')}</Button>
           </a>
         ) : null}
         width={640}
@@ -248,11 +256,11 @@ const GameNPC: React.FC = () => {
         <div className="space-y-4">
           <div className="flex items-center gap-3">
             <Tag color={readingGuide?.difficulty === '简单' ? 'green' : readingGuide?.difficulty === '中等' ? 'orange' : readingGuide?.difficulty === '困难' ? 'red' : 'purple'}>
-              {readingGuide?.difficulty || '通用'}
+              {readingGuide?.difficulty || t('aiAssistant.npc.general')}
             </Tag>
-            <Text className="text-gray-400">{readingGuide?.views}w 浏览</Text>
+            <Text className="text-gray-400">{readingGuide?.views}w {t('aiAssistant.npc.viewsUnit')}</Text>
           </div>
-          <p className="text-gray-300 leading-relaxed">{readingGuide?.description || '暂无详细描述'}</p>
+          <p className="text-gray-300 leading-relaxed">{readingGuide?.description || t('aiAssistant.npc.noDescription')}</p>
         </div>
       </Modal>
     </div>

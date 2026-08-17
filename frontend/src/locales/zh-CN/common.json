@@ -665,6 +665,170 @@
       "button": "探索AI功能"
     }
   },
+  "aiAssistant": {
+    "seo": {
+      "title": "AI 助手 | GameHub",
+      "description": "GameHub AI 智能助手 — AI 聊天、攻略、搜索、角色推荐、人物自画像",
+      "keywords": "AI助手, AI聊天, AI攻略, AI搜索, AI角色推荐"
+    },
+    "hero": {
+      "title": "AI 助手",
+      "subtitle": "GameHub AI 智能助手，为你提供游戏聊天陪伴、攻略搜索、智能问答、角色推荐、3D 形象定制等全方位 AI 能力"
+    },
+    "capabilities": {
+      "chat": {
+        "title": "心灵驿站",
+        "desc": "游戏心灵驿站，倾诉你的游戏故事，与 AI 畅聊游戏话题"
+      },
+      "guides": {
+        "title": "AI 攻略",
+        "desc": "搜索游戏攻略、评测、视频教程，一站式游戏知识库"
+      },
+      "companion": {
+        "title": "命理师",
+        "desc": "完成性格测试，AI 为你推荐最匹配的游戏角色和玩法"
+      }
+    },
+    "tips": {
+      "title": "使用提示",
+      "chat": "AI 聊天",
+      "chatDesc": "选择游戏和心情，与 AI 畅聊游戏体验和情感",
+      "guides": "AI 攻略",
+      "guidesDesc": "搜索任意游戏名，获取攻略、视频和二创内容"
+    },
+    "soul": {
+      "title": "心灵驿站",
+      "subtitle": "这里没有对错，只有倾听。聊聊你的游戏故事吧",
+      "moodLabel": "今天心情：",
+      "moods": {
+        "happy": "开心",
+        "angry": "生气",
+        "sad": "难过",
+        "calm": "平静",
+        "excited": "兴奋",
+        "tired": "累了"
+      },
+      "gameLabel": "正在玩的游戏：",
+      "gamePlaceholder": "选择或搜索游戏...",
+      "clear": "清除",
+      "topics": {
+        "t0": "吐槽坑队友",
+        "t1": "抽卡沉船",
+        "t2": "BOSS太难",
+        "t3": "搞笑瞬间",
+        "t4": "被虐哭了",
+        "t5": "终于通关",
+        "t6": "剧情讨论",
+        "t7": "游戏建议"
+      },
+      "welcome": "嗨！我是你的游戏心灵驿站 🌟 今天打游戏遇到了什么开心或槽心的事？都可以跟我聊聊~",
+      "newChat": "+ 新对话",
+      "newConversation": "新对话",
+      "typing": "AI 正在输入...",
+      "inputPlaceholder": "说说你的想法...",
+      "send": "发送",
+      "error": "抱歉，AI 暂时无法回复，请稍后再试 🙏",
+      "gameContext": "(当前正在讨论游戏《{{game}}》，请围绕此游戏回应)",
+      "topicPrompt": "来聊聊「{{topic}}」吧！"
+    },
+    "npc": {
+      "title": "AI 游戏百科",
+      "subtitle": "你的游戏百科全书 — 攻略查询、精彩视频、玩家二创，一站式搞定",
+      "searchPlaceholder": "搜索游戏攻略、视频或二创...",
+      "searchButton": "搜索",
+      "tabGuides": "攻略",
+      "tabVideos": "视频",
+      "tabFanart": "二创",
+      "noGuidesFound": "未找到相关攻略",
+      "noGuides": "暂无攻略数据",
+      "noVideosFound": "未找到相关视频",
+      "noVideos": "暂无视频数据",
+      "noFanartFound": "未找到相关二创",
+      "noFanart": "暂无二创数据",
+      "viewsUnit": "浏览",
+      "playsUnit": "播放",
+      "videosUnit": "个视频",
+      "hotRecommendation": "热门推荐",
+      "playerCreation": "玩家创作",
+      "fanartTypes": {
+        "illustration": "插画",
+        "fanart": "同人",
+        "cosplay": "Cosplay",
+        "figure": "手办"
+      },
+      "viewOriginal": "查看原文",
+      "guideDetail": "攻略详情",
+      "general": "通用",
+      "noDescription": "暂无详细描述",
+      "other": "其他"
+    },
+    "companion": {
+      "title": "AI 命理师",
+      "subtitle": "输入游戏名称 + 性格测试，精准推荐最适合你的角色和玩法",
+      "startTitle": "发现你的本命角色",
+      "startDesc": "先输入你正在玩的游戏名称，再通过性格测试，AI 将为你精准推荐最适合的角色和开心玩法！",
+      "gamePlaceholder": "输入游戏名称，如：原神、艾尔登法环、王者荣耀...",
+      "more": "更多...",
+      "presetGames": {
+        "g0": "原神",
+        "g1": "艾尔登法环",
+        "g2": "黑神话：悟空",
+        "g3": "王者荣耀",
+        "g4": "英雄联盟",
+        "g5": "崩坏：星穹铁道"
+      },
+      "start": "开始测试",
+      "enterGameFirst": "请先输入游戏名称",
+      "currentGame": "当前游戏：{{game}}",
+      "question": "问题 {{current}}/{{total}}",
+      "generating": "AI 正在根据你的性格测试结果生成推荐...",
+      "matchedTitle": "「{{game}}」最适合你的角色推荐",
+      "completedTitle": "测试完成！你的角色推荐：",
+      "basedOn": "基于你的性格测试结果，以下是在 {{game}} 中最适合你的角色",
+      "notCollected": "暂未收录「{{game}}」的专属数据，以下是基于性格的通用推荐",
+      "matchRate": "匹配度",
+      "playStyle": "🎯 开心玩法",
+      "restart": "重新测试",
+      "questions": {
+        "q0": {
+          "question": "你在游戏中更偏好哪种玩法？",
+          "options": {
+            "combat": "热血战斗",
+            "strategy": "运筹帷幄",
+            "explore": "自由探索",
+            "social": "社交互动"
+          }
+        },
+        "q1": {
+          "question": "你最喜欢的游戏风格是？",
+          "options": {
+            "action": "动作快节奏",
+            "rpg": "角色扮演",
+            "simulation": "模拟经营",
+            "puzzle": "解谜烧脑"
+          }
+        },
+        "q2": {
+          "question": "你在团队中通常扮演什么角色？",
+          "options": {
+            "leader": "团队领袖",
+            "damage": "输出主力",
+            "support": "辅助支援",
+            "solo": "独狼玩家"
+          }
+        },
+        "q3": {
+          "question": "你对游戏难度的偏好？",
+          "options": {
+            "easy": "轻松休闲",
+            "medium": "适中挑战",
+            "hard": "硬核挑战",
+            "expert": "极致难度"
+          }
+        }
+      }
+    }
+  },
   "common": {
     "confirm": "确定",
     "cancel": "取消",

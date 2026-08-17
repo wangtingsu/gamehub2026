@@ -12,6 +12,7 @@ import { useState, useRef, useEffect } from 'react';
 import { Card, Button, Input, Tag, Typography, Avatar, Spin, Select, Space } from 'antd';
 import { SendOutlined, HeartOutlined, BulbOutlined, LoadingOutlined, PlayCircleOutlined } from '@ant-design/icons';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useTranslation } from 'react-i18next';
 import { useSoulstationChat, useGames } from '../../api/hooks';
 import { useAuth } from '../../contexts/AuthContext';
 import apiService from '../../api';
@@ -21,23 +22,23 @@ const { TextArea } = Input;
 
 /** 话题快捷入口列表 */
 const TOPICS = [
-  { icon: '😤', label: '吐槽坑队友' },
-  { icon: '😭', label: '抽卡沉船' },
-  { icon: '🤯', label: 'BOSS太难' },
-  { icon: '😂', label: '搞笑瞬间' },
-  { icon: '💔', label: '被虐哭了' },
-  { icon: '🎉', label: '终于通关' },
-  { icon: '🤔', label: '剧情讨论' },
-  { icon: '💡', label: '游戏建议' },
+  { icon: '😤', key: 't0' },
+  { icon: '😭', key: 't1' },
+  { icon: '🤯', key: 't2' },
+  { icon: '😂', key: 't3' },
+  { icon: '💔', key: 't4' },
+  { icon: '🎉', key: 't5' },
+  { icon: '🤔', key: 't6' },
+  { icon: '💡', key: 't7' },
 ];
 
 const MOODS = [
-  { emoji: '😊', label: '开心', color: '#52c41a' },
-  { emoji: '😤', label: '生气', color: '#ff4d4f' },
-  { emoji: '😭', label: '难过', color: '#1677ff' },
-  { emoji: '😌', label: '平静', color: '#722ed1' },
-  { emoji: '🤩', label: '兴奋', color: '#fa8c16' },
-  { emoji: '😴', label: '累了', color: '#13c2c2' },
+  { emoji: '😊', key: 'happy', color: '#52c41a' },
+  { emoji: '😤', key: 'angry', color: '#ff4d4f' },
+  { emoji: '😭', key: 'sad', color: '#1677ff' },
+  { emoji: '😌', key: 'calm', color: '#722ed1' },
+  { emoji: '🤩', key: 'excited', color: '#fa8c16' },
+  { emoji: '😴', key: 'tired', color: '#13c2c2' },
 ];
 
 interface Message {
@@ -51,10 +52,12 @@ interface Message {
  * 管理心情选择、游戏选择、消息列表和 AI 对话
  */
 const SoulStation: React.FC = () => {
+  const { t } = useTranslation();
+
   /* ====== 对话状态 ====== */
   const [selectedGame, setSelectedGame] = useState<string | null>(null); // 用户选择的游戏
   const [messages, setMessages] = useState<Message[]>([
-    { role: 'ai', content: '嗨！我是你的游戏心灵驿站 🌟 今天打游戏遇到了什么开心或槽心的事？都可以跟我聊聊~', timestamp: Date.now() },
+    { role: 'ai', content: t('aiAssistant.soul.welcome'), timestamp: Date.now() },
   ]);
   const [input, setInput] = useState('');        // 当前输入文本
   const [mood, setMood] = useState<string | null>(null); // 用户当前心情
@@ -71,14 +74,14 @@ const SoulStation: React.FC = () => {
     } else {
       setHistoryList([]);
       setHistoryId(null);
-      setMessages([{ role: 'ai', content: '嗨！我是你的游戏心灵驿站 🌟 今天打游戏遇到了什么开心或槽心的事？都可以跟我聊聊~', timestamp: Date.now() }]);
+      setMessages([{ role: 'ai', content: t('aiAssistant.soul.welcome'), timestamp: Date.now() }]);
     }
   }, [isAuthenticated]);
 
   const saveHistory = async (msgs: Message[]) => {
     if (!isAuthenticated || msgs.length <= 1 || !historyId) return;
     const firstUserMsg = msgs.find(m => m.role === 'user');
-    const title = firstUserMsg?.content?.slice(0, 20) || '新对话';
+    const title = firstUserMsg?.content?.slice(0, 20) || t('aiAssistant.soul.newConversation');
     try {
       // 直接 UPDATE 当前记录
       const token = localStorage.getItem('accessToken');
@@ -101,11 +104,11 @@ const SoulStation: React.FC = () => {
   };
 
   const newChat = async () => {
-    const defaultMsg = { role: 'ai' as const, content: '嗨！我是你的游戏心灵驿站 🌟 今天打游戏遇到了什么开心或槽心的事？都可以跟我聊聊~', timestamp: Date.now() };
+    const defaultMsg = { role: 'ai' as const, content: t('aiAssistant.soul.welcome'), timestamp: Date.now() };
     setMessages([defaultMsg]);
     if (isAuthenticated) {
       try {
-        const r = await apiService.saveAiHistory({ type: 'chat', title: '新对话', content: [defaultMsg] });
+        const r = await apiService.saveAiHistory({ type: 'chat', title: t('aiAssistant.soul.newConversation'), content: [defaultMsg] });
         setHistoryId(r.id);
         const list = await apiService.getAiHistory('chat');
         setHistoryList(list || []);
@@ -132,7 +135,7 @@ const SoulStation: React.FC = () => {
   const addAiReply = async (conversationMessages: Message[]) => {
     try {
       const gameContext = selectedGame
-        ? `(当前正在讨论游戏《${selectedGame}》，请围绕此游戏回应)`
+        ? t('aiAssistant.soul.gameContext', { game: selectedGame })
         : '';
       const apiMessages = [
         ...(gameContext ? [{ role: 'system' as const, content: gameContext }] : []),
@@ -148,17 +151,17 @@ const SoulStation: React.FC = () => {
         return updated;
       });
     } catch {
-      setMessages(prev => [...prev, { role: 'ai', content: '抱歉，AI 暂时无法回复，请稍后再试 🙏', timestamp: Date.now() }]);
+      setMessages(prev => [...prev, { role: 'ai', content: t('aiAssistant.soul.error'), timestamp: Date.now() }]);
     }
   };
 
   /**
    * 点击话题快捷入口
    * 自动发送话题消息并获取 AI 回复
-   * @param topic - 话题中文名称
+   * @param topic - 话题名称
    */
   const handleTopicClick = (topic: string) => {
-    const userMsg: Message = { role: 'user', content: `来聊聊「${topic}」吧！`, timestamp: Date.now() };
+    const userMsg: Message = { role: 'user', content: t('aiAssistant.soul.topicPrompt', { topic }), timestamp: Date.now() };
     const newMessages = [...messages, userMsg];
     setMessages(newMessages);
     addAiReply(newMessages);
@@ -180,22 +183,22 @@ const SoulStation: React.FC = () => {
   return (
     <div className="space-y-6 ai-soul-page">
       <div className="text-center mb-4">
-        <Title level={4} className="!mb-2 !text-white" style={{ fontSize: '2.25rem' }}>💭 心灵驿站</Title>
-        <Text className="text-gray-300" style={{ fontSize: '1.5rem' }}>这里没有对错，只有倾听。聊聊你的游戏故事吧</Text>
+        <Title level={4} className="!mb-2 !text-white" style={{ fontSize: '2.25rem' }}>💭 {t('aiAssistant.soul.title')}</Title>
+        <Text className="text-gray-300" style={{ fontSize: '1.5rem' }}>{t('aiAssistant.soul.subtitle')}</Text>
       </div>
 
       {/* 心情选择 */}
       <Card size="small" className="mb-4">
         <div className="flex items-center gap-2 flex-wrap">
-          <Text className="mr-2 text-sm" style={{ color: 'var(--c-text)' }}>今天心情：</Text>
+          <Text className="mr-2 text-sm" style={{ color: 'var(--c-text)' }}>{t('aiAssistant.soul.moodLabel')}</Text>
           {MOODS.map((m) => (
             <Tag
-              key={m.label}
-              color={mood === m.label ? m.color : undefined}
-              className={`cursor-pointer px-3 py-1 text-sm ${mood === m.label ? '' : 'border'}`}
-              onClick={() => setMood(mood === m.label ? null : m.label)}
+              key={m.key}
+              color={mood === m.key ? m.color : undefined}
+              className={`cursor-pointer px-3 py-1 text-sm ${mood === m.key ? '' : 'border'}`}
+              onClick={() => setMood(mood === m.key ? null : m.key)}
             >
-              {m.emoji} {m.label}
+              {m.emoji} {t(`aiAssistant.soul.moods.${m.key}`)}
             </Tag>
           ))}
         </div>
@@ -205,11 +208,11 @@ const SoulStation: React.FC = () => {
       <Card size="small" className="mb-4">
         <Space align="center" wrap>
           <PlayCircleOutlined className="text-lg" style={{ color: 'var(--c-text)' }} />
-          <Text className="text-sm" style={{ color: 'var(--c-text)' }}>正在玩的游戏：</Text>
+          <Text className="text-sm" style={{ color: 'var(--c-text)' }}>{t('aiAssistant.soul.gameLabel')}</Text>
           <Select
             showSearch
             allowClear
-            placeholder="选择或搜索游戏..."
+            placeholder={t('aiAssistant.soul.gamePlaceholder')}
             value={selectedGame}
             onChange={(val) => setSelectedGame(val)}
             onClear={() => setSelectedGame(null)}
@@ -226,7 +229,7 @@ const SoulStation: React.FC = () => {
           />
           {selectedGame && (
             <Button size="small" type="text" onClick={() => setSelectedGame(null)}>
-              清除
+              {t('aiAssistant.soul.clear')}
             </Button>
           )}
         </Space>
@@ -235,9 +238,9 @@ const SoulStation: React.FC = () => {
       {/* 话题快速入口 */}
       <div className="flex flex-wrap gap-2">
         {TOPICS.map((topic) => (
-          <motion.div key={topic.label} whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-            <Button size="small" onClick={() => handleTopicClick(topic.label)} disabled={isPending}>
-              {topic.icon} {topic.label}
+          <motion.div key={topic.key} whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+            <Button size="small" onClick={() => handleTopicClick(t(`aiAssistant.soul.topics.${topic.key}`))} disabled={isPending}>
+              {topic.icon} {t(`aiAssistant.soul.topics.${topic.key}`)}
             </Button>
           </motion.div>
         ))}
@@ -248,7 +251,7 @@ const SoulStation: React.FC = () => {
         {isAuthenticated && (
           <div className="w-56 flex-shrink-0 border border-dark-600 rounded-lg flex flex-col bg-dark-800/50">
             <div className="p-2 border-b border-dark-600">
-              <Button block size="small" type="primary" onClick={newChat}>+ 新对话</Button>
+              <Button block size="small" type="primary" onClick={newChat}>{t('aiAssistant.soul.newChat')}</Button>
             </div>
             <div className="flex-1 overflow-y-auto p-1 space-y-0.5">
               {historyList.map((h: any) => (
@@ -257,7 +260,7 @@ const SoulStation: React.FC = () => {
                   className={`group px-2 py-1.5 rounded cursor-pointer text-xs transition-colors relative
                     ${historyId === h.id ? 'bg-blue-500/20 text-blue-400' : 'text-gray-400 hover:bg-dark-700 hover:text-gray-200'}`}
                 >
-                  <div className="truncate pr-3">{h.title?.slice(0, 12) || '新对话'}</div>
+                  <div className="truncate pr-3">{h.title?.slice(0, 12) || t('aiAssistant.soul.newConversation')}</div>
                   <button className="absolute right-1 top-0.5 text-gray-600 hover:text-red-400 opacity-0 group-hover:opacity-100"
                     onClick={async (e) => { e.stopPropagation(); await apiService.deleteAiHistory(h.id); setHistoryList(prev => prev.filter(x => x.id !== h.id)); if (historyId === h.id) setHistoryId(null); }}>
                     ✕
@@ -302,7 +305,7 @@ const SoulStation: React.FC = () => {
               >
                 <Avatar size={32} className="bg-purple-500" icon={<BulbOutlined />} />
                 <div className="bg-white text-gray-800 rounded-xl rounded-tl-sm shadow-sm px-3 py-2 text-sm">
-                  <Spin indicator={<LoadingOutlined style={{ fontSize: 16 }} spin />} /> AI 正在输入...
+                  <Spin indicator={<LoadingOutlined style={{ fontSize: 16 }} spin />} /> {t('aiAssistant.soul.typing')}
                 </div>
               </motion.div>
             )}
@@ -313,14 +316,14 @@ const SoulStation: React.FC = () => {
           <TextArea
             value={input}
             onChange={(e) => setInput(e.target.value)}
-            placeholder="说说你的想法..."
+            placeholder={t('aiAssistant.soul.inputPlaceholder')}
             autoSize={{ minRows: 1, maxRows: 3 }}
             onPressEnter={(e) => { if (!e.shiftKey) { e.preventDefault(); handleSend(); } }}
             className="flex-1"
             disabled={isPending}
           />
           <Button type="primary" icon={<SendOutlined />} onClick={handleSend} className="self-end" loading={isPending}>
-            发送
+            {t('aiAssistant.soul.send')}
           </Button>
         </div>
       </Card>
