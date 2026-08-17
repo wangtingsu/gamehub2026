@@ -40,5 +40,64 @@
   "seo": {
     "newsTitle": "游戏新闻 | GameHub",
     "newsDescription": "最新游戏资讯"
+  },
+  "categoryPage": {
+    "backToNews": "返回新闻中心",
+    "errorTitle": "错误",
+    "errorDescription": "获取新闻数据失败",
+    "dynamic": {
+      "description": "浏览{{category}}相关新闻资讯",
+      "seoTitle": "{{category}} | GGHubs",
+      "seoDesc": "浏览GGHubs{{category}}相关新闻",
+      "seoKeywords": "{{category}}, 游戏新闻, GGHubs"
+    },
+    "hot": {
+      "title": "热门新闻",
+      "description": "浏览最受关注的游戏新闻资讯",
+      "seoTitle": "热门新闻 | GameHub",
+      "seoDesc": "浏览GameHub最热门的游戏新闻",
+      "seoKeywords": "热门新闻, 游戏资讯, 热门游戏, GameHub新闻"
+    },
+    "industry": {
+      "title": "行业新闻",
+      "description": "了解游戏行业最新动态",
+      "seoTitle": "行业新闻 | GGHubs",
+      "seoDesc": "浏览GGHubs游戏行业新闻动态",
+      "seoKeywords": "行业新闻, 游戏行业, 业界动态, GGHubs行业"
+    },
+    "trend": {
+      "title": "行业趋势",
+      "description": "洞察游戏行业发展趋势",
+      "seoTitle": "行业趋势 | GGHubs",
+      "seoDesc": "浏览GGHubs行业趋势分析",
+      "seoKeywords": "行业趋势, 游戏趋势, 市场分析, GGHubs趋势"
+    }
+  },
+  "detail": {
+    "backToList": "返回新闻列表",
+    "share": "分享",
+    "relatedNews": "相关新闻",
+    "hotTags": "热门标签",
+    "loadFailed": "加载失败",
+    "notFound": "新闻不存在",
+    "idNotFound": "新闻ID不存在",
+    "fetchFailed": "获取新闻详情失败",
+    "loginToLike": "请先登录后再点赞",
+    "likeFailed": "点赞失败",
+    "seoKeywords": "游戏新闻, 游戏资讯, 行业动态",
+    "tags": {
+      "gameNews": "游戏新闻",
+      "industry": "行业动态",
+      "newRelease": "新作发布",
+      "dlc": "DLC",
+      "sale": "特卖",
+      "update": "更新",
+      "review": "评测",
+      "guide": "攻略"
+    }
+  },
+  "breadcrumb": {
+    "home": "首页",
+    "news": "新闻"
   }
 }

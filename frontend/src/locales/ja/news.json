@@ -40,5 +40,64 @@
   "seo": {
     "newsTitle": "ゲームニュース | GameHub",
     "newsDescription": "最新ゲームニュース"
+  },
+  "categoryPage": {
+    "backToNews": "ニュースセンターに戻る",
+    "errorTitle": "エラー",
+    "errorDescription": "ニュースデータの取得に失敗しました",
+    "dynamic": {
+      "description": "{{category}}関連ニュースを閲覧",
+      "seoTitle": "{{category}} | GGHubs",
+      "seoDesc": "GGHubsの{{category}}関連ニュースを閲覧",
+      "seoKeywords": "{{category}}, ゲームニュース, GGHubs"
+    },
+    "hot": {
+      "title": "人気ニュース",
+      "description": "最も注目されているゲームニュースを閲覧",
+      "seoTitle": "人気ニュース | GameHub",
+      "seoDesc": "GameHubの人気ゲームニュースを閲覧",
+      "seoKeywords": "人気ニュース, ゲームニュース, 人気ゲーム, GameHubニュース"
+    },
+    "industry": {
+      "title": "業界ニュース",
+      "description": "ゲーム業界の最新動向をチェック",
+      "seoTitle": "業界ニュース | GGHubs",
+      "seoDesc": "GGHubsのゲーム業界ニュースを閲覧",
+      "seoKeywords": "業界ニュース, ゲーム業界, 業界動向, GGHubs業界"
+    },
+    "trend": {
+      "title": "業界トレンド",
+      "description": "ゲーム業界のトレンドを洞察",
+      "seoTitle": "業界トレンド | GGHubs",
+      "seoDesc": "GGHubsの業界トレンド分析を閲覧",
+      "seoKeywords": "業界トレンド, ゲームトレンド, 市場分析, GGHubsトレンド"
+    }
+  },
+  "detail": {
+    "backToList": "ニュース一覧に戻る",
+    "share": "共有",
+    "relatedNews": "関連ニュース",
+    "hotTags": "人気タグ",
+    "loadFailed": "読み込みに失敗しました",
+    "notFound": "ニュースが見つかりません",
+    "idNotFound": "ニュースIDが存在しません",
+    "fetchFailed": "ニュース詳細の取得に失敗しました",
+    "loginToLike": "いいねするにはログインしてください",
+    "likeFailed": "いいねに失敗しました",
+    "seoKeywords": "ゲームニュース, ゲーム情報, 業界動向",
+    "tags": {
+      "gameNews": "ゲームニュース",
+      "industry": "業界動向",
+      "newRelease": "新作リリース",
+      "dlc": "DLC",
+      "sale": "セール",
+      "update": "アップデート",
+      "review": "レビュー",
+      "guide": "攻略"
+    }
+  },
+  "breadcrumb": {
+    "home": "ホーム",
+    "news": "ニュース"
   }
 }

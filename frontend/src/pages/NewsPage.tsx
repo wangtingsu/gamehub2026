@@ -14,7 +14,7 @@ const { Option } = Select;
 const NewsPage = () => {
   const { lang } = useParams<{ lang: string }>();
   const currentLang = lang || 'cn';
-  const { t } = useTranslation('news');
+  const { t, i18n } = useTranslation('news');
   const { data: news = [], isLoading, isError, error: queryError, refetch: refetchNews } = useNews();
   const [searchText, setSearchText] = useState('');
   const debouncedSearchText = useDebounce(searchText, 300);
@@ -55,7 +55,7 @@ const NewsPage = () => {
   const handleSearch = (val: string) => { setSearchText(val); setCurrentPage(1); };
 
   const formatDate = (dateString: string) => {
-    try { return new Date(dateString).toLocaleDateString('zh-CN', { year: 'numeric', month: 'long', day: 'numeric' }); }
+    try { return new Date(dateString).toLocaleDateString(i18n.language, { year: 'numeric', month: 'long', day: 'numeric' }); }
     catch { return dateString; }
   };
 

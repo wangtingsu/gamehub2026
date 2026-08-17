@@ -40,5 +40,64 @@
   "seo": {
     "newsTitle": "Game News | GameHub",
     "newsDescription": "Latest gaming news and updates"
+  },
+  "categoryPage": {
+    "backToNews": "Back to News Center",
+    "errorTitle": "Error",
+    "errorDescription": "Failed to load news data",
+    "dynamic": {
+      "description": "Browse {{category}} related news",
+      "seoTitle": "{{category}} | GGHubs",
+      "seoDesc": "Browse GGHubs {{category}} related news",
+      "seoKeywords": "{{category}}, Game News, GGHubs"
+    },
+    "hot": {
+      "title": "Hot News",
+      "description": "Browse the most popular game news",
+      "seoTitle": "Hot News | GameHub",
+      "seoDesc": "Browse GameHub's hottest game news",
+      "seoKeywords": "hot news, game news, popular games, GameHub news"
+    },
+    "industry": {
+      "title": "Industry News",
+      "description": "Stay up to date with the latest in the game industry",
+      "seoTitle": "Industry News | GGHubs",
+      "seoDesc": "Browse GGHubs game industry news and updates",
+      "seoKeywords": "industry news, game industry, industry updates, GGHubs industry"
+    },
+    "trend": {
+      "title": "Industry Trends",
+      "description": "Insights into game industry trends",
+      "seoTitle": "Industry Trends | GGHubs",
+      "seoDesc": "Browse GGHubs industry trend analysis",
+      "seoKeywords": "industry trends, game trends, market analysis, GGHubs trends"
+    }
+  },
+  "detail": {
+    "backToList": "Back to News",
+    "share": "Share",
+    "relatedNews": "Related News",
+    "hotTags": "Popular Tags",
+    "loadFailed": "Failed to load",
+    "notFound": "News not found",
+    "idNotFound": "News ID does not exist",
+    "fetchFailed": "Failed to load news details",
+    "loginToLike": "Please log in to like",
+    "likeFailed": "Failed to like",
+    "seoKeywords": "Game News, Game Updates, Industry News",
+    "tags": {
+      "gameNews": "Game News",
+      "industry": "Industry",
+      "newRelease": "New Release",
+      "dlc": "DLC",
+      "sale": "Sale",
+      "update": "Update",
+      "review": "Review",
+      "guide": "Guide"
+    }
+  },
+  "breadcrumb": {
+    "home": "Home",
+    "news": "News"
   }
 }

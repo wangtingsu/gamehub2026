@@ -15,6 +15,7 @@ import { NewsArticle } from '../api/types';
 import CommentList from '../components/comments/CommentList';
 import SEO from '../components/SEO';
 import SEOBreadcrumb from '../components/SEOBreadcrumb';
+import { useTranslation } from 'react-i18next';
 
 const { Title, Paragraph, Text } = Typography;
 const { TextArea } = Input;
@@ -29,18 +30,19 @@ const NewsDetailPage = () => {
   const [error, setError] = useState<string | null>(null);
   const [liked, setLiked] = useState(false);
   const { isAuthenticated } = useAuth();
+  const { t, i18n } = useTranslation('news');
 
   useEffect(() => {
     const fetchArticle = async () => {
       try {
         setIsLoading(true);
         setError(null);
-        if (!id) throw new Error('新闻ID不存在');
+        if (!id) throw new Error(t('detail.idNotFound'));
         const articleData = await apiService.getNewsArticle(id);
         setArticle(articleData);
       } catch (err) {
         console.error('获取新闻详情失败:', err);
-        setError((err as any)?.response?.data?.message || (err as Error)?.message || '获取新闻详情失败');
+        setError((err as any)?.response?.data?.message || (err as Error)?.message || t('detail.fetchFailed'));
       } finally {
         setIsLoading(false);
       }
@@ -58,19 +60,19 @@ const NewsDetailPage = () => {
     })();
   }, [article]);
 
-  const formatDate = (dateString: string) => new Date(dateString).toLocaleDateString('zh-CN', {
+  const formatDate = (dateString: string) => new Date(dateString).toLocaleDateString(i18n.language, {
     year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit',
   });
 
   const handleLike = async () => {
     if (!article || !id) return;
-    if (!isAuthenticated) { message.info('请先登录后再点赞'); return; }
+    if (!isAuthenticated) { message.info(t('detail.loginToLike')); return; }
     try {
       const { likes, liked: newLiked } = await apiService.likeNewsArticle(id);
       setLiked(newLiked);
       setArticle({ ...article, likes });
     } catch {
-      message.error('点赞失败');
+      message.error(t('detail.likeFailed'));
     }
   };
 
@@ -79,8 +81,8 @@ const NewsDetailPage = () => {
   if (error || !article) {
     return (
       <div className="flex items-center justify-center p-4">
-        <Alert message="加载失败" description={error || '新闻不存在'} type="error" showIcon
-          action={<Button type="primary" onClick={() => navigate(`/${lang}/news`)}>返回新闻列表</Button>} />
+        <Alert message={t('detail.loadFailed')} description={error || t('detail.notFound')} type="error" showIcon
+          action={<Button type="primary" onClick={() => navigate(`/${lang}/news`)}>{t('detail.backToList')}</Button>} />
       </div>
     );
   }
@@ -88,15 +90,15 @@ const NewsDetailPage = () => {
   return (
     <>
       <SEO title={article.title} description={article.summary}
-        keywords={[article.title, article.category].concat(article.tags || []).concat(['游戏新闻', '游戏资讯', '行业动态']).join(', ')}
+        keywords={[article.title, article.category].concat(article.tags || []).concat([t('detail.seoKeywords')]).join(', ')}
         image={article.imageUrl} type="article" publishedTime={article.publishDate} modifiedTime={article.publishDate}
         author={article.author} section={article.category} tags={article.tags} canonical={`/news/${article.id}`} />
-      <SEOBreadcrumb items={[{ name: '首页', url: `/${lang}` }, { name: '新闻', url: `/${lang}/news` }, { name: article.title, url: `/${lang}/news/${article.id}` }]} />
+      <SEOBreadcrumb items={[{ name: t('breadcrumb.home'), url: `/${lang}` }, { name: t('breadcrumb.news'), url: `/${lang}/news` }, { name: article.title, url: `/${lang}/news/${article.id}` }]} />
       <article>
         <div className="bg-dark-900">
           <div className="bg-dark-800 border-b border-dark-700">
             <div className="py-4">
-              <Button icon={<ArrowLeftOutlined />} onClick={() => navigate(`/${lang}/news`)} className="mb-4">返回新闻列表</Button>
+              <Button icon={<ArrowLeftOutlined />} onClick={() => navigate(`/${lang}/news`)} className="mb-4">{t('detail.backToList')}</Button>
             </div>
           </div>
           <div className="mx-auto py-2">
@@ -113,7 +115,7 @@ const NewsDetailPage = () => {
                       <Space>
                         <Button type="text" icon={<EyeOutlined />} className="text-gray-500">{article.views.toLocaleString()}</Button>
                         <Button type="text" icon={liked ? <LikeFilled /> : <LikeOutlined />} className={liked ? 'text-blue-500' : 'text-gray-500'} onClick={handleLike}>{article.likes.toLocaleString()}</Button>
-                        <Button type="text" icon={<ShareAltOutlined />} className="text-gray-500">分享</Button>
+                        <Button type="text" icon={<ShareAltOutlined />} className="text-gray-500">{t('detail.share')}</Button>
                       </Space>
                     </div>
                     <Title level={1} className="mb-6">{article.title}</Title>
@@ -137,7 +139,7 @@ const NewsDetailPage = () => {
               </Col>
               {/* 右侧：相关新闻 + 作者 + 标签 */}
               <Col xs={24} lg={8}>
-                <Card title="相关新闻" className="bg-dark-800 border-dark-700 mb-8">
+                <Card title={t('detail.relatedNews')} className="bg-dark-800 border-dark-700 mb-8">
                   <List dataSource={relatedNews} renderItem={(item) => (
                     <List.Item className="!px-3 !py-4 border-b border-dark-700 last:border-b-0 cursor-pointer hover:bg-dark-700 rounded-lg transition-all duration-200" onClick={() => navigate(`/${lang}/news/${item.id}`)}>
                       <div className="w-full">
@@ -147,10 +149,10 @@ const NewsDetailPage = () => {
                     </List.Item>
                   )} />
                 </Card>
-                <Card title="热门标签" className="bg-dark-800 border-dark-700">
+                <Card title={t('detail.hotTags')} className="bg-dark-800 border-dark-700">
                   <div className="flex flex-wrap gap-2">
-                    {['游戏新闻', '行业动态', '新作发布', 'DLC', '特卖', '更新', '评测', '攻略'].map((tag, i) => (
-                      <Tag key={i} color={i % 3 === 0 ? 'blue' : i % 3 === 1 ? 'green' : 'purple'}>{tag}</Tag>
+                    {['gameNews', 'industry', 'newRelease', 'dlc', 'sale', 'update', 'review', 'guide'].map((tagKey, i) => (
+                      <Tag key={tagKey} color={i % 3 === 0 ? 'blue' : i % 3 === 1 ? 'green' : 'purple'}>{t(`detail.tags.${tagKey}`)}</Tag>
                     ))}
                   </div>
                 </Card>

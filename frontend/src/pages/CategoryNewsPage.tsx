@@ -9,6 +9,7 @@ import {
 import { motion } from 'framer-motion';
 import { useNews } from '../api/hooks';
 import { useDebounce } from '../hooks/useDebounce';
+import { useTranslation } from 'react-i18next';
 import SEO from '../components/SEO';
 import SEOBreadcrumb from '../components/SEOBreadcrumb';
 import type { NewsArticle } from '../api/types';
@@ -17,19 +18,10 @@ const { Title, Paragraph } = Typography;
 const { Search } = Input;
 const { Option } = Select;
 
-const CATEGORY_CONFIG: Record<string, { title: string; icon: React.ReactNode; description: string; seoTitle: string; seoDesc: string; seoKeywords: string }> = {
-  hot: {
-    title: '热门新闻', icon: <FireOutlined className="text-orange-500" />, description: '浏览最受关注的游戏新闻资讯',
-    seoTitle: '热门新闻 | GameHub', seoDesc: '浏览GameHub最热门的游戏新闻', seoKeywords: '热门新闻, 游戏资讯, 热门游戏, GameHub新闻',
-  },
-  industry: {
-    title: '行业新闻', icon: <ThunderboltOutlined className="text-blue-500" />, description: '了解游戏行业最新动态',
-    seoTitle: '行业新闻 | GGHubs', seoDesc: '浏览GGHubs游戏行业新闻动态', seoKeywords: '行业新闻, 游戏行业, 业界动态, GGHubs行业',
-  },
-  trend: {
-    title: '行业趋势', icon: <RiseOutlined className="text-green-500" />, description: '洞察游戏行业发展趋势',
-    seoTitle: '行业趋势 | GGHubs', seoDesc: '浏览GGHubs行业趋势分析', seoKeywords: '行业趋势, 游戏趋势, 市场分析, GGHubs趋势',
-  },
+const CATEGORY_ICONS: Record<string, { icon: React.ReactNode }> = {
+  hot: { icon: <FireOutlined className="text-orange-500" /> },
+  industry: { icon: <ThunderboltOutlined className="text-blue-500" /> },
+  trend: { icon: <RiseOutlined className="text-green-500" /> },
 };
 
 const fallbackHotNews: NewsArticle[] = [
@@ -69,18 +61,35 @@ const CategoryNewsPage = () => {
   const navigate = useNavigate();
   const { lang, category } = useParams<{ lang: string; category: string }>();
   const { data: news = [], isLoading, isError, error: queryError } = useNews();
+  const { t, i18n } = useTranslation('news');
   const [searchText, setSearchText] = useState('');
   const debouncedSearchText = useDebounce(searchText, 300);
   const [selectedCategory, setSelectedCategory] = useState('all');
   const [currentPage, setCurrentPage] = useState(1);
   const pageSize = 8;
 
-  const isDynamicCategory = category && !CATEGORY_CONFIG[category];
+  const isDynamicCategory = category && !CATEGORY_ICONS[category];
 
   const config = useMemo(() => {
-    if (category && CATEGORY_CONFIG[category]) return CATEGORY_CONFIG[category];
-    return { title: category || '新闻', icon: <FileTextOutlined className="text-blue-500" />, description: `浏览${category || ''}相关新闻资讯`, seoTitle: `${category || '新闻'} | GGHubs`, seoDesc: `浏览GGHubs${category || ''}相关新闻`, seoKeywords: `${category}, 游戏新闻, GGHubs` };
-  }, [category]);
+    const iconCfg = category ? CATEGORY_ICONS[category] : undefined;
+    if (category && iconCfg) {
+      return {
+        icon: iconCfg.icon,
+        title: t(`categoryPage.${category}.title`),
+        description: t(`categoryPage.${category}.description`),
+        seoTitle: t(`categoryPage.${category}.seoTitle`),
+        seoDesc: t(`categoryPage.${category}.seoDesc`),
+        seoKeywords: t(`categoryPage.${category}.seoKeywords`),
+      };
+    }
+    return {
+      title: category || t('breadcrumb.news'), icon: <FileTextOutlined className="text-blue-500" />,
+      description: t('categoryPage.dynamic.description', { category: category || '' }),
+      seoTitle: t('categoryPage.dynamic.seoTitle', { category: category || t('breadcrumb.news') }),
+      seoDesc: t('categoryPage.dynamic.seoDesc', { category: category || '' }),
+      seoKeywords: t('categoryPage.dynamic.seoKeywords', { category: category || '' }),
+    };
+  }, [category, t]);
 
   useEffect(() => {
     if (isDynamicCategory && category) { setSelectedCategory(category); setCurrentPage(1); }
@@ -111,29 +120,29 @@ const CategoryNewsPage = () => {
 
   const paginatedNews = useMemo(() => filteredNews.slice((currentPage - 1) * pageSize, currentPage * pageSize), [filteredNews, currentPage, pageSize]);
 
-  const formatDate = (dateString: string) => new Date(dateString).toLocaleDateString('zh-CN', { year: 'numeric', month: 'long', day: 'numeric' });
+  const formatDate = (dateString: string) => new Date(dateString).toLocaleDateString(i18n.language, { year: 'numeric', month: 'long', day: 'numeric' });
 
   return (
     <div className="bg-dark-900">
       <SEO title={config.seoTitle} description={config.seoDesc} keywords={config.seoKeywords} canonical={`/${lang}/news/category/${category}`} />
-      <SEOBreadcrumb items={[{ name: 'Home', url: '/' }, { name: 'News', url: `/${lang}/news` }, { name: category || 'News', url: `/${lang}/news/category/${category}` }]} />
+      <SEOBreadcrumb items={[{ name: t('breadcrumb.home'), url: '/' }, { name: t('breadcrumb.news'), url: `/${lang}/news` }, { name: category || t('breadcrumb.news'), url: `/${lang}/news/category/${category}` }]} />
       <div className="bg-gradient-to-r from-blue-600 to-purple-600 text-white py-2">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <Button type="text" className="text-white/80 hover:text-white mb-4 !p-0" icon={<ArrowLeftOutlined />} onClick={() => navigate(`/${lang}/news`)}>返回新闻中心</Button>
+          <Button type="text" className="text-white/80 hover:text-white mb-4 !p-0" icon={<ArrowLeftOutlined />} onClick={() => navigate(`/${lang}/news`)}>{t('categoryPage.backToNews')}</Button>
           <div className="flex items-center gap-3 mb-4"><span className="text-3xl">{config.icon}</span><h1 className="text-4xl font-bold text-white">{config.title}</h1></div>
           <p className="text-xl text-white/90 max-w-3xl">{config.description}</p>
           <div className="max-w-4xl mt-8"><div className="flex gap-4">
-            <Search placeholder="搜索新闻..." size="large" className="flex-1" value={searchText} onChange={(e) => setSearchText(e.target.value)} onSearch={(v) => setSearchText(v)} enterButton="搜索" />
+            <Search placeholder={t('searchPlaceholder')} size="large" className="flex-1" value={searchText} onChange={(e) => setSearchText(e.target.value)} onSearch={(v) => setSearchText(v)} enterButton={t('searchButton')} />
             <Select size="large" style={{ width: 160 }} value={selectedCategory} onChange={(v) => { setSelectedCategory(v); setCurrentPage(1); }}>
-              {allCategories.map(cat => <Option key={cat} value={cat}>{cat === 'all' ? '全部分类' : cat}</Option>)}
+              {allCategories.map(cat => <Option key={cat} value={cat}>{cat === 'all' ? t('allCategories') : cat}</Option>)}
             </Select>
           </div></div>
         </div>
       </div>
       <div className="py-2">
-        {isError && <Alert title="错误" description={queryError?.message || '获取新闻数据失败'} type="error" showIcon closable className="mb-6" />}
+        {isError && <Alert title={t('categoryPage.errorTitle')} description={queryError?.message || t('categoryPage.errorDescription')} type="error" showIcon closable className="mb-6" />}
         {isLoading ? <div className="flex justify-center items-center h-64"><Spin size="large" /></div> :
-          paginatedNews.length === 0 ? <div className="text-center py-16"><Title level={3} className="text-gray-400 mb-4">未找到相关新闻</Title><Paragraph className="text-gray-400 mb-8">尝试调整搜索关键词或选择其他分类</Paragraph><Button type="primary" size="large" onClick={() => { setSearchText(''); setSelectedCategory('all'); setCurrentPage(1); }}>重置筛选条件</Button></div> :
+          paginatedNews.length === 0 ? <div className="text-center py-16"><Title level={3} className="text-gray-400 mb-4">{t('noResults.title')}</Title><Paragraph className="text-gray-400 mb-8">{t('noResults.description')}</Paragraph><Button type="primary" size="large" onClick={() => { setSearchText(''); setSelectedCategory('all'); setCurrentPage(1); }}>{t('noResults.resetButton')}</Button></div> :
           <>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {paginatedNews.map((item, index) => (
@@ -152,7 +161,7 @@ const CategoryNewsPage = () => {
               ))}
             </div>
             <div className="mt-12 flex justify-center">
-              <Pagination current={currentPage} pageSize={pageSize} total={filteredNews.length} onChange={setCurrentPage} showSizeChanger={false} showQuickJumper showTotal={(total) => `共 ${total} 条新闻`} />
+              <Pagination current={currentPage} pageSize={pageSize} total={filteredNews.length} onChange={setCurrentPage} showSizeChanger={false} showQuickJumper showTotal={(total) => t('pagination.total', { total })} />
             </div>
           </>
         }

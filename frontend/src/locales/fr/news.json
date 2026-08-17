@@ -40,5 +40,64 @@
   "seo": {
     "newsTitle": "Actualités | GameHub",
     "newsDescription": "Dernières actualités jeu"
+  },
+  "categoryPage": {
+    "backToNews": "Retour au Centre des Actualités",
+    "errorTitle": "Erreur",
+    "errorDescription": "Échec du chargement des actualités",
+    "dynamic": {
+      "description": "Parcourez les actualités liées à {{category}}",
+      "seoTitle": "{{category}} | GGHubs",
+      "seoDesc": "Parcourez les actualités GGHubs liées à {{category}}",
+      "seoKeywords": "{{category}}, actualités jeux, GGHubs"
+    },
+    "hot": {
+      "title": "Actualités Populaires",
+      "description": "Parcourez les actualités de jeux les plus populaires",
+      "seoTitle": "Actualités Populaires | GameHub",
+      "seoDesc": "Parcourez les actualités de jeux les plus populaires de GameHub",
+      "seoKeywords": "actualités populaires, actualités jeux, jeux populaires, actualités GameHub"
+    },
+    "industry": {
+      "title": "Actualités de l'Industrie",
+      "description": "Restez informé des dernières nouvelles de l'industrie du jeu",
+      "seoTitle": "Actualités de l'Industrie | GGHubs",
+      "seoDesc": "Parcourez les actualités de l'industrie du jeu de GGHubs",
+      "seoKeywords": "actualités industrie, industrie du jeu, actualités, GGHubs"
+    },
+    "trend": {
+      "title": "Tendances de l'Industrie",
+      "description": "Aperçu des tendances de l'industrie du jeu",
+      "seoTitle": "Tendances | GGHubs",
+      "seoDesc": "Parcourez les analyses de tendances de GGHubs",
+      "seoKeywords": "tendances, tendances jeux, analyse de marché, GGHubs"
+    }
+  },
+  "detail": {
+    "backToList": "Retour aux Actualités",
+    "share": "Partager",
+    "relatedNews": "Actualités Connexes",
+    "hotTags": "Tags Populaires",
+    "loadFailed": "Échec du chargement",
+    "notFound": "Actualité introuvable",
+    "idNotFound": "L'ID de l'actualité n'existe pas",
+    "fetchFailed": "Échec du chargement des détails de l'actualité",
+    "loginToLike": "Connectez-vous pour aimer",
+    "likeFailed": "Échec du like",
+    "seoKeywords": "Actualités Jeux, Mises à Jour, Industrie",
+    "tags": {
+      "gameNews": "Actualités Jeux",
+      "industry": "Industrie",
+      "newRelease": "Nouveauté",
+      "dlc": "DLC",
+      "sale": "Promo",
+      "update": "Mise à jour",
+      "review": "Test",
+      "guide": "Guide"
+    }
+  },
+  "breadcrumb": {
+    "home": "Accueil",
+    "news": "Actualités"
   }
 }

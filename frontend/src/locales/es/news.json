@@ -40,5 +40,64 @@
   "seo": {
     "newsTitle": "Noticias | GameHub",
     "newsDescription": "Últimas noticias de juegos"
+  },
+  "categoryPage": {
+    "backToNews": "Volver al Centro de Noticias",
+    "errorTitle": "Error",
+    "errorDescription": "No se pudieron cargar las noticias",
+    "dynamic": {
+      "description": "Explora noticias relacionadas con {{category}}",
+      "seoTitle": "{{category}} | GGHubs",
+      "seoDesc": "Explora noticias de GGHubs relacionadas con {{category}}",
+      "seoKeywords": "{{category}}, noticias de juegos, GGHubs"
+    },
+    "hot": {
+      "title": "Noticias Populares",
+      "description": "Explora las noticias de juegos más populares",
+      "seoTitle": "Noticias Populares | GameHub",
+      "seoDesc": "Explora las noticias de juegos más populares de GameHub",
+      "seoKeywords": "noticias populares, noticias de juegos, juegos populares, noticias de GameHub"
+    },
+    "industry": {
+      "title": "Noticias de la Industria",
+      "description": "Mantente al día con lo último de la industria del juego",
+      "seoTitle": "Noticias de la Industria | GGHubs",
+      "seoDesc": "Explora las noticias de la industria del juego de GGHubs",
+      "seoKeywords": "noticias de la industria, industria del juego, novedades, GGHubs"
+    },
+    "trend": {
+      "title": "Tendencias de la Industria",
+      "description": "Perspectivas sobre las tendencias de la industria del juego",
+      "seoTitle": "Tendencias | GGHubs",
+      "seoDesc": "Explora el análisis de tendencias de GGHubs",
+      "seoKeywords": "tendencias, tendencias de juegos, análisis de mercado, GGHubs"
+    }
+  },
+  "detail": {
+    "backToList": "Volver a Noticias",
+    "share": "Compartir",
+    "relatedNews": "Noticias Relacionadas",
+    "hotTags": "Etiquetas Populares",
+    "loadFailed": "Error al cargar",
+    "notFound": "Noticia no encontrada",
+    "idNotFound": "El ID de noticia no existe",
+    "fetchFailed": "No se pudieron cargar los detalles de la noticia",
+    "loginToLike": "Inicia sesión para dar me gusta",
+    "likeFailed": "Error al dar me gusta",
+    "seoKeywords": "Noticias de Juegos, Actualizaciones, Industria",
+    "tags": {
+      "gameNews": "Noticias de Juegos",
+      "industry": "Industria",
+      "newRelease": "Nuevo Lanzamiento",
+      "dlc": "DLC",
+      "sale": "Ofertas",
+      "update": "Actualización",
+      "review": "Reseña",
+      "guide": "Guía"
+    }
+  },
+  "breadcrumb": {
+    "home": "Inicio",
+    "news": "Noticias"
   }
 }
