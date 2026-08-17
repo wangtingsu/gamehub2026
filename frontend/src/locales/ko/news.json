@@ -4,6 +4,9 @@
   "searchPlaceholder": "Search news...",
   "categoryPlaceholder": "Select Category",
   "allCategories": "All Categories",
+  "searchButton": "검색",
+  "retry": "재시도",
+  "pinned": "고정됨",
   "newsCard": {
     "readFull": "Read Full Article",
     "views": "views",

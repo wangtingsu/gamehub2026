@@ -4,6 +4,9 @@
   "searchPlaceholder": "ニュースを検索...",
   "categoryPlaceholder": "カテゴリを選択",
   "allCategories": "すべてのカテゴリ",
+  "searchButton": "検索",
+  "retry": "再試行",
+  "pinned": "ピン留め",
   "newsCard": {
     "readFull": "全文を読む",
     "views": "閲覧数",

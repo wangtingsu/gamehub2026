@@ -73,7 +73,7 @@ const NewsPage = () => {
         <div className="flex flex-col sm:flex-row gap-3 mb-6">
           <Search placeholder={t('searchPlaceholder', '搜索新闻...')} size="large"
             value={searchText} onChange={e => setSearchText(e.target.value)}
-            onSearch={handleSearch} enterButton="搜索" className="flex-1" allowClear />
+            onSearch={handleSearch} enterButton={t('searchButton')} className="flex-1" allowClear />
           <Select size="large" style={{ minWidth: 140 }} value={selectedCategory} onChange={handleCategoryChange}>
             <Option value="all">{t('allCategories', '全部分类')}</Option>
             {categories.filter(c => c !== 'all').map(cat => <Option key={cat} value={cat}>{cat}</Option>)}
@@ -87,7 +87,7 @@ const NewsPage = () => {
         {isError && (
           <Alert title={t('noResults.title', '加载失败')} description={queryError?.message || ''}
             type="error" showIcon className="mb-4"
-            action={<Button size="small" icon={<ReloadOutlined />} onClick={() => refetchNews()}>重试</Button>} />
+            action={<Button size="small" icon={<ReloadOutlined />} onClick={() => refetchNews()}>{t('retry')}</Button>} />
         )}
 
         {/* 新闻列表 */}
@@ -100,7 +100,7 @@ const NewsPage = () => {
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center gap-2 mb-1.5">
                         <Tag color="blue" className="text-xs m-0">{item.category}</Tag>
-                        {item.isPinned && <Tag color="gold" className="text-xs m-0" icon={<PushpinOutlined />}>置顶</Tag>}
+                        {item.isPinned && <Tag color="gold" className="text-xs m-0" icon={<PushpinOutlined />}>{t('pinned')}</Tag>}
                       </div>
                       <h2 className="text-base font-semibold !text-gray-100 group-hover:!text-blue-400 line-clamp-1 mb-1">
                         {item.title}

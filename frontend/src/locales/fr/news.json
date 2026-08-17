@@ -4,6 +4,9 @@
   "searchPlaceholder": "Search news...",
   "categoryPlaceholder": "Select Category",
   "allCategories": "All Categories",
+  "searchButton": "Rechercher",
+  "retry": "Réessayer",
+  "pinned": "Épinglé",
   "newsCard": {
     "readFull": "Read Full Article",
     "views": "views",

@@ -4,6 +4,9 @@
   "searchPlaceholder": "搜索新闻...",
   "categoryPlaceholder": "选择分类",
   "allCategories": "全部分类",
+  "searchButton": "搜索",
+  "retry": "重试",
+  "pinned": "置顶",
   "newsCard": {
     "readFull": "阅读全文",
     "views": "阅读",
