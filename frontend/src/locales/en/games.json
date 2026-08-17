@@ -68,5 +68,16 @@
     "allGames": "All Free Games",
     "seoTitle": "Free Games | GameHub",
     "seoDescription": "Hand-picked free game recommendations"
+  },
+  "cozyGames": {
+    "title": "Cozy Games",
+    "subtitle": "Unwind and immerse yourself in a warm game world. Farming, pets, exploration, and friendship — let your heart be soothed.",
+    "searchPlaceholder": "Search cozy games...",
+    "count": "{{count}} cozy games waiting for you to discover",
+    "featured": "Featured Picks",
+    "badge": "Cozy",
+    "allGames": "All Cozy Games",
+    "seoTitle": "Cozy Games | GameHub",
+    "seoDescription": "Warm and soothing game recommendations"
   }
 }

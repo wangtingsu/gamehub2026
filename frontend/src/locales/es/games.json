@@ -68,5 +68,16 @@
     "allGames": "Todos los Juegos Gratis",
     "seoTitle": "Juegos Gratis | GameHub",
     "seoDescription": "Recomendaciones de juegos gratuitos seleccionados"
+  },
+  "cozyGames": {
+    "title": "Juegos Acogedores",
+    "subtitle": "Relájate y sumérgete en un mundo de juego cálido. Granja, mascotas, exploración y amistad para calmar tu corazón.",
+    "searchPlaceholder": "Buscar juegos acogedores...",
+    "count": "{{count}} juegos acogedores te esperan",
+    "featured": "Recomendados",
+    "badge": "Acogedor",
+    "allGames": "Todos los Juegos Acogedores",
+    "seoTitle": "Juegos Acogedores | GameHub",
+    "seoDescription": "Recomendaciones de juegos cálidos y relajantes"
   }
 }

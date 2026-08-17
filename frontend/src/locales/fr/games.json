@@ -68,5 +68,16 @@
     "allGames": "Tous les Jeux Gratuits",
     "seoTitle": "Jeux Gratuits | GameHub",
     "seoDescription": "Recommandations de jeux gratuits sélectionnés"
+  },
+  "cozyGames": {
+    "title": "Jeux Cosy",
+    "subtitle": "Détendez-vous et plongez dans un univers de jeu chaleureux. Ferme, animaux, exploration et amitié pour apaiser votre cœur.",
+    "searchPlaceholder": "Rechercher des jeux cosy...",
+    "count": "{{count}} jeux cosy vous attendent",
+    "featured": "Recommandations",
+    "badge": "Cosy",
+    "allGames": "Tous les Jeux Cosy",
+    "seoTitle": "Jeux Cosy | GameHub",
+    "seoDescription": "Recommandations de jeux chaleureux et apaisants"
   }
 }

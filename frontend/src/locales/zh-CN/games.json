@@ -68,5 +68,16 @@
     "allGames": "全部免费游戏",
     "seoTitle": "免费游戏 | GameHub",
     "seoDescription": "精选免费游戏推荐"
+  },
+  "cozyGames": {
+    "title": "治愈游戏",
+    "subtitle": "放下疲惫，沉浸在温暖的游戏世界里。种田、养宠、探索、交友，让心灵得到治愈。",
+    "searchPlaceholder": "搜索治愈游戏...",
+    "count": "{{count}} 款治愈游戏等你来发现",
+    "featured": "精选推荐",
+    "badge": "治愈",
+    "allGames": "全部治愈游戏",
+    "seoTitle": "治愈游戏 | GameHub",
+    "seoDescription": "温暖治愈的游戏推荐"
   }
 }

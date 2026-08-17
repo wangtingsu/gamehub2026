@@ -68,5 +68,16 @@
     "allGames": "모든 무료 게임",
     "seoTitle": "무료 게임 | GameHub",
     "seoDescription": "엄선된 무료 게임 추천"
+  },
+  "cozyGames": {
+    "title": "힐링 게임",
+    "subtitle": "지친 마음을 내려놓고 따뜻한 게임 세계에 빠져보세요. 농사, 반려동물, 탐험, 친구 만들기로 마음을 힐링하세요.",
+    "searchPlaceholder": "힐링 게임 검색...",
+    "count": "{{count}}개의 힐링 게임이 기다리고 있어요",
+    "featured": "추천",
+    "badge": "힐링",
+    "allGames": "모든 힐링 게임",
+    "seoTitle": "힐링 게임 | GameHub",
+    "seoDescription": "따뜻하고 치유되는 게임 추천"
   }
 }

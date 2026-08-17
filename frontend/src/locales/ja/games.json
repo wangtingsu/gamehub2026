@@ -68,5 +68,16 @@
     "allGames": "すべての無料ゲーム",
     "seoTitle": "無料ゲーム | GameHub",
     "seoDescription": "厳選された無料ゲームのおすすめ"
+  },
+  "cozyGames": {
+    "title": "癒し系ゲーム",
+    "subtitle": "疲れを忘れて、温かいゲームの世界に浸ろう。農作業、ペット、探検、友達づくりで心を癒しましょう。",
+    "searchPlaceholder": "癒し系ゲームを検索...",
+    "count": "{{count}}件の癒し系ゲームがあなたを待っています",
+    "featured": "おすすめ",
+    "badge": "癒し",
+    "allGames": "すべての癒し系ゲーム",
+    "seoTitle": "癒し系ゲーム | GameHub",
+    "seoDescription": "温かく心を癒すゲームのおすすめ"
   }
 }
