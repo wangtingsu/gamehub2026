@@ -79,7 +79,7 @@ const GameDetailPage = () => {
         const status = await apiService.checkFavorite(id);
         setIsFavorited(status.isFavorited);
       } catch (err) {
-        console.error('检查收藏状态失败:', err);
+        console.error('Failed to check favorite status:', err);
         // 失败时默认为未收藏
         setIsFavorited(false);
       } finally {
@@ -92,7 +92,7 @@ const GameDetailPage = () => {
 
 
   const formatDate = (dateString: string) => {
-    return new Date(dateString).toLocaleDateString('zh-CN', {
+    return new Date(dateString).toLocaleDateString('en-US', {
       year: 'numeric',
       month: 'long',
       day: 'numeric',
@@ -123,18 +123,18 @@ const GameDetailPage = () => {
       if (!cart.includes(game.id)) {
         cart.push(game.id);
         localStorage.setItem('gamehub_cart', JSON.stringify(cart));
-        message.success(t('cart.added', '《{{title}}》已添加到购物车', { title: game.title }));
+        message.success(t('cart.added', '{{title}} added to cart', { title: game.title }));
       } else {
-        message.info(t('cart.alreadyInCart', '《{{title}}》已在购物车中', { title: game.title }));
+        message.info(t('cart.alreadyInCart', '{{title}} is already in cart', { title: game.title }));
       }
     } catch (error) {
-      message.error(t('cart.addFailed', '添加到购物车失败'));
+      message.error(t('cart.addFailed', 'Failed to add to cart'));
     }
   };
 
   const handleToggleFavorite = async () => {
     if (!isAuthenticated) {
-      message.warning(t('favorites.loginRequired', '请先登录后再收藏游戏'));
+      message.warning(t('favorites.loginRequired', 'Please sign in to favorite games'));
       navigate(`/${lang}/login`);
       return;
     }
@@ -146,14 +146,14 @@ const GameDetailPage = () => {
       if (isFavorited) {
         await apiService.removeFavorite(game.id);
         setIsFavorited(false);
-        message.success(t('favorites.removed', '已取消收藏'));
+        message.success(t('favorites.removed', 'Removed from favorites'));
       } else {
         await apiService.addFavorite(game.id);
         setIsFavorited(true);
-        message.success(t('favorites.added', '收藏成功'));
+        message.success(t('favorites.added', 'Added to favorites'));
       }
     } catch (err) {
-      message.error(t('common.operationFailed', '操作失败，请稍后重试'));
+      message.error(t('common.operationFailed', 'Operation failed, please try again later'));
     } finally {
       setIsFavoriteLoading(false);
     }
@@ -167,13 +167,13 @@ const GameDetailPage = () => {
     return (
       <div className="flex items-center justify-center p-4">
         <Alert
-          title="加载失败"
-          description={gameError?.message || String(gameError) || '游戏不存在'}
+          title="Failed to load"
+          description={gameError?.message || String(gameError) || 'Game not found'}
           type="error"
           showIcon
           action={
             <Button type="primary" onClick={() => navigate(`/${lang}/games`)}>
-              返回游戏列表
+              Back to Game Library
             </Button>
           }
         />
@@ -230,15 +230,15 @@ const GameDetailPage = () => {
       <SEO
         title={game.title}
         description={game.description?.substring(0, 160)}
-        keywords={[game.title, ...(game.genres || [])].concat(['游戏详情', '游戏介绍', '游戏信息']).join(', ')}
+        keywords={[game.title, ...(game.genres || [])].concat(['Game details', 'Game introduction', 'Game info']).join(', ')}
         image={game.imageUrl}
         type="website"
         canonical={`/games/${game.id}`}
         structuredData={structuredData}
       />
       <SEOBreadcrumb items={[
-        { name: '首页', url: `/${lang || 'cn'}` },
-        { name: '游戏库', url: `/${lang || 'cn'}/games` },
+        { name: 'Home', url: `/${lang || 'cn'}` },
+        { name: 'Game Library', url: `/${lang || 'cn'}/games` },
         { name: game.title, url: `/${lang || 'cn'}/games/${game.id}` },
       ]} />
       <article>
@@ -267,14 +267,14 @@ const GameDetailPage = () => {
               <div className="flex items-center gap-4 flex-wrap">
                 {game.discount ? <><span className="text-sm line-through opacity-70">¥{game.price}</span><Tag color="red">-{game.discount}%</Tag></> : null}
                 <span className="text-3xl font-bold">¥{game.discount ? Math.round(game.price * (1 - game.discount / 100)) : game.price}</span>
-                <Button type="primary" size="large" icon={<ShoppingCartOutlined />}>加入购物车</Button>
+                <Button type="primary" size="large" icon={<ShoppingCartOutlined />}>Add to Cart</Button>
                 <Button size="large" icon={isFavorited ? <HeartFilled /> : <HeartOutlined />}
                     onClick={handleToggleFavorite}
                     loading={isFavoriteLoading}
                     type={isFavorited ? 'primary' : 'default'}
                     danger={isFavorited}
                   >
-                    {isFavorited ? '已收藏' : '收藏'}
+                    {isFavorited ? 'Favorited' : 'Favorite'}
                   </Button>
             </div>
           </div>
@@ -294,7 +294,7 @@ const GameDetailPage = () => {
                   <div key={index} className="h-96">
                     <img
                       src={screenshot}
-                      alt={`${game.title} 截图 ${index + 1}`}
+                      alt={`${game.title} screenshot ${index + 1}`}
                       className="w-full h-full object-cover"
                       width="700"
                       height="384"
@@ -308,7 +308,7 @@ const GameDetailPage = () => {
             {/* 游戏详情选项卡 */}
             <Card className="mb-8 bg-dark-800 border-dark-700">
               <Tabs activeKey={activeTab} onChange={setActiveTab}>
-                <TabPane tab="游戏概述" key="overview">
+                <TabPane tab="Overview" key="overview">
                   <div className="prose max-w-none">
                     <Paragraph className="text-lg leading-relaxed mb-6">
                       {game.description}
@@ -316,41 +316,41 @@ const GameDetailPage = () => {
 
                     <Divider />
 
-                    <Title level={3} className="mb-4 !text-white">游戏特色</Title>
+                    <Title level={3} className="mb-4 !text-white">Game Features</Title>
                     <Row gutter={[16, 16]}>
                       <Col xs={24} sm={12}>
                         <div className="p-4 bg-dark-800 rounded-lg border border-dark-700">
                           <TrophyOutlined className="text-2xl text-blue-500 mb-2" />
-                          <Title level={5} className="mb-2 !text-white">获奖无数</Title>
+                          <Title level={5} className="mb-2 !text-white">Award-Winning</Title>
                           <Text className="text-gray-300">
-                            荣获多个年度游戏奖项，包括TGA年度游戏大奖。
+                            Won multiple Game of the Year awards, including TGA Game of the Year.
                           </Text>
                         </div>
                       </Col>
                       <Col xs={24} sm={12}>
                         <div className="p-4 bg-dark-800 rounded-lg border border-dark-700">
                           <PlayCircleOutlined className="text-2xl text-green-500 mb-2" />
-                          <Title level={5} className="mb-2 !text-white">沉浸体验</Title>
+                          <Title level={5} className="mb-2 !text-white">Immersive Experience</Title>
                           <Text className="text-gray-300">
-                            精美的画面和出色的音效带来身临其境的游戏体验。
+                            Stunning visuals and outstanding sound create a fully immersive experience.
                           </Text>
                         </div>
                       </Col>
                       <Col xs={24} sm={12}>
                         <div className="p-4 bg-dark-800 rounded-lg border border-dark-700">
                           <TeamOutlined className="text-2xl text-purple-500 mb-2" />
-                          <Title level={5} className="mb-2 !text-white">多人游戏</Title>
+                          <Title level={5} className="mb-2 !text-white">Multiplayer</Title>
                           <Text className="text-gray-300">
-                            支持多人合作和PvP模式，与朋友一起享受游戏乐趣。
+                            Supports co-op and PvP modes to enjoy gaming with friends.
                           </Text>
                         </div>
                       </Col>
                       <Col xs={24} sm={12}>
                         <div className="p-4 bg-dark-800 rounded-lg border border-dark-700">
                           <StarOutlined className="text-2xl text-yellow-500 mb-2" />
-                          <Title level={5} className="mb-2 !text-white">持续更新</Title>
+                          <Title level={5} className="mb-2 !text-white">Constant Updates</Title>
                           <Text className="text-gray-300">
-                            定期推出免费更新和DLC，保持游戏新鲜感。
+                            Regular free updates and DLC keep the game feeling fresh.
                           </Text>
                         </div>
                       </Col>
@@ -358,30 +358,30 @@ const GameDetailPage = () => {
                   </div>
                 </TabPane>
 
-                <TabPane tab="系统需求" key="requirements">
+                <TabPane tab="System Requirements" key="requirements">
                   <Descriptions column={1} bordered size="middle">
-                    <Descriptions.Item label="操作系统">
+                    <Descriptions.Item label="OS">
                       Windows 10 64-bit
                     </Descriptions.Item>
-                    <Descriptions.Item label="处理器">
+                    <Descriptions.Item label="Processor">
                       Intel Core i5-8400 / AMD Ryzen 5 2600
                     </Descriptions.Item>
-                    <Descriptions.Item label="内存">
+                    <Descriptions.Item label="Memory">
                       12 GB RAM
                     </Descriptions.Item>
-                    <Descriptions.Item label="显卡">
+                    <Descriptions.Item label="Graphics">
                       NVIDIA GeForce GTX 1060 6GB / AMD Radeon RX 580 8GB
                     </Descriptions.Item>
                     <Descriptions.Item label="DirectX">
-                      版本 12
+                      Version 12
                     </Descriptions.Item>
-                    <Descriptions.Item label="存储空间">
-                      需要 80 GB 可用空间
+                    <Descriptions.Item label="Storage">
+                      80 GB available space required
                     </Descriptions.Item>
                   </Descriptions>
                 </TabPane>
 
-                <TabPane tab="评测" key="reviews">
+                <TabPane tab="Reviews" key="reviews">
                   {reviewsLoading ? (
                     <div className="text-center py-2">
                       <Skeleton active paragraph={{ rows: 4 }} />
@@ -389,16 +389,16 @@ const GameDetailPage = () => {
                   ) : reviews.length === 0 ? (
                     <div className="text-center py-2">
                       <Title level={4} className="text-gray-400 mb-4">
-                        暂无评测数据
+                        No reviews yet
                       </Title>
                       <Text type="secondary">
-                        成为第一个为这款游戏撰写评测的玩家！
+                        Be the first player to review this game!
                       </Text>
                     </div>
                   ) : (
                     <div className="reviews-list">
                       <div className="flex items-center justify-between mb-6">
-                        <Title level={4} className="!text-white">玩家评测 ({reviews.length})</Title>
+                        <Title level={4} className="!text-white">Player Reviews ({reviews.length})</Title>
                       </div>
                       <List
                         itemLayout="vertical"
@@ -441,7 +441,7 @@ const GameDetailPage = () => {
                               title={<a href={`/reviews/${review.id}`}>{review.title}</a>}
                               description={
                                 <div>
-                                  <Paragraph ellipsis={{ rows: 3, expandable: true, symbol: '更多' }} className="text-gray-300 mb-0">
+                                  <Paragraph ellipsis={{ rows: 3, expandable: true, symbol: 'More' }} className="text-gray-300 mb-0">
                                     {review.content}
                                   </Paragraph>
                                   <div className="mt-2">
@@ -461,7 +461,7 @@ const GameDetailPage = () => {
                   )}
                 </TabPane>
 
-                <TabPane tab="论坛" key="forum">
+                <TabPane tab="Forum" key="forum">
                   {forumLoading ? (
                     <div className="text-center py-2">
                       <Skeleton active paragraph={{ rows: 4 }} />
@@ -470,7 +470,7 @@ const GameDetailPage = () => {
                     <div>
                       <div className="flex items-center justify-between mb-6">
                         <Title level={4} className="!text-white">
-                          游戏论坛 ({forumPosts.length})
+                          Game Forum ({forumPosts.length})
                         </Title>
                         <div className="flex gap-2">
                           <Button
@@ -480,7 +480,7 @@ const GameDetailPage = () => {
                               navigate(`/${langPath}/games/${id}/forum`);
                             }}
                           >
-                            浏览全部
+                            View All
                           </Button>
                           <Button
                             type="primary"
@@ -490,7 +490,7 @@ const GameDetailPage = () => {
                               navigate(`/${langPath}/community/posts/new?gameId=${id}`);
                             }}
                           >
-                            发帖
+                            New Post
                           </Button>
                         </div>
                       </div>
@@ -498,10 +498,10 @@ const GameDetailPage = () => {
                         <div className="text-center py-2">
                           <MessageOutlined className="text-5xl text-gray-600 mb-4" />
                           <Title level={4} className="text-gray-400 mb-2">
-                            暂无论坛帖子
+                            No forum posts yet
                           </Title>
                           <Text type="secondary">
-                            成为第一个为本游戏发帖的玩家！
+                            Be the first player to post about this game!
                           </Text>
                         </div>
                       ) : (
@@ -533,7 +533,7 @@ const GameDetailPage = () => {
                                 }
                                 description={
                                   <div className="flex items-center gap-2 text-sm text-gray-400">
-                                    <span>{post.author || '匿名'}</span>
+                                    <span>{post.author || 'Anonymous'}</span>
                                     {post.category && <Tag color="blue">{post.category}</Tag>}
                                   </div>
                                 }
@@ -553,7 +553,7 @@ const GameDetailPage = () => {
             <Row gutter={[16,16]}>
               <Col xs={24}>
                 <Card className="bg-dark-800 border-dark-700">
-                  <RelatedContent title="类似游戏" items={relatedGames || []} />
+                  <RelatedContent title="Similar Games" items={relatedGames || []} />
                 </Card>
               </Col>
             </Row>
@@ -563,30 +563,30 @@ const GameDetailPage = () => {
           {/* 右侧侧边栏 */}
           <Col xs={24} lg={8}>
             {/* 游戏信息卡片 */}
-            <Card className="mb-6 bg-dark-800 border-dark-700" title={<span className="text-white text-base">游戏信息</span>}>
+            <Card className="mb-6 bg-dark-800 border-dark-700" title={<span className="text-white text-base">Game Info</span>}>
               <Descriptions column={1} size="small" colon={false}>
-                <Descriptions.Item label={<span className="text-gray-400">开发商</span>}>
+                <Descriptions.Item label={<span className="text-gray-400">Developer</span>}>
                   <span className="text-gray-200">{game.developer}</span>
                 </Descriptions.Item>
-                <Descriptions.Item label={<span className="text-gray-400">发行商</span>}>
+                <Descriptions.Item label={<span className="text-gray-400">Publisher</span>}>
                   <span className="text-gray-200">{game.publisher}</span>
                 </Descriptions.Item>
-                <Descriptions.Item label={<span className="text-gray-400">发行日期</span>}>
+                <Descriptions.Item label={<span className="text-gray-400">Release Date</span>}>
                   <CalendarOutlined className="mr-1" /><span className="text-gray-200">{formatDate(game.releaseDate)}</span>
                 </Descriptions.Item>
-                <Descriptions.Item label={<span className="text-gray-400">平台</span>}>
+                <Descriptions.Item label={<span className="text-gray-400">Platforms</span>}>
                   <div className="flex flex-wrap gap-1">
                     {(game.platforms || []).slice(0,4).map((p, i) => <Tag key={i} className="text-xs bg-dark-700 border-0 text-gray-300">{p}</Tag>)}
                   </div>
                 </Descriptions.Item>
-                <Descriptions.Item label={<span className="text-gray-400">类型</span>}>
+                <Descriptions.Item label={<span className="text-gray-400">Genres</span>}>
                   <div className="flex flex-wrap gap-1">
                     {(game.genres || []).slice(0,4).map((g, i) => <Tag key={i} color="blue" className="text-xs">{g}</Tag>)}
                   </div>
                 </Descriptions.Item>
               </Descriptions>
               <Divider className="!my-3 !border-dark-700" />
-              <Button type="primary" block icon={<ShareAltOutlined />} size="small">分享游戏</Button>
+              <Button type="primary" block icon={<ShareAltOutlined />} size="small">Share Game</Button>
             </Card>
 
             {/* 评分统计 */}
@@ -598,7 +598,7 @@ const GameDetailPage = () => {
                 >
                   {Number(game.rating).toFixed(1)}
                 </div>
-                <div className="text-gray-400 mb-4">综合评分</div>
+                <div className="text-gray-400 mb-4">Overall Rating</div>
   <Rate
                   allowHalf
                   defaultValue={game.rating / 2}
@@ -606,16 +606,16 @@ const GameDetailPage = () => {
                   style={{ fontSize: 24 }}
                   className="mb-6"
                 />
-                <Text type="secondary">基于 1,234 个玩家评测</Text>
+                <Text type="secondary">Based on 1,234 player reviews</Text>
               </div>
 
               <div className="space-y-3">
                 {[
-                  { label: '游戏性', score: game.rating - 0.1 },
-                  { label: '画面表现', score: game.rating + 0.1 },
-                  { label: '剧情叙事', score: game.rating - 0.2 },
-                  { label: '音效音乐', score: game.rating + 0.2 },
-                  { label: '性价比', score: game.rating - 0.3 },
+                  { label: 'Gameplay', score: game.rating - 0.1 },
+                  { label: 'Graphics', score: game.rating + 0.1 },
+                  { label: 'Story', score: game.rating - 0.2 },
+                  { label: 'Audio', score: game.rating + 0.2 },
+                  { label: 'Value', score: game.rating - 0.3 },
                 ].map((item, index) => (
                   <div key={index} className="flex items-center justify-between">
                     <Text className="text-gray-300">{item.label}</Text>

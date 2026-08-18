@@ -29,7 +29,7 @@ interface RelatedContentProps {
  * - 展示缩略图、标题、评分和推荐理由标签
  */
 const RelatedContent: React.FC<RelatedContentProps> = ({
-  title = '相关内容',
+  title = 'Related Content',
   items,
   loading,
 }) => {
@@ -49,7 +49,7 @@ const RelatedContent: React.FC<RelatedContentProps> = ({
     return (
       <div className="py-4">
         <h3 className="font-semibold mb-3">{title}</h3>
-        <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} description="暂无相关内容" />
+        <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} description="No related content" />
       </div>
     );
   }
