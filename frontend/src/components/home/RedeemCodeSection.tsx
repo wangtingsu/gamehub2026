@@ -29,7 +29,7 @@ const RedeemCodeSection = () => {
   const handleCopy = (code: string) => {
     navigator.clipboard.writeText(code).then(() => {
       setCopiedCode(code);
-      message.success('兑换码已复制');
+      message.success('Code copied');
       setTimeout(() => setCopiedCode(null), 2000);
     }).catch(() => {
       // Fallback
@@ -40,7 +40,7 @@ const RedeemCodeSection = () => {
       document.execCommand('copy');
       document.body.removeChild(input);
       setCopiedCode(code);
-      message.success('兑换码已复制');
+      message.success('Code copied');
       setTimeout(() => setCopiedCode(null), 2000);
     });
   };
@@ -53,19 +53,19 @@ const RedeemCodeSection = () => {
     try {
       await redeemMutation.mutateAsync(code);
       setRedeemedIds((prev) => new Set(prev).add(id));
-      message.success('兑换成功！');
+      message.success('Redeemed successfully!');
     } catch (err: any) {
-      message.error(err?.response?.data?.message || err?.message || '兑换失败');
+      message.error(err?.response?.data?.message || err?.message || 'Redeem failed');
     }
   };
 
   const codeList = Array.isArray(codes) ? codes.slice(0, 6) : [];
 
   const rewardLabels: Record<string, string> = {
-    discount: '折扣',
-    free_game: '免费游戏',
-    points: '积分',
-    item: '道具',
+    discount: 'Discount',
+    free_game: 'Free Game',
+    points: 'Points',
+    item: 'Item',
   };
 
   return (
@@ -137,7 +137,7 @@ const RedeemCodeSection = () => {
                       <code className="bg-dark-700 text-yellow-400 px-3 py-1.5 rounded-lg text-lg font-mono font-bold select-all">
                         {item.code}
                       </code>
-                      <Tooltip title="复制兑换码">
+                      <Tooltip title="Copy code">
                         <Button
                           type="text"
                           size="small"
@@ -149,14 +149,14 @@ const RedeemCodeSection = () => {
                   </div>
 
                   <div className="flex items-center justify-between text-xs text-gray-500">
-                    <span>剩余: {remaining}</span>
+                    <span>Left: {remaining}</span>
                     <span>{item.reward_value}</span>
                   </div>
 
                   <div className="mt-3 pt-3 border-t border-dark-700">
                     {isRedeemed ? (
                       <Button block disabled className="!bg-green-900/30 !text-green-400 !border-green-800">
-                        已兑换 ✓
+                        Redeemed ✓
                       </Button>
                     ) : isLoggedIn ? (
                       <Button
@@ -166,7 +166,7 @@ const RedeemCodeSection = () => {
                         onClick={() => handleRedeem(item.code, item.id)}
                         className="!bg-gradient-to-r !from-yellow-600 !to-orange-600 !border-0 hover:!from-yellow-500 hover:!to-orange-500"
                       >
-                        立即兑换
+                        Redeem Now
                       </Button>
                     ) : (
                       <Button
@@ -174,7 +174,7 @@ const RedeemCodeSection = () => {
                         icon={<LoginOutlined />}
                         onClick={() => navigate('/login')}
                       >
-                        登录后兑换
+                        Sign in to Redeem
                       </Button>
                     )}
                   </div>

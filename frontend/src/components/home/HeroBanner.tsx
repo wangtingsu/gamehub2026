@@ -24,22 +24,22 @@ interface BannerItem {
 const fallbackBanners: BannerItem[] = [
   {
     id: 1,
-    title: '🔥 热门游戏促销',
-    subtitle: '限时折扣，低至3折',
+    title: '🔥 Hot Game Deals',
+    subtitle: 'Limited-time discounts, up to 70% off',
     image_url: 'https://images.unsplash.com/photo-1534423861386-85a16f5d13fd?w=1200&auto=format&fit=crop',
     link_url: '/games/category/top-up',
   },
   {
     id: 2,
-    title: '🎮 新游推荐',
-    subtitle: '本月最受期待的新游戏',
+    title: '🎮 New Game Picks',
+    subtitle: 'The most anticipated new games this month',
     image_url: 'https://images.unsplash.com/photo-1550745165-9bc0b252726f?w=1200&auto=format&fit=crop',
     link_url: '/games/category/new',
   },
   {
     id: 3,
-    title: '🏆 2026年度游戏评选',
-    subtitle: '为你喜欢的游戏投票',
+    title: '🏆 2026 Game of the Year Awards',
+    subtitle: 'Vote for your favorite games',
     image_url: 'https://images.unsplash.com/photo-1511512578047-dfb367046420?w=1200&auto=format&fit=crop',
     link_url: '/games/category/awards',
   },
@@ -189,7 +189,7 @@ const HeroBanner = () => {
                     onClick={() => handleCTAClick(currentBanner)}
                     className="!bg-gradient-to-r !from-blue-600 !to-purple-600 !border-0 !px-6 !py-5 !text-base !font-semibold hover:!from-blue-500 hover:!to-purple-500"
                   >
-                    了解更多
+                    Learn More
                   </Button>
                 </motion.div>
               )}
@@ -202,7 +202,7 @@ const HeroBanner = () => {
       <button
         onClick={handlePrev}
         className="absolute left-3 top-1/2 -translate-y-1/2 w-10 h-10 md:w-12 md:h-12 rounded-full bg-white/10 hover:bg-white/25 backdrop-blur-sm flex items-center justify-center transition-all duration-200 group"
-        aria-label="上一张"
+        aria-label="Previous slide"
       >
         <LeftOutlined className="text-white text-lg group-hover:scale-110 transition-transform" />
       </button>
@@ -211,7 +211,7 @@ const HeroBanner = () => {
       <button
         onClick={handleNext}
         className="absolute right-3 top-1/2 -translate-y-1/2 w-10 h-10 md:w-12 md:h-12 rounded-full bg-white/10 hover:bg-white/25 backdrop-blur-sm flex items-center justify-center transition-all duration-200 group"
-        aria-label="下一张"
+        aria-label="Next slide"
       >
         <RightOutlined className="text-white text-lg group-hover:scale-110 transition-transform" />
       </button>
@@ -227,7 +227,7 @@ const HeroBanner = () => {
                 ? 'w-8 bg-white'
                 : 'w-2 bg-white/50 hover:bg-white/75'
             }`}
-            aria-label={`切换到第 ${index + 1} 张图片`}
+            aria-label={`Go to slide ${index + 1}`}
           />
         ))}
       </div>
