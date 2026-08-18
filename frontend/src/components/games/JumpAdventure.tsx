@@ -285,7 +285,7 @@ const JumpAdventure: React.FC<GameProps> = ({ onScoreChange, onGameOver, onGameS
     ctx.font = 'bold 12px Arial';
     ctx.textAlign = 'center';
     ctx.textBaseline = 'top';
-    ctx.fillText('距离: ' + Math.floor(g.score), CW / 2, 8);
+    ctx.fillText('Distance: ' + Math.floor(g.score), CW / 2, 8);
   }, []);
 
   /**
@@ -559,8 +559,8 @@ const JumpAdventure: React.FC<GameProps> = ({ onScoreChange, onGameOver, onGameS
   return (
     <div className="flex flex-col items-center">
       <div className="flex items-center justify-between w-full max-w-[400px] mb-3">
-        <Title level={4} className="!text-white !mb-0">跳一跳</Title>
-        <Text className="!text-gray-400">距离: {score}</Text>
+        <Title level={4} className="!text-white !mb-0">Jump Jump</Title>
+        <Text className="!text-gray-400">Distance: {score}</Text>
       </div>
       <canvas
         ref={canvasRef}
@@ -569,16 +569,16 @@ const JumpAdventure: React.FC<GameProps> = ({ onScoreChange, onGameOver, onGameS
         className="rounded-lg border border-dark-600"
       />
       {gameState === 'idle' && (
-        <Button type="primary" className="mt-4" onClick={startGame}>开始游戏</Button>
+        <Button type="primary" className="mt-4" onClick={startGame}>Start Game</Button>
       )}
       {gameState === 'over' && (
         <div className="mt-4 text-center">
-          <Text className="!text-red-400 !block mb-2">游戏结束! 距离: {score}</Text>
-          <Button type="primary" onClick={startGame}>重新开始</Button>
+          <Text className="!text-red-400 !block mb-2">Game Over! Distance: {score}</Text>
+          <Button type="primary" onClick={startGame}>Restart</Button>
         </div>
       )}
       {gameState === 'playing' && (
-        <Text className="!text-gray-500 !text-xs mt-2">点击/空格跳跃，按住蓄力跳更远</Text>
+        <Text className="!text-gray-500 !text-xs mt-2">Click / Space to jump, hold to charge and jump farther</Text>
       )}
     </div>
   );

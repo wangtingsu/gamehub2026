@@ -647,11 +647,11 @@ const TankBattle: React.FC<GameProps> = ({ onScoreChange, onGameOver, onGameStar
     <div className="flex flex-col items-center">
       {/* 游戏标题栏 */}
       <div className="flex items-center justify-between w-full max-w-[400px] mb-3">
-        <Title level={4} className="!text-white !mb-0">坦克大战</Title>
+        <Title level={4} className="!text-white !mb-0">Tank Battle</Title>
         <div className="flex items-center gap-3">
-          <Text className="!text-gray-400">得分: {score}</Text>
-          <Text className="!text-yellow-400">波次: {gameRef.current.wave}</Text>
-          <Text className="!text-green-400">生命: {lives}</Text>
+          <Text className="!text-gray-400">Score: {score}</Text>
+          <Text className="!text-yellow-400">Wave: {gameRef.current.wave}</Text>
+          <Text className="!text-green-400">Lives: {lives}</Text>
         </div>
       </div>
       {/* 游戏画布 */}
@@ -663,18 +663,18 @@ const TankBattle: React.FC<GameProps> = ({ onScoreChange, onGameOver, onGameStar
       />
       {/* 空闲/结束状态按钮 */}
       {gameState === 'idle' && (
-        <Button type="primary" className="mt-4" onClick={startGame}>开始游戏</Button>
+        <Button type="primary" className="mt-4" onClick={startGame}>Start Game</Button>
       )}
       {gameState === 'over' && (
         <div className="mt-4 text-center">
-          <Text className="!text-red-400 !block mb-2">游戏结束! 得分: {score}</Text>
-          <Button type="primary" onClick={startGame}>重新开始</Button>
+          <Text className="!text-red-400 !block mb-2">Game Over! Score: {score}</Text>
+          <Button type="primary" onClick={startGame}>Restart</Button>
         </div>
       )}
       {/* 游戏中：操作提示和虚拟手柄 */}
       {gameState === 'playing' && (
         <>
-          <Text className="!text-gray-500 !text-xs mt-2">方向键/WASD移动 空格/Enter射击 | 滑动/虚拟按键</Text>
+          <Text className="!text-gray-500 !text-xs mt-2">Arrow keys / WASD to move, Space / Enter to shoot | Swipe / virtual buttons</Text>
           <VirtualGamepad
             directions={{
               up: () => handleDirection('UP'),
@@ -683,7 +683,7 @@ const TankBattle: React.FC<GameProps> = ({ onScoreChange, onGameOver, onGameStar
               right: () => handleDirection('RIGHT'),
               fire: handleShoot,
             }}
-            actions={[{ label: '射击', action: handleShoot }]}
+            actions={[{ label: 'Shoot', action: handleShoot }]}
           />
         </>
       )}

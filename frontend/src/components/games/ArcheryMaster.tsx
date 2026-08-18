@@ -228,7 +228,7 @@ const ArcheryMaster: React.FC<GameProps> = ({ onScoreChange, onGameOver, onGameS
       ctx.font = '10px Arial';
       ctx.textAlign = 'center';
       ctx.textBaseline = 'bottom';
-      ctx.fillText('力度', barX + barW / 2, barY - 3);
+      ctx.fillText('Power', barX + barW / 2, barY - 3);
     }
 
     // 风向指示器（右上角，用箭头符号表示方向）
@@ -237,7 +237,7 @@ const ArcheryMaster: React.FC<GameProps> = ({ onScoreChange, onGameOver, onGameS
     ctx.font = '14px Arial';
     ctx.textAlign = 'right';
     ctx.textBaseline = 'top';
-    ctx.fillText('风向: ' + windArrow + ' ' + Math.abs(g.wind).toFixed(2), CW - 10, 10);
+    ctx.fillText('Wind: ' + windArrow + ' ' + Math.abs(g.wind).toFixed(2), CW - 10, 10);
 
     // 绘制风向小箭头图形（画布顶部中央）
     if (Math.abs(g.wind) > 0.1) {
@@ -265,7 +265,7 @@ const ArcheryMaster: React.FC<GameProps> = ({ onScoreChange, onGameOver, onGameS
       ctx.font = 'bold 13px Arial';
       ctx.textAlign = 'left';
       ctx.textBaseline = 'top';
-      ctx.fillText('连击 x' + multiplier.toFixed(1), 10, 10);
+      ctx.fillText('Combo x' + multiplier.toFixed(1), 10, 10);
     }
 
     // 剩余箭矢数（左下角）
@@ -273,7 +273,7 @@ const ArcheryMaster: React.FC<GameProps> = ({ onScoreChange, onGameOver, onGameS
     ctx.font = '12px Arial';
     ctx.textAlign = 'left';
     ctx.textBaseline = 'bottom';
-    ctx.fillText('剩余箭矢: ' + g.arrowsLeft, 10, CH - 40);
+    ctx.fillText('Arrows left: ' + g.arrowsLeft, 10, CH - 40);
 
     // 奖励提示消息（中间偏上，定时消失）
     if (bonusMessageRef.current && Date.now() < bonusMessageRef.current.endTime) {
@@ -441,7 +441,7 @@ const ArcheryMaster: React.FC<GameProps> = ({ onScoreChange, onGameOver, onGameS
           g.arrowsLeft++;
           g.bonusArrows++;
           setArrowsLeft(g.arrowsLeft);
-          bonusMessageRef.current = { text: '获得额外箭矢!', endTime: Date.now() + BONUS_ARROW_DISPLAY_TIME };
+          bonusMessageRef.current = { text: 'Bonus arrow!', endTime: Date.now() + BONUS_ARROW_DISPLAY_TIME };
         }
 
         // 重置风向，加快靶子速度
@@ -614,10 +614,10 @@ const ArcheryMaster: React.FC<GameProps> = ({ onScoreChange, onGameOver, onGameS
   return (
     <div className="flex flex-col items-center">
       <div className="flex items-center justify-between w-full max-w-[450px] mb-3">
-        <Title level={4} className="!text-white !mb-0">射箭大师</Title>
+        <Title level={4} className="!text-white !mb-0">Archery Master</Title>
         <div className="flex items-center gap-4">
-          <Text className="!text-gray-400">得分: {score}</Text>
-          <Text className="!text-gray-400">剩余: {arrowsLeft}/{MAX_ARROWS + MAX_BONUS_ARROWS}</Text>
+          <Text className="!text-gray-400">Score: {score}</Text>
+          <Text className="!text-gray-400">Arrows: {arrowsLeft}/{MAX_ARROWS + MAX_BONUS_ARROWS}</Text>
         </div>
       </div>
       <canvas
@@ -627,16 +627,16 @@ const ArcheryMaster: React.FC<GameProps> = ({ onScoreChange, onGameOver, onGameS
         className="rounded-lg border border-dark-600"
       />
       {gameState === 'idle' && (
-        <Button type="primary" className="mt-4" onClick={startGame}>开始游戏</Button>
+        <Button type="primary" className="mt-4" onClick={startGame}>Start Game</Button>
       )}
       {gameState === 'over' && (
         <div className="mt-4 text-center">
-          <Text className="!text-green-400 !block mb-2">本轮结束! 得分: {score}</Text>
-          <Button type="primary" onClick={startGame}>再来一局</Button>
+          <Text className="!text-green-400 !block mb-2">Game Over! Score: {score}</Text>
+          <Button type="primary" onClick={startGame}>Play Again</Button>
         </div>
       )}
       {gameState === 'playing' && (
-        <Text className="!text-gray-500 !text-xs mt-2">按住蓄力，松开射箭 (鼠标/触摸/空格)</Text>
+        <Text className="!text-gray-500 !text-xs mt-2">Hold to charge, release to shoot (Mouse/Touch/Space)</Text>
       )}
     </div>
   );

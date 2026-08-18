@@ -146,13 +146,13 @@ const GuandanGame: React.FC<GameProps> = ({ onScoreChange, onGameOver, onGameSta
   // 当前选中的手牌索引集合（玩家点击选取的牌）
   const [selected, setSelected] = useState<Set<number>>(new Set());
   // 游戏消息提示（显示在桌面中央）
-  const [message, setMessage] = useState('点击「开始游戏」发牌');
+  const [message, setMessage] = useState('Click "Start Game" to deal');
   // 本局升级级数（结算时展示）
   const [levelUp, setLevelUp] = useState(0);
   // 升级后的下一等级名称
   const [nextLevel, setNextLevel] = useState('');
   // AI 玩家名字
-  const aiNames = ['小帅', '大壮', '阿强'];
+  const aiNames = ['Alex', 'Bob', 'Carl'];
   // 鼠标悬停的按钮标签（用于高亮效果）
   const [hoveredBtn, setHoveredBtn] = useState<string | null>(null);
   // AI 是否正在思考（用于禁用玩家操作和显示等待提示）
@@ -194,10 +194,10 @@ const GuandanGame: React.FC<GameProps> = ({ onScoreChange, onGameOver, onGameSta
     g.turnNumber = 0;         // 回合数
     g.phase = 'play';         // 游戏阶段
     g.completedRank = [];     // 出完顺序列表
-    g.message = '你的回合';  // 初始消息
+    g.message = 'Your turn';  // 初始消息
     setGamePhase('playing');
     setSelected(new Set());
-    setMessage('你的回合');
+    setMessage('Your turn');
     setLevelUp(0);
     setNextLevel('');
     setAiThinking(false);
@@ -214,7 +214,7 @@ const GuandanGame: React.FC<GameProps> = ({ onScoreChange, onGameOver, onGameSta
     const sorted = sortHand(g.players[0].hand);
     const selCards = [...selected].map(i => sorted[i]); // 按选中索引获取牌
     const result = isValidPlay(g.players[0].hand, selCards, g.lastPlay, g.lastPlayBy, 0);
-    if (!result.valid) { setMessage(result.reason || '无效出牌'); return; }
+    if (!result.valid) { setMessage(result.reason || 'Invalid play'); return; }
     doPlayCards(0, selCards, result.played!);
   }, [selected]);
 
@@ -225,8 +225,8 @@ const GuandanGame: React.FC<GameProps> = ({ onScoreChange, onGameOver, onGameSta
   const handlePass = useCallback(() => {
     const g = gRef.current;
     if (g.players[0].playedOut || g.phase !== 'play') return;
-    if (!g.lastPlay || g.lastPlayBy === 0) { setMessage('必须出牌'); return; }
-    setMessage('不出');
+    if (!g.lastPlay || g.lastPlayBy === 0) { setMessage('You must play'); return; }
+    setMessage('Pass');
     passTS.current[0] = Date.now();
     g.passCount++;
     nextTurn();
@@ -251,8 +251,8 @@ const GuandanGame: React.FC<GameProps> = ({ onScoreChange, onGameOver, onGameSta
         if (idx >= 0) indices.add(idx);
       }
       setSelected(indices);
-      setMessage(`提示: ${suggestion.length}张`);
-    } else setMessage('没有能出的牌');
+      setMessage(`Hint: ${suggestion.length} card(s)`);
+    } else setMessage('No playable cards');
   }, []);
 
   /**
@@ -265,7 +265,7 @@ const GuandanGame: React.FC<GameProps> = ({ onScoreChange, onGameOver, onGameSta
     if (p.playedOut) return;
     p.hand = smartSortCards(p.hand);
     setSelected(new Set());
-    setMessage('已整理手牌');
+    setMessage('Hand sorted');
   }, []);
 
   /**
@@ -289,10 +289,10 @@ const GuandanGame: React.FC<GameProps> = ({ onScoreChange, onGameOver, onGameSta
       // 该玩家出完了所有手牌
       player.playedOut = true;
       g.completedRank.push(player.id);  // 记录出完顺序
-      setMessage(`玩家 ${playerIdx + 1} 出完了！`);
+      setMessage(`Player ${playerIdx + 1} finished!`);
       if (checkAllOut(g.players)) { endRound(); return; }
     } else {
-      setMessage(`玩家 ${playerIdx + 1} 出了 ${played.pattern}`);
+      setMessage(`Player ${playerIdx + 1} played ${played.pattern}`);
     }
     setSelected(new Set());
     nextTurn();
@@ -313,11 +313,11 @@ const GuandanGame: React.FC<GameProps> = ({ onScoreChange, onGameOver, onGameSta
     }
     if (next === 0) {
       // 轮到玩家操作
-      setMessage(!g.lastPlay ? '你的回合 — 自由出牌' : '你的回合');
+      setMessage(!g.lastPlay ? 'Your turn — free play' : 'Your turn');
     } else {
       // 轮到AI，显示思考动画并延时调用AI决策
       setAiThinking(true);
-      setMessage(`玩家 ${next + 1} 思考中`);
+      setMessage(`Player ${next + 1} is thinking...`);
       setTimeout(() => aiTurn(next), 2500);
     }
   };
@@ -337,7 +337,7 @@ const GuandanGame: React.FC<GameProps> = ({ onScoreChange, onGameOver, onGameSta
         if (g.currentPlayer !== 0) {
           setTimeout(() => aiTurn(g.currentPlayer), 2000);
         } else {
-          setMessage('你的回合');
+          setMessage('Your turn');
         }
       }
       return;
@@ -358,7 +358,7 @@ const GuandanGame: React.FC<GameProps> = ({ onScoreChange, onGameOver, onGameSta
 
     if (chosen.length === 0) {
       // AI选择不出
-      setMessage(`玩家 ${playerIdx + 1} 不出`);
+      setMessage(`Player ${playerIdx + 1} passed`);
       passTS.current[playerIdx] = Date.now();
       g.passCount++;
       setAiThinking(false);
@@ -382,7 +382,7 @@ const GuandanGame: React.FC<GameProps> = ({ onScoreChange, onGameOver, onGameSta
     setLevelUp(steps);
     setNextLevel(getLevelName(newLevel));
     setGamePhase('over');
-    setMessage(`本局结束！升${steps}级 → ${getLevelName(newLevel)}`);
+    setMessage(`Round over! Up ${steps} level(s) → ${getLevelName(newLevel)}`);
     if (onGameOver) onGameOver(steps);
     g.level = newLevel;
   };
@@ -406,14 +406,14 @@ const GuandanGame: React.FC<GameProps> = ({ onScoreChange, onGameOver, onGameSta
 
     // 游戏未开始时仅显示"开始游戏"按钮
     if (g.players.length === 0) {
-      drawMessage(ctx, '点击「开始游戏」发牌');
-      buttons.current = [{ x: TABLE_W / 2 - 60, y: TABLE_H / 2 + 20, w: 120, h: 40, label: '开始游戏' }];
+      drawMessage(ctx, 'Click "Start Game" to deal');
+      buttons.current = [{ x: TABLE_W / 2 - 60, y: TABLE_H / 2 + 20, w: 120, h: 40, label: 'Start Game' }];
       for (const btn of buttons.current) drawButton(ctx, btn, hoveredBtn === btn.label);
       return;
     }
 
     // 绘制游戏信息（等级、玩家状态等）
-    drawGameInfo(ctx, g.level, getLevelName(g.level), g.players, ['你', ...aiNames], g.currentPlayer);
+    drawGameInfo(ctx, g.level, getLevelName(g.level), g.players, ['You', ...aiNames], g.currentPlayer);
 
     // 绘制玩家0（自己）的手牌，选中状态高亮
     const p0 = g.players[0];
@@ -423,7 +423,7 @@ const GuandanGame: React.FC<GameProps> = ({ onScoreChange, onGameOver, onGameSta
       ctx.fillStyle = '#666';
       ctx.font = 'bold 24px Arial';
       ctx.textAlign = 'center';
-      ctx.fillText('你已出完', TABLE_W / 2, TABLE_H - 70);
+      ctx.fillText('You finished', TABLE_W / 2, TABLE_H - 70);
     }
 
     // 绘制3个对手的牌背及位置标识（左侧/对家/右侧）
@@ -432,7 +432,7 @@ const GuandanGame: React.FC<GameProps> = ({ onScoreChange, onGameOver, onGameSta
     drawOpponentCards(ctx, g.players[3].hand.length, TABLE_W - 120, CENTER_Y - 30, aiNames[2], g.currentPlayer === 3 && !g.players[3].playedOut);
     // 不出指示
     const now = Date.now();
-    const passPositions: [number, number, string][] = [[140, CENTER_Y - 15, '你'], [30, CENTER_Y + 25, aiNames[0]], [360, 65, aiNames[1]], [TABLE_W - 60, CENTER_Y + 25, aiNames[2]]];
+    const passPositions: [number, number, string][] = [[140, CENTER_Y - 15, 'You'], [30, CENTER_Y + 25, aiNames[0]], [360, 65, aiNames[1]], [TABLE_W - 60, CENTER_Y + 25, aiNames[2]]];
     for (let i = 0; i < 4; i++) {
       const ts = passTS.current[i];
       if (ts && (now - ts) < 3000) {
@@ -440,18 +440,18 @@ const GuandanGame: React.FC<GameProps> = ({ onScoreChange, onGameOver, onGameSta
         ctx.fillStyle = 'rgba(255,100,100,' + alpha + ')';
         ctx.font = 'bold 16px Arial';
         ctx.textAlign = 'center';
-        ctx.fillText('不出', passPositions[i][0], passPositions[i][1]);
+        ctx.fillText('Pass', passPositions[i][0], passPositions[i][1]);
       }
     }
 
     // 显示对手是否已出完的标记
-    if (g.players[1].playedOut) { ctx.fillStyle = '#666'; ctx.font = '14px Arial'; ctx.fillText('✓ 已出完', 60, CENTER_Y + 60); }
-    if (g.players[2].playedOut) { ctx.fillStyle = '#666'; ctx.font = '14px Arial'; ctx.fillText('✓ 已出完', 400, 80); }
-    if (g.players[3].playedOut) { ctx.fillStyle = '#666'; ctx.font = '14px Arial'; ctx.fillText('✓ 已出完', TABLE_W - 70, CENTER_Y + 60); }
+    if (g.players[1].playedOut) { ctx.fillStyle = '#666'; ctx.font = '14px Arial'; ctx.fillText('✓ Finished', 60, CENTER_Y + 60); }
+    if (g.players[2].playedOut) { ctx.fillStyle = '#666'; ctx.font = '14px Arial'; ctx.fillText('✓ Finished', 400, 80); }
+    if (g.players[3].playedOut) { ctx.fillStyle = '#666'; ctx.font = '14px Arial'; ctx.fillText('✓ Finished', TABLE_W - 70, CENTER_Y + 60); }
 
     // 在桌面中央显示最近一次出的牌
     if (g.lastPlay && g.lastPlayBy !== null && !g.players[g.lastPlayBy].playedOut) {
-      const label = g.lastPlayBy === 0 ? '你' : `玩家${g.lastPlayBy + 1}`;
+      const label = g.lastPlayBy === 0 ? 'You' : `Player ${g.lastPlayBy + 1}`;
       drawPlayedCards(ctx, g.lastPlay.cards, `${label}: ${g.lastPlay.pattern}`);
     }
 
@@ -463,25 +463,25 @@ const GuandanGame: React.FC<GameProps> = ({ onScoreChange, onGameOver, onGameSta
 
     if (gamePhase === 'playing' && !p0.playedOut && !aiThinking) {
       if (g.currentPlayer === 0) {
-        buttons.current.push({ x: TABLE_W / 2 - 185, y: TABLE_H - 130, w: 60, h: 34, label: '整理' });
-        buttons.current.push({ x: TABLE_W / 2 - 115, y: TABLE_H - 130, w: 60, h: 34, label: '提示' });
+        buttons.current.push({ x: TABLE_W / 2 - 185, y: TABLE_H - 130, w: 60, h: 34, label: 'Sort' });
+        buttons.current.push({ x: TABLE_W / 2 - 115, y: TABLE_H - 130, w: 60, h: 34, label: 'Hint' });
         if (g.lastPlay && g.lastPlayBy !== 0) {
           // 非自由出牌时显示"不出"和"出牌"两个按钮
-          buttons.current.push({ x: TABLE_W / 2 - 45, y: TABLE_H - 130, w: 60, h: 34, label: '不出' });
-          buttons.current.push({ x: TABLE_W / 2 + 25, y: TABLE_H - 130, w: 60, h: 34, label: '出牌' });
+          buttons.current.push({ x: TABLE_W / 2 - 45, y: TABLE_H - 130, w: 60, h: 34, label: 'Pass' });
+          buttons.current.push({ x: TABLE_W / 2 + 25, y: TABLE_H - 130, w: 60, h: 34, label: 'Play' });
         } else {
           // 自由出牌时只显示"出牌"按钮
-          buttons.current.push({ x: TABLE_W / 2 + 25, y: TABLE_H - 130, w: 60, h: 34, label: '出牌' });
+          buttons.current.push({ x: TABLE_W / 2 + 25, y: TABLE_H - 130, w: 60, h: 34, label: 'Play' });
         }
       }
     }
 
     if (gamePhase === 'over') {
       drawResult(ctx, g.completedRank, levelUp, nextLevel);
-      buttons.current = [{ x: TABLE_W / 2 - 60, y: TABLE_H / 2 + 80, w: 120, h: 40, label: '下一局' }];
+      buttons.current = [{ x: TABLE_W / 2 - 60, y: TABLE_H / 2 + 80, w: 120, h: 40, label: 'Next Round' }];
     }
     if (gamePhase === 'idle') {
-      buttons.current = [{ x: TABLE_W / 2 - 60, y: TABLE_H / 2 + 20, w: 120, h: 40, label: '开始游戏' }];
+      buttons.current = [{ x: TABLE_W / 2 - 60, y: TABLE_H / 2 + 20, w: 120, h: 40, label: 'Start Game' }];
     }
 
     for (const btn of buttons.current) drawButton(ctx, btn, hoveredBtn === btn.label);
@@ -540,11 +540,11 @@ const GuandanGame: React.FC<GameProps> = ({ onScoreChange, onGameOver, onGameSta
       // 检测是否点击了某个按钮
       for (const btn of buttons.current) {
         if (mx >= btn.x && mx <= btn.x + btn.w && my >= btn.y && my <= btn.y + btn.h) {
-          if (btn.label === '开始游戏' || btn.label === '下一局') startGame();
-          else if (btn.label === '出牌') handlePlayCards();
-          else if (btn.label === '不出') handlePass();
-          else if (btn.label === '提示') handleHint();
-          else if (btn.label === '整理') handleSort();
+          if (btn.label === 'Start Game' || btn.label === 'Next Round') startGame();
+          else if (btn.label === 'Play') handlePlayCards();
+          else if (btn.label === 'Pass') handlePass();
+          else if (btn.label === 'Hint') handleHint();
+          else if (btn.label === 'Sort') handleSort();
           return;
         }
       }
@@ -604,9 +604,9 @@ const GuandanGame: React.FC<GameProps> = ({ onScoreChange, onGameOver, onGameSta
         style={{ width: '100%', maxWidth: `${TABLE_W}px`, height: 'auto' }}
       />
       <div className="mt-2 text-sm text-gray-400">
-        {gamePhase === 'idle' && '点击「开始游戏」开始一局掼蛋'}
-        {gamePhase === 'playing' && (aiThinking ? 'AI思考中...' : '点击选牌，点击「出牌」出牌')}
-        {gamePhase === 'over' && '一局结束，点击「下一局」继续'}
+        {gamePhase === 'idle' && 'Click "Start Game" to start a game of Guandan'}
+        {gamePhase === 'playing' && (aiThinking ? 'AI is thinking...' : 'Click cards to select, then click "Play" to play')}
+        {gamePhase === 'over' && 'Round over, click "Next Round" to continue'}
       </div>
     </div>
   );

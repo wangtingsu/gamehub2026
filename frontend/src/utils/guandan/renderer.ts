@@ -298,17 +298,17 @@ export function drawGameInfo(
   ctx.font = 'bold 14px Arial';
   ctx.textAlign = 'left';
   ctx.fillStyle = COLORS.gold;
-  ctx.fillText(`打 ${levelName}`, 15, 30);
+  ctx.fillText(`Level: ${levelName}`, 15, 30);
 
   // 玩家状态
-  const labels = names || ['你', '电脑 1', '电脑 2', '电脑 3'];
+  const labels = names || ['You', 'CPU 1', 'CPU 2', 'CPU 3'];
   ctx.font = '12px Arial';
   ctx.textAlign = 'right';
   for (let i = 0; i < 4; i++) {
     const p = players[i];
     const color = p.playedOut ? '#666' : (i === currentPlayer ? COLORS.highlight : COLORS.textLight);
     ctx.fillStyle = color;
-    const status = p.playedOut ? '✓ 出完' : `${p.hand.length}张`;
+    const status = p.playedOut ? '✓ Done' : `${p.hand.length} cards`;
     ctx.fillText(`${labels[i]}: ${status}`, TABLE_W - 15, 18 + i * 16);
   }
 }
@@ -339,14 +339,14 @@ export function drawResult(
   ctx.fillStyle = COLORS.gold;
   ctx.font = 'bold 22px Arial';
   ctx.textAlign = 'center';
-  ctx.fillText('本局结束', TABLE_W / 2, my + 45);
+  ctx.fillText('Round Over', TABLE_W / 2, my + 45);
 
   // 出完顺序
-  const labels = ['头游', '二游', '三游', '末游'];
+  const labels = ['1st', '2nd', '3rd', 'Last'];
   ctx.fillStyle = COLORS.textLight;
   ctx.font = '15px Arial';
   const orderStr = completedRank.map((pid, i) => {
-    const name = pid === 0 ? '你' : (pid === 2 ? '对家' : (pid % 2 === 0 ? '队友' : '对手'));
+    const name = pid === 0 ? 'You' : (pid === 2 ? 'Partner' : (pid % 2 === 0 ? 'Teammate' : 'Opponent'));
     return `${labels[i]}: ${name}(${pid + 1})`;
   }).join('  ');
   ctx.fillText(completedRank.map((pid, idx) => `${labels[idx]}(${pid + 1})`).join(' → '), TABLE_W / 2, my + 80);
@@ -354,12 +354,12 @@ export function drawResult(
   // 升级
   ctx.fillStyle = levelUp > 0 ? '#4caf50' : '#999';
   ctx.font = 'bold 18px Arial';
-  ctx.fillText(`升 ${levelUp} 级 → 打 ${newLevel}`, TABLE_W / 2, my + 120);
+  ctx.fillText(`Up ${levelUp} level(s) → Level ${newLevel}`, TABLE_W / 2, my + 120);
 
   // 提示
   ctx.fillStyle = '#aaa';
   ctx.font = '14px Arial';
-  ctx.fillText('点击「下一局」继续', TABLE_W / 2, my + 165);
+  ctx.fillText('Click "Next Round" to continue', TABLE_W / 2, my + 165);
 }
 
 // 工具：圆角矩形

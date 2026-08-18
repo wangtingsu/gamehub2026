@@ -525,7 +525,7 @@ const BubbleShooter: React.FC<GameProps> = ({ onScoreChange, onGameOver, onGameS
       ctx.font = 'bold 11px Arial';
       ctx.textAlign = 'left';
       ctx.textBaseline = 'top';
-      ctx.fillText('剩余 ' + remaining + ' 次射击', 6, 3);
+      ctx.fillText('Shots left: ' + remaining, 6, 3);
     }
 
     // 紧急模式闪烁警告文字
@@ -534,7 +534,7 @@ const BubbleShooter: React.FC<GameProps> = ({ onScoreChange, onGameOver, onGameS
       ctx.font = 'bold 14px Arial';
       ctx.textAlign = 'center';
       ctx.textBaseline = 'top';
-      ctx.fillText('警告! 泡泡即将到达底线!', CW / 2, GRID_TOP + GAME_OVER_ROW * V_SPACING + BUBBLE_R + 6);
+      ctx.fillText('Warning! Bubbles are reaching the bottom!', CW / 2, GRID_TOP + GAME_OVER_ROW * V_SPACING + BUBBLE_R + 6);
     }
   }, [getPushInterval]);
 
@@ -712,8 +712,8 @@ const BubbleShooter: React.FC<GameProps> = ({ onScoreChange, onGameOver, onGameS
   return (
     <div className="flex flex-col items-center">
       <div className="flex items-center justify-between w-full max-w-[350px] mb-3">
-        <Title level={4} className="!text-white !mb-0">泡泡龙</Title>
-        <Text className="!text-gray-400">得分: {score}</Text>
+        <Title level={4} className="!text-white !mb-0">Bubble Shooter</Title>
+        <Text className="!text-gray-400">Score: {score}</Text>
       </div>
       <canvas
         ref={canvasRef}
@@ -722,16 +722,16 @@ const BubbleShooter: React.FC<GameProps> = ({ onScoreChange, onGameOver, onGameS
         className="rounded-lg border border-dark-600"
       />
       {gameState === 'idle' && (
-        <Button type="primary" className="mt-4" onClick={startGame}>开始游戏</Button>
+        <Button type="primary" className="mt-4" onClick={startGame}>Start Game</Button>
       )}
       {gameState === 'over' && (
         <div className="mt-4 text-center">
-          <Text className="!text-red-400 !block mb-2">游戏结束! 得分: {score}</Text>
-          <Button type="primary" onClick={startGame}>重新开始</Button>
+          <Text className="!text-red-400 !block mb-2">Game Over! Score: {score}</Text>
+          <Button type="primary" onClick={startGame}>Restart</Button>
         </div>
       )}
       {gameState === 'playing' && (
-        <Text className="!text-gray-500 !text-xs mt-2">移动鼠标瞄准，点击/空格发射泡泡</Text>
+        <Text className="!text-gray-500 !text-xs mt-2">Move the mouse to aim, click or press Space to shoot</Text>
       )}
     </div>
   );

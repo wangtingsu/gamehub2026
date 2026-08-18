@@ -15,20 +15,20 @@ export function isValidPlay(
   currentPlayerIdx: number,
 ): { valid: boolean; played?: PlayedCards; reason?: string } {
   if (cards.length === 0) {
-    return { valid: false, reason: '请选择要出的牌' };
+    return { valid: false, reason: 'Please select cards to play' };
   }
 
   // 选中的牌必须在手牌中
   const handIds = new Set(hand.map(c => c.id));
   for (const c of cards) {
     if (!handIds.has(c.id)) {
-      return { valid: false, reason: '选中的牌不在手牌中' };
+      return { valid: false, reason: 'Selected cards are not in your hand' };
     }
   }
 
   const played = identifyPattern(cards);
   if (!played) {
-    return { valid: false, reason: '无效牌型' };
+    return { valid: false, reason: 'Invalid card combination' };
   }
 
   // 如果是首出（没有需要压的牌）
@@ -38,7 +38,7 @@ export function isValidPlay(
 
   // 需要压牌
   if (!canBeat(played, lastPlay)) {
-    return { valid: false, reason: '无法压过当前牌' };
+    return { valid: false, reason: 'Cannot beat the current play' };
   }
 
   return { valid: true, played };
@@ -98,7 +98,7 @@ export function createInitialState(): GameStateData {
     turnNumber: 0,
     phase: 'bet',
     completedRank: [],
-    message: '点击「开始游戏」发牌',
+    message: 'Click "Start Game" to deal',
   };
 }
 

@@ -44,7 +44,7 @@ const CANVAS_H = ROWS * CELL_SIZE;
 /** 所有可用宝石颜色 */
 const ALL_COLORS = ['#e74c3c', '#3498db', '#2ecc71', '#f1c40f', '#9b59b6', '#e67e22'];
 /** 颜色对应的中文名称（调试/显示用） */
-const GEM_NAMES = ['红', '蓝', '绿', '黄', '紫', '橙'];
+const GEM_NAMES = ['Red', 'Blue', 'Green', 'Yellow', 'Purple', 'Orange'];
 /** 最少消除数量（3个连线） */
 const MATCH_MIN = 3;
 
@@ -603,7 +603,7 @@ const MatchThree: React.FC<GameProps> = ({ onScoreChange, onGameOver, onGameStar
       ctx.fillStyle = '#e67e22';
       ctx.font = 'bold 16px sans-serif';
       ctx.textAlign = 'center';
-      ctx.fillText('重新洗牌!', CANVAS_W / 2, CANVAS_H - 10);
+      ctx.fillText('Reshuffle!', CANVAS_W / 2, CANVAS_H - 10);
     }
   }, [getColorsForLevel]);
 
@@ -799,21 +799,21 @@ const MatchThree: React.FC<GameProps> = ({ onScoreChange, onGameOver, onGameStar
   return (
     <div className="flex flex-col items-center">
       <div className="flex items-center justify-between w-full max-w-[420px] mb-3">
-        <Title level={4} className="!text-white !mb-0">消消乐</Title>
+        <Title level={4} className="!text-white !mb-0">Match Three</Title>
         <div className="flex gap-3">
           {gameState === 'playing' && (
             <>
-              <Text className="!text-yellow-400">第 {level} 关</Text>
-              <Text className="!text-gray-400">目标: {targetScore}</Text>
+              <Text className="!text-yellow-400">Level {level}</Text>
+              <Text className="!text-gray-400">Target: {targetScore}</Text>
             </>
           )}
-          <Text className="!text-gray-400">得分: {score}</Text>
-          <Text className="!text-gray-400">消除: {matches}</Text>
+          <Text className="!text-gray-400">Score: {score}</Text>
+          <Text className="!text-gray-400">Matches: {matches}</Text>
         </div>
       </div>
       {gameState === 'playing' && (
         <div className="w-full max-w-[420px] text-center mb-1">
-          <Text className="!text-gray-400">剩余步数: {movesLeft}</Text>
+          <Text className="!text-gray-400">Moves left: {movesLeft}</Text>
         </div>
       )}
       <div className="relative">
@@ -833,25 +833,25 @@ const MatchThree: React.FC<GameProps> = ({ onScoreChange, onGameOver, onGameStar
                 Level {level} Clear! 🎉
               </Text>
               <Text className="!text-white !text-lg !block mt-2">
-                总分: {totalScore}
+                Total: {totalScore}
               </Text>
             </div>
           </div>
         )}
       </div>
       {gameState === 'idle' && (
-        <Button type="primary" className="mt-4" onClick={startGame}>开始游戏</Button>
+        <Button type="primary" className="mt-4" onClick={startGame}>Start Game</Button>
       )}
       {gameState === 'over' && (
         <div className="mt-4 text-center">
           <Text className="!text-red-400 !block mb-2">
-            游戏结束! 第 {level} 关, 得分: {totalScore}
+            Game Over! Level {level}, Score: {totalScore}
           </Text>
-          <Button type="primary" onClick={startGame}>重新开始</Button>
+          <Button type="primary" onClick={startGame}>Restart</Button>
         </div>
       )}
       {gameState === 'playing' && !levelUp && (
-        <Text className="!text-gray-500 !text-xs mt-2">点击选择宝石，再点击相邻宝石交换</Text>
+        <Text className="!text-gray-500 !text-xs mt-2">Click a gem to select it, then click an adjacent gem to swap</Text>
       )}
     </div>
   );

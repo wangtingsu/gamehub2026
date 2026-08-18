@@ -469,22 +469,22 @@ const SlidingPuzzle: React.FC<GameProps> = ({ onScoreChange, onGameOver, onGameS
   const formatTime = (seconds: number): string => {
     const m = Math.floor(seconds / 60);
     const s = seconds % 60;
-    return m > 0 ? `${m}分${s}秒` : `${s}秒`;
+    return m > 0 ? `${m}m ${s}s` : `${s}s`;
   };
 
   /** 当前难度的中文标签 */
-  const sizeLabel = size === 3 ? '3×3 简单' : size === 4 ? '4×4 普通' : '5×5 困难';
+  const sizeLabel = size === 3 ? '3×3 Easy' : size === 4 ? '4×4 Normal' : '5×5 Hard';
 
   return (
     <div className="flex flex-col items-center">
       {/* 顶部信息栏：游戏标题、计时和步数 */}
       <div className="flex items-center justify-between w-full max-w-[360px] mb-3">
-        <Title level={4} className="!text-white !mb-0">数字华容道</Title>
+        <Title level={4} className="!text-white !mb-0">Sliding Puzzle</Title>
         <div className="flex gap-3">
           {gameState === 'playing' && (
-            <Text className="!text-gray-400">用时: {formatTime(elapsedTime)}</Text>
+            <Text className="!text-gray-400">Time: {formatTime(elapsedTime)}</Text>
           )}
-          <Text className="!text-gray-400">步数: {moves}</Text>
+          <Text className="!text-gray-400">Moves: {moves}</Text>
         </div>
       </div>
       {/* 游戏进行中：显示当前难度标签 */}
@@ -503,25 +503,25 @@ const SlidingPuzzle: React.FC<GameProps> = ({ onScoreChange, onGameOver, onGameS
       {/* 空闲状态：显示难度选择按钮 */}
       {gameState === 'idle' && (
         <div className="mt-4 flex gap-3">
-          <Button type="default" onClick={() => startGame(3)}>3×3 简单</Button>
-          <Button type="primary" onClick={() => startGame(4)}>4×4 普通</Button>
-          <Button type="dashed" onClick={() => startGame(5)}>5×5 困难</Button>
+          <Button type="default" onClick={() => startGame(3)}>3×3 Easy</Button>
+          <Button type="primary" onClick={() => startGame(4)}>4×4 Normal</Button>
+          <Button type="dashed" onClick={() => startGame(5)}>5×5 Hard</Button>
         </div>
       )}
       {/* 游戏结束：显示星级评定、完成信息和重新开始按钮 */}
       {gameState === 'over' && (
         <div className="mt-4 text-center">
-          <Text className="!text-green-400 !block mb-1">恭喜完成!</Text>
+          <Text className="!text-green-400 !block mb-1">You Win!</Text>
           <Text className="!text-yellow-400 !text-lg !block mb-1">{starText}</Text>
           <Text className="!text-gray-300 !block mb-2">
-            {sizeLabel} · 用时 {formatTime(elapsedTime)} · {moves} 步
+            {sizeLabel} · Time {formatTime(elapsedTime)} · {moves} moves
           </Text>
-          <Button type="primary" onClick={() => startGame(4)}>再来一局</Button>
+          <Button type="primary" onClick={() => startGame(4)}>Play Again</Button>
         </div>
       )}
       {/* 游戏进行中：操作提示 */}
       {gameState === 'playing' && (
-        <Text className="!text-gray-500 !text-xs mt-2">点击数字方块移动 / 方向键操作</Text>
+        <Text className="!text-gray-500 !text-xs mt-2">Click a tile to move / Use arrow keys</Text>
       )}
     </div>
   );

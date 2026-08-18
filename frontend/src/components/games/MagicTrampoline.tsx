@@ -671,10 +671,10 @@ const MagicTrampoline: React.FC<GameProps> = ({ onScoreChange, onGameOver, onGam
   return (
     <div className="flex flex-col items-center">
       <div className="flex items-center justify-between w-full max-w-[400px] mb-3">
-        <Title level={4} className="!text-white !mb-0">魔力蹦蹦床</Title>
+        <Title level={4} className="!text-white !mb-0">Magic Trampoline</Title>
         <div className="flex items-center gap-3">
-          <Text className="!text-gray-400">得分: {score}</Text>
-          <Text className="!text-blue-400">高度: {height}m</Text>
+          <Text className="!text-gray-400">Score: {score}</Text>
+          <Text className="!text-blue-400">Height: {height}m</Text>
         </div>
       </div>
       <canvas
@@ -684,17 +684,17 @@ const MagicTrampoline: React.FC<GameProps> = ({ onScoreChange, onGameOver, onGam
         height={CANVAS_H}
       />
       {gameState === 'idle' && (
-        <Button type="primary" className="mt-4" onClick={startGame}>开始游戏</Button>
+        <Button type="primary" className="mt-4" onClick={startGame}>Start Game</Button>
       )}
       {gameState === 'over' && (
         <div className="mt-4 text-center">
-          <Text className="!text-red-400 !block mb-2">游戏结束! 得分: {score} | 高度: {height}m</Text>
-          <Button type="primary" onClick={startGame}>重新开始</Button>
+          <Text className="!text-red-400 !block mb-2">Game Over! Score: {score} | Height: {height}m</Text>
+          <Button type="primary" onClick={startGame}>Restart</Button>
         </div>
       )}
       {gameState === 'playing' && (
         <>
-          <Text className="!text-gray-500 !text-xs mt-2">方向键/AD移动 收集星星躲避尖刺 | 滑动/虚拟按键</Text>
+          <Text className="!text-gray-500 !text-xs mt-2">Arrow keys/AD to move, collect stars and avoid spikes | Swipe / virtual buttons</Text>
           <VirtualGamepad
             directions={{
               left: moveLeft,

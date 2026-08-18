@@ -447,7 +447,7 @@ const SpeedRacer: React.FC<GameProps> = ({ onScoreChange, onGameOver, onGameStar
     ctx.fillStyle = '#aaa';
     ctx.font = '12px sans-serif';
     ctx.textAlign = 'left';
-    ctx.fillText(`速度: ${speedPercent}%`, 8, 20);
+    ctx.fillText(`Speed: ${speedPercent}%`, 8, 20);
   }, [drawRoad, drawCar, drawTruck, drawBarrier, getLaneX]);
 
   /**
@@ -639,10 +639,10 @@ const SpeedRacer: React.FC<GameProps> = ({ onScoreChange, onGameOver, onGameStar
     <div className="flex flex-col items-center">
       {/* 游戏标题栏：游戏名、当前得分、最高分 */}
       <div className="flex items-center justify-between w-full max-w-[400px] mb-3">
-        <Title level={4} className="!text-white !mb-0">极速赛车</Title>
+        <Title level={4} className="!text-white !mb-0">Speed Racer</Title>
         <div className="flex items-center gap-3">
-          <Text className="!text-gray-400">得分: {score}</Text>
-          <Text className="!text-yellow-400">最高: {highScore}</Text>
+          <Text className="!text-gray-400">Score: {score}</Text>
+          <Text className="!text-yellow-400">Best: {highScore}</Text>
         </div>
       </div>
       {/* 游戏画布 */}
@@ -654,24 +654,24 @@ const SpeedRacer: React.FC<GameProps> = ({ onScoreChange, onGameOver, onGameStar
       />
       {/* 空闲状态：显示开始按钮 */}
       {gameState === 'idle' && (
-        <Button type="primary" className="mt-4" onClick={startGame}>开始游戏</Button>
+        <Button type="primary" className="mt-4" onClick={startGame}>Start Game</Button>
       )}
       {/* 游戏中：显示左右控制按钮 */}
       {gameState === 'playing' && (
         <div className="flex gap-4 mt-2">
-          <Button onClick={moveLeft} className="!px-6">左移</Button>
-          <Button onClick={moveRight} className="!px-6">右移</Button>
+          <Button onClick={moveLeft} className="!px-6">Left</Button>
+          <Button onClick={moveRight} className="!px-6">Right</Button>
         </div>
       )}
       {/* 游戏中：操作提示 */}
       {gameState === 'playing' && (
-        <Text className="!text-gray-500 !text-xs mt-2">← → 方向键 / 左右按钮 / 滑动控制</Text>
+        <Text className="!text-gray-500 !text-xs mt-2">← → Arrow keys / Left-Right buttons / Swipe to steer</Text>
       )}
       {/* 游戏结束：显示得分和重新开始按钮 */}
       {gameState === 'over' && (
         <div className="mt-4 text-center">
-          <Text className="!text-red-400 !block mb-2">游戏结束! 得分: {score}</Text>
-          <Button type="primary" onClick={startGame}>重新开始</Button>
+          <Text className="!text-red-400 !block mb-2">Game Over! Score: {score}</Text>
+          <Button type="primary" onClick={startGame}>Restart</Button>
         </div>
       )}
     </div>

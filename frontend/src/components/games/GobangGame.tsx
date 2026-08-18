@@ -362,8 +362,8 @@ const GobangGame: React.FC<GameProps> = ({ onScoreChange, onGameOver, onGameStar
   return (
     <div className="flex flex-col items-center">
       <div className="flex items-center justify-between w-full max-w-[480px] mb-3">
-        <Title level={4} className="!text-white !mb-0">五子棋</Title>
-        <Text className="!text-gray-400">你先手（黑子）</Text>
+        <Title level={4} className="!text-white !mb-0">Gobang</Title>
+        <Text className="!text-gray-400">You go first (Black)</Text>
       </div>
       <canvas
         ref={canvasRef}
@@ -378,19 +378,19 @@ const GobangGame: React.FC<GameProps> = ({ onScoreChange, onGameOver, onGameStar
         className="rounded-lg cursor-pointer border border-dark-600"
         style={{ cursor: gameState === 'playing' ? 'pointer' : 'default' }}
       />
-      {gameState === 'idle' && <Button type="primary" className="mt-4" onClick={startGame}>开始游戏</Button>}
+      {gameState === 'idle' && <Button type="primary" className="mt-4" onClick={startGame}>Start Game</Button>}
       {gameState === 'over' && (
         <div className="mt-4 text-center">
           <Text className={`!block mb-2 ${winner === 'player' ? '!text-green-400' : '!text-red-400'}`}>
-            {winner === 'player' ? '你赢了!' : winner === 'ai' ? 'AI 赢了!' : '平局!'}
+            {winner === 'player' ? 'You Win!' : winner === 'ai' ? 'AI Wins!' : 'Draw!'}
           </Text>
-          <Button type="primary" onClick={startGame}>重新开始</Button>
+          <Button type="primary" onClick={startGame}>Restart</Button>
         </div>
       )}
       {gameState === 'playing' && (
         aiThinking.current
-          ? <Text className="!text-yellow-400 !text-xs mt-2">🤔 AI 思考中...</Text>
-          : <Text className="!text-gray-500 !text-xs mt-2">轮到你了，点击棋盘落子（黑子先手）</Text>
+          ? <Text className="!text-yellow-400 !text-xs mt-2">🤔 AI is thinking...</Text>
+          : <Text className="!text-gray-500 !text-xs mt-2">Your turn, click the board to place a piece (Black goes first)</Text>
       )}
     </div>
   );

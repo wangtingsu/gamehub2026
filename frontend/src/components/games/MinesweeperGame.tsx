@@ -243,7 +243,7 @@ const MinesweeperGame: React.FC<GameProps> = ({ onScoreChange, onGameOver, onGam
     <div className="flex flex-col items-center">
       {/* 顶部信息栏：游戏标题、剩余雷数、标记数 */}
       <div className="flex items-center justify-between w-full max-w-[350px] mb-3">
-        <Title level={4} className="!text-white !mb-0">扫雷</Title>
+        <Title level={4} className="!text-white !mb-0">Minesweeper</Title>
         <div className="flex items-center gap-4">
           <Text className="!text-gray-400">💣 {remaining}</Text>
           <Text className="!text-gray-400">🚩 {flagCount}</Text>
@@ -286,13 +286,13 @@ const MinesweeperGame: React.FC<GameProps> = ({ onScoreChange, onGameOver, onGam
       <div className="mt-4 flex gap-3">
         {(gameState === 'won' || gameState === 'lost') && (
           <Text className={gameState === 'won' ? '!text-green-400' : '!text-red-400'}>
-            {gameState === 'won' ? '你赢了!' : '踩到地雷!'}
+            {gameState === 'won' ? 'You Win!' : 'Hit a mine!'}
           </Text>
         )}
-        <Button type="primary" onClick={restart}>重新开始</Button>
+        <Button type="primary" onClick={restart}>Restart</Button>
       </div>
       {/* 操作说明 */}
-      <Text className="!text-gray-500 !text-xs mt-2">左键翻开 | 右键标旗</Text>
+      <Text className="!text-gray-500 !text-xs mt-2">Left click to reveal | Right click to flag</Text>
     </div>
   );
 };

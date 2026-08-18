@@ -148,9 +148,9 @@ const MemoryGame: React.FC<GameProps> = ({ onScoreChange, onGameOver, onGameStar
   return (
     <div className="flex flex-col items-center">
       <div className="flex items-center justify-between w-full max-w-[350px] mb-3">
-        <Title level={4} className="!text-white !mb-0">记忆翻牌</Title>
+        <Title level={4} className="!text-white !mb-0">Memory Match</Title>
         <div className="flex items-center gap-3">
-          <Text className="!text-gray-400">步数: {moves}</Text>
+          <Text className="!text-gray-400">Moves: {moves}</Text>
           <Text className="!text-gray-400">{matched / 2}/{EMOJIS.length}</Text>
         </div>
       </div>
@@ -177,16 +177,16 @@ const MemoryGame: React.FC<GameProps> = ({ onScoreChange, onGameOver, onGameStar
         ))}
       </div>
       {gameState === 'idle' && (
-        <Button type="primary" className="mt-4" onClick={startGame}>开始游戏</Button>
+        <Button type="primary" className="mt-4" onClick={startGame}>Start Game</Button>
       )}
       {gameState === 'won' && (
         <div className="mt-4 text-center">
-          <Text className="!text-green-400 !block mb-2">恭喜! 你用了 {moves} 步完成!</Text>
-          <Button type="primary" onClick={startGame}>再来一局</Button>
+          <Text className="!text-green-400 !block mb-2">Congratulations! You finished in {moves} moves!</Text>
+          <Button type="primary" onClick={startGame}>Play Again</Button>
         </div>
       )}
       {gameState === 'playing' && (
-        <Text className="!text-gray-500 !text-xs mt-2">点击卡片翻面，找到所有配对</Text>
+        <Text className="!text-gray-500 !text-xs mt-2">Click cards to flip them and find all pairs</Text>
       )}
     </div>
   );

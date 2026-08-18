@@ -307,11 +307,11 @@ const Game2048: React.FC<GameProps> = ({ onScoreChange, onGameOver, onGameStart 
         <Title level={4} className="!text-white !mb-0">2048</Title>
         <div className="flex items-center gap-3">
           <div className="text-center">
-            <Text className="!text-gray-500 !text-xs block">得分</Text>
+            <Text className="!text-gray-500 !text-xs block">Score</Text>
             <Text className="!text-white !font-bold">{score}</Text>
           </div>
           <div className="text-center">
-            <Text className="!text-gray-500 !text-xs block">最高</Text>
+            <Text className="!text-gray-500 !text-xs block">Best</Text>
             <Text className="!text-amber-400 !font-bold">{bestScore}</Text>
           </div>
         </div>
@@ -339,19 +339,19 @@ const Game2048: React.FC<GameProps> = ({ onScoreChange, onGameOver, onGameStart 
       </div>
       {gameState === 'won' && (
         <div className="mt-4 text-center">
-          <Text className="!text-green-400 !block mb-2">你达到了 2048!</Text>
-          <Button onClick={restart}>继续游戏</Button>
+          <Text className="!text-green-400 !block mb-2">You reached 2048!</Text>
+          <Button onClick={restart}>Continue</Button>
         </div>
       )}
       {gameState === 'lost' && (
         <div className="mt-4 text-center">
-          <Text className="!text-red-400 !block mb-2">游戏结束! 得分: {score}</Text>
-          <Button type="primary" onClick={restart}>重新开始</Button>
+          <Text className="!text-red-400 !block mb-2">Game over! Score: {score}</Text>
+          <Button type="primary" onClick={restart}>Restart</Button>
         </div>
       )}
       {(gameState === 'playing') && (
         <div className="mt-4">
-          <Button onClick={restart}>重新开始</Button>
+          <Button onClick={restart}>Restart</Button>
         </div>
       )}
       {gameState === 'playing' && (
@@ -364,7 +364,7 @@ const Game2048: React.FC<GameProps> = ({ onScoreChange, onGameOver, onGameStart 
           }}
         />
       )}
-      <Text className="!text-gray-500 !text-xs mt-2">方向键 / 滑动 / 虚拟方向键操作</Text>
+      <Text className="!text-gray-500 !text-xs mt-2">Arrow keys / Swipe / Virtual D-pad</Text>
     </div>
   );
 };

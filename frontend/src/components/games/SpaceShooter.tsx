@@ -968,10 +968,10 @@ const SpaceShooter: React.FC<GameProps> = ({ onScoreChange, onGameOver, onGameSt
     <div className="flex flex-col items-center">
       {/* 顶部信息栏：游戏标题、当前得分和生命值 */}
       <div className="flex items-center justify-between w-full max-w-[400px] mb-3">
-        <Title level={4} className="!text-white !mb-0">飞机大战</Title>
+        <Title level={4} className="!text-white !mb-0">Space Shooter</Title>
         <div className="flex items-center gap-3">
-          <Text className="!text-gray-400">得分: {score}</Text>
-          <Text className="!text-red-400">生命: {health}</Text>
+          <Text className="!text-gray-400">Score: {score}</Text>
+          <Text className="!text-red-400">Lives: {health}</Text>
         </div>
       </div>
       {/* 游戏画布 */}
@@ -983,19 +983,19 @@ const SpaceShooter: React.FC<GameProps> = ({ onScoreChange, onGameOver, onGameSt
       />
       {/* 空闲状态：显示开始按钮 */}
       {gameState === 'idle' && (
-        <Button type="primary" className="mt-4" onClick={startGame}>开始游戏</Button>
+        <Button type="primary" className="mt-4" onClick={startGame}>Start Game</Button>
       )}
       {/* 游戏结束：显示最终得分和重新开始按钮 */}
       {gameState === 'over' && (
         <div className="mt-4 text-center">
-          <Text className="!text-red-400 !block mb-2">游戏结束! 得分: {score}</Text>
-          <Button type="primary" onClick={startGame}>重新开始</Button>
+          <Text className="!text-red-400 !block mb-2">Game Over! Score: {score}</Text>
+          <Button type="primary" onClick={startGame}>Restart</Button>
         </div>
       )}
       {/* 游戏进行中：显示操作提示和虚拟方向键（移动端适用） */}
       {gameState === 'playing' && (
         <>
-          <Text className="!text-gray-500 !text-xs mt-2">方向键/WASD移动 自动射击 | 滑动/虚拟按键</Text>
+          <Text className="!text-gray-500 !text-xs mt-2">Arrow keys/WASD to move, auto-fire | Swipe / virtual buttons</Text>
           <VirtualGamepad
             directions={{
               up: moveUp,

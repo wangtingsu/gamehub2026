@@ -199,8 +199,8 @@ const TetrisGame: React.FC<GameProps> = ({ onScoreChange, onGameOver, onGameStar
   const content = (
     <div className={`flex flex-col items-center ${gameState === 'playing' ? 'fixed inset-0 z-50 bg-dark-900 pt-4' : ''}`} style={gameState==='playing'?{touchAction:'none'}:undefined}>
       <div className="flex items-center justify-between w-full px-2 mb-2" style={{ maxWidth: COLS * blockSize + 80 }}>
-        <Title level={4} className="!text-white !mb-0 !text-base sm:!text-lg">俄罗斯方块</Title>
-        <Text className="!text-gray-400 !text-sm">得分: {score}</Text>
+        <Title level={4} className="!text-white !mb-0 !text-base sm:!text-lg">Tetris</Title>
+        <Text className="!text-gray-400 !text-sm">Score: {score}</Text>
       </div>
       <canvas ref={canvasRef} className="rounded-lg border border-dark-600" width={COLS*blockSize} height={ROWS*blockSize} />
 
@@ -213,15 +213,15 @@ const TetrisGame: React.FC<GameProps> = ({ onScoreChange, onGameOver, onGameStar
             <button className={btnBase} onPointerDown={e=>{e.preventDefault();fire('down')}}>▼</button>
             <button className={`${btnBase} !bg-red-600/60 active:!bg-red-500`} onPointerDown={e=>{e.preventDefault();fire('drop')}}>⏬</button>
           </div>
-          <Text className="!text-gray-500 !text-xs mt-1">键盘: ← → ↑ ↓ 空格</Text>
+          <Text className="!text-gray-500 !text-xs mt-1">Keyboard: ← → ↑ ↓ Space</Text>
         </>
       )}
 
-      {gameState === 'idle' && <Button type="primary" className="mt-4" onClick={startGame}>开始游戏</Button>}
+      {gameState === 'idle' && <Button type="primary" className="mt-4" onClick={startGame}>Start Game</Button>}
       {gameState === 'over' && (
         <div className="mt-4 text-center">
-          <Text className="!text-red-400 !block mb-2">游戏结束! 得分: {score}</Text>
-          <Button type="primary" onClick={startGame}>重新开始</Button>
+          <Text className="!text-red-400 !block mb-2">Game over! Score: {score}</Text>
+          <Button type="primary" onClick={startGame}>Restart</Button>
         </div>
       )}
     </div>

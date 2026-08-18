@@ -340,8 +340,8 @@ const SnakeGame: React.FC<GameProps> = ({ onScoreChange, onGameOver, onGameStart
     <div className="flex flex-col items-center">
       {/* 顶部信息栏：游戏标题和当前得分 */}
       <div className="flex items-center justify-between w-full max-w-[400px] mb-3">
-        <Title level={4} className="!text-white !mb-0">贪吃蛇</Title>
-        <Text className="!text-gray-400">得分: {score}</Text>
+        <Title level={4} className="!text-white !mb-0">Snake</Title>
+        <Text className="!text-gray-400">Score: {score}</Text>
       </div>
       {/* 游戏画布 */}
       <canvas
@@ -352,19 +352,19 @@ const SnakeGame: React.FC<GameProps> = ({ onScoreChange, onGameOver, onGameStart
       />
       {/* 空闲状态：显示开始按钮 */}
       {gameState === 'idle' && (
-        <Button type="primary" className="mt-4" onClick={startGame}>开始游戏</Button>
+        <Button type="primary" className="mt-4" onClick={startGame}>Start Game</Button>
       )}
       {/* 游戏结束：显示最终得分和重新开始按钮 */}
       {gameState === 'over' && (
         <div className="mt-4 text-center">
-          <Text className="!text-red-400 !block mb-2">游戏结束! 得分: {score}</Text>
-          <Button type="primary" onClick={startGame}>重新开始</Button>
+          <Text className="!text-red-400 !block mb-2">Game Over! Score: {score}</Text>
+          <Button type="primary" onClick={startGame}>Restart</Button>
         </div>
       )}
       {/* 游戏进行中：显示操作提示和虚拟方向键（移动端适用） */}
       {gameState === 'playing' && (
         <>
-          <Text className="!text-gray-500 !text-xs mt-2">方向键 / 滑动 / 虚拟方向键控制移动</Text>
+          <Text className="!text-gray-500 !text-xs mt-2">Arrow keys / Swipe / Virtual gamepad to move</Text>
           <VirtualGamepad
             directions={{
               up: () => changeDirection('UP'),

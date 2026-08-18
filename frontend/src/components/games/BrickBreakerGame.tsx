@@ -288,26 +288,26 @@ const BrickBreakerGame: React.FC<GameProps> = ({ onScoreChange, onGameOver, onGa
   return (
     <div className="flex flex-col items-center">
       <div className="flex items-center justify-between w-full max-w-[480px] mb-3">
-        <Title level={4} className="!text-white !mb-0">打砖块</Title>
-        <Text className="!text-gray-400">得分: {score}</Text>
+        <Title level={4} className="!text-white !mb-0">Brick Breaker</Title>
+        <Text className="!text-gray-400">Score: {score}</Text>
       </div>
       <canvas ref={canvasRef} width={W} height={H} className="rounded-lg border border-dark-600" />
-      {gameState === 'idle' && <Button type="primary" className="mt-4" onClick={startGame}>开始游戏</Button>}
+      {gameState === 'idle' && <Button type="primary" className="mt-4" onClick={startGame}>Start Game</Button>}
       {gameState === 'over' && (
         <div className="mt-4 text-center">
-          <Text className="!text-red-400 !block mb-2">游戏结束! 得分: {score}</Text>
-          <Button type="primary" onClick={startGame}>重新开始</Button>
+          <Text className="!text-red-400 !block mb-2">Game Over! Score: {score}</Text>
+          <Button type="primary" onClick={startGame}>Restart</Button>
         </div>
       )}
       {gameState === 'win' && (
         <div className="mt-4 text-center">
-          <Text className="!text-green-400 !block mb-2">恭喜过关! 得分: {score}</Text>
-          <Button type="primary" onClick={startGame}>再玩一次</Button>
+          <Text className="!text-green-400 !block mb-2">Level Complete! Score: {score}</Text>
+          <Button type="primary" onClick={startGame}>Play Again</Button>
         </div>
       )}
       {gameState === 'playing' && (
         <>
-          <Text className="!text-gray-500 !text-xs mt-2">移动鼠标/手指滑动/方向键控制挡板</Text>
+          <Text className="!text-gray-500 !text-xs mt-2">Move mouse / Swipe / Arrow keys to control the paddle</Text>
           <VirtualGamepad
             directions={{
               left: movePaddleLeft,

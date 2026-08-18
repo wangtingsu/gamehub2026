@@ -132,7 +132,7 @@ const WhackAMole: React.FC<GameProps> = ({ onScoreChange, onGameOver, onGameStar
       ctx.fillStyle = '#88ccff';
       ctx.font = 'bold 24px sans-serif';
       ctx.textAlign = 'center';
-      ctx.fillText('❄️ 冻结中 ❄️', CANVAS_W / 2, 50);
+      ctx.fillText('❄️ Frozen ❄️', CANVAS_W / 2, 50);
     }
 
     const now = performance.now();
@@ -667,7 +667,7 @@ const WhackAMole: React.FC<GameProps> = ({ onScoreChange, onGameOver, onGameStar
     if (c >= 5) mult = 2.5;
     else if (c >= 3) mult = 2;
     else if (c >= 1) mult = 1.5;
-    return `连击 x${mult}`;
+    return `Combo x${mult}`;
   }, []);
 
   /**
@@ -721,17 +721,17 @@ const WhackAMole: React.FC<GameProps> = ({ onScoreChange, onGameOver, onGameStar
     draw();
   }, [draw]);
 
-  const phaseText = phase === 'easy' ? '简单' : phase === 'medium' ? '中等' : '困难';
+  const phaseText = phase === 'easy' ? 'Easy' : phase === 'medium' ? 'Medium' : 'Hard';
 
   return (
     <div className="flex flex-col items-center">
       {/* 游戏标题栏：难度、得分、剩余时间 */}
       <div className="flex items-center justify-between w-full max-w-[400px] mb-3">
-        <Title level={4} className="!text-white !mb-0">打地鼠</Title>
+        <Title level={4} className="!text-white !mb-0">Whack-A-Mole</Title>
         <div className="flex gap-3 items-center">
-          <Text className="!text-gray-400">难度: {phaseText}</Text>
-          <Text className="!text-gray-400">得分: {score}</Text>
-          <Text className="!text-gray-400">时间: {timeLeft}s</Text>
+          <Text className="!text-gray-400">Difficulty: {phaseText}</Text>
+          <Text className="!text-gray-400">Score: {score}</Text>
+          <Text className="!text-gray-400">Time: {timeLeft}s</Text>
         </div>
       </div>
       {/* 连击倍率提示 */}
@@ -743,7 +743,7 @@ const WhackAMole: React.FC<GameProps> = ({ onScoreChange, onGameOver, onGameStar
       {/* 冻结惩罚提示 */}
       {gameState === 'playing' && frozen && (
         <div className="w-full max-w-[400px] text-center mb-1">
-          <Text className="!text-blue-300 !font-bold">⚠️ 冻结 5秒!</Text>
+          <Text className="!text-blue-300 !font-bold">⚠️ Frozen 5s!</Text>
         </div>
       )}
       {/* 游戏画布（点击触发地鼠击打） */}
@@ -757,17 +757,17 @@ const WhackAMole: React.FC<GameProps> = ({ onScoreChange, onGameOver, onGameStar
       />
       {/* 空闲/结束状态按钮 */}
       {gameState === 'idle' && (
-        <Button type="primary" className="mt-4" onClick={startGame}>开始游戏</Button>
+        <Button type="primary" className="mt-4" onClick={startGame}>Start Game</Button>
       )}
       {gameState === 'over' && (
         <div className="mt-4 text-center">
-          <Text className="!text-red-400 !block mb-2">游戏结束! 得分: {score}</Text>
-          <Button type="primary" onClick={startGame}>重新开始</Button>
+          <Text className="!text-red-400 !block mb-2">Game Over! Score: {score}</Text>
+          <Button type="primary" onClick={startGame}>Restart</Button>
         </div>
       )}
       {/* 游戏中操作提示 */}
       {gameState === 'playing' && !frozen && (
-        <Text className="!text-gray-500 !text-xs mt-2">点击地鼠打它!</Text>
+        <Text className="!text-gray-500 !text-xs mt-2">Click the moles to whack them!</Text>
       )}
     </div>
   );

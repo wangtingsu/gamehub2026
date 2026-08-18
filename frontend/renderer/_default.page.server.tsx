@@ -137,7 +137,8 @@ function getPageMeta(urlPathname: string, lang: string) {
  * @param urlPathname - 当前请求的 URL 路径，用于判断需要预取哪些数据
  */
 async function prefetchData(queryClient: QueryClient, urlPathname: string) {
-  if (urlPathname === '/' || urlPathname.startsWith('/cn') || urlPathname.startsWith('/en')) {
+  // 仅首页（/、/en、/en/、/cn、/cn/ 等）触发首页预取；避免 /en/blog/89 等子路径误命中
+  if (urlPathname === '/' || /^\/(en|cn|ja|ko|es|fr)\/?$/.test(urlPathname)) {
     console.log('预取首页数据:', urlPathname)
     try {
       await queryClient.prefetchQuery({

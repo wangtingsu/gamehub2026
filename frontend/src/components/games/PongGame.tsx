@@ -326,29 +326,29 @@ const PongGame: React.FC<GameProps> = ({ onScoreChange, onGameOver, onGameStart 
     <div className="flex flex-col items-center">
       {/* 顶部信息栏：游戏标题和当前得分 */}
       <div className="flex items-center justify-between w-full max-w-[560px] mb-3">
-        <Title level={4} className="!text-white !mb-0">乒乓球</Title>
-        <Text className="!text-gray-400">得分: {score}</Text>
+        <Title level={4} className="!text-white !mb-0">Pong</Title>
+        <Text className="!text-gray-400">Score: {score}</Text>
       </div>
       {/* 游戏画布 */}
       <canvas ref={canvasRef} width={W} height={H} className="rounded-lg border border-dark-600" />
       {/* 空闲状态：显示开始按钮 */}
-      {gameState === 'idle' && <Button type="primary" className="mt-4" onClick={startGame}>开始游戏</Button>}
+      {gameState === 'idle' && <Button type="primary" className="mt-4" onClick={startGame}>Start Game</Button>}
       {/* 游戏结束：显示双方比分、胜负结果和重新开始按钮 */}
       {gameState === 'over' && (
         <div className="mt-4 text-center">
           <Text className="!text-gray-400 !block mb-2">
-            你: {gameRef.current.playerScore} | AI: {gameRef.current.aiScore}
+            You: {gameRef.current.playerScore} | AI: {gameRef.current.aiScore}
           </Text>
           <Text className={`!block mb-2 ${gameRef.current.playerScore >= WIN_SCORE ? '!text-green-400' : '!text-red-400'}`}>
-            {gameRef.current.playerScore >= WIN_SCORE ? '你赢了!' : 'AI 赢了!'}
+            {gameRef.current.playerScore >= WIN_SCORE ? 'You Win!' : 'AI Wins!'}
           </Text>
-          <Button type="primary" onClick={startGame}>重新开始</Button>
+          <Button type="primary" onClick={startGame}>Restart</Button>
         </div>
       )}
       {/* 游戏进行中：显示操作提示和虚拟方向键（移动端适用） */}
       {gameState === 'playing' && (
         <>
-          <Text className="!text-gray-500 !text-xs mt-2">移动鼠标/手指滑动/方向键控制球拍，先得5分获胜</Text>
+          <Text className="!text-gray-500 !text-xs mt-2">Move mouse / swipe / arrow keys to control paddle, first to 5 wins</Text>
           <VirtualGamepad
             directions={{
               up: movePaddleUp,

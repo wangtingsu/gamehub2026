@@ -87,7 +87,7 @@ export const SUIT_SYMBOLS: Record<string, string> = {
 export const RANK_NAMES: Record<number, string> = {
   2: '2', 3: '3', 4: '4', 5: '5', 6: '6', 7: '7', 8: '8', 9: '9', 10: '10',
   11: 'J', 12: 'Q', 13: 'K', 14: 'A',
-  99: '小', 100: '大',
+  99: 'SJ', 100: 'BJ',
 };
 
 // 是否为红色花色
@@ -129,7 +129,7 @@ export function getRankDisplay(rank: Rank): string {
 }
 
 export function getSuitDisplay(suit: Suit): string {
-  if (suit === Suit.SmallJoker) return '小';
-  if (suit === Suit.BigJoker) return '大';
+  if (suit === Suit.SmallJoker) return 'SJ';
+  if (suit === Suit.BigJoker) return 'BJ';
   return SUIT_SYMBOLS[suit] || suit;
 }

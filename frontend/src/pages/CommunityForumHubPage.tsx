@@ -43,18 +43,18 @@ const CommunityForumHubPage = () => {
     const now = new Date();
     const diffMs = now.getTime() - date.getTime();
     const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
-    if (diffDays === 0) return '今天';
-    if (diffDays === 1) return '昨天';
-    if (diffDays < 7) return `${diffDays}天前`;
-    return date.toLocaleDateString('zh-CN', { month: 'short', day: 'numeric' });
+    if (diffDays === 0) return 'Today';
+    if (diffDays === 1) return 'Yesterday';
+    if (diffDays < 7) return `${diffDays} days ago`;
+    return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
   };
 
   return (
     <div className="bg-dark-900">
       <SEO
-        title={t('community.seoTitle', '社区论坛 | GameHub')}
-        description={t('community.seoDesc', 'GameHub 社区论坛 — 按游戏浏览讨论帖、评测和攻略')}
-        keywords={t('community.seoKeywords', '社区论坛,游戏讨论,游戏评测,游戏攻略,GameHub')}
+        title={t('community.seoTitle', 'Community Forum | GameHub')}
+        description={t('community.seoDesc', 'GameHub Community Forum — browse discussions, reviews, and guides by game')}
+        keywords={t('community.seoKeywords', 'community forum,game discussion,game review,game guide,GameHub')}
       />
 
       <div className="py-2">
@@ -63,14 +63,14 @@ const CommunityForumHubPage = () => {
           <div className="inline-flex items-center justify-center w-20 h-20 rounded-2xl bg-gradient-to-br from-blue-500 to-purple-500 mb-6 shadow-lg shadow-blue-500/20">
             <TeamOutlined className="text-4xl text-white" />
           </div>
-          <Title level={1} className="!mb-2 !text-gray-100">{t('community.title', '社区论坛')}</Title>
+          <Title level={1} className="!mb-2 !text-gray-100">{t('community.title', 'Community Forum')}</Title>
           <Paragraph className="text-lg text-gray-400 max-w-2xl mx-auto mb-6">
-            {t('community.subtitle', '按游戏浏览讨论帖、评测和攻略，与玩家一起交流分享')}
+            {t('community.subtitle', 'Browse discussions, reviews, and guides by game, and share with fellow players')}
           </Paragraph>
 
           <div className="max-w-xl mx-auto">
             <Search
-              placeholder={t('community.searchPlaceholder', '搜索游戏名称...')}
+              placeholder={t('community.searchPlaceholder', 'Search game name...')}
               size="large"
               value={searchText}
               onChange={(e) => { setSearchText(e.target.value); setCurrentPage(1); }}
@@ -84,9 +84,9 @@ const CommunityForumHubPage = () => {
         {/* 错误 */}
         {isError && (
           <Alert
-            message="加载失败" description="无法加载社区论坛列表，请稍后重试。"
+            message="Failed to load" description="Unable to load the community forum list. Please try again later."
             type="error" showIcon className="mb-6"
-            action={<Button onClick={handleRetry} icon={<ReloadOutlined />}>重试</Button>}
+            action={<Button onClick={handleRetry} icon={<ReloadOutlined />}>Retry</Button>}
           />
         )}
 
@@ -108,10 +108,10 @@ const CommunityForumHubPage = () => {
               description={
                 <div>
                   <Title level={4} className="text-gray-400">
-                    {searchText ? `没有找到"${searchText}"相关的游戏` : '暂没有社区论坛活动'}
+                    {searchText ? `No games found for "${searchText}"` : 'No community forum activity yet'}
                   </Title>
                   <Text type="secondary">
-                    {searchText ? '请尝试其他关键词搜索' : '游戏发布后可以在社区中创建讨论帖'}
+                    {searchText ? 'Please try other keywords' : 'After a game is released you can create discussion posts in its community'}
                   </Text>
                 </div>
               }
@@ -121,7 +121,7 @@ const CommunityForumHubPage = () => {
           <>
             <div className="mb-6 flex items-center justify-between">
               <Text type="secondary" className="text-base">
-                共 <span className="text-blue-400 font-bold">{total}</span> 个游戏社区
+                Total <span className="text-blue-400 font-bold">{total}</span> game communities
               </Text>
             </div>
 
@@ -163,7 +163,7 @@ const CommunityForumHubPage = () => {
 
                     {/* 统计 */}
                     <div className="flex items-center gap-4 text-xs text-gray-500 mb-2">
-                      <span className="flex items-center gap-1"><MessageOutlined /> {game.forumPostCount || 0} 帖</span>
+                      <span className="flex items-center gap-1"><MessageOutlined /> {game.forumPostCount || 0} posts</span>
                     </div>
 
                     {/* 最新帖子 */}
@@ -190,7 +190,7 @@ const CommunityForumHubPage = () => {
               <div className="flex justify-center mt-8">
                 <Pagination current={currentPage} pageSize={PAGE_SIZE} total={total}
                   onChange={(page) => { setCurrentPage(page); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
-                  showSizeChanger={false} showTotal={(t) => `共 ${t} 个游戏社区`} />
+                  showSizeChanger={false} showTotal={(t) => `Total ${t} game communities`} />
               </div>
             )}
           </>
