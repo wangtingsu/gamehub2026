@@ -247,6 +247,27 @@ async function render(pageContext: PageContextServer) {
   // 根据 URL 获取页面特定的 SEO 元数据
   const pageMeta = getPageMeta(urlPathname, i18nLang)
 
+  // 生成动态 canonical / hreflang / og:url（修复：此前所有页面都硬编码指向首页）
+  const SITE_URL = 'https://www.gghubs.com'
+  const HREFLANG_LANGS = [
+    { prefix: 'en', code: 'en' },
+    { prefix: 'cn', code: 'zh-CN' },
+    { prefix: 'ja', code: 'ja' },
+    { prefix: 'ko', code: 'ko' },
+    { prefix: 'es', code: 'es' },
+    { prefix: 'fr', code: 'fr' },
+  ]
+  // 去除语言前缀后的路径（首页为 '/'）
+  const pathWithoutLang = urlPathname.replace(/^\/(en|cn|ja|ko|es|fr)(?=\/|$)/i, '') || '/'
+  // 语言前缀：无前缀时默认 en（把 /games/12 归一到 /en/games/12）
+  const langPrefix = validLang || 'en'
+  const canonicalUrl = pathWithoutLang === '/'
+    ? `${SITE_URL}/`
+    : `${SITE_URL}/${langPrefix}${pathWithoutLang}`
+  const alternateLinks = HREFLANG_LANGS.map(
+    (l) => `<link rel="alternate" hreflang="${l.code}" href="${SITE_URL}/${l.prefix}${pathWithoutLang === '/' ? '' : pathWithoutLang}" />`
+  ).join('\n    ')
+
   const clientScript = isProduction
     ? '<!-- SSR_CLIENT_SCRIPTS_PLACEHOLDER -->'
     : '<script type="module" src="/@vite/client"><\/script>'
@@ -263,18 +284,13 @@ async function render(pageContext: PageContextServer) {
     <meta name="title" content="${pageMeta.title}" />
     <meta name="description" content="${pageMeta.description}" />
     <meta name="robots" content="index, follow" />
-    <link rel="canonical" href="https://www.gghubs.com/" />
-    <link rel="alternate" hreflang="zh-CN" href="https://www.gghubs.com/cn" />
-    <link rel="alternate" hreflang="en" href="https://www.gghubs.com/en" />
-    <link rel="alternate" hreflang="ja" href="https://www.gghubs.com/ja" />
-    <link rel="alternate" hreflang="ko" href="https://www.gghubs.com/ko" />
-    <link rel="alternate" hreflang="es" href="https://www.gghubs.com/es" />
-    <link rel="alternate" hreflang="fr" href="https://www.gghubs.com/fr" />
-    <link rel="alternate" hreflang="x-default" href="https://www.gghubs.com/" />
+    <link rel="canonical" href="${canonicalUrl}" />
+    ${alternateLinks}
+    <link rel="alternate" hreflang="x-default" href="${canonicalUrl}" />
     <meta property="og:title" content="${pageMeta.ogTitle}" />
     <meta property="og:description" content="${pageMeta.ogDescription}" />
     <meta property="og:type" content="website" />
-    <meta property="og:url" content="https://www.gghubs.com/" />
+    <meta property="og:url" content="${canonicalUrl}" />
     <meta property="og:image" content="https://www.gghubs.com/og-image.png" />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />

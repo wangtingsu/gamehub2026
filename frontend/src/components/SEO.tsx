@@ -126,7 +126,21 @@ export default function SEO({
   const pageKeywords = keywords || t('seo.defaultKeywords', 'game library, game management, gaming platform, video games, game collection, game hub, gaming community');
   const pageImage = image.startsWith('http') ? image : `${siteUrl}${image}`;
   const pageUrl = url.startsWith('http') ? url : `${siteUrl}${url}`;
-  const pageCanonical = canonical ? (canonical.startsWith('http') ? canonical : `${siteUrl}${canonical}`) : pageUrl;
+
+  // 当前页面路径（去除域名）与语言前缀（无前缀时按 i18n 语言回退，zh-CN → cn）
+  const currentPathname = typeof window !== 'undefined'
+    ? window.location.pathname
+    : url.replace(/^https?:\/\/[^\/]+/, '');
+  const langPrefixMatch = currentPathname.match(/^\/(en|cn|ja|ko|es|fr)(?=\/|$)/);
+  const langPrefix = langPrefixMatch?.[1] || (i18n.language === 'zh-CN' ? 'cn' : (i18n.language || 'en'));
+
+  // canonical：相对路径未带语言前缀时自动补上当前语言前缀，避免指向无前缀的重复页
+  const canonicalRaw = canonical ? canonical.replace(/^https?:\/\/[^\/]+/, '') : null;
+  let canonicalPath = canonicalRaw || currentPathname || '/';
+  if (canonicalRaw && canonicalRaw !== '/' && !/^\/(en|cn|ja|ko|es|fr)(?=\/|$)/.test(canonicalRaw)) {
+    canonicalPath = `/${langPrefix}${canonicalRaw}`;
+  }
+  const pageCanonical = canonicalPath.startsWith('http') ? canonicalPath : `${siteUrl}${canonicalPath}`;
 
   // Robots meta
   const robotsContent = [];
@@ -272,8 +286,8 @@ export default function SEO({
       {/* Alternate languages */}
       {/* 为所有支持的语言生成alternate链接 — URL前缀与hreflang代码独立 */}
       {(() => {
-        const pathname = typeof window !== 'undefined' ? window.location.pathname : url.replace(/^https?:\/\/[^\/]+/, '');
-        const pathWithoutLang = pathname.replace(/^\/[^\/]+/, '').replace(/\/+$/, '') || '';
+        const pathname = currentPathname;
+        const pathWithoutLang = pathname.replace(/^\/(en|cn|ja|ko|es|fr)(?=\/|$)/, '').replace(/\/+$/, '') || '';
         return (
           <>
             {URL_LANGUAGES.map((urlLang) => (
