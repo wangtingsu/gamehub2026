@@ -78,9 +78,9 @@ const seedUsers = async (): Promise<Record<string, number>> => {
       username: 'admin',
       email: 'admin@gamehub.com',
       password: 'Admin123!',
-      displayName: '管理员',
+      displayName: 'Administrator',
       role: 'admin',
-      bio: '系统管理员'
+      bio: 'System Administrator'
     },
     {
       username: 'moderator',
