@@ -30,16 +30,16 @@ const CommunityPostDetailPage = () => {
 
   const formatDate = (dateString: string) => {
     if (!dateString) return '';
-    return new Date(dateString).toLocaleDateString('zh-CN', { year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' });
+    return new Date(dateString).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' });
   };
 
   const Sidebar = ({ children }: { children: React.ReactNode }) => (
     <div className="flex gap-6">
       <div className="w-64 flex-shrink-0 hidden lg:block">
         <div className="bg-dark-800 border border-dark-700 rounded-xl p-3 sticky top-4">
-          <Text className="!text-white !text-sm !font-semibold block mb-3">我的关注</Text>
+          <Text className="!text-white !text-sm !font-semibold block mb-3">My Followed</Text>
           <div className="max-h-[350px] overflow-y-auto space-y-2 space-scroll">
-            {followed.length === 0 && <Text className="!text-gray-500 !text-xs">暂无关注的论坛</Text>}
+            {followed.length === 0 && <Text className="!text-gray-500 !text-xs">No followed forums</Text>}
             {followed.map((f: any) => {
               const game = allGames.find((g: any) => String(g.id) === f.forum_id);
               return (
@@ -54,7 +54,7 @@ const CommunityPostDetailPage = () => {
             )})}
           </div>
           <div className="mt-4 pt-3 border-t border-dark-700">
-            <Text className="!text-white !text-xs !font-semibold block mb-2">相关游戏</Text>
+            <Text className="!text-white !text-xs !font-semibold block mb-2">Related Games</Text>
             <div className="space-y-2">
               {relatedGames.map((g: any) => (
                 <div key={g.id} onClick={() => navigate(`/${currentLang}/games/${g.id}/forum`)}
@@ -78,28 +78,28 @@ const CommunityPostDetailPage = () => {
 
   if (error || !post) return (
     <div className="bg-dark-900"><div className="py-6"><Sidebar>
-      <Alert message="加载失败" description={error instanceof Error ? error.message : '帖子不存在'} type="error" showIcon
-        action={<Button type="primary" onClick={() => navigate(-1)}>返回</Button>} />
+      <Alert message="Failed to load" description={error instanceof Error ? error.message : 'Post not found'} type="error" showIcon
+        action={<Button type="primary" onClick={() => navigate(-1)}>Back</Button>} />
     </Sidebar></div></div>
   );
 
   return (
     <>
-      <SEO title={`${post.title} - 社区`} description={post.content?.substring(0, 160) || ''}
+      <SEO title={`${post.title} - Community`} description={post.content?.substring(0, 160) || ''}
         keywords={post.tags?.join(', ')} type="article" author={post.author} publishedTime={post.createdAt} tags={post.tags} />
       <SEOBreadcrumb items={[
-        { name: '首页', url: `/${currentLang}` },
-        { name: '社区', url: `/${currentLang}/community` },
+        { name: 'Home', url: `/${currentLang}` },
+        { name: 'Community', url: `/${currentLang}/community` },
         { name: post.title, url: `/${currentLang}/community/posts/${post.id}` },
       ]} />
       <div className="bg-dark-900">
         <div className="py-6">
-          <Button type="text" icon={<ArrowLeftOutlined />} className="!text-gray-400 hover:!text-white mb-6" onClick={() => navigate(-1)}>返回</Button>
+          <Button type="text" icon={<ArrowLeftOutlined />} className="!text-gray-400 hover:!text-white mb-6" onClick={() => navigate(-1)}>Back</Button>
           <Sidebar>
             <div className="bg-dark-800 border border-dark-700 rounded-xl p-6 mb-6">
               <div className="flex items-start gap-3 mb-4 flex-wrap">
-                {post.isPinned && <Tag icon={<PushpinOutlined />} color="blue">置顶</Tag>}
-                {post.isLocked && <Tag icon={<LockOutlined />} color="orange">已锁定</Tag>}
+                {post.isPinned && <Tag icon={<PushpinOutlined />} color="blue">Pinned</Tag>}
+                {post.isLocked && <Tag icon={<LockOutlined />} color="orange">Locked</Tag>}
               </div>
               <Title level={1} className="!text-white !mb-4">{post.title}</Title>
               <div className="flex items-center gap-4 mb-6 text-gray-400 flex-wrap">
@@ -111,12 +111,12 @@ const CommunityPostDetailPage = () => {
               <BlogRenderContent content={post.content} />
             </div>
             <div className="mt-6">
-              <Title level={3} className="!text-white !mb-4 !text-lg">评论 ({post.comments || 0})</Title>
+              <Title level={3} className="!text-white !mb-4 !text-lg">Comments ({post.comments || 0})</Title>
               {isAuthenticated ? (
                 <CommentList parentType="community_post" parentId={post.id} />
               ) : (
                 <div className="text-center py-4 text-gray-500 text-sm">
-                  请登录后查看评论
+                  Please sign in to view comments
                 </div>
               )}
             </div>

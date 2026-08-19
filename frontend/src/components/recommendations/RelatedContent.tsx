@@ -68,7 +68,7 @@ const RelatedContent: React.FC<RelatedContentProps> = ({
       <h3 className="font-semibold mb-3 flex items-center justify-between">
         <span>{title}</span>
         <a className="text-xs text-primary-500 cursor-pointer">
-          更多 <RightOutlined />
+          More <RightOutlined />
         </a>
       </h3>
       {/* 推荐列表 */}
