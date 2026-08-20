@@ -14,6 +14,7 @@ import {
   LineChart, Line, BarChart, Bar, PieChart, Pie, Cell,
   XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend,
 } from 'recharts';
+import { useTranslation } from 'react-i18next';
 import {
   useSearchTrendData,
   useLeaderboard,
@@ -28,6 +29,7 @@ const { Title } = Typography;
 const COLORS = ['#3b82f6', '#ef4444', '#10b981', '#f59e0b', '#8b5cf6', '#ec4899', '#14b8a6', '#f97316'];
 
 const DiscoveryPage: React.FC = () => {
+  const { t } = useTranslation();
   const [activeTab, setActiveTab] = useState('trends');
   const [lbType, setLbType] = useState<string>('top_rated');
 
@@ -39,18 +41,18 @@ const DiscoveryPage: React.FC = () => {
   return (
     <div className=" py-2">
       <SEO
-        title="发现 | GameHub"
-        description="GameHub 发现页面 - 趋势分析、排行榜、数据报告"
-        keywords="游戏趋势,排行榜,游戏数据,热门游戏"
+        title={t('discovery.seoTitle')}
+        description={t('discovery.seoDesc')}
+        keywords="game trends, leaderboard, game data, popular games"
       />
 
-      <Title level={1} className="mb-6 !text-white">发现</Title>
+      <Title level={1} className="mb-6 !text-white">{t('discovery.title')}</Title>
 
       <Tabs activeKey={activeTab} onChange={setActiveTab} className="discovery-tabs">
-        <TabPane tab={<span><RiseOutlined /> 趋势分析</span>} key="trends">
+        <TabPane tab={<span><RiseOutlined /> {t('discovery.tab.trends')}</span>} key="trends">
           <Row gutter={[16, 16]}>
             <Col xs={24}>
-              <Card title="搜索趋势（近30天）" className="shadow-sm bg-dark-800 border-dark-700">
+              <Card title={t('discovery.searchTrendsTitle')} className="shadow-sm bg-dark-800 border-dark-700">
                 {trendsLoading ? <div className="h-80 flex items-center justify-center"><Spin size="large" /></div>
                 : searchTrends?.length ? (
                   <ResponsiveContainer width="100%" height={320}>
@@ -60,26 +62,26 @@ const DiscoveryPage: React.FC = () => {
                       <YAxis tick={{ fontSize: 14 }} />
                       <Tooltip contentStyle={{ fontSize: 16 }} />
                       <Legend />
-                      <Line type="monotone" dataKey="totalSearches" stroke="#3b82f6" name="搜索次数" dot={false} />
-                      <Line type="monotone" dataKey="uniqueQueries" stroke="#10b981" name="唯一搜索词" dot={false} />
+                      <Line type="monotone" dataKey="totalSearches" stroke="#3b82f6" name={t('discovery.chart.searchCount')} dot={false} />
+                      <Line type="monotone" dataKey="uniqueQueries" stroke="#10b981" name={t('discovery.chart.uniqueQueries')} dot={false} />
                     </LineChart>
                   </ResponsiveContainer>
-                ) : <Empty description="暂无趋势数据" />}
+                ) : <Empty description={t('discovery.noTrendData')} />}
               </Card>
             </Col>
           </Row>
         </TabPane>
 
-        <TabPane tab={<span><BarChartOutlined /> 排行榜</span>} key="leaderboard">
+        <TabPane tab={<span><BarChartOutlined /> {t('discovery.tab.leaderboard')}</span>} key="leaderboard">
           <Card
-            title="游戏排行榜"
+            title={t('discovery.leaderboardTitle')}
             className="shadow-sm bg-dark-800 border-dark-700"
             extra={
               <Select value={lbType} onChange={setLbType} style={{ width: 150 }}>
-                <Select.Option value="top_rated">评分最高</Select.Option>
-                <Select.Option value="most_reviewed">评测最多</Select.Option>
-                <Select.Option value="most_favorited">收藏最多</Select.Option>
-                <Select.Option value="most_discussed">讨论最多</Select.Option>
+                <Select.Option value="top_rated">{t('discovery.lb.rating')}</Select.Option>
+                <Select.Option value="most_reviewed">{t('discovery.lb.reviews')}</Select.Option>
+                <Select.Option value="most_favorited">{t('discovery.lb.favorites')}</Select.Option>
+                <Select.Option value="most_discussed">{t('discovery.lb.discussions')}</Select.Option>
               </Select>
             }
           >
@@ -98,14 +100,14 @@ const DiscoveryPage: React.FC = () => {
                   </Bar>
                 </BarChart>
               </ResponsiveContainer>
-            ) : <Empty description="暂无排行榜数据" />}
+            ) : <Empty description={t('discovery.noLbData')} />}
           </Card>
         </TabPane>
 
-        <TabPane tab={<span><PieChartOutlined /> 数据报告</span>} key="stats">
+        <TabPane tab={<span><PieChartOutlined /> {t('discovery.tab.stats')}</span>} key="stats">
           <Row gutter={[16, 16]}>
             <Col xs={24} md={12}>
-              <Card title="平台分布" className="shadow-sm bg-dark-800 border-dark-700">
+              <Card title={t('discovery.platformDist')} className="shadow-sm bg-dark-800 border-dark-700">
                 {distLoading ? <Spin className="flex justify-center py-20" />
                 : distributions?.platforms?.length ? (
                   <ResponsiveContainer width="100%" height={300}>
@@ -127,11 +129,11 @@ const DiscoveryPage: React.FC = () => {
                       <Tooltip contentStyle={{ fontSize: 16 }} />
                     </PieChart>
                   </ResponsiveContainer>
-                ) : <Empty description="暂无数据" />}
+                ) : <Empty description={t('discovery.noData')} />}
               </Card>
             </Col>
             <Col xs={24} md={12}>
-              <Card title="类型分布" className="shadow-sm bg-dark-800 border-dark-700">
+              <Card title={t('discovery.genreDist')} className="shadow-sm bg-dark-800 border-dark-700">
                 {distLoading ? <Spin className="flex justify-center py-20" />
                 : distributions?.genres?.length ? (
                   <ResponsiveContainer width="100%" height={300}>
@@ -153,34 +155,34 @@ const DiscoveryPage: React.FC = () => {
                       <Tooltip contentStyle={{ fontSize: 16 }} />
                     </PieChart>
                   </ResponsiveContainer>
-                ) : <Empty description="暂无数据" />}
+                ) : <Empty description={t('discovery.noData')} />}
               </Card>
             </Col>
             <Col xs={24}>
-              <Card title="社区概览" className="shadow-sm bg-dark-800 border-dark-700">
+              <Card title={t('discovery.communityOverview')} className="shadow-sm bg-dark-800 border-dark-700">
                 {commLoading ? <Spin className="flex justify-center py-2" />
                 : community ? (
                   <Row gutter={[16, 16]}>
                     <Col xs={12} sm={8} md={4}>
-                      <Statistic title="总用户" value={community.totalUsers} prefix={<TeamOutlined />} />
+                      <Statistic title={t('discovery.stat.totalUsers')} value={community.totalUsers} prefix={<TeamOutlined />} />
                     </Col>
                     <Col xs={12} sm={8} md={4}>
-                      <Statistic title="总游戏" value={community.totalGames} prefix={<PlaySquareOutlined />} />
+                      <Statistic title={t('discovery.stat.totalGames')} value={community.totalGames} prefix={<PlaySquareOutlined />} />
                     </Col>
                     <Col xs={12} sm={8} md={4}>
-                      <Statistic title="总评测" value={community.totalReviews} prefix={<FileTextOutlined />} />
+                      <Statistic title={t('discovery.stat.totalReviews')} value={community.totalReviews} prefix={<FileTextOutlined />} />
                     </Col>
                     <Col xs={12} sm={8} md={4}>
-                      <Statistic title="总帖子" value={community.totalPosts} prefix={<MessageOutlined />} />
+                      <Statistic title={t('discovery.stat.totalPosts')} value={community.totalPosts} prefix={<MessageOutlined />} />
                     </Col>
                     <Col xs={12} sm={8} md={4}>
-                      <Statistic title="今日新用户" value={community.newUsersToday} prefix={<TeamOutlined />} valueStyle={{ color: '#10b981' }} />
+                      <Statistic title={t('discovery.stat.newUsersToday')} value={community.newUsersToday} prefix={<TeamOutlined />} valueStyle={{ color: '#10b981' }} />
                     </Col>
                     <Col xs={12} sm={8} md={4}>
-                      <Statistic title="活跃用户(7d)" value={community.activeUsers} prefix={<FireOutlined />} valueStyle={{ color: '#f59e0b' }} />
+                      <Statistic title={t('discovery.stat.activeUsers')} value={community.activeUsers} prefix={<FireOutlined />} valueStyle={{ color: '#f59e0b' }} />
                     </Col>
                   </Row>
-                ) : <Empty description="暂无社区数据" />}
+                ) : <Empty description={t('discovery.noCommunityData')} />}
               </Card>
             </Col>
           </Row>

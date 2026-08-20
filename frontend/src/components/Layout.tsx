@@ -155,16 +155,16 @@ const Layout = () => {
    * 包含：全部游戏、在线游戏、免费游戏、治愈游戏、排行榜、热门、发现
    */
   const gamesNavItems: MenuProps['items'] = [
-    { key: `/${currentLang}/games`, icon: <AppstoreOutlined />, label: t('navigation.allGames', '全部游戏') },
-    { key: `/${currentLang}/leaderboard`, icon: <TrophyOutlined />, label: t('navigation.leaderboard', '排行榜') },
-    { key: `/${currentLang}/trending`, icon: <FireOutlined />, label: t('navigation.trending', '热门') },
-    { key: `/${currentLang}/discovery`, icon: <CompassOutlined />, label: t('navigation.discovery', '发现') },
+    { key: `/${currentLang}/games`, icon: <AppstoreOutlined />, label: t('navigation.allGames', 'All Games') },
+    { key: `/${currentLang}/leaderboard`, icon: <TrophyOutlined />, label: t('navigation.leaderboard', 'Leaderboard') },
+    { key: `/${currentLang}/trending`, icon: <FireOutlined />, label: t('navigation.trending', 'Trending') },
+    { key: `/${currentLang}/discovery`, icon: <CompassOutlined />, label: t('navigation.discovery', 'Discovery') },
   ];
 
   const recommendNavItems: MenuProps['items'] = [
-    { key: `/${currentLang}/library/online`, icon: <PlayCircleOutlined />, label: t('navigation.onlineGames', '在线游戏') },
-    { key: `/${currentLang}/free-games`, icon: <HeartOutlined />, label: t('navigation.freeGames', '免费游戏') },
-    { key: `/${currentLang}/cozy-games`, icon: <ThunderboltOutlined />, label: t('navigation.cozyGames', '治愈游戏') },
+    { key: `/${currentLang}/library/online`, icon: <PlayCircleOutlined />, label: t('navigation.onlineGames', 'Online Games') },
+    { key: `/${currentLang}/free-games`, icon: <HeartOutlined />, label: t('navigation.freeGames', 'Free Games') },
+    { key: `/${currentLang}/cozy-games`, icon: <ThunderboltOutlined />, label: t('navigation.cozyGames', 'Cozy Games') },
   ];
 
   /**
@@ -172,10 +172,10 @@ const Layout = () => {
    * 包含：人物自画像、心灵驿站、游戏百科、命理师
    */
   const aiNavItems: MenuProps['items'] = [
-    { key: `/${currentLang}/ai/soul`, icon: <CommentOutlined />, label: t('navigation.soulStation', '心灵驿站') },
-    { key: `/${currentLang}/ai/npc`, icon: <BookOutlined />, label: t('navigation.aiGuide', 'AI 攻略') },
-    { key: `/${currentLang}/ai/portrait`, icon: <UserOutlined />, label: t('navigation.aiPortrait', 'AI 人物自画像') },
-    { key: `/${currentLang}/ai/companion`, icon: <ThunderboltOutlined />, label: t('navigation.aiCompanion', '命理师') },
+    { key: `/${currentLang}/ai/soul`, icon: <CommentOutlined />, label: t('navigation.soulStation', 'Soul Station') },
+    { key: `/${currentLang}/ai/npc`, icon: <BookOutlined />, label: t('navigation.aiGuide', 'AI Guide') },
+    { key: `/${currentLang}/ai/portrait`, icon: <UserOutlined />, label: t('navigation.aiPortrait', 'AI Portrait') },
+    { key: `/${currentLang}/ai/companion`, icon: <ThunderboltOutlined />, label: t('navigation.aiCompanion', 'AI Companion') },
   ];
 
   /**
@@ -183,11 +183,11 @@ const Layout = () => {
    * 包含：新闻中心、博客、我的文章（仅管理员）、官方社区、关于我们
    */
   const moreNavItems: MenuProps['items'] = [
-    { key: `/${currentLang}/news`, icon: <ReadOutlined />, label: t('navigation.news', '新闻中心') },
-    { key: `/${currentLang}/blog`, icon: <ReadOutlined />, label: t('navigation.blog', '博客空间') },
-    ...(isAdmin ? [{ key: `/${currentLang}/blog/my` as string, icon: <ReadOutlined />, label: t('navigation.myBlogs', '我的文章') }] : []),
-    { key: `/${currentLang}/community-forum`, icon: <TeamOutlined />, label: t('navigation.communityForum', '社区论坛') },
-    { key: `/${currentLang}/about`, icon: <InfoCircleOutlined />, label: t('navigation.about', '关于我们') },
+    { key: `/${currentLang}/news`, icon: <ReadOutlined />, label: t('navigation.news', 'News') },
+    { key: `/${currentLang}/blog`, icon: <ReadOutlined />, label: t('navigation.blog', 'Blog') },
+    ...(isAdmin ? [{ key: `/${currentLang}/blog/my` as string, icon: <ReadOutlined />, label: t('navigation.myBlogs', 'My Articles') }] : []),
+    { key: `/${currentLang}/community-forum`, icon: <TeamOutlined />, label: t('navigation.communityForum', 'Community Forum') },
+    { key: `/${currentLang}/about`, icon: <InfoCircleOutlined />, label: t('navigation.about', 'About') },
   ];
 
   /**
@@ -195,9 +195,9 @@ const Layout = () => {
    * 按导航模式（games / ai / more）组织，每项包含标题和菜单项列表
    */
   const navConfig: Record<string, { title: string; items: MenuProps['items'] }> = {
-    games: { title: t('navigation.games', '游戏库'), items: gamesNavItems },
-    recommend: { title: t('navigation.recommend', '推荐游戏'), items: recommendNavItems },
-    more: { title: t('navigation.more', '更多的'), items: moreNavItems },
+    games: { title: t('navigation.games', 'Games'), items: gamesNavItems },
+    recommend: { title: t('navigation.recommend', 'Recommended'), items: recommendNavItems },
+    more: { title: t('navigation.more', 'More'), items: moreNavItems },
   };
 
   /**
