@@ -126,7 +126,7 @@ export const getPersonalizedRecommendations = async (
       title: row.title,
       coverImageUrl: row.cover_image_url,
       rating: row.avg_rating ? parseFloat(row.avg_rating).toFixed(1) : null,
-      reason: '根据您的偏好推荐',
+      reason: 'Recommended for you',
       score: row.score,
     }));
   } catch (error) {
@@ -200,7 +200,7 @@ export const getRelatedContent = async (
         title: row.title,
         coverImageUrl: row.cover_image_url,
         rating: row.avg_rating ? parseFloat(row.avg_rating).toFixed(1) : null,
-        reason: '相关内容',
+        reason: 'Related content',
         score: row.score,
       }));
     }
@@ -230,7 +230,7 @@ export const getRelatedContent = async (
         title: row.title,
         coverImageUrl: row.cover_image_url,
         rating: row.rating,
-        reason: `同游戏评测 · ${row.game_title}`,
+        reason: `More reviews for ${row.game_title}`,
         score: row.likes || 0,
         likes: row.likes,
       }));
@@ -277,7 +277,7 @@ export const getTrendingContent = async (limit: number = 10): Promise<Recommenda
       title: row.title,
       coverImageUrl: row.cover_image_url,
       rating: row.avg_rating ? parseFloat(row.avg_rating).toFixed(1) : null,
-      reason: '热门推荐',
+      reason: 'Trending',
       score: row.hot_score,
       likes: row.views,
     }));
@@ -333,7 +333,7 @@ export const getUsersAlsoLiked = async (
       title: row.title,
       coverImageUrl: row.cover_image_url,
       rating: row.avg_rating ? parseFloat(row.avg_rating).toFixed(1) : null,
-      reason: `${row.user_count} 位用户也喜欢`,
+      reason: `${row.user_count} users also liked`,
       score: row.user_count,
     }));
   } catch (error) {
