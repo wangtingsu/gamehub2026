@@ -51,7 +51,7 @@ const BlogPage = () => {
   }, []);
 
   const fmt = (d: string) => {
-    try { return new Date(d).toLocaleDateString('zh-CN', { month: 'short', day: 'numeric' }); } catch { return ''; }
+    try { return new Date(d).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }); } catch { return ''; }
   };
 
   if (loading) return <div className="bg-dark-900 py-16"><div className="max-w-7xl mx-auto px-4"><Skeleton active paragraph={{rows:8}}/></div></div>;
@@ -61,12 +61,12 @@ const BlogPage = () => {
 
   return (
     <div className="bg-dark-900 pb-2">
-      <SEO title={t('blog.title', 'GameHub Blog')} description={t('blog.subtitle', '游戏专区博客')} canonical={`/${lang}/blog`} />
+      <SEO title={t('blog.title', 'GameHub Blog')} description={t('blog.subtitle', 'Game blog space, discover articles you love')} canonical={`/${lang}/blog`} />
 
       <div className="py-2 max-w-[1600px] mx-auto px-2 sm:px-4">
         {/* 标题 */}
         <Title level={1} className="!text-white !text-2xl md:!text-3xl !mb-2">{t('blog.title', 'GameHub Blog – News, Guides & More')}</Title>
-        <Paragraph className="!text-gray-400 !mb-6">游戏攻略、评测、资讯，尽在 GameHub 博客</Paragraph>
+        <Paragraph className="!text-gray-400 !mb-6">Guides, reviews, and news — all on the GameHub Blog</Paragraph>
 
         {/* ====== Editor's Picks ====== */}
         {mainPick && (
@@ -83,7 +83,7 @@ const BlogPage = () => {
                       <div className="w-full h-full bg-gradient-to-br from-blue-900 to-purple-900 flex items-center justify-center text-6xl">📰</div>
                     )}
                     <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-4">
-                      <Tag color="blue" className="mb-2">{mainPick.category || '博客'}</Tag>
+                      <Tag color="blue" className="mb-2">{mainPick.category || 'Blog'}</Tag>
                     </div>
                   </div>
                   <div className="p-5">
@@ -93,7 +93,7 @@ const BlogPage = () => {
                     <Paragraph className="!text-gray-400 !text-sm line-clamp-2 !mb-3">{mainPick.excerpt || ''}</Paragraph>
                     <div className="flex items-center gap-3">
                       <Avatar size={24} icon={<UserOutlined />} className="bg-blue-600" />
-                      <span className="text-gray-400 text-xs">{mainPick.authorName || mainPick.author || '匿名'}</span>
+                      <span className="text-gray-400 text-xs">{mainPick.authorName || mainPick.author || 'Anonymous'}</span>
                       <span className="text-gray-600 text-xs"><CalendarOutlined className="mr-1" />{fmt(mainPick.publishedAt||mainPick.publishDate)}</span>
                     </div>
                   </div>
@@ -109,10 +109,10 @@ const BlogPage = () => {
                         {a.coverImageUrl ? <img src={a.coverImageUrl} alt="" className="w-full h-full object-cover" loading="lazy" /> : <div className="w-full h-full flex items-center justify-center text-xl">📄</div>}
                       </div>
                       <div className="flex-1 p-3 min-w-0">
-                        <Tag color="blue" className="text-[10px] mb-1">{a.category || '博客'}</Tag>
+                        <Tag color="blue" className="text-[10px] mb-1">{a.category || 'Blog'}</Tag>
                         <h4 className="text-white text-sm font-medium line-clamp-2 group-hover:text-blue-400 mb-1">{a.title}</h4>
                         <div className="flex items-center gap-2 text-xs text-gray-600">
-                          <span className="truncate">{a.authorName || a.author || '匿名'}</span>
+                          <span className="truncate">{a.authorName || a.author || 'Anonymous'}</span>
                           <span className="ml-auto flex-shrink-0">{fmt(a.publishedAt||a.publishDate)}</span>
                         </div>
                       </div>
@@ -130,7 +130,7 @@ const BlogPage = () => {
             <div className="flex items-center justify-between mb-4">
               <Title level={3} className="!text-white !text-lg !mb-0">{s.name}</Title>
               <Link to={`/${lang}/blog/space/${s.slug}`} className="text-blue-400 text-sm hover:text-blue-300 flex items-center gap-1">
-                更多 <RightOutlined />
+                More <RightOutlined />
               </Link>
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
@@ -171,10 +171,10 @@ const BlogPage = () => {
                       )}
                     </div>
                     <div className="flex-1 min-w-0">
-                      <Tag color="blue" className="text-[10px] mb-1">{a.category || '博客'}</Tag>
+                      <Tag color="blue" className="text-[10px] mb-1">{a.category || 'Blog'}</Tag>
                       <h4 className="text-white text-sm font-medium line-clamp-2 group-hover:text-blue-400 mb-1">{a.title}</h4>
                       <div className="flex items-center gap-2 text-xs text-gray-600">
-                        <span>{a.authorName || a.author || '匿名'}</span>
+                        <span>{a.authorName || a.author || 'Anonymous'}</span>
                         <span className="ml-auto">{fmt(a.publishedAt||a.publishDate)}</span>
                       </div>
                     </div>
