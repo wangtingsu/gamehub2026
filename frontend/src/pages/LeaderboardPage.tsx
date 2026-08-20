@@ -29,7 +29,7 @@ const LeaderboardPage: React.FC = () => {
 
   const gameColumns = [
     {
-      title: '排名',
+      title: 'Rank',
       dataIndex: 'rank',
       key: 'rank',
       width: 80,
@@ -45,7 +45,7 @@ const LeaderboardPage: React.FC = () => {
       ),
     },
     {
-      title: '游戏名称',
+      title: 'Game',
       dataIndex: 'title',
       key: 'title',
       render: (title: string, record: LeaderboardEntry) => (
@@ -69,21 +69,21 @@ const LeaderboardPage: React.FC = () => {
       ),
     },
     {
-      title: '评分',
+      title: 'Rating',
       dataIndex: 'rating',
       key: 'rating',
       width: 100,
       render: (rating: number | string) => rating ? <Tag color="blue">{rating}</Tag> : '-',
     },
     {
-      title: '评测数',
+      title: 'Reviews',
       dataIndex: 'reviewCount',
       key: 'reviewCount',
       width: 100,
       render: (count: number) => count || 0,
     },
     {
-      title: '综合得分',
+      title: 'Score',
       dataIndex: 'score',
       key: 'score',
       width: 120,
@@ -93,7 +93,7 @@ const LeaderboardPage: React.FC = () => {
       ),
     },
     {
-      title: '趋势',
+      title: 'Trend',
       dataIndex: 'trend',
       key: 'trend',
       width: 80,
@@ -107,7 +107,7 @@ const LeaderboardPage: React.FC = () => {
 
   const userColumns = [
     {
-      title: '排名',
+      title: 'Rank',
       dataIndex: 'rank',
       key: 'rank',
       width: 80,
@@ -123,7 +123,7 @@ const LeaderboardPage: React.FC = () => {
       ),
     },
     {
-      title: '用户',
+      title: 'User',
       dataIndex: 'displayName',
       key: 'displayName',
       render: (_name: string, record: UserLeaderboardEntry) => (
@@ -137,14 +137,14 @@ const LeaderboardPage: React.FC = () => {
       ),
     },
     {
-      title: '等级',
+      title: 'Level',
       dataIndex: 'level',
       key: 'level',
       width: 80,
       render: (level: number) => <Tag color="purple">Lv.{level}</Tag>,
     },
     {
-      title: '经验值 (XP)',
+      title: 'Experience (XP)',
       dataIndex: 'totalXp',
       key: 'totalXp',
       width: 130,
@@ -152,7 +152,7 @@ const LeaderboardPage: React.FC = () => {
       render: (val: number) => <span className="font-semibold text-orange-500">{val.toLocaleString()}</span>,
     },
     {
-      title: '积分',
+      title: 'Points',
       dataIndex: 'totalPoints',
       key: 'totalPoints',
       width: 100,
@@ -160,7 +160,7 @@ const LeaderboardPage: React.FC = () => {
       render: (val: number) => <span className="font-semibold text-green-500">{val.toLocaleString()}</span>,
     },
     {
-      title: '成就',
+      title: 'Achievements',
       dataIndex: 'achievementCount',
       key: 'achievementCount',
       width: 80,
@@ -170,34 +170,34 @@ const LeaderboardPage: React.FC = () => {
   ];
 
   const userTypeOptions = [
-    { label: <span><FireOutlined /> 经验值</span>, value: 'xp' },
-    { label: <span><CrownOutlined /> 等级</span>, value: 'level' },
-    { label: <span><GiftOutlined /> 积分</span>, value: 'points' },
-    { label: <span><StarOutlined /> 成就</span>, value: 'achievements' },
+    { label: <span><FireOutlined /> Experience</span>, value: 'xp' },
+    { label: <span><CrownOutlined /> Level</span>, value: 'level' },
+    { label: <span><GiftOutlined /> Points</span>, value: 'points' },
+    { label: <span><StarOutlined /> Achievements</span>, value: 'achievements' },
   ];
 
   return (
     <div className=" py-2">
       <SEO
-        title="排行榜 | GameHub"
-        description="GameHub 排行榜 - 游戏排行和用户排行"
-        keywords="排行榜,游戏排名,用户排名,热门游戏,最佳游戏"
+        title="Leaderboard | GameHub"
+        description="GameHub Leaderboard - Game and User Rankings"
+        keywords="leaderboard, game rankings, user rankings, popular games, best games"
         noindex
       />
 
       <Title level={1} className="mb-6 flex items-center !text-white">
         <TrophyOutlined className="mr-3 text-yellow-500" />
-        排行榜
+        Leaderboard
       </Title>
 
       <Card className="shadow-sm bg-dark-800 border-dark-700">
         <Tabs activeKey={activeTab} onChange={setActiveTab} className="leaderboard-tabs">
-          <TabPane tab={<span><TrophyOutlined /> 游戏排行</span>} key="games">
+          <TabPane tab={<span><TrophyOutlined /> Game Rankings</span>} key="games">
             <Tabs activeKey={activeType} onChange={setActiveType} tabBarStyle={{ marginBottom: 16 }}>
-              <TabPane tab="评分最高" key="top_rated" />
-              <TabPane tab="评测最多" key="most_reviewed" />
-              <TabPane tab="收藏最多" key="most_favorited" />
-              <TabPane tab="讨论最多" key="most_discussed" />
+              <TabPane tab="Top Rated" key="top_rated" />
+              <TabPane tab="Most Reviewed" key="most_reviewed" />
+              <TabPane tab="Most Favorited" key="most_favorited" />
+              <TabPane tab="Most Discussed" key="most_discussed" />
             </Tabs>
             <Table
               dataSource={lbData?.entries || []}
@@ -209,7 +209,7 @@ const LeaderboardPage: React.FC = () => {
             />
           </TabPane>
 
-          <TabPane tab={<span><UserOutlined /> 用户排行</span>} key="users">
+          <TabPane tab={<span><UserOutlined /> User Rankings</span>} key="users">
             <div className="mb-6">
               <Segmented
                 value={userType}
