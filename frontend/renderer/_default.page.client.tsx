@@ -16,7 +16,7 @@
  */
 
 import React from 'react'
-import { createRoot, hydrateRoot } from 'react-dom/client'
+import { createRoot } from 'react-dom/client'
 import { BrowserRouter } from 'react-router-dom'
 import { QueryClientProvider, hydrate } from '@tanstack/react-query'
 import { HelmetProvider } from 'react-helmet-async'
@@ -50,13 +50,9 @@ const AppWrapper = (
   </ConfigProvider>
 )
 
-// Vike 注入 pageContext 时使用 hydrateRoot，否则（spa/client-only）使用 createRoot
-const pageContextEl = document.getElementById('vike_pageContext')
+// 服务端只输出空 #root（不渲染 React 树），统一用 createRoot 挂载，
+// 避免 hydrateRoot 在空容器上触发 React #418 hydration 报错
 const root = document.getElementById('root')
 if (root) {
-  if (pageContextEl) {
-    hydrateRoot(root, AppWrapper)
-  } else {
-    createRoot(root).render(AppWrapper)
-  }
+  createRoot(root).render(AppWrapper)
 }

@@ -186,7 +186,7 @@ services:
       sh -c "mkdir -p /usr/share/nginx/html/server-shared/server;
              cp -r /usr/share/nginx/html/server/* /usr/share/nginx/html/server-shared/server/;
              cp /usr/share/nginx/html/assets.json /usr/share/nginx/html/server-shared/;
-             cp -r /usr/share/nginx/html/hydrate /usr/share/nginx/html/server-shared/ 2>/dev/null || true;
+             cp -r /usr/share/nginx/html/.vite /usr/share/nginx/html/server-shared/ 2>/dev/null || true;
              nginx -g 'daemon off;'"
     depends_on:
       - backend
