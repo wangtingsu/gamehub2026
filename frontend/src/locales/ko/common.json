@@ -737,8 +737,8 @@
     },
     "npc": {
       "title": "AI 게임 백과",
-      "subtitle": "게임 백과사전 — 공략 검색, 멋진 영상, 플레이어 2차 창작을 한곳에서",
-      "searchPlaceholder": "게임 공략·영상·2차 창작 검색...",
+      "subtitle": "게임 백과사전 — 심층 공략과 튜토리얼을 한곳에서",
+      "searchPlaceholder": "게임 공략 검색...",
       "searchButton": "검색",
       "tabGuides": "공략",
       "tabVideos": "영상",

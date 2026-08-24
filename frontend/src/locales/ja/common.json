@@ -737,8 +737,8 @@
     },
     "npc": {
       "title": "AI ゲーム百科",
-      "subtitle": "ゲームの百科事典 — 攻略検索、注目の動画、プレイヤーの二次創作をワンストップで",
-      "searchPlaceholder": "ゲーム攻略・動画・二次創作を検索...",
+      "subtitle": "ゲームの百科事典 — 詳細な攻略とチュートリアルをワンストップで",
+      "searchPlaceholder": "ゲーム攻略を検索...",
       "searchButton": "検索",
       "tabGuides": "攻略",
       "tabVideos": "動画",

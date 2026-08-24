@@ -733,8 +733,8 @@
     },
     "npc": {
       "title": "AI 游戏百科",
-      "subtitle": "你的游戏百科全书 — 攻略查询、精彩视频、玩家二创，一站式搞定",
-      "searchPlaceholder": "搜索游戏攻略、视频或二创...",
+      "subtitle": "你的游戏百科全书 — 深度攻略与教程，一站式搞定",
+      "searchPlaceholder": "搜索游戏攻略...",
       "searchButton": "搜索",
       "tabGuides": "攻略",
       "tabVideos": "视频",

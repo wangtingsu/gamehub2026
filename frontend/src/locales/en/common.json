@@ -733,8 +733,8 @@
     },
     "npc": {
       "title": "AI Game Encyclopedia",
-      "subtitle": "Your game encyclopedia — guides, exciting videos, and player creations, all in one place",
-      "searchPlaceholder": "Search game guides, videos, or fan creations...",
+      "subtitle": "Your game encyclopedia — in-depth game guides and walkthroughs, all in one place",
+      "searchPlaceholder": "Search game guides...",
       "searchButton": "Search",
       "tabGuides": "Guides",
       "tabVideos": "Videos",

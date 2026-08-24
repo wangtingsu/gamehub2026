@@ -737,8 +737,8 @@
     },
     "npc": {
       "title": "Enciclopedia de Juegos con IA",
-      "subtitle": "Tu enciclopedia de juegos — guías, vídeos emocionantes y creaciones de jugadores, todo en un solo lugar",
-      "searchPlaceholder": "Busca guías, vídeos o creaciones de fans...",
+      "subtitle": "Tu enciclopedia de juegos — guías detalladas y tutoriales, todo en un solo lugar",
+      "searchPlaceholder": "Busca guías de juegos...",
       "searchButton": "Buscar",
       "tabGuides": "Guías",
       "tabVideos": "Vídeos",
