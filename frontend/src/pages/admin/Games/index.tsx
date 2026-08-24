@@ -193,7 +193,7 @@ const Games: React.FC = () => {
               try {
                 await apiService.updateGame(record.id, { status: checked ? 'active' : 'archived' });
                 message.success(checked ? 'Game activated' : 'Game archived');
-                loadGames();
+                fetchGames();
               } catch { message.error('Failed to update status'); }
             }}
           />

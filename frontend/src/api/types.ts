@@ -257,6 +257,8 @@ export interface Game {
   screenshots: string[];
   /** 展示区域（推荐/热门/独立） */
   displayZone?: 'recommended' | 'top-up' | 'indie';
+  /** 使用状态（active/archived） */
+  status?: string;
   /** 论坛统计：帖子数（仅论坛广场接口返回） */
   forumPostCount?: number;
   /** 论坛统计：最新帖子时间 */

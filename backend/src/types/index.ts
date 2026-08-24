@@ -422,6 +422,7 @@ export interface Game {
   rawgId?: number;
   isFeatured: boolean;
   displayZone?: 'recommended' | 'top-up' | 'indie';
+  status?: string;
   createdAt: Date;
   updatedAt: Date;
   // 营销字段
@@ -469,6 +470,7 @@ export interface GameUpdateInput {
   price?: number;
   discount?: number;
   isFeatured?: boolean;
+  status?: string;
   displayZone?: 'recommended' | 'top-up' | 'indie' | null;
   // 营销字段
   promotionalTag?: string;

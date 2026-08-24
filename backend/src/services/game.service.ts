@@ -40,6 +40,7 @@ const mapGameFromDb = (dbGame: any): Game => ({
   rawgId: dbGame.rawg_id,
   isFeatured: Boolean(dbGame.is_featured),
   displayZone: dbGame.display_zone || undefined,
+  status: dbGame.status,
   views: dbGame.views ?? 0,
   wishlistCount: dbGame.wishlist_count ?? 0,
   purchaseCount: dbGame.purchase_count ?? 0,
@@ -363,6 +364,11 @@ export const updateGame = async (
   if (updateData.isFeatured !== undefined) {
     updates.push(`is_featured = ?`);
     values.push(updateData.isFeatured ? 1 : 0);
+  }
+
+  if (updateData.status !== undefined) {
+    updates.push(`status = ?`);
+    values.push(updateData.status);
   }
 
   if (updates.length === 0) {

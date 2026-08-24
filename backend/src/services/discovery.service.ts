@@ -49,7 +49,7 @@ export const getLeaderboard = async (
                  COUNT(r.id) as review_count,
                  g.views
           FROM games g
-          LEFT JOIN reviews r ON g.game_id = r.game_id
+          LEFT JOIN reviews r ON g.id = r.game_id
           GROUP BY g.id
           HAVING COUNT(r.id) > 0
           ORDER BY score DESC, review_count DESC
@@ -64,7 +64,7 @@ export const getLeaderboard = async (
                  COUNT(r.id) as score,
                  COALESCE(AVG(r.rating), 0) as rating
           FROM games g
-          LEFT JOIN reviews r ON g.game_id = r.game_id
+          LEFT JOIN reviews r ON g.id = r.game_id
           GROUP BY g.id
           ORDER BY score DESC, rating DESC
           LIMIT ?
