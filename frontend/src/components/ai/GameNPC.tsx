@@ -2,20 +2,24 @@
  * GameNPC - AI 游戏百科组件
  *
  * 游戏攻略搜索与展示：
- * - 未搜索：仅展示默认热门攻略（真实攻略数据，无假数据）
- * - 搜索后：展示攻略 / 视频（B站真实搜索结果）/ 二创（AI 生成）三个标签页
+ * - 页面加载时自动搜索默认关键词「热门游戏」，直接展示真实平台数据
+ *   （攻略 = AI 生成，视频 = B站真实搜索，二创 = AI 生成）
+ * - 用户输入关键词后重新搜索
  *
- * 搜索时调用后端 API，未搜索时展示默认热门攻略
+ * 数据来源：后端 /ai/generate（npc 模块），并行调用 deepseek + B站真实 API
  */
-import { useState, useMemo } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { Card, Input, Tabs, Tag, Typography, Row, Col, Empty, Button, Spin, Modal } from 'antd';
 import { PlayCircleOutlined, FileTextOutlined, HeartOutlined, RightOutlined } from '@ant-design/icons';
 import { motion } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
-import { useGameNpcSearch, useGuides } from '../../api/hooks';
+import { useGameNpcSearch } from '../../api/hooks';
 import BlogRenderContent from '../blog/BlogRenderContent';
 
 const { Title, Text } = Typography;
+
+/** 默认搜索关键词：页面加载时自动搜索，展示热门游戏的真实平台数据 */
+const DEFAULT_KEYWORD = '热门游戏';
 
 /** 难度 → 颜色（兼容中文/英文难度值） */
 const difficultyColor = (d?: string) => {
@@ -34,30 +38,24 @@ const GameNPC: React.FC = () => {
 
   /* ====== 搜索状态 ====== */
   const [searchText, setSearchText] = useState('');       // 搜索输入文本
-  const [hasSearched, setHasSearched] = useState(false);   // 是否已执行过搜索
   const [readingGuide, setReadingGuide] = useState<any>(null);  // 正在查看的攻略详情
-  const { mutateAsync: search, isPending, data: result, reset } = useGameNpcSearch();
+  const { mutateAsync: search, isPending, data: result } = useGameNpcSearch();
 
-  /* ====== 默认数据 hooks（未搜索时展示） ====== */
-  const { data: defaultGuides = [], isLoading: guidesLoading } = useGuides({ limit: 6 });
+  /* 页面加载时自动搜索默认关键词，展示真实平台数据 */
+  useEffect(() => {
+    search(DEFAULT_KEYWORD).catch(() => {});
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const handleSearch = (value: string) => {
     const trimmed = value.trim();
-    if (!trimmed) {
-      reset();
-      setHasSearched(false);
-      return;
-    }
-    setHasSearched(true);
-    search(trimmed);
+    search(trimmed || DEFAULT_KEYWORD).catch(() => {});
   };
 
-  // 根据搜索状态决定显示数据
-  const guides = hasSearched ? (result?.guides || []) : defaultGuides;
-  const videos = hasSearched ? (result?.videos || []) : [];
-  const fanart = hasSearched ? (result?.fanart || []) : [];
-  const isLoadingDefault = !hasSearched && guidesLoading;
-  const searching = hasSearched && isPending;
+  const guides = result?.guides || [];
+  const videos = result?.videos || [];
+  const fanart = result?.fanart || [];
+  const firstLoading = isPending && !result;  // 首次加载（尚无结果）
 
   // 视频按平台分组
   const groupedVideos = useMemo(() => {
@@ -71,16 +69,13 @@ const GameNPC: React.FC = () => {
   }, [videos, t]);
 
   /* ====== 攻略列表渲染 ====== */
-  const renderGuides = (list: any[]) => {
-    if (isLoadingDefault || searching) {
-      return <div className="flex justify-center py-12"><Spin size="large" /></div>;
-    }
-    if (list.length === 0) {
-      return <Empty description={hasSearched ? t('aiAssistant.npc.noGuidesFound') : t('aiAssistant.npc.noGuides')} />;
+  const renderGuides = () => {
+    if (guides.length === 0) {
+      return <Empty description={t('aiAssistant.npc.noGuidesFound')} />;
     }
     return (
       <Row gutter={[16, 16]}>
-        {list.map((item: any, idx: number) => (
+        {guides.map((item: any, idx: number) => (
           <Col xs={24} sm={12} lg={8} key={idx}>
             <motion.div whileHover={{ y: -4 }}>
               <Card hoverable size="small" className="h-full cursor-pointer bg-dark-800 border-dark-700" onClick={() => setReadingGuide(item)}>
@@ -104,11 +99,8 @@ const GameNPC: React.FC = () => {
     );
   };
 
-  /* ====== 视频列表渲染（搜索结果的真实 B站视频） ====== */
+  /* ====== 视频列表渲染（真实 B站搜索） ====== */
   const renderVideos = () => {
-    if (searching) {
-      return <div className="flex justify-center py-12"><Spin size="large" /></div>;
-    }
     if (videos.length === 0) {
       return <Empty description={t('aiAssistant.npc.noVideosFound')} />;
     }
@@ -159,9 +151,6 @@ const GameNPC: React.FC = () => {
 
   /* ====== 二创列表渲染（AI 生成） ====== */
   const renderFanart = () => {
-    if (searching) {
-      return <div className="flex justify-center py-12"><Spin size="large" /></div>;
-    }
     if (fanart.length === 0) {
       return <Empty description={t('aiAssistant.npc.noFanartFound')} />;
     }
@@ -212,9 +201,9 @@ const GameNPC: React.FC = () => {
         />
       </div>
 
-      {/* 内容区：未搜索仅攻略；搜索后展示攻略/视频/二创标签页 */}
-      {!hasSearched ? (
-        renderGuides(guides)
+      {/* 内容区：攻略 / 视频 / 二创 标签页 */}
+      {firstLoading ? (
+        <div className="flex justify-center py-12"><Spin size="large" /></div>
       ) : (
         <Tabs
           defaultActiveKey="guides"
@@ -224,7 +213,7 @@ const GameNPC: React.FC = () => {
             {
               key: 'guides',
               label: <span><FileTextOutlined /> {t('aiAssistant.npc.tabGuides')} ({guides.length})</span>,
-              children: renderGuides(guides),
+              children: renderGuides(),
             },
             {
               key: 'videos',
