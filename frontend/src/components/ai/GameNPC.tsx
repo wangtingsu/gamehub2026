@@ -260,7 +260,7 @@ const GameNPC: React.FC = () => {
             </Tag>
             <Text className="text-gray-400">{readingGuide?.views}w {t('aiAssistant.npc.viewsUnit')}</Text>
           </div>
-          <p className="text-gray-300 leading-relaxed">{readingGuide?.description || t('aiAssistant.npc.noDescription')}</p>
+          <p className="text-gray-300 leading-relaxed">{readingGuide?.description || readingGuide?.summary || t('aiAssistant.npc.noDescription')}</p>
         </div>
       </Modal>
     </div>
