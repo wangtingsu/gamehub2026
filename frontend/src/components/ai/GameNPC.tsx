@@ -10,7 +10,7 @@
  */
 import { useState, useEffect, useMemo } from 'react';
 import { Card, Input, Tabs, Tag, Typography, Row, Col, Empty, Button, Spin, Modal } from 'antd';
-import { PlayCircleOutlined, FileTextOutlined, HeartOutlined, RightOutlined } from '@ant-design/icons';
+import { PlayCircleOutlined, FileTextOutlined, RightOutlined } from '@ant-design/icons';
 import { motion } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
 import { useGameNpcSearch } from '../../api/hooks';
@@ -54,7 +54,6 @@ const GameNPC: React.FC = () => {
 
   const guides = result?.guides || [];
   const videos = result?.videos || [];
-  const fanart = result?.fanart || [];
   const firstLoading = isPending && !result;  // 首次加载（尚无结果）
 
   // 视频按平台分组
@@ -149,38 +148,6 @@ const GameNPC: React.FC = () => {
     );
   };
 
-  /* ====== 二创列表渲染（AI 生成） ====== */
-  const renderFanart = () => {
-    if (fanart.length === 0) {
-      return <Empty description={t('aiAssistant.npc.noFanartFound')} />;
-    }
-    return (
-      <Row gutter={[16, 16]}>
-        {fanart.map((item: any, idx: number) => (
-          <Col xs={24} sm={12} lg={8} key={idx}>
-            <motion.div whileHover={{ y: -4 }}>
-              <Card hoverable size="small" className="bg-dark-800 border-dark-700">
-                <div className="flex items-start gap-3">
-                  <div className="text-3xl">🎨</div>
-                  <div className="flex-1 min-w-0">
-                    <Text className="font-medium block truncate">{item.title}</Text>
-                    <div className="flex items-center gap-2 mt-1">
-                      {item.type && <Tag color="pink">{item.type}</Tag>}
-                      <Text type="secondary" className="text-xs text-gray-400">{item.author}</Text>
-                    </div>
-                    {item.likes != null && (
-                      <Text className="text-xs flex items-center gap-1 mt-1 text-gray-400">❤️ {Number(item.likes).toLocaleString()}</Text>
-                    )}
-                  </div>
-                </div>
-              </Card>
-            </motion.div>
-          </Col>
-        ))}
-      </Row>
-    );
-  };
-
   return (
     <div className="space-y-5 ai-npc-page">
       <div className="text-center mb-4">
@@ -219,11 +186,6 @@ const GameNPC: React.FC = () => {
               key: 'videos',
               label: <span><PlayCircleOutlined /> {t('aiAssistant.npc.tabVideos')} ({videos.length})</span>,
               children: renderVideos(),
-            },
-            {
-              key: 'fanart',
-              label: <span><HeartOutlined /> {t('aiAssistant.npc.tabFanart')} ({fanart.length})</span>,
-              children: renderFanart(),
             },
           ]}
         />
