@@ -13,6 +13,7 @@ import { PlayCircleOutlined, FileTextOutlined, HeartOutlined, RightOutlined } fr
 import { motion } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
 import { useGameNpcSearch, useGuides } from '../../api/hooks';
+import BlogRenderContent from '../blog/BlogRenderContent';
 
 const { Title, Text } = Typography;
 
@@ -249,17 +250,21 @@ const GameNPC: React.FC = () => {
             <Button type="primary" icon={<RightOutlined />}>{t('aiAssistant.npc.viewOriginal')}</Button>
           </a>
         ) : null}
-        width={640}
+        width={720}
         destroyOnClose
       >
-        <div className="space-y-4">
+        <div className="space-y-4 max-h-[70vh] overflow-y-auto pr-1">
           <div className="flex items-center gap-3">
             {readingGuide?.difficulty && <Tag color={difficultyColor(readingGuide.difficulty)}>{readingGuide.difficulty}</Tag>}
             {readingGuide?.views != null && (
               <Text className="text-gray-400">{readingGuide.views}w {t('aiAssistant.npc.viewsUnit')}</Text>
             )}
           </div>
-          <p className="text-gray-300 leading-relaxed">{readingGuide?.description || readingGuide?.summary || t('aiAssistant.npc.noDescription')}</p>
+          {readingGuide?.content ? (
+            <BlogRenderContent content={readingGuide.content} />
+          ) : (
+            <p className="text-gray-300 leading-relaxed">{readingGuide?.description || readingGuide?.summary || t('aiAssistant.npc.noDescription')}</p>
+          )}
         </div>
       </Modal>
     </div>
