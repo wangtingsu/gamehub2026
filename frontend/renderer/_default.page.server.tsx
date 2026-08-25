@@ -66,6 +66,25 @@ const LANG_CODE_TO_I18N: Record<string, string> = {
   fr: 'fr',
 }
 
+/** i18n 语言代码 → Open Graph locale 映射（与 SEO.tsx 保持一致） */
+const LOCALE_MAP: Record<string, string> = {
+  en: 'en_US',
+  'zh-CN': 'zh_CN',
+  ja: 'ja_JP',
+  ko: 'ko_KR',
+  es: 'es_ES',
+  fr: 'fr_FR',
+}
+
+/** 站点级常量（与 SEO.tsx 保持一致，保证 SSR 与客户端输出一致） */
+const SITE_NAME = 'GameHub'
+const SITE_URL = 'https://www.gghubs.com'
+const OG_IMAGE = `${SITE_URL}/og-image.png`
+const TWITTER_HANDLE = '@gghubsgame'
+const DEFAULT_AUTHOR = 'GameHub Team'
+const DEFAULT_KEYWORDS =
+  'game library, game management, gaming platform, video games, game collection, game hub, gaming community'
+
 function getPageMeta(urlPathname: string, lang: string) {
   const t = i18n.getFixedT(lang)
   const path = urlPathname.replace(/^\/(en|cn|ja|ko|es|fr)\/?/i, '/').replace(/^\/+/, '')
@@ -218,7 +237,7 @@ async function render(pageContext: PageContextServer) {
 
   // 仅匹配已知语言代码（避免 /oauth、/admin 等路径被误识别为语言）
   const knownLangs = ['cn', 'en', 'ja', 'ko', 'es', 'fr']
-  const langMatch = urlPathname.match(/^\/([a-z]{2}(-[A-Z]{2})?)\//)
+  const langMatch = urlPathname.match(/^\/(en|cn|ja|ko|es|fr)(?=\/|$)/)
   const detectedLang = langMatch?.[1]
   const validLang = detectedLang && knownLangs.includes(detectedLang) ? detectedLang : null
   const i18nLang = validLang ? (LANG_CODE_TO_I18N[validLang] || 'en') : 'en'
@@ -248,7 +267,6 @@ async function render(pageContext: PageContextServer) {
   const pageMeta = getPageMeta(urlPathname, i18nLang)
 
   // 生成动态 canonical / hreflang / og:url（修复：此前所有页面都硬编码指向首页）
-  const SITE_URL = 'https://www.gghubs.com'
   const HREFLANG_LANGS = [
     { prefix: 'en', code: 'en' },
     { prefix: 'cn', code: 'zh-CN' },
@@ -261,12 +279,15 @@ async function render(pageContext: PageContextServer) {
   const pathWithoutLang = urlPathname.replace(/^\/(en|cn|ja|ko|es|fr)(?=\/|$)/i, '') || '/'
   // 语言前缀：无前缀时默认 en（把 /games/12 归一到 /en/games/12）
   const langPrefix = validLang || 'en'
+  // canonical：语言根页（/、/en、/cn…）统一指向带语言前缀的 /en（而非会 301 跳转的无前缀根 /）
   const canonicalUrl = pathWithoutLang === '/'
-    ? `${SITE_URL}/`
+    ? `${SITE_URL}/${langPrefix}`
     : `${SITE_URL}/${langPrefix}${pathWithoutLang}`
   const alternateLinks = HREFLANG_LANGS.map(
     (l) => `<link rel="alternate" hreflang="${l.code}" href="${SITE_URL}/${l.prefix}${pathWithoutLang === '/' ? '' : pathWithoutLang}" />`
   ).join('\n    ')
+  // og:locale（与 SEO.tsx 的 LOCALE_MAP 保持一致）
+  const ogLocale = LOCALE_MAP[i18nLang] || 'en_US'
 
   const clientScript = isProduction
     ? '<!-- SSR_CLIENT_SCRIPTS_PLACEHOLDER -->'
@@ -283,7 +304,10 @@ async function render(pageContext: PageContextServer) {
     <title>${pageMeta.title}</title>
     <meta name="title" content="${pageMeta.title}" />
     <meta name="description" content="${pageMeta.description}" />
+    <meta name="keywords" content="${DEFAULT_KEYWORDS}" />
+    <meta name="author" content="${DEFAULT_AUTHOR}" />
     <meta name="robots" content="index, follow" />
+    <meta name="googlebot" content="index, follow" />
     <link rel="canonical" href="${canonicalUrl}" />
     ${alternateLinks}
     <link rel="alternate" hreflang="x-default" href="${canonicalUrl}" />
@@ -291,25 +315,49 @@ async function render(pageContext: PageContextServer) {
     <meta property="og:description" content="${pageMeta.ogDescription}" />
     <meta property="og:type" content="website" />
     <meta property="og:url" content="${canonicalUrl}" />
-    <meta property="og:image" content="https://www.gghubs.com/og-image.png" />
+    <meta property="og:image" content="${OG_IMAGE}" />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="${pageMeta.title}" />
+    <meta property="og:site_name" content="${SITE_NAME}" />
+    <meta property="og:locale" content="${ogLocale}" />
     <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:url" content="${canonicalUrl}" />
+    <meta name="twitter:title" content="${pageMeta.title}" />
+    <meta name="twitter:description" content="${pageMeta.description}" />
+    <meta name="twitter:image" content="${OG_IMAGE}" />
+    <meta name="twitter:site" content="${TWITTER_HANDLE}" />
+    <meta name="twitter:creator" content="${TWITTER_HANDLE}" />
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
-      "@type": "WebSite",
-      "name": "GameHub",
-      "url": "https://www.gghubs.com",
-      "description": ${JSON.stringify(pageMeta.description)},
-      "potentialAction": {
-        "@type": "SearchAction",
-        "target": {
-          "@type": "EntryPoint",
-          "urlTemplate": "https://www.gghubs.com/search?q={search_term_string}"
+      "@graph": [
+        {
+          "@type": "WebSite",
+          "name": "${SITE_NAME}",
+          "url": "${SITE_URL}",
+          "description": ${JSON.stringify(pageMeta.description)},
+          "potentialAction": {
+            "@type": "SearchAction",
+            "target": {
+              "@type": "EntryPoint",
+              "urlTemplate": "${SITE_URL}/search?q={search_term_string}"
+            },
+            "query-input": "required name=search_term_string"
+          }
         },
-        "query-input": "required name=search_term_string"
-      }
+        {
+          "@type": "Organization",
+          "name": "${SITE_NAME}",
+          "url": "${SITE_URL}",
+          "logo": "${OG_IMAGE}",
+          "sameAs": [
+            "https://twitter.com/gamehub",
+            "https://facebook.com/gamehub",
+            "https://instagram.com/gamehub"
+          ]
+        }
+      ]
     }
     </script>
   </head>
