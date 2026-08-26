@@ -75,7 +75,7 @@ export default function FreeGamesPage() {
                           </div>
                         </div>
                         <div className="flex flex-wrap gap-1">
-                          {(game.genres || []).slice(0, 3).map((g: string) => <Tag key={g} className="text-[10px] bg-dark-700 border-0 text-gray-300">{g}</Tag>)}
+                          {(game.genres || []).slice(0, 3).map((g: string) => <Tag key={g} className="text-[10px] bg-dark-700 border-0 text-gray-300">{t(`genreNames.${g}`, { defaultValue: g })}</Tag>)}
                         </div>
                       </Card>
                     </Col>
