@@ -10,6 +10,7 @@
  * 游戏时长 30 秒，结束后显示最终得分。
  */
 import { useEffect, useRef, useState, useCallback } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Button, Typography } from 'antd';
 
 const { Title, Text } = Typography;
@@ -58,6 +59,7 @@ interface Feedback {
  * 包含阶段难度、连击系统、冻结惩罚等完整游戏机制
  */
 const WhackAMole: React.FC<GameProps> = ({ onScoreChange, onGameOver, onGameStart }) => {
+  const { t } = useTranslation('games');
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
   /** 当前得分 */
@@ -132,7 +134,7 @@ const WhackAMole: React.FC<GameProps> = ({ onScoreChange, onGameOver, onGameStar
       ctx.fillStyle = '#88ccff';
       ctx.font = 'bold 24px sans-serif';
       ctx.textAlign = 'center';
-      ctx.fillText('❄️ Frozen ❄️', CANVAS_W / 2, 50);
+      ctx.fillText(t('gameUI.frozen'), CANVAS_W / 2, 50);
     }
 
     const now = performance.now();
@@ -188,7 +190,7 @@ const WhackAMole: React.FC<GameProps> = ({ onScoreChange, onGameOver, onGameStar
       } else {
         // 未击中：显示 "Miss!"（白色浮动文字）
         ctx.fillStyle = `rgba(255, 255, 255, ${alpha})`;
-        ctx.fillText('Miss!', cx, cy - elapsed * 0.05);
+        ctx.fillText(t('gameUI.miss'), cx, cy - elapsed * 0.05);
       }
     }
 
@@ -392,7 +394,7 @@ const WhackAMole: React.FC<GameProps> = ({ onScoreChange, onGameOver, onGameStar
         ctx.shadowBlur = 0;
       }
     }
-  }, []);
+  }, [t]);
 
   /**
    * 根据游戏已过时间获取当前难度参数
@@ -667,8 +669,8 @@ const WhackAMole: React.FC<GameProps> = ({ onScoreChange, onGameOver, onGameStar
     if (c >= 5) mult = 2.5;
     else if (c >= 3) mult = 2;
     else if (c >= 1) mult = 1.5;
-    return `Combo x${mult}`;
-  }, []);
+    return t('gameUI.combo', { multiplier: mult });
+  }, [t]);
 
   /**
    * 开始新游戏：重置所有状态，启动游戏循环
@@ -721,17 +723,17 @@ const WhackAMole: React.FC<GameProps> = ({ onScoreChange, onGameOver, onGameStar
     draw();
   }, [draw]);
 
-  const phaseText = phase === 'easy' ? 'Easy' : phase === 'medium' ? 'Medium' : 'Hard';
+  const phaseText = phase === 'easy' ? t('gameUI.easy') : phase === 'medium' ? t('gameUI.medium') : t('gameUI.hard');
 
   return (
     <div className="flex flex-col items-center">
       {/* 游戏标题栏：难度、得分、剩余时间 */}
       <div className="flex items-center justify-between w-full max-w-[400px] mb-3">
-        <Title level={4} className="!text-white !mb-0">Whack-A-Mole</Title>
+        <Title level={4} className="!text-white !mb-0">{t('onlineGames.games.whack-a-mole.name')}</Title>
         <div className="flex gap-3 items-center">
-          <Text className="!text-gray-400">Difficulty: {phaseText}</Text>
-          <Text className="!text-gray-400">Score: {score}</Text>
-          <Text className="!text-gray-400">Time: {timeLeft}s</Text>
+          <Text className="!text-gray-400">{t('gameUI.difficultyLabel', { value: phaseText })}</Text>
+          <Text className="!text-gray-400">{t('gameUI.scoreLabel', { value: score })}</Text>
+          <Text className="!text-gray-400">{t('gameUI.timeSecLabel', { value: timeLeft })}</Text>
         </div>
       </div>
       {/* 连击倍率提示 */}
@@ -743,7 +745,7 @@ const WhackAMole: React.FC<GameProps> = ({ onScoreChange, onGameOver, onGameStar
       {/* 冻结惩罚提示 */}
       {gameState === 'playing' && frozen && (
         <div className="w-full max-w-[400px] text-center mb-1">
-          <Text className="!text-blue-300 !font-bold">⚠️ Frozen 5s!</Text>
+          <Text className="!text-blue-300 !font-bold">{t('gameUI.frozen5s')}</Text>
         </div>
       )}
       {/* 游戏画布（点击触发地鼠击打） */}
@@ -757,17 +759,17 @@ const WhackAMole: React.FC<GameProps> = ({ onScoreChange, onGameOver, onGameStar
       />
       {/* 空闲/结束状态按钮 */}
       {gameState === 'idle' && (
-        <Button type="primary" className="mt-4" onClick={startGame}>Start Game</Button>
+        <Button type="primary" className="mt-4" onClick={startGame}>{t('gameUI.startGame')}</Button>
       )}
       {gameState === 'over' && (
         <div className="mt-4 text-center">
-          <Text className="!text-red-400 !block mb-2">Game Over! Score: {score}</Text>
-          <Button type="primary" onClick={startGame}>Restart</Button>
+          <Text className="!text-red-400 !block mb-2">{t('gameUI.gameOverScore', { score })}</Text>
+          <Button type="primary" onClick={startGame}>{t('gameUI.restart')}</Button>
         </div>
       )}
       {/* 游戏中操作提示 */}
       {gameState === 'playing' && !frozen && (
-        <Text className="!text-gray-500 !text-xs mt-2">Click the moles to whack them!</Text>
+        <Text className="!text-gray-500 !text-xs mt-2">{t('gameUI.hints.whackAMole')}</Text>
       )}
     </div>
   );

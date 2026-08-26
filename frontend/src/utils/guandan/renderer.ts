@@ -3,6 +3,7 @@
 import { Card, Suit, Player, PlayedCards } from './types';
 import { sortHand } from './cards';
 import { isRedSuit, getRankDisplay, getSuitDisplay } from './types';
+import i18n from '../../i18n';
 
 // 布局常量
 export const CARD_W = 50;
@@ -298,17 +299,17 @@ export function drawGameInfo(
   ctx.font = 'bold 14px Arial';
   ctx.textAlign = 'left';
   ctx.fillStyle = COLORS.gold;
-  ctx.fillText(`Level: ${levelName}`, 15, 30);
+  ctx.fillText(i18n.t('games:gameUI.levelLabel', { value: levelName }), 15, 30);
 
   // 玩家状态
-  const labels = names || ['You', 'CPU 1', 'CPU 2', 'CPU 3'];
+  const labels = names || [i18n.t('games:gameUI.you'), 'CPU 1', 'CPU 2', 'CPU 3'];
   ctx.font = '12px Arial';
   ctx.textAlign = 'right';
   for (let i = 0; i < 4; i++) {
     const p = players[i];
     const color = p.playedOut ? '#666' : (i === currentPlayer ? COLORS.highlight : COLORS.textLight);
     ctx.fillStyle = color;
-    const status = p.playedOut ? '✓ Done' : `${p.hand.length} cards`;
+    const status = p.playedOut ? i18n.t('games:gameUI.done') : i18n.t('games:gameUI.cardsCount', { value: p.hand.length });
     ctx.fillText(`${labels[i]}: ${status}`, TABLE_W - 15, 18 + i * 16);
   }
 }
@@ -339,14 +340,19 @@ export function drawResult(
   ctx.fillStyle = COLORS.gold;
   ctx.font = 'bold 22px Arial';
   ctx.textAlign = 'center';
-  ctx.fillText('Round Over', TABLE_W / 2, my + 45);
+  ctx.fillText(i18n.t('games:gameUI.guandan.roundOver'), TABLE_W / 2, my + 45);
 
   // 出完顺序
-  const labels = ['1st', '2nd', '3rd', 'Last'];
+  const labels = [
+    i18n.t('games:gameUI.guandan.rankings.first'),
+    i18n.t('games:gameUI.guandan.rankings.second'),
+    i18n.t('games:gameUI.guandan.rankings.third'),
+    i18n.t('games:gameUI.guandan.rankings.last'),
+  ];
   ctx.fillStyle = COLORS.textLight;
   ctx.font = '15px Arial';
   const orderStr = completedRank.map((pid, i) => {
-    const name = pid === 0 ? 'You' : (pid === 2 ? 'Partner' : (pid % 2 === 0 ? 'Teammate' : 'Opponent'));
+    const name = pid === 0 ? i18n.t('games:gameUI.you') : (pid === 2 ? i18n.t('games:gameUI.guandan.roles.partner') : (pid % 2 === 0 ? i18n.t('games:gameUI.guandan.roles.teammate') : i18n.t('games:gameUI.guandan.roles.opponent')));
     return `${labels[i]}: ${name}(${pid + 1})`;
   }).join('  ');
   ctx.fillText(completedRank.map((pid, idx) => `${labels[idx]}(${pid + 1})`).join(' → '), TABLE_W / 2, my + 80);
@@ -354,12 +360,12 @@ export function drawResult(
   // 升级
   ctx.fillStyle = levelUp > 0 ? '#4caf50' : '#999';
   ctx.font = 'bold 18px Arial';
-  ctx.fillText(`Up ${levelUp} level(s) → Level ${newLevel}`, TABLE_W / 2, my + 120);
+  ctx.fillText(i18n.t('games:gameUI.guandan.upLevels', { steps: levelUp, level: newLevel }), TABLE_W / 2, my + 120);
 
   // 提示
   ctx.fillStyle = '#aaa';
   ctx.font = '14px Arial';
-  ctx.fillText('Click "Next Round" to continue', TABLE_W / 2, my + 165);
+  ctx.fillText(i18n.t('games:gameUI.guandan.clickNextRound'), TABLE_W / 2, my + 165);
 }
 
 // 工具：圆角矩形

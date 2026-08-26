@@ -11,6 +11,7 @@
 
 import { useEffect, useRef, useState, useCallback } from 'react';
 import { Button, Typography } from 'antd';
+import { useTranslation } from 'react-i18next';
 
 const { Title, Text } = Typography;
 
@@ -139,6 +140,7 @@ type SizeOption = 3 | 4 | 5;
  * @returns 数字华容道游戏界面
  */
 const SlidingPuzzle: React.FC<GameProps> = ({ onScoreChange, onGameOver, onGameStart }) => {
+  const { t } = useTranslation('games');
   /** Canvas 元素的引用 */
   const canvasRef = useRef<HTMLCanvasElement>(null);
   /** 当前步数 */
@@ -473,18 +475,18 @@ const SlidingPuzzle: React.FC<GameProps> = ({ onScoreChange, onGameOver, onGameS
   };
 
   /** 当前难度的中文标签 */
-  const sizeLabel = size === 3 ? '3×3 Easy' : size === 4 ? '4×4 Normal' : '5×5 Hard';
+  const sizeLabel = size === 3 ? t('gameUI.sizeEasy') : size === 4 ? t('gameUI.sizeNormal') : t('gameUI.sizeHard');
 
   return (
     <div className="flex flex-col items-center">
       {/* 顶部信息栏：游戏标题、计时和步数 */}
       <div className="flex items-center justify-between w-full max-w-[360px] mb-3">
-        <Title level={4} className="!text-white !mb-0">Sliding Puzzle</Title>
+        <Title level={4} className="!text-white !mb-0">{t('onlineGames.games.sliding-puzzle.name')}</Title>
         <div className="flex gap-3">
           {gameState === 'playing' && (
-            <Text className="!text-gray-400">Time: {formatTime(elapsedTime)}</Text>
+            <Text className="!text-gray-400">{t('gameUI.timeLabel', { value: formatTime(elapsedTime) })}</Text>
           )}
-          <Text className="!text-gray-400">Moves: {moves}</Text>
+          <Text className="!text-gray-400">{t('gameUI.movesLabel', { value: moves })}</Text>
         </div>
       </div>
       {/* 游戏进行中：显示当前难度标签 */}
@@ -503,25 +505,25 @@ const SlidingPuzzle: React.FC<GameProps> = ({ onScoreChange, onGameOver, onGameS
       {/* 空闲状态：显示难度选择按钮 */}
       {gameState === 'idle' && (
         <div className="mt-4 flex gap-3">
-          <Button type="default" onClick={() => startGame(3)}>3×3 Easy</Button>
-          <Button type="primary" onClick={() => startGame(4)}>4×4 Normal</Button>
-          <Button type="dashed" onClick={() => startGame(5)}>5×5 Hard</Button>
+          <Button type="default" onClick={() => startGame(3)}>{t('gameUI.sizeEasy')}</Button>
+          <Button type="primary" onClick={() => startGame(4)}>{t('gameUI.sizeNormal')}</Button>
+          <Button type="dashed" onClick={() => startGame(5)}>{t('gameUI.sizeHard')}</Button>
         </div>
       )}
       {/* 游戏结束：显示星级评定、完成信息和重新开始按钮 */}
       {gameState === 'over' && (
         <div className="mt-4 text-center">
-          <Text className="!text-green-400 !block mb-1">You Win!</Text>
+          <Text className="!text-green-400 !block mb-1">{t('gameUI.youWin')}</Text>
           <Text className="!text-yellow-400 !text-lg !block mb-1">{starText}</Text>
           <Text className="!text-gray-300 !block mb-2">
-            {sizeLabel} · Time {formatTime(elapsedTime)} · {moves} moves
+            {t('gameUI.solvedInfo', { size: sizeLabel, time: formatTime(elapsedTime), moves })}
           </Text>
-          <Button type="primary" onClick={() => startGame(4)}>Play Again</Button>
+          <Button type="primary" onClick={() => startGame(4)}>{t('gameUI.playAgain')}</Button>
         </div>
       )}
       {/* 游戏进行中：操作提示 */}
       {gameState === 'playing' && (
-        <Text className="!text-gray-500 !text-xs mt-2">Click a tile to move / Use arrow keys</Text>
+        <Text className="!text-gray-500 !text-xs mt-2">{t('gameUI.hints.slidingPuzzle')}</Text>
       )}
     </div>
   );

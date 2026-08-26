@@ -79,5 +79,287 @@
     "allGames": "全部治愈游戏",
     "seoTitle": "治愈游戏 | GameHub",
     "seoDescription": "温暖治愈的游戏推荐"
+  },
+  "onlineGames": {
+    "title": "在线小游戏",
+    "subtitle": "无需下载，即点即玩",
+    "searchPlaceholder": "搜索游戏...",
+    "noResults": "未找到匹配的游戏",
+    "noResultsHint": "试试其他关键词或分类",
+    "seoTitle": "免费在线小游戏 - 即点即玩，无需下载 | GameHub",
+    "seoDescription": "GameHub 提供 20+ 款免费在线小游戏，包括贪吃蛇、俄罗斯方块、2048、五子棋、扫雷等经典。无需下载，在浏览器中即可即点即玩，电脑手机都能玩。",
+    "seoKeywords": "在线游戏, 免费小游戏, 网页游戏, 贪吃蛇, 俄罗斯方块, 2048, 五子棋, 扫雷, HTML5游戏, 浏览器游戏, 即点即玩, 无需下载",
+    "breadcrumbHome": "首页",
+    "itemListName": "免费在线小游戏合集",
+    "itemListDescription": "GameHub 提供 20+ 款免费在线小游戏",
+    "categories": {
+      "all": "全部",
+      "casual": "休闲",
+      "puzzle": "益智",
+      "action": "动作",
+      "strategy": "策略"
+    },
+    "faq": {
+      "q1": "这些在线游戏需要下载吗？",
+      "a1": "完全不用！所有游戏都直接在浏览器中运行——点击即玩，无需下载或安装。",
+      "q2": "这些在线游戏免费吗？",
+      "a2": "是的，GameHub 上的所有小游戏都完全免费——不花一分钱就能畅玩所有游戏。",
+      "q3": "我能在手机上玩这些游戏吗？",
+      "a3": "可以！所有游戏都针对桌面端和移动端浏览器做了优化，随时随地都能玩。",
+      "q4": "玩游戏需要注册账号吗？",
+      "a4": "无需注册——不用登录就能玩。注册账号可以保存进度并参与社区讨论。"
+    },
+    "games": {
+      "snake": {
+        "name": "贪吃蛇",
+        "description": "控制一条不断前进的贪吃蛇，在封闭场地中吃食物。每吃一个食物蛇就会变长并加速。随着身体越来越长，你的活动空间也越来越小——要精确规划路线，避免撞墙或撞到自己。",
+        "instructions": "使用方向键控制移动，吃食物变长，避免撞墙或撞到自己"
+      },
+      "tetris": {
+        "name": "俄罗斯方块",
+        "description": "七种形状各异的方块从屏幕上方不断落下，你需要快速判断每个方块的最佳落点。将方块排满整行即可消行得分；一次消多行会触发连击加分。随着消行增加，下落速度越来越快，紧张感不断升级。",
+        "instructions": "← → 移动，↑ 旋转，↓ 加速下落，空格键直接落底"
+      },
+      "brick-breaker": {
+        "name": "打砖块",
+        "description": "屏幕底部有一块挡板，小球在挡板和砖墙之间来回弹跳。移动挡板接住并弹回小球，砸碎五彩的砖块。每砸碎一块砖都能得分；清空所有砖块即可通关。不同颜色的砖块分值不同，有些砖块需要多次撞击才能打碎。",
+        "instructions": "移动鼠标控制挡板，砸碎所有砖块即可过关"
+      },
+      "gobang": {
+        "name": "五子棋",
+        "description": "在 15×15 的棋盘上与 AI 对弈五子棋。你执黑先行，AI 执白。轮流在交叉点落子，目标是率先在横、竖或斜方向连成五子。AI 有多个难度等级，会在进攻的同时防守你的活三、活四。",
+        "instructions": "点击交叉点落子，横、竖或斜方向率先连成五子获胜"
+      },
+      "minesweeper": {
+        "name": "扫雷",
+        "description": "方格盘下藏着地雷，你必须借助数字提示推断哪些方格是安全的。每个翻开的数字代表周围 8 格中有多少颗雷。运用逻辑标记地雷、翻开安全区域，直到所有非雷格都被翻开。",
+        "instructions": "左键翻开格子，右键标记地雷；数字表示周围有几颗雷"
+      },
+      "game2048": {
+        "name": "2048",
+        "description": "在 4×4 的棋盘上，每次操作让所有数字方块朝一个方向滑动，相邻的相同数字会合并成它们的和——2 和 2 变成 4，4 和 4 变成 8，以此类推。每次操作后随机空格会出现新的 2 或 4。不断合并，向 2048 乃至更高发起挑战。",
+        "instructions": "使用方向键或滑动合并相同数字，直到拼出 2048"
+      },
+      "memory": {
+        "name": "记忆翻牌",
+        "description": "成对的卡片面朝下洗牌后放在桌上。每次翻两张——如果相同就保持翻开，不同则翻回去。记住每张卡的位置和图案，在有限的翻牌次数内找出所有配对。随着关卡推进，卡片数量会更多，更考验记忆力。",
+        "instructions": "翻开卡片，找出所有配对的图案"
+      },
+      "pong": {
+        "name": "乒乓对战",
+        "description": "经典的双人乒乓对战，单人游玩——你控制左挡板，AI 控制右挡板。移动挡板接球并把球打回对手一侧。球越过你的挡板，对手就得分。AI 难度适中，会打出刁钻的角度球来考验你的反应。",
+        "instructions": "移动鼠标控制挡板，先得 5 分者获胜"
+      },
+      "tank-battle": {
+        "name": "坦克大战",
+        "description": "驾驶黄色坦克穿过砖墙迷宫，迎战一波波红色敌方坦克。地图里既有可摧毁的砖墙，也有坚不可摧的钢墙——利用掩体躲避炮火，或打穿砖墙开辟新路线。你的基地（鹰形图标）在底部，一旦被摧毁游戏就结束。消灭所有敌方坦克即可过关。",
+        "instructions": "方向键 / WASD 移动，空格 / 回车射击；消灭所有敌方坦克并保护基地"
+      },
+      "magic-trampoline": {
+        "name": "魔法蹦床",
+        "description": "一个小角色在蹦床上不断弹跳。左右移动蹦床接住它，同时收集空中漂浮的金色星星。越跳越高，红色尖刺障碍也会越来越频繁——碰一下就飞了。明快的画面和弹跳节奏让它易上手难精通，很适合随时来一局。",
+        "instructions": "用 ← → 移动，收集金色星星、躲避红色尖刺——弹得越高得分越高"
+      },
+      "space-shooter": {
+        "name": "太空射击",
+        "description": "驾驶星际战机迎战一波波外星飞船。你的战机会自动开火，敌人从屏幕上方涌入——有杂兵、快速俯冲者，还有血厚的大 BOSS。击毁敌人会掉落火力强化、护盾和奖励星星。随着分数上涨，敌人密度和弹幕会升级成弹幕地狱，让你肾上腺素飙升。",
+        "instructions": "方向键移动；战机会自动开火，收集强化道具并躲避敌人攻击"
+      },
+      "whack-a-mole": {
+        "name": "打地鼠",
+        "description": "桌上排着九个洞，狡猾可爱的小地鼠随机冒头——赶紧敲下去！地鼠出现的位置和时间都不可预测，有时接二连三从同一个洞冒出，有时好几个同时出现。偶尔会出现戴金头盔的地鼠，敲中能得额外加分。经典街机游戏，考验速度与反应。",
+        "instructions": "地鼠冒头时点击击打，在 30 秒内尽可能多打"
+      },
+      "match-three": {
+        "name": "三消游戏",
+        "description": "8×8 的棋盘上摆满彩色宝石。交换两个相邻宝石，让三个及以上同色排成一线——它们会消除，上方的宝石下落填补，新的宝石从顶部落下。凑齐 4 个可合成条纹宝石（消除整行或整列）；凑齐 5 个可合成彩虹宝石（消除某一颜色的所有宝石）。连锁反应会触发连击，成倍放大你的分数。",
+        "instructions": "选中一颗宝石，再点击相邻宝石交换；凑齐 3 个及以上同色即可消除得分"
+      },
+      "speed-racer": {
+        "name": "极速赛车",
+        "description": "在笔直的三车道高速公路上飞驰，前方不断出现慢车。切换车道在车流中穿梭，尽可能贴近超车以获取额外分数。速度随距离提升，从轻松巡航到全速狂飙——撞车就结束了。",
+        "instructions": "← → 切换车道躲避来车；速度会越来越快"
+      },
+      "bubble-shooter": {
+        "name": "泡泡射击",
+        "description": "顶部挂着一簇彩色泡泡，发射器在底部。瞄准同色泡泡发射连接——当 3 个及以上同色泡泡相连时就会消除。没有组成消除的泡泡会粘在泡泡簇上并把它往下压。一旦泡泡越过底部警戒线，你就输了。",
+        "instructions": "移动鼠标瞄准，点击发射；凑齐 3 个及以上同色泡泡即可消除"
+      },
+      "sliding-puzzle": {
+        "name": "滑动拼图",
+        "description": "4×4 共 16 格的棋盘上有 1 到 15 的数字方块，留下一个空格。方块被打乱，你需要把相邻方块滑进空格，按从上到下、从左到右的顺序还原成 1–15。看似简单，实则非常考验耐心和规划。",
+        "instructions": "点击方块将其滑入空格，把数字按 1–15 的顺序排好"
+      },
+      "jump-adventure": {
+        "name": "跳跳冒险",
+        "description": "一个小方块站在平台上，前方就是下一个平台。按住蓄力、松开跳跃，让方块精准落在下一个平台上。缝隙和平台大小各不相同——有的很近只需轻点，有的很远需要满力。落在正中央能拿到完美加分；落在边缘会让你摇摇欲坠；跳过头就掉进虚空。每跳一次 +1，判断距离是关键。",
+        "instructions": "点击 / 空格跳跃，长按蓄力跳得更远；落在平台上继续前进，避开缝隙"
+      },
+      "archery-master": {
+        "name": "射箭大师",
+        "description": "站在射箭线上，圆形靶子挂在固定距离处。拉弓、瞄准、放箭，命中靶心。靶面分成 10 环，从外缘 1 分到中心 10 分——越靠近靶心分数越高。风向随机变化会改变箭的轨迹，要根据风向标调整瞄准。每轮 10 支箭，总分最高者胜。",
+        "instructions": "长按拉弓，松手放箭；注意风向，瞄准靶心"
+      },
+      "guandan": {
+        "name": "掼蛋",
+        "description": "四人两队的打牌类纸牌游戏，使用两副牌（共 108 张，各含两张王）。你和对面的 AI 是队友，另外两个 AI 是对手。从 2 开始，获胜方每局升级（2→3→4……→A）。牌型丰富——单张、对子、顺子，还有炸弹、同花顺和王炸压场。炸弹能压制普通牌型，大炸弹压小炸弹，如何理牌和出牌的门道很深。",
+        "instructions": "两人一队，按牌型出牌，先出完手牌的一方获胜。支持单张、对子、三张、三带二、顺子、钢板、连对、炸弹、同花顺和王炸"
+      }
+    },
+    "play": {
+      "backToGames": "返回游戏列表",
+      "howToPlay": "玩法说明",
+      "moreGames": "更多游戏",
+      "gameNotFound": "未找到该游戏",
+      "players": "{{num}} 位玩家",
+      "seoTitle": "{{name}} | GameHub 在线小游戏",
+      "seoKeywords": "{{name}}, {{category}}, 在线游戏, 小游戏, GameHub 在线小游戏, 浏览器游戏",
+      "howToName": "{{name}} 玩法说明"
+    }
+  },
+  "gameUI": {
+    "startGame": "开始游戏",
+    "restart": "重新开始",
+    "playAgain": "再来一局",
+    "nextRound": "下一局",
+    "play": "出牌",
+    "pass": "不出",
+    "hint": "提示",
+    "sort": "整理",
+    "you": "你",
+    "playerLabel": "玩家 {{n}}",
+    "scoreLabel": "得分：{{value}}",
+    "distanceLabel": "距离：{{value}}",
+    "heightLabel": "高度：{{value}}米",
+    "movesLabel": "步数：{{value}}",
+    "timeLabel": "时间：{{value}}",
+    "livesLabel": "生命：{{value}}",
+    "bestLabel": "最高分：{{value}}",
+    "levelLabel": "等级：{{value}}",
+    "gameOver": "游戏结束！",
+    "youWin": "你赢了！",
+    "aiWins": "AI 获胜！",
+    "draw": "平局！",
+    "levelComplete": "关卡完成！",
+    "hitAMine": "踩到地雷了！",
+    "gameOverScore": "游戏结束！得分：{{score}}",
+    "gameOverDistance": "游戏结束！距离：{{score}}",
+    "gameOverScoreHeight": "游戏结束！得分：{{score}} | 高度：{{height}}米",
+    "gameOverLevelScore": "游戏结束！第 {{level}} 关，得分：{{score}}",
+    "levelCompleteScore": "关卡完成！得分：{{score}}",
+    "hints": {
+      "brickBreaker": "移动鼠标 / 滑动 / 方向键来控制挡板",
+      "bubbleShooter": "移动鼠标瞄准，点击或按空格键发射",
+      "matchThree": "点击一颗宝石选中，再点击相邻宝石交换",
+      "whackAMole": "点击冒头的地鼠来敲击！",
+      "memory": "点击卡片翻面，找出所有配对的卡片",
+      "slidingPuzzle": "点击方块移动 / 使用方向键",
+      "minesweeper": "左键翻开 | 右键标记地雷",
+      "pong": "移动鼠标 / 滑动 / 方向键控制挡板，先得 5 分获胜",
+      "gobang": "轮到你了，点击棋盘落子（黑棋先行）",
+      "archeryMaster": "长按蓄力，松手射击（鼠标/触屏/空格）",
+      "snake": "方向键 / 滑动 / 虚拟手柄来控制移动",
+      "tetris": "键盘：← → ↑ ↓ 空格",
+      "game2048": "方向键 / 滑动 / 虚拟方向键",
+      "spaceShooter": "方向键/WASD 移动，自动射击 | 滑动 / 虚拟按钮",
+      "speedRacer": "← → 方向键 / 左右按钮 / 滑动来转向",
+      "jumpAdventure": "点击 / 空格跳跃，长按蓄力跳得更远",
+      "tankBattle": "方向键 / WASD 移动，空格 / 回车射击 | 滑动 / 虚拟按钮",
+      "magicTrampoline": "方向键/AD 移动，收集星星躲避尖刺 | 滑动 / 虚拟按钮"
+    },
+    "power": "力度",
+    "wind": "风向",
+    "combo": "连击 x{{multiplier}}",
+    "arrowsLeft": "剩余箭数",
+    "bonusArrow": "奖励箭！",
+    "frozen": "❄️ 冰冻 ❄️",
+    "miss": "没打中！",
+    "guandan": {
+      "clickToDeal": "点击\"开始游戏\"发牌",
+      "clickToStart": "点击\"开始游戏\"开始一局掼蛋",
+      "yourTurn": "轮到你了",
+      "yourTurnFree": "轮到你了——自由出牌",
+      "invalidPlay": "出牌无效",
+      "youMustPlay": "你必须出牌",
+      "hintCards": "提示：{{num}} 张牌",
+      "noPlayableCards": "没有可出的牌",
+      "handSorted": "手牌已整理",
+      "playerFinished": "玩家 {{n}} 出完了！",
+      "playerPlayed": "玩家 {{n}} 出了{{pattern}}",
+      "playerThinking": "玩家 {{n}} 正在思考...",
+      "playerPassed": "玩家 {{n}} 不出",
+      "roundOverLevels": "本局结束！升级 {{steps}} 级 → {{level}}",
+      "roundOverContinue": "本局结束，点击\"下一局\"继续",
+      "youFinished": "你出完了",
+      "finished": "✓ 已出完",
+      "aiThinking": "AI 正在思考...",
+      "clickCardsToPlay": "点击选牌，然后点击\"出牌\"",
+      "roundOver": "本局结束",
+      "upLevels": "升级 {{steps}} 级 → 等级 {{level}}",
+      "clickNextRound": "点击\"下一局\"继续",
+      "reasonSelectCards": "请先选择要出的牌",
+      "reasonNotInHand": "所选牌不在你的手牌中",
+      "reasonInvalidCombo": "无效的牌型组合",
+      "reasonCannotBeat": "无法压过上家的牌",
+      "patterns": {
+        "single": "单张",
+        "pair": "对子",
+        "triple": "三张",
+        "triple_with_pair": "三带二",
+        "straight": "顺子",
+        "pair_straight": "连对",
+        "triple_pair": "钢板",
+        "triple_triple": "三连对",
+        "bomb": "炸弹",
+        "straight_flush": "同花顺",
+        "rocket": "王炸"
+      },
+      "rankings": {
+        "first": "第一名",
+        "second": "第二名",
+        "third": "第三名",
+        "last": "末位"
+      },
+      "roles": {
+        "partner": "队友",
+        "teammate": "队友",
+        "opponent": "对手"
+      }
+    },
+    "aiThinking": "🤔 AI 正在思考...",
+    "youGoFirst": "你先手（黑棋）",
+    "score": "分数",
+    "best": "最高分",
+    "reached2048": "你达成了 2048！",
+    "continue": "继续",
+    "congratsMoves": "恭喜！你用 {{moves}} 步完成了游戏！",
+    "youAiScore": "你：{{player}} | AI：{{ai}}",
+    "waveLabel": "波次：{{value}}",
+    "shoot": "射击",
+    "difficultyLabel": "难度：{{value}}",
+    "easy": "简单",
+    "medium": "中等",
+    "hard": "困难",
+    "timeSecLabel": "时间：{{value}}秒",
+    "frozen5s": "⚠️ 冰冻 5 秒！",
+    "targetLabel": "目标：{{value}}",
+    "matchesLabel": "消除：{{value}}",
+    "movesLeftLabel": "剩余步数：{{value}}",
+    "totalLabel": "总分：{{value}}",
+    "levelClear": "第 {{level}} 关通过！🎉",
+    "reshuffle": "重新洗牌！",
+    "comboBang": "连击 x{{multiplier}}！",
+    "speedLabel": "速度：{{value}}%",
+    "left": "左移",
+    "right": "右移",
+    "arrowsLabel": "箭矢：{{value}}/{{max}}",
+    "shotsLeftLabel": "剩余发射：{{value}}",
+    "warningBubbles": "警告！泡泡快到底线了！",
+    "sizeEasy": "3×3 简单",
+    "sizeNormal": "4×4 普通",
+    "sizeHard": "5×5 困难",
+    "solvedInfo": "{{size}} · 用时 {{time}} · {{moves}} 步",
+    "cardsCount": "{{value}} 张牌",
+    "done": "✓ 出完"
   }
 }

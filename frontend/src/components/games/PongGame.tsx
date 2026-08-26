@@ -9,6 +9,7 @@
  */
 
 import { useEffect, useRef, useState, useCallback } from 'react';
+import { useTranslation } from 'react-i18next';
 import VirtualGamepad from './VirtualGamepad';
 import { Button, Typography } from 'antd';
 
@@ -46,6 +47,7 @@ const WIN_SCORE = 5;
  * @returns 乒乓球游戏界面
  */
 const PongGame: React.FC<GameProps> = ({ onScoreChange, onGameOver, onGameStart }) => {
+  const { t } = useTranslation('games');
   /** Canvas 元素的引用 */
   const canvasRef = useRef<HTMLCanvasElement>(null);
   /** 当前得分（玩家得分 * 10） */
@@ -326,29 +328,29 @@ const PongGame: React.FC<GameProps> = ({ onScoreChange, onGameOver, onGameStart 
     <div className="flex flex-col items-center">
       {/* 顶部信息栏：游戏标题和当前得分 */}
       <div className="flex items-center justify-between w-full max-w-[560px] mb-3">
-        <Title level={4} className="!text-white !mb-0">Pong</Title>
-        <Text className="!text-gray-400">Score: {score}</Text>
+        <Title level={4} className="!text-white !mb-0">{t('onlineGames.games.pong.name')}</Title>
+        <Text className="!text-gray-400">{t('gameUI.scoreLabel', { value: score })}</Text>
       </div>
       {/* 游戏画布 */}
       <canvas ref={canvasRef} width={W} height={H} className="rounded-lg border border-dark-600" />
       {/* 空闲状态：显示开始按钮 */}
-      {gameState === 'idle' && <Button type="primary" className="mt-4" onClick={startGame}>Start Game</Button>}
+      {gameState === 'idle' && <Button type="primary" className="mt-4" onClick={startGame}>{t('gameUI.startGame')}</Button>}
       {/* 游戏结束：显示双方比分、胜负结果和重新开始按钮 */}
       {gameState === 'over' && (
         <div className="mt-4 text-center">
           <Text className="!text-gray-400 !block mb-2">
-            You: {gameRef.current.playerScore} | AI: {gameRef.current.aiScore}
+            {t('gameUI.youAiScore', { player: gameRef.current.playerScore, ai: gameRef.current.aiScore })}
           </Text>
           <Text className={`!block mb-2 ${gameRef.current.playerScore >= WIN_SCORE ? '!text-green-400' : '!text-red-400'}`}>
-            {gameRef.current.playerScore >= WIN_SCORE ? 'You Win!' : 'AI Wins!'}
+            {gameRef.current.playerScore >= WIN_SCORE ? t('gameUI.youWin') : t('gameUI.aiWins')}
           </Text>
-          <Button type="primary" onClick={startGame}>Restart</Button>
+          <Button type="primary" onClick={startGame}>{t('gameUI.restart')}</Button>
         </div>
       )}
       {/* 游戏进行中：显示操作提示和虚拟方向键（移动端适用） */}
       {gameState === 'playing' && (
         <>
-          <Text className="!text-gray-500 !text-xs mt-2">Move mouse / swipe / arrow keys to control paddle, first to 5 wins</Text>
+          <Text className="!text-gray-500 !text-xs mt-2">{t('gameUI.hints.pong')}</Text>
           <VirtualGamepad
             directions={{
               up: movePaddleUp,

@@ -11,6 +11,7 @@
 
 import { useEffect, useRef, useState, useCallback } from 'react';
 import { Button, Typography } from 'antd';
+import { useTranslation } from 'react-i18next';
 
 const { Title, Text } = Typography;
 
@@ -83,6 +84,7 @@ interface StuckArrow {
  * 使用 Canvas 实现 2D 弓箭射击游戏，包含蓄力、风向、连击等机制
  */
 const ArcheryMaster: React.FC<GameProps> = ({ onScoreChange, onGameOver, onGameStart }) => {
+  const { t } = useTranslation('games');
   /** Canvas 引用 */
   const canvasRef = useRef<HTMLCanvasElement>(null);
   /** 当前得分 */
@@ -228,7 +230,7 @@ const ArcheryMaster: React.FC<GameProps> = ({ onScoreChange, onGameOver, onGameS
       ctx.font = '10px Arial';
       ctx.textAlign = 'center';
       ctx.textBaseline = 'bottom';
-      ctx.fillText('Power', barX + barW / 2, barY - 3);
+      ctx.fillText(t('gameUI.power'), barX + barW / 2, barY - 3);
     }
 
     // 风向指示器（右上角，用箭头符号表示方向）
@@ -237,7 +239,7 @@ const ArcheryMaster: React.FC<GameProps> = ({ onScoreChange, onGameOver, onGameS
     ctx.font = '14px Arial';
     ctx.textAlign = 'right';
     ctx.textBaseline = 'top';
-    ctx.fillText('Wind: ' + windArrow + ' ' + Math.abs(g.wind).toFixed(2), CW - 10, 10);
+    ctx.fillText(t('gameUI.wind') + ': ' + windArrow + ' ' + Math.abs(g.wind).toFixed(2), CW - 10, 10);
 
     // 绘制风向小箭头图形（画布顶部中央）
     if (Math.abs(g.wind) > 0.1) {
@@ -265,7 +267,7 @@ const ArcheryMaster: React.FC<GameProps> = ({ onScoreChange, onGameOver, onGameS
       ctx.font = 'bold 13px Arial';
       ctx.textAlign = 'left';
       ctx.textBaseline = 'top';
-      ctx.fillText('Combo x' + multiplier.toFixed(1), 10, 10);
+      ctx.fillText(t('gameUI.combo', { multiplier: multiplier.toFixed(1) }), 10, 10);
     }
 
     // 剩余箭矢数（左下角）
@@ -273,7 +275,7 @@ const ArcheryMaster: React.FC<GameProps> = ({ onScoreChange, onGameOver, onGameS
     ctx.font = '12px Arial';
     ctx.textAlign = 'left';
     ctx.textBaseline = 'bottom';
-    ctx.fillText('Arrows left: ' + g.arrowsLeft, 10, CH - 40);
+    ctx.fillText(t('gameUI.arrowsLeft') + ': ' + g.arrowsLeft, 10, CH - 40);
 
     // 奖励提示消息（中间偏上，定时消失）
     if (bonusMessageRef.current && Date.now() < bonusMessageRef.current.endTime) {
@@ -353,7 +355,7 @@ const ArcheryMaster: React.FC<GameProps> = ({ onScoreChange, onGameOver, onGameS
     // 靶子支撑杆
     ctx.fillStyle = '#654321';
     ctx.fillRect(tx - 3, ty + TARGET_RINGS[0], 6, CH - ty - TARGET_RINGS[0]);
-  }, [getStreakMultiplier]);
+  }, [getStreakMultiplier, t]);
 
   /**
    * 发射箭矢
@@ -441,7 +443,7 @@ const ArcheryMaster: React.FC<GameProps> = ({ onScoreChange, onGameOver, onGameS
           g.arrowsLeft++;
           g.bonusArrows++;
           setArrowsLeft(g.arrowsLeft);
-          bonusMessageRef.current = { text: 'Bonus arrow!', endTime: Date.now() + BONUS_ARROW_DISPLAY_TIME };
+          bonusMessageRef.current = { text: t('gameUI.bonusArrow'), endTime: Date.now() + BONUS_ARROW_DISPLAY_TIME };
         }
 
         // 重置风向，加快靶子速度
@@ -476,7 +478,7 @@ const ArcheryMaster: React.FC<GameProps> = ({ onScoreChange, onGameOver, onGameS
         }
       }
     }
-  }, [onScoreChange, onGameOver, getHitScore, getStreakMultiplier]);
+  }, [onScoreChange, onGameOver, getHitScore, getStreakMultiplier, t]);
 
   /**
    * 游戏主循环
@@ -614,10 +616,10 @@ const ArcheryMaster: React.FC<GameProps> = ({ onScoreChange, onGameOver, onGameS
   return (
     <div className="flex flex-col items-center">
       <div className="flex items-center justify-between w-full max-w-[450px] mb-3">
-        <Title level={4} className="!text-white !mb-0">Archery Master</Title>
+        <Title level={4} className="!text-white !mb-0">{t('onlineGames.games.archery-master.name')}</Title>
         <div className="flex items-center gap-4">
-          <Text className="!text-gray-400">Score: {score}</Text>
-          <Text className="!text-gray-400">Arrows: {arrowsLeft}/{MAX_ARROWS + MAX_BONUS_ARROWS}</Text>
+          <Text className="!text-gray-400">{t('gameUI.scoreLabel', { value: score })}</Text>
+          <Text className="!text-gray-400">{t('gameUI.arrowsLabel', { value: arrowsLeft, max: MAX_ARROWS + MAX_BONUS_ARROWS })}</Text>
         </div>
       </div>
       <canvas
@@ -627,16 +629,16 @@ const ArcheryMaster: React.FC<GameProps> = ({ onScoreChange, onGameOver, onGameS
         className="rounded-lg border border-dark-600"
       />
       {gameState === 'idle' && (
-        <Button type="primary" className="mt-4" onClick={startGame}>Start Game</Button>
+        <Button type="primary" className="mt-4" onClick={startGame}>{t('gameUI.startGame')}</Button>
       )}
       {gameState === 'over' && (
         <div className="mt-4 text-center">
-          <Text className="!text-green-400 !block mb-2">Game Over! Score: {score}</Text>
-          <Button type="primary" onClick={startGame}>Play Again</Button>
+          <Text className="!text-green-400 !block mb-2">{t('gameUI.gameOverScore', { score })}</Text>
+          <Button type="primary" onClick={startGame}>{t('gameUI.playAgain')}</Button>
         </div>
       )}
       {gameState === 'playing' && (
-        <Text className="!text-gray-500 !text-xs mt-2">Hold to charge, release to shoot (Mouse/Touch/Space)</Text>
+        <Text className="!text-gray-500 !text-xs mt-2">{t('gameUI.hints.archeryMaster')}</Text>
       )}
     </div>
   );

@@ -18,6 +18,7 @@
 
 import { useEffect, useRef, useState, useCallback } from 'react';
 import { Button, Typography } from 'antd';
+import { useTranslation } from 'react-i18next';
 
 const { Title, Text } = Typography;
 
@@ -137,6 +138,7 @@ function generateCoin(platform: Platform): CoinObj {
 }
 
 const JumpAdventure: React.FC<GameProps> = ({ onScoreChange, onGameOver, onGameStart }) => {
+  const { t } = useTranslation('games');
   // Canvas 引用
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
@@ -285,8 +287,8 @@ const JumpAdventure: React.FC<GameProps> = ({ onScoreChange, onGameOver, onGameS
     ctx.font = 'bold 12px Arial';
     ctx.textAlign = 'center';
     ctx.textBaseline = 'top';
-    ctx.fillText('Distance: ' + Math.floor(g.score), CW / 2, 8);
-  }, []);
+    ctx.fillText(t('gameUI.distanceLabel', { value: Math.floor(g.score) }), CW / 2, 8);
+  }, [t]);
 
   /**
    * 更新游戏逻辑（每帧调用）
@@ -559,8 +561,8 @@ const JumpAdventure: React.FC<GameProps> = ({ onScoreChange, onGameOver, onGameS
   return (
     <div className="flex flex-col items-center">
       <div className="flex items-center justify-between w-full max-w-[400px] mb-3">
-        <Title level={4} className="!text-white !mb-0">Jump Jump</Title>
-        <Text className="!text-gray-400">Distance: {score}</Text>
+        <Title level={4} className="!text-white !mb-0">{t('onlineGames.games.jump-adventure.name')}</Title>
+        <Text className="!text-gray-400">{t('gameUI.distanceLabel', { value: score })}</Text>
       </div>
       <canvas
         ref={canvasRef}
@@ -569,16 +571,16 @@ const JumpAdventure: React.FC<GameProps> = ({ onScoreChange, onGameOver, onGameS
         className="rounded-lg border border-dark-600"
       />
       {gameState === 'idle' && (
-        <Button type="primary" className="mt-4" onClick={startGame}>Start Game</Button>
+        <Button type="primary" className="mt-4" onClick={startGame}>{t('gameUI.startGame')}</Button>
       )}
       {gameState === 'over' && (
         <div className="mt-4 text-center">
-          <Text className="!text-red-400 !block mb-2">Game Over! Distance: {score}</Text>
-          <Button type="primary" onClick={startGame}>Restart</Button>
+          <Text className="!text-red-400 !block mb-2">{t('gameUI.gameOverDistance', { score })}</Text>
+          <Button type="primary" onClick={startGame}>{t('gameUI.restart')}</Button>
         </div>
       )}
       {gameState === 'playing' && (
-        <Text className="!text-gray-500 !text-xs mt-2">Click / Space to jump, hold to charge and jump farther</Text>
+        <Text className="!text-gray-500 !text-xs mt-2">{t('gameUI.hints.jumpAdventure')}</Text>
       )}
     </div>
   );

@@ -11,6 +11,7 @@
  */
 
 import { useState, useCallback, useEffect, useRef } from 'react';
+import { useTranslation } from 'react-i18next';
 import VirtualGamepad from './VirtualGamepad';
 import { Button, Typography } from 'antd';
 
@@ -189,6 +190,7 @@ const createInitialGrid = () => {
  * 使用 React state 管理网格数据，通过 ref 同步最新状态到事件回调
  */
 const Game2048: React.FC<GameProps> = ({ onScoreChange, onGameOver, onGameStart }) => {
+  const { t } = useTranslation('games');
   /** 4x4 网格数据 */
   const [grid, setGrid] = useState<(Tile | null)[][]>(createInitialGrid);
   /** 当前分数 */
@@ -304,14 +306,14 @@ const Game2048: React.FC<GameProps> = ({ onScoreChange, onGameOver, onGameStart 
   return (
     <div className="flex flex-col items-center">
       <div className="flex items-center justify-between w-full max-w-[350px] mb-3">
-        <Title level={4} className="!text-white !mb-0">2048</Title>
+        <Title level={4} className="!text-white !mb-0">{t('onlineGames.games.game2048.name')}</Title>
         <div className="flex items-center gap-3">
           <div className="text-center">
-            <Text className="!text-gray-500 !text-xs block">Score</Text>
+            <Text className="!text-gray-500 !text-xs block">{t('gameUI.score')}</Text>
             <Text className="!text-white !font-bold">{score}</Text>
           </div>
           <div className="text-center">
-            <Text className="!text-gray-500 !text-xs block">Best</Text>
+            <Text className="!text-gray-500 !text-xs block">{t('gameUI.best')}</Text>
             <Text className="!text-amber-400 !font-bold">{bestScore}</Text>
           </div>
         </div>
@@ -339,19 +341,19 @@ const Game2048: React.FC<GameProps> = ({ onScoreChange, onGameOver, onGameStart 
       </div>
       {gameState === 'won' && (
         <div className="mt-4 text-center">
-          <Text className="!text-green-400 !block mb-2">You reached 2048!</Text>
-          <Button onClick={restart}>Continue</Button>
+          <Text className="!text-green-400 !block mb-2">{t('gameUI.reached2048')}</Text>
+          <Button onClick={restart}>{t('gameUI.continue')}</Button>
         </div>
       )}
       {gameState === 'lost' && (
         <div className="mt-4 text-center">
-          <Text className="!text-red-400 !block mb-2">Game over! Score: {score}</Text>
-          <Button type="primary" onClick={restart}>Restart</Button>
+          <Text className="!text-red-400 !block mb-2">{t('gameUI.gameOverScore', { score })}</Text>
+          <Button type="primary" onClick={restart}>{t('gameUI.restart')}</Button>
         </div>
       )}
       {(gameState === 'playing') && (
         <div className="mt-4">
-          <Button onClick={restart}>Restart</Button>
+          <Button onClick={restart}>{t('gameUI.restart')}</Button>
         </div>
       )}
       {gameState === 'playing' && (
@@ -364,7 +366,7 @@ const Game2048: React.FC<GameProps> = ({ onScoreChange, onGameOver, onGameStart 
           }}
         />
       )}
-      <Text className="!text-gray-500 !text-xs mt-2">Arrow keys / Swipe / Virtual D-pad</Text>
+      <Text className="!text-gray-500 !text-xs mt-2">{t('gameUI.hints.game2048')}</Text>
     </div>
   );
 };

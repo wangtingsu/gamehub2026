@@ -10,6 +10,7 @@
  */
 
 import { useState, useCallback, useMemo, useRef } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Button, Typography } from 'antd';
 
 const { Title, Text } = Typography;
@@ -100,6 +101,7 @@ const NUM_COLORS = ['', 'text-blue-400', 'text-green-400', 'text-red-400', 'text
  * @returns 扫雷游戏界面
  */
 const MinesweeperGame: React.FC<GameProps> = ({ onScoreChange, onGameOver, onGameStart }) => {
+  const { t } = useTranslation('games');
   /** 游戏棋盘状态，存储所有单元格的数据 */
   const [board, setBoard] = useState<Cell[][]>(createBoard);
   /** 游戏状态：idle-未开始，playing-进行中，won-获胜，lost-失败 */
@@ -243,7 +245,7 @@ const MinesweeperGame: React.FC<GameProps> = ({ onScoreChange, onGameOver, onGam
     <div className="flex flex-col items-center">
       {/* 顶部信息栏：游戏标题、剩余雷数、标记数 */}
       <div className="flex items-center justify-between w-full max-w-[350px] mb-3">
-        <Title level={4} className="!text-white !mb-0">Minesweeper</Title>
+        <Title level={4} className="!text-white !mb-0">{t('onlineGames.games.minesweeper.name')}</Title>
         <div className="flex items-center gap-4">
           <Text className="!text-gray-400">💣 {remaining}</Text>
           <Text className="!text-gray-400">🚩 {flagCount}</Text>
@@ -286,13 +288,13 @@ const MinesweeperGame: React.FC<GameProps> = ({ onScoreChange, onGameOver, onGam
       <div className="mt-4 flex gap-3">
         {(gameState === 'won' || gameState === 'lost') && (
           <Text className={gameState === 'won' ? '!text-green-400' : '!text-red-400'}>
-            {gameState === 'won' ? 'You Win!' : 'Hit a mine!'}
+            {gameState === 'won' ? t('gameUI.youWin') : t('gameUI.hitAMine')}
           </Text>
         )}
-        <Button type="primary" onClick={restart}>Restart</Button>
+        <Button type="primary" onClick={restart}>{t('gameUI.restart')}</Button>
       </div>
       {/* 操作说明 */}
-      <Text className="!text-gray-500 !text-xs mt-2">Left click to reveal | Right click to flag</Text>
+      <Text className="!text-gray-500 !text-xs mt-2">{t('gameUI.hints.minesweeper')}</Text>
     </div>
   );
 };

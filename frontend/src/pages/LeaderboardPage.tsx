@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Card, Table, Tabs, Tag, Typography, Avatar, Segmented } from 'antd';
 import { TrophyOutlined, CaretUpOutlined, CaretDownOutlined, MinusOutlined, UserOutlined, FireOutlined, StarOutlined, CrownOutlined, GiftOutlined } from '@ant-design/icons';
 import { useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { useLeaderboard, useUserLeaderboard } from '../api/hooks';
 import type { LeaderboardEntry, UserLeaderboardEntry } from '../api/types';
 import SEO from '../components/SEO';
@@ -11,6 +12,7 @@ const { TabPane } = Tabs;
 
 const LeaderboardPage: React.FC = () => {
   const navigate = useNavigate();
+  const { t } = useTranslation('discovery');
   const [activeType, setActiveType] = useState('top_rated');
   const [activeTab, setActiveTab] = useState('games');
   const [userType, setUserType] = useState<string>('xp');
@@ -29,7 +31,7 @@ const LeaderboardPage: React.FC = () => {
 
   const gameColumns = [
     {
-      title: 'Rank',
+      title: t('leaderboard.columns.rank'),
       dataIndex: 'rank',
       key: 'rank',
       width: 80,
@@ -45,7 +47,7 @@ const LeaderboardPage: React.FC = () => {
       ),
     },
     {
-      title: 'Game',
+      title: t('leaderboard.columns.gameName'),
       dataIndex: 'title',
       key: 'title',
       render: (title: string, record: LeaderboardEntry) => (
@@ -69,21 +71,21 @@ const LeaderboardPage: React.FC = () => {
       ),
     },
     {
-      title: 'Rating',
+      title: t('leaderboard.columns.rating'),
       dataIndex: 'rating',
       key: 'rating',
       width: 100,
       render: (rating: number | string) => rating ? <Tag color="blue">{rating}</Tag> : '-',
     },
     {
-      title: 'Reviews',
+      title: t('leaderboard.columns.reviewCount'),
       dataIndex: 'reviewCount',
       key: 'reviewCount',
       width: 100,
       render: (count: number) => count || 0,
     },
     {
-      title: 'Score',
+      title: t('leaderboard.columns.score'),
       dataIndex: 'score',
       key: 'score',
       width: 120,
@@ -93,7 +95,7 @@ const LeaderboardPage: React.FC = () => {
       ),
     },
     {
-      title: 'Trend',
+      title: t('leaderboard.columns.trend'),
       dataIndex: 'trend',
       key: 'trend',
       width: 80,
@@ -107,7 +109,7 @@ const LeaderboardPage: React.FC = () => {
 
   const userColumns = [
     {
-      title: 'Rank',
+      title: t('leaderboard.columns.rank'),
       dataIndex: 'rank',
       key: 'rank',
       width: 80,
@@ -123,7 +125,7 @@ const LeaderboardPage: React.FC = () => {
       ),
     },
     {
-      title: 'User',
+      title: t('leaderboard.columns.user'),
       dataIndex: 'displayName',
       key: 'displayName',
       render: (_name: string, record: UserLeaderboardEntry) => (
@@ -137,14 +139,14 @@ const LeaderboardPage: React.FC = () => {
       ),
     },
     {
-      title: 'Level',
+      title: t('leaderboard.columns.level'),
       dataIndex: 'level',
       key: 'level',
       width: 80,
       render: (level: number) => <Tag color="purple">Lv.{level}</Tag>,
     },
     {
-      title: 'Experience (XP)',
+      title: t('leaderboard.columns.experience'),
       dataIndex: 'totalXp',
       key: 'totalXp',
       width: 130,
@@ -152,7 +154,7 @@ const LeaderboardPage: React.FC = () => {
       render: (val: number) => <span className="font-semibold text-orange-500">{val.toLocaleString()}</span>,
     },
     {
-      title: 'Points',
+      title: t('leaderboard.columns.points'),
       dataIndex: 'totalPoints',
       key: 'totalPoints',
       width: 100,
@@ -160,7 +162,7 @@ const LeaderboardPage: React.FC = () => {
       render: (val: number) => <span className="font-semibold text-green-500">{val.toLocaleString()}</span>,
     },
     {
-      title: 'Achievements',
+      title: t('leaderboard.columns.achievements'),
       dataIndex: 'achievementCount',
       key: 'achievementCount',
       width: 80,
@@ -170,34 +172,34 @@ const LeaderboardPage: React.FC = () => {
   ];
 
   const userTypeOptions = [
-    { label: <span><FireOutlined /> Experience</span>, value: 'xp' },
-    { label: <span><CrownOutlined /> Level</span>, value: 'level' },
-    { label: <span><GiftOutlined /> Points</span>, value: 'points' },
-    { label: <span><StarOutlined /> Achievements</span>, value: 'achievements' },
+    { label: <span><FireOutlined /> {t('leaderboard.userTypes.experience')}</span>, value: 'xp' },
+    { label: <span><CrownOutlined /> {t('leaderboard.userTypes.level')}</span>, value: 'level' },
+    { label: <span><GiftOutlined /> {t('leaderboard.userTypes.points')}</span>, value: 'points' },
+    { label: <span><StarOutlined /> {t('leaderboard.userTypes.achievements')}</span>, value: 'achievements' },
   ];
 
   return (
     <div className=" py-2">
       <SEO
-        title="Leaderboard | GameHub"
-        description="GameHub Leaderboard - Game and User Rankings"
-        keywords="leaderboard, game rankings, user rankings, popular games, best games"
+        title={t('leaderboard.title')}
+        description={t('leaderboard.description')}
+        keywords={t('leaderboard.keywords')}
         noindex
       />
 
       <Title level={1} className="mb-6 flex items-center !text-white">
         <TrophyOutlined className="mr-3 text-yellow-500" />
-        Leaderboard
+        {t('leaderboard.title')}
       </Title>
 
       <Card className="shadow-sm bg-dark-800 border-dark-700">
         <Tabs activeKey={activeTab} onChange={setActiveTab} className="leaderboard-tabs">
-          <TabPane tab={<span><TrophyOutlined /> Game Rankings</span>} key="games">
+          <TabPane tab={<span><TrophyOutlined /> {t('leaderboard.gameRankings')}</span>} key="games">
             <Tabs activeKey={activeType} onChange={setActiveType} tabBarStyle={{ marginBottom: 16 }}>
-              <TabPane tab="Top Rated" key="top_rated" />
-              <TabPane tab="Most Reviewed" key="most_reviewed" />
-              <TabPane tab="Most Favorited" key="most_favorited" />
-              <TabPane tab="Most Discussed" key="most_discussed" />
+              <TabPane tab={t('leaderboard.tabs.topRated')} key="top_rated" />
+              <TabPane tab={t('leaderboard.tabs.mostReviewed')} key="most_reviewed" />
+              <TabPane tab={t('leaderboard.tabs.mostFavorited')} key="most_favorited" />
+              <TabPane tab={t('leaderboard.tabs.mostDiscussed')} key="most_discussed" />
             </Tabs>
             <Table
               dataSource={lbData?.entries || []}
@@ -209,7 +211,7 @@ const LeaderboardPage: React.FC = () => {
             />
           </TabPane>
 
-          <TabPane tab={<span><UserOutlined /> User Rankings</span>} key="users">
+          <TabPane tab={<span><UserOutlined /> {t('leaderboard.userRankings')}</span>} key="users">
             <div className="mb-6">
               <Segmented
                 value={userType}

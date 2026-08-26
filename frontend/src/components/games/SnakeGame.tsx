@@ -11,6 +11,7 @@
  */
 
 import { useEffect, useRef, useState, useCallback } from 'react';
+import { useTranslation } from 'react-i18next';
 import VirtualGamepad from './VirtualGamepad';
 import { Button, Typography } from 'antd';
 
@@ -51,6 +52,7 @@ interface Position {
  * @returns 贪吃蛇游戏界面
  */
 const SnakeGame: React.FC<GameProps> = ({ onScoreChange, onGameOver, onGameStart }) => {
+  const { t } = useTranslation('games');
   /** Canvas 元素的引用 */
   const canvasRef = useRef<HTMLCanvasElement>(null);
   /** 当前分数 */
@@ -340,8 +342,8 @@ const SnakeGame: React.FC<GameProps> = ({ onScoreChange, onGameOver, onGameStart
     <div className="flex flex-col items-center">
       {/* 顶部信息栏：游戏标题和当前得分 */}
       <div className="flex items-center justify-between w-full max-w-[400px] mb-3">
-        <Title level={4} className="!text-white !mb-0">Snake</Title>
-        <Text className="!text-gray-400">Score: {score}</Text>
+        <Title level={4} className="!text-white !mb-0">{t('onlineGames.games.snake.name')}</Title>
+        <Text className="!text-gray-400">{t('gameUI.scoreLabel', { value: score })}</Text>
       </div>
       {/* 游戏画布 */}
       <canvas
@@ -352,19 +354,19 @@ const SnakeGame: React.FC<GameProps> = ({ onScoreChange, onGameOver, onGameStart
       />
       {/* 空闲状态：显示开始按钮 */}
       {gameState === 'idle' && (
-        <Button type="primary" className="mt-4" onClick={startGame}>Start Game</Button>
+        <Button type="primary" className="mt-4" onClick={startGame}>{t('gameUI.startGame')}</Button>
       )}
       {/* 游戏结束：显示最终得分和重新开始按钮 */}
       {gameState === 'over' && (
         <div className="mt-4 text-center">
-          <Text className="!text-red-400 !block mb-2">Game Over! Score: {score}</Text>
-          <Button type="primary" onClick={startGame}>Restart</Button>
+          <Text className="!text-red-400 !block mb-2">{t('gameUI.gameOverScore', { score })}</Text>
+          <Button type="primary" onClick={startGame}>{t('gameUI.restart')}</Button>
         </div>
       )}
       {/* 游戏进行中：显示操作提示和虚拟方向键（移动端适用） */}
       {gameState === 'playing' && (
         <>
-          <Text className="!text-gray-500 !text-xs mt-2">Arrow keys / Swipe / Virtual gamepad to move</Text>
+          <Text className="!text-gray-500 !text-xs mt-2">{t('gameUI.hints.snake')}</Text>
           <VirtualGamepad
             directions={{
               up: () => changeDirection('UP'),

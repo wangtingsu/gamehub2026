@@ -15,6 +15,7 @@
  */
 
 import React, { useRef, useState, useEffect, useCallback } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Card, Suit, Rank, Player, PlayedCards, GameStateData, setGameLevel } from '../../utils/guandan/types';
 import { createDeck, shuffleDeck, dealCards, sortHand, removeCards, groupByRank } from '../../utils/guandan/cards';
 import { identifyPattern, getSuggestion, getLeadSuggestion } from '../../utils/guandan/patterns';
@@ -134,6 +135,7 @@ function smartSortCards(hand: Card[]): Card[] {
 }
 
 const GuandanGame: React.FC<GameProps> = ({ onScoreChange, onGameOver, onGameStart }) => {
+  const { t } = useTranslation('games');
   // Canvas 引用，用于直接操作画布绘制
   const canvasRef = useRef<HTMLCanvasElement>(null);
   // requestAnimationFrame 动画帧 ID，用于清理循环
@@ -146,7 +148,7 @@ const GuandanGame: React.FC<GameProps> = ({ onScoreChange, onGameOver, onGameSta
   // 当前选中的手牌索引集合（玩家点击选取的牌）
   const [selected, setSelected] = useState<Set<number>>(new Set());
   // 游戏消息提示（显示在桌面中央）
-  const [message, setMessage] = useState('Click "Start Game" to deal');
+  const [message, setMessage] = useState(t('gameUI.guandan.clickToDeal'));
   // 本局升级级数（结算时展示）
   const [levelUp, setLevelUp] = useState(0);
   // 升级后的下一等级名称
@@ -194,10 +196,10 @@ const GuandanGame: React.FC<GameProps> = ({ onScoreChange, onGameOver, onGameSta
     g.turnNumber = 0;         // 回合数
     g.phase = 'play';         // 游戏阶段
     g.completedRank = [];     // 出完顺序列表
-    g.message = 'Your turn';  // 初始消息
+    g.message = t('gameUI.guandan.yourTurn');  // 初始消息
     setGamePhase('playing');
     setSelected(new Set());
-    setMessage('Your turn');
+    setMessage(t('gameUI.guandan.yourTurn'));
     setLevelUp(0);
     setNextLevel('');
     setAiThinking(false);
@@ -214,7 +216,7 @@ const GuandanGame: React.FC<GameProps> = ({ onScoreChange, onGameOver, onGameSta
     const sorted = sortHand(g.players[0].hand);
     const selCards = [...selected].map(i => sorted[i]); // 按选中索引获取牌
     const result = isValidPlay(g.players[0].hand, selCards, g.lastPlay, g.lastPlayBy, 0);
-    if (!result.valid) { setMessage(result.reason || 'Invalid play'); return; }
+    if (!result.valid) { setMessage(result.reason || t('gameUI.guandan.invalidPlay')); return; }
     doPlayCards(0, selCards, result.played!);
   }, [selected]);
 
@@ -225,8 +227,8 @@ const GuandanGame: React.FC<GameProps> = ({ onScoreChange, onGameOver, onGameSta
   const handlePass = useCallback(() => {
     const g = gRef.current;
     if (g.players[0].playedOut || g.phase !== 'play') return;
-    if (!g.lastPlay || g.lastPlayBy === 0) { setMessage('You must play'); return; }
-    setMessage('Pass');
+    if (!g.lastPlay || g.lastPlayBy === 0) { setMessage(t('gameUI.guandan.youMustPlay')); return; }
+    setMessage(t('gameUI.pass'));
     passTS.current[0] = Date.now();
     g.passCount++;
     nextTurn();
@@ -251,8 +253,8 @@ const GuandanGame: React.FC<GameProps> = ({ onScoreChange, onGameOver, onGameSta
         if (idx >= 0) indices.add(idx);
       }
       setSelected(indices);
-      setMessage(`Hint: ${suggestion.length} card(s)`);
-    } else setMessage('No playable cards');
+      setMessage(t('gameUI.guandan.hintCards', { num: suggestion.length }));
+    } else setMessage(t('gameUI.guandan.noPlayableCards'));
   }, []);
 
   /**
@@ -265,7 +267,7 @@ const GuandanGame: React.FC<GameProps> = ({ onScoreChange, onGameOver, onGameSta
     if (p.playedOut) return;
     p.hand = smartSortCards(p.hand);
     setSelected(new Set());
-    setMessage('Hand sorted');
+    setMessage(t('gameUI.guandan.handSorted'));
   }, []);
 
   /**
@@ -289,10 +291,10 @@ const GuandanGame: React.FC<GameProps> = ({ onScoreChange, onGameOver, onGameSta
       // 该玩家出完了所有手牌
       player.playedOut = true;
       g.completedRank.push(player.id);  // 记录出完顺序
-      setMessage(`Player ${playerIdx + 1} finished!`);
+      setMessage(t('gameUI.guandan.playerFinished', { n: playerIdx + 1 }));
       if (checkAllOut(g.players)) { endRound(); return; }
     } else {
-      setMessage(`Player ${playerIdx + 1} played ${played.pattern}`);
+      setMessage(t('gameUI.guandan.playerPlayed', { n: playerIdx + 1, pattern: t('gameUI.guandan.patterns.' + played.pattern) }));
     }
     setSelected(new Set());
     nextTurn();
@@ -313,11 +315,11 @@ const GuandanGame: React.FC<GameProps> = ({ onScoreChange, onGameOver, onGameSta
     }
     if (next === 0) {
       // 轮到玩家操作
-      setMessage(!g.lastPlay ? 'Your turn — free play' : 'Your turn');
+      setMessage(!g.lastPlay ? t('gameUI.guandan.yourTurnFree') : t('gameUI.guandan.yourTurn'));
     } else {
       // 轮到AI，显示思考动画并延时调用AI决策
       setAiThinking(true);
-      setMessage(`Player ${next + 1} is thinking...`);
+      setMessage(t('gameUI.guandan.playerThinking', { n: next + 1 }));
       setTimeout(() => aiTurn(next), 2500);
     }
   };
@@ -337,7 +339,7 @@ const GuandanGame: React.FC<GameProps> = ({ onScoreChange, onGameOver, onGameSta
         if (g.currentPlayer !== 0) {
           setTimeout(() => aiTurn(g.currentPlayer), 2000);
         } else {
-          setMessage('Your turn');
+          setMessage(t('gameUI.guandan.yourTurn'));
         }
       }
       return;
@@ -358,7 +360,7 @@ const GuandanGame: React.FC<GameProps> = ({ onScoreChange, onGameOver, onGameSta
 
     if (chosen.length === 0) {
       // AI选择不出
-      setMessage(`Player ${playerIdx + 1} passed`);
+      setMessage(t('gameUI.guandan.playerPassed', { n: playerIdx + 1 }));
       passTS.current[playerIdx] = Date.now();
       g.passCount++;
       setAiThinking(false);
@@ -382,7 +384,7 @@ const GuandanGame: React.FC<GameProps> = ({ onScoreChange, onGameOver, onGameSta
     setLevelUp(steps);
     setNextLevel(getLevelName(newLevel));
     setGamePhase('over');
-    setMessage(`Round over! Up ${steps} level(s) → ${getLevelName(newLevel)}`);
+    setMessage(t('gameUI.guandan.roundOverLevels', { steps, level: getLevelName(newLevel) }));
     if (onGameOver) onGameOver(steps);
     g.level = newLevel;
   };
@@ -406,14 +408,14 @@ const GuandanGame: React.FC<GameProps> = ({ onScoreChange, onGameOver, onGameSta
 
     // 游戏未开始时仅显示"开始游戏"按钮
     if (g.players.length === 0) {
-      drawMessage(ctx, 'Click "Start Game" to deal');
-      buttons.current = [{ x: TABLE_W / 2 - 60, y: TABLE_H / 2 + 20, w: 120, h: 40, label: 'Start Game' }];
+      drawMessage(ctx, t('gameUI.guandan.clickToDeal'));
+      buttons.current = [{ x: TABLE_W / 2 - 60, y: TABLE_H / 2 + 20, w: 120, h: 40, label: t('gameUI.startGame') }];
       for (const btn of buttons.current) drawButton(ctx, btn, hoveredBtn === btn.label);
       return;
     }
 
     // 绘制游戏信息（等级、玩家状态等）
-    drawGameInfo(ctx, g.level, getLevelName(g.level), g.players, ['You', ...aiNames], g.currentPlayer);
+    drawGameInfo(ctx, g.level, getLevelName(g.level), g.players, [t('gameUI.you'), ...aiNames], g.currentPlayer);
 
     // 绘制玩家0（自己）的手牌，选中状态高亮
     const p0 = g.players[0];
@@ -423,7 +425,7 @@ const GuandanGame: React.FC<GameProps> = ({ onScoreChange, onGameOver, onGameSta
       ctx.fillStyle = '#666';
       ctx.font = 'bold 24px Arial';
       ctx.textAlign = 'center';
-      ctx.fillText('You finished', TABLE_W / 2, TABLE_H - 70);
+      ctx.fillText(t('gameUI.guandan.youFinished'), TABLE_W / 2, TABLE_H - 70);
     }
 
     // 绘制3个对手的牌背及位置标识（左侧/对家/右侧）
@@ -432,7 +434,7 @@ const GuandanGame: React.FC<GameProps> = ({ onScoreChange, onGameOver, onGameSta
     drawOpponentCards(ctx, g.players[3].hand.length, TABLE_W - 120, CENTER_Y - 30, aiNames[2], g.currentPlayer === 3 && !g.players[3].playedOut);
     // 不出指示
     const now = Date.now();
-    const passPositions: [number, number, string][] = [[140, CENTER_Y - 15, 'You'], [30, CENTER_Y + 25, aiNames[0]], [360, 65, aiNames[1]], [TABLE_W - 60, CENTER_Y + 25, aiNames[2]]];
+    const passPositions: [number, number, string][] = [[140, CENTER_Y - 15, t('gameUI.you')], [30, CENTER_Y + 25, aiNames[0]], [360, 65, aiNames[1]], [TABLE_W - 60, CENTER_Y + 25, aiNames[2]]];
     for (let i = 0; i < 4; i++) {
       const ts = passTS.current[i];
       if (ts && (now - ts) < 3000) {
@@ -440,19 +442,19 @@ const GuandanGame: React.FC<GameProps> = ({ onScoreChange, onGameOver, onGameSta
         ctx.fillStyle = 'rgba(255,100,100,' + alpha + ')';
         ctx.font = 'bold 16px Arial';
         ctx.textAlign = 'center';
-        ctx.fillText('Pass', passPositions[i][0], passPositions[i][1]);
+        ctx.fillText(t('gameUI.pass'), passPositions[i][0], passPositions[i][1]);
       }
     }
 
     // 显示对手是否已出完的标记
-    if (g.players[1].playedOut) { ctx.fillStyle = '#666'; ctx.font = '14px Arial'; ctx.fillText('✓ Finished', 60, CENTER_Y + 60); }
-    if (g.players[2].playedOut) { ctx.fillStyle = '#666'; ctx.font = '14px Arial'; ctx.fillText('✓ Finished', 400, 80); }
-    if (g.players[3].playedOut) { ctx.fillStyle = '#666'; ctx.font = '14px Arial'; ctx.fillText('✓ Finished', TABLE_W - 70, CENTER_Y + 60); }
+    if (g.players[1].playedOut) { ctx.fillStyle = '#666'; ctx.font = '14px Arial'; ctx.fillText(t('gameUI.guandan.finished'), 60, CENTER_Y + 60); }
+    if (g.players[2].playedOut) { ctx.fillStyle = '#666'; ctx.font = '14px Arial'; ctx.fillText(t('gameUI.guandan.finished'), 400, 80); }
+    if (g.players[3].playedOut) { ctx.fillStyle = '#666'; ctx.font = '14px Arial'; ctx.fillText(t('gameUI.guandan.finished'), TABLE_W - 70, CENTER_Y + 60); }
 
     // 在桌面中央显示最近一次出的牌
     if (g.lastPlay && g.lastPlayBy !== null && !g.players[g.lastPlayBy].playedOut) {
-      const label = g.lastPlayBy === 0 ? 'You' : `Player ${g.lastPlayBy + 1}`;
-      drawPlayedCards(ctx, g.lastPlay.cards, `${label}: ${g.lastPlay.pattern}`);
+      const label = g.lastPlayBy === 0 ? t('gameUI.you') : t('gameUI.playerLabel', { n: g.lastPlayBy + 1 });
+      drawPlayedCards(ctx, g.lastPlay.cards, `${label}: ${t('gameUI.guandan.patterns.' + g.lastPlay.pattern)}`);
     }
 
     // 显示游戏消息提示
@@ -463,29 +465,29 @@ const GuandanGame: React.FC<GameProps> = ({ onScoreChange, onGameOver, onGameSta
 
     if (gamePhase === 'playing' && !p0.playedOut && !aiThinking) {
       if (g.currentPlayer === 0) {
-        buttons.current.push({ x: TABLE_W / 2 - 185, y: TABLE_H - 130, w: 60, h: 34, label: 'Sort' });
-        buttons.current.push({ x: TABLE_W / 2 - 115, y: TABLE_H - 130, w: 60, h: 34, label: 'Hint' });
+        buttons.current.push({ x: TABLE_W / 2 - 185, y: TABLE_H - 130, w: 60, h: 34, label: t('gameUI.sort') });
+        buttons.current.push({ x: TABLE_W / 2 - 115, y: TABLE_H - 130, w: 60, h: 34, label: t('gameUI.hint') });
         if (g.lastPlay && g.lastPlayBy !== 0) {
           // 非自由出牌时显示"不出"和"出牌"两个按钮
-          buttons.current.push({ x: TABLE_W / 2 - 45, y: TABLE_H - 130, w: 60, h: 34, label: 'Pass' });
-          buttons.current.push({ x: TABLE_W / 2 + 25, y: TABLE_H - 130, w: 60, h: 34, label: 'Play' });
+          buttons.current.push({ x: TABLE_W / 2 - 45, y: TABLE_H - 130, w: 60, h: 34, label: t('gameUI.pass') });
+          buttons.current.push({ x: TABLE_W / 2 + 25, y: TABLE_H - 130, w: 60, h: 34, label: t('gameUI.play') });
         } else {
           // 自由出牌时只显示"出牌"按钮
-          buttons.current.push({ x: TABLE_W / 2 + 25, y: TABLE_H - 130, w: 60, h: 34, label: 'Play' });
+          buttons.current.push({ x: TABLE_W / 2 + 25, y: TABLE_H - 130, w: 60, h: 34, label: t('gameUI.play') });
         }
       }
     }
 
     if (gamePhase === 'over') {
       drawResult(ctx, g.completedRank, levelUp, nextLevel);
-      buttons.current = [{ x: TABLE_W / 2 - 60, y: TABLE_H / 2 + 80, w: 120, h: 40, label: 'Next Round' }];
+      buttons.current = [{ x: TABLE_W / 2 - 60, y: TABLE_H / 2 + 80, w: 120, h: 40, label: t('gameUI.nextRound') }];
     }
     if (gamePhase === 'idle') {
-      buttons.current = [{ x: TABLE_W / 2 - 60, y: TABLE_H / 2 + 20, w: 120, h: 40, label: 'Start Game' }];
+      buttons.current = [{ x: TABLE_W / 2 - 60, y: TABLE_H / 2 + 20, w: 120, h: 40, label: t('gameUI.startGame') }];
     }
 
     for (const btn of buttons.current) drawButton(ctx, btn, hoveredBtn === btn.label);
-  }, [gamePhase, selected, message, levelUp, nextLevel, hoveredBtn, aiThinking, hoveredIdx]);
+  }, [gamePhase, selected, message, levelUp, nextLevel, hoveredBtn, aiThinking, hoveredIdx, t]);
 
   /**
    * 注册 Canvas 原生事件（点击和鼠标移动）
@@ -540,11 +542,11 @@ const GuandanGame: React.FC<GameProps> = ({ onScoreChange, onGameOver, onGameSta
       // 检测是否点击了某个按钮
       for (const btn of buttons.current) {
         if (mx >= btn.x && mx <= btn.x + btn.w && my >= btn.y && my <= btn.y + btn.h) {
-          if (btn.label === 'Start Game' || btn.label === 'Next Round') startGame();
-          else if (btn.label === 'Play') handlePlayCards();
-          else if (btn.label === 'Pass') handlePass();
-          else if (btn.label === 'Hint') handleHint();
-          else if (btn.label === 'Sort') handleSort();
+          if (btn.label === t('gameUI.startGame') || btn.label === t('gameUI.nextRound')) startGame();
+          else if (btn.label === t('gameUI.play')) handlePlayCards();
+          else if (btn.label === t('gameUI.pass')) handlePass();
+          else if (btn.label === t('gameUI.hint')) handleHint();
+          else if (btn.label === t('gameUI.sort')) handleSort();
           return;
         }
       }
@@ -581,7 +583,7 @@ const GuandanGame: React.FC<GameProps> = ({ onScoreChange, onGameOver, onGameSta
       canvas.removeEventListener('click', onCanvasClick);
       canvas.removeEventListener('mousemove', onMouseMove);
     };
-  }, [gamePhase, aiThinking, startGame, handlePlayCards, handlePass, handleHint, handleSort]);
+  }, [gamePhase, aiThinking, startGame, handlePlayCards, handlePass, handleHint, handleSort, t]);
 
   /**
    * 渲染循环
@@ -604,9 +606,9 @@ const GuandanGame: React.FC<GameProps> = ({ onScoreChange, onGameOver, onGameSta
         style={{ width: '100%', maxWidth: `${TABLE_W}px`, height: 'auto' }}
       />
       <div className="mt-2 text-sm text-gray-400">
-        {gamePhase === 'idle' && 'Click "Start Game" to start a game of Guandan'}
-        {gamePhase === 'playing' && (aiThinking ? 'AI is thinking...' : 'Click cards to select, then click "Play" to play')}
-        {gamePhase === 'over' && 'Round over, click "Next Round" to continue'}
+        {gamePhase === 'idle' && t('gameUI.guandan.clickToStart')}
+        {gamePhase === 'playing' && (aiThinking ? t('gameUI.guandan.aiThinking') : t('gameUI.guandan.clickCardsToPlay'))}
+        {gamePhase === 'over' && t('gameUI.guandan.roundOverContinue')}
       </div>
     </div>
   );

@@ -17,6 +17,7 @@
  */
 
 import { useEffect, useRef, useState, useCallback } from 'react';
+import { useTranslation } from 'react-i18next';
 import VirtualGamepad from './VirtualGamepad';
 import { Button, Typography } from 'antd';
 
@@ -197,6 +198,7 @@ function drawSpike(ctx: CanvasRenderingContext2D, cx: number, cy: number, size: 
 }
 
 const MagicTrampoline: React.FC<GameProps> = ({ onScoreChange, onGameOver, onGameStart }) => {
+  const { t } = useTranslation('games');
   // Canvas 引用
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
@@ -671,10 +673,10 @@ const MagicTrampoline: React.FC<GameProps> = ({ onScoreChange, onGameOver, onGam
   return (
     <div className="flex flex-col items-center">
       <div className="flex items-center justify-between w-full max-w-[400px] mb-3">
-        <Title level={4} className="!text-white !mb-0">Magic Trampoline</Title>
+        <Title level={4} className="!text-white !mb-0">{t('onlineGames.games.magic-trampoline.name')}</Title>
         <div className="flex items-center gap-3">
-          <Text className="!text-gray-400">Score: {score}</Text>
-          <Text className="!text-blue-400">Height: {height}m</Text>
+          <Text className="!text-gray-400">{t('gameUI.scoreLabel', { value: score })}</Text>
+          <Text className="!text-blue-400">{t('gameUI.heightLabel', { value: height })}</Text>
         </div>
       </div>
       <canvas
@@ -684,17 +686,17 @@ const MagicTrampoline: React.FC<GameProps> = ({ onScoreChange, onGameOver, onGam
         height={CANVAS_H}
       />
       {gameState === 'idle' && (
-        <Button type="primary" className="mt-4" onClick={startGame}>Start Game</Button>
+        <Button type="primary" className="mt-4" onClick={startGame}>{t('gameUI.startGame')}</Button>
       )}
       {gameState === 'over' && (
         <div className="mt-4 text-center">
-          <Text className="!text-red-400 !block mb-2">Game Over! Score: {score} | Height: {height}m</Text>
-          <Button type="primary" onClick={startGame}>Restart</Button>
+          <Text className="!text-red-400 !block mb-2">{t('gameUI.gameOverScoreHeight', { score, height })}</Text>
+          <Button type="primary" onClick={startGame}>{t('gameUI.restart')}</Button>
         </div>
       )}
       {gameState === 'playing' && (
         <>
-          <Text className="!text-gray-500 !text-xs mt-2">Arrow keys/AD to move, collect stars and avoid spikes | Swipe / virtual buttons</Text>
+          <Text className="!text-gray-500 !text-xs mt-2">{t('gameUI.hints.magicTrampoline')}</Text>
           <VirtualGamepad
             directions={{
               left: moveLeft,

@@ -11,6 +11,7 @@
 
 import { useEffect, useRef, useState, useCallback } from 'react';
 import { Button, Typography } from 'antd';
+import { useTranslation } from 'react-i18next';
 
 const { Title, Text } = Typography;
 
@@ -248,6 +249,7 @@ function getActiveColors(count: number): string[] {
  * 使用 Canvas 实现泡泡龙游戏，包含网格管理、消除检测、掉落动画和推压机制
  */
 const BubbleShooter: React.FC<GameProps> = ({ onScoreChange, onGameOver, onGameStart }) => {
+  const { t } = useTranslation('games');
   /** Canvas 引用 */
   const canvasRef = useRef<HTMLCanvasElement>(null);
   /** 当前得分 */
@@ -525,7 +527,7 @@ const BubbleShooter: React.FC<GameProps> = ({ onScoreChange, onGameOver, onGameS
       ctx.font = 'bold 11px Arial';
       ctx.textAlign = 'left';
       ctx.textBaseline = 'top';
-      ctx.fillText('Shots left: ' + remaining, 6, 3);
+      ctx.fillText(t('gameUI.shotsLeftLabel', { value: remaining }), 6, 3);
     }
 
     // 紧急模式闪烁警告文字
@@ -534,9 +536,9 @@ const BubbleShooter: React.FC<GameProps> = ({ onScoreChange, onGameOver, onGameS
       ctx.font = 'bold 14px Arial';
       ctx.textAlign = 'center';
       ctx.textBaseline = 'top';
-      ctx.fillText('Warning! Bubbles are reaching the bottom!', CW / 2, GRID_TOP + GAME_OVER_ROW * V_SPACING + BUBBLE_R + 6);
+      ctx.fillText(t('gameUI.warningBubbles'), CW / 2, GRID_TOP + GAME_OVER_ROW * V_SPACING + BUBBLE_R + 6);
     }
-  }, [getPushInterval]);
+  }, [getPushInterval, t]);
 
   /**
    * 每帧更新游戏状态
@@ -712,8 +714,8 @@ const BubbleShooter: React.FC<GameProps> = ({ onScoreChange, onGameOver, onGameS
   return (
     <div className="flex flex-col items-center">
       <div className="flex items-center justify-between w-full max-w-[350px] mb-3">
-        <Title level={4} className="!text-white !mb-0">Bubble Shooter</Title>
-        <Text className="!text-gray-400">Score: {score}</Text>
+        <Title level={4} className="!text-white !mb-0">{t('onlineGames.games.bubble-shooter.name')}</Title>
+        <Text className="!text-gray-400">{t('gameUI.scoreLabel', { value: score })}</Text>
       </div>
       <canvas
         ref={canvasRef}
@@ -722,16 +724,16 @@ const BubbleShooter: React.FC<GameProps> = ({ onScoreChange, onGameOver, onGameS
         className="rounded-lg border border-dark-600"
       />
       {gameState === 'idle' && (
-        <Button type="primary" className="mt-4" onClick={startGame}>Start Game</Button>
+        <Button type="primary" className="mt-4" onClick={startGame}>{t('gameUI.startGame')}</Button>
       )}
       {gameState === 'over' && (
         <div className="mt-4 text-center">
-          <Text className="!text-red-400 !block mb-2">Game Over! Score: {score}</Text>
-          <Button type="primary" onClick={startGame}>Restart</Button>
+          <Text className="!text-red-400 !block mb-2">{t('gameUI.gameOverScore', { score })}</Text>
+          <Button type="primary" onClick={startGame}>{t('gameUI.restart')}</Button>
         </div>
       )}
       {gameState === 'playing' && (
-        <Text className="!text-gray-500 !text-xs mt-2">Move the mouse to aim, click or press Space to shoot</Text>
+        <Text className="!text-gray-500 !text-xs mt-2">{t('gameUI.hints.bubbleShooter')}</Text>
       )}
     </div>
   );

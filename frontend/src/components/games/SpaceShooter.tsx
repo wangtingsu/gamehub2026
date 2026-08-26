@@ -12,6 +12,7 @@
  */
 
 import { useEffect, useRef, useState, useCallback } from 'react';
+import { useTranslation } from 'react-i18next';
 import VirtualGamepad from './VirtualGamepad';
 import { Button, Typography } from 'antd';
 
@@ -129,6 +130,7 @@ const ENEMY_COLORS: Record<EnemyType, string> = {
  * @returns 飞机大战游戏界面
  */
 const SpaceShooter: React.FC<GameProps> = ({ onScoreChange, onGameOver, onGameStart }) => {
+  const { t } = useTranslation('games');
   /** Canvas 元素的引用 */
   const canvasRef = useRef<HTMLCanvasElement>(null);
   /** 当前得分 */
@@ -968,10 +970,10 @@ const SpaceShooter: React.FC<GameProps> = ({ onScoreChange, onGameOver, onGameSt
     <div className="flex flex-col items-center">
       {/* 顶部信息栏：游戏标题、当前得分和生命值 */}
       <div className="flex items-center justify-between w-full max-w-[400px] mb-3">
-        <Title level={4} className="!text-white !mb-0">Space Shooter</Title>
+        <Title level={4} className="!text-white !mb-0">{t('onlineGames.games.space-shooter.name')}</Title>
         <div className="flex items-center gap-3">
-          <Text className="!text-gray-400">Score: {score}</Text>
-          <Text className="!text-red-400">Lives: {health}</Text>
+          <Text className="!text-gray-400">{t('gameUI.scoreLabel', { value: score })}</Text>
+          <Text className="!text-red-400">{t('gameUI.livesLabel', { value: health })}</Text>
         </div>
       </div>
       {/* 游戏画布 */}
@@ -983,19 +985,19 @@ const SpaceShooter: React.FC<GameProps> = ({ onScoreChange, onGameOver, onGameSt
       />
       {/* 空闲状态：显示开始按钮 */}
       {gameState === 'idle' && (
-        <Button type="primary" className="mt-4" onClick={startGame}>Start Game</Button>
+        <Button type="primary" className="mt-4" onClick={startGame}>{t('gameUI.startGame')}</Button>
       )}
       {/* 游戏结束：显示最终得分和重新开始按钮 */}
       {gameState === 'over' && (
         <div className="mt-4 text-center">
-          <Text className="!text-red-400 !block mb-2">Game Over! Score: {score}</Text>
-          <Button type="primary" onClick={startGame}>Restart</Button>
+          <Text className="!text-red-400 !block mb-2">{t('gameUI.gameOverScore', { score })}</Text>
+          <Button type="primary" onClick={startGame}>{t('gameUI.restart')}</Button>
         </div>
       )}
       {/* 游戏进行中：显示操作提示和虚拟方向键（移动端适用） */}
       {gameState === 'playing' && (
         <>
-          <Text className="!text-gray-500 !text-xs mt-2">Arrow keys/WASD to move, auto-fire | Swipe / virtual buttons</Text>
+          <Text className="!text-gray-500 !text-xs mt-2">{t('gameUI.hints.spaceShooter')}</Text>
           <VirtualGamepad
             directions={{
               up: moveUp,

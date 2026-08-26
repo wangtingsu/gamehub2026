@@ -9,6 +9,7 @@
  * 支持键盘（方向键/WASD移动，空格/Enter射击）、触摸滑动和虚拟手柄操控。
  */
 import { useEffect, useRef, useState, useCallback } from 'react';
+import { useTranslation } from 'react-i18next';
 import VirtualGamepad from './VirtualGamepad';
 import { Button, Typography } from 'antd';
 
@@ -136,6 +137,7 @@ function dirDelta(dir: Dir): Pos {
  * 使用 Canvas 渲染网格地图，包含敌方 AI、碰撞检测、波次推进等完整游戏逻辑
  */
 const TankBattle: React.FC<GameProps> = ({ onScoreChange, onGameOver, onGameStart }) => {
+  const { t } = useTranslation('games');
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
   /** 当前得分 */
@@ -647,11 +649,11 @@ const TankBattle: React.FC<GameProps> = ({ onScoreChange, onGameOver, onGameStar
     <div className="flex flex-col items-center">
       {/* 游戏标题栏 */}
       <div className="flex items-center justify-between w-full max-w-[400px] mb-3">
-        <Title level={4} className="!text-white !mb-0">Tank Battle</Title>
+        <Title level={4} className="!text-white !mb-0">{t('onlineGames.games.tank-battle.name')}</Title>
         <div className="flex items-center gap-3">
-          <Text className="!text-gray-400">Score: {score}</Text>
-          <Text className="!text-yellow-400">Wave: {gameRef.current.wave}</Text>
-          <Text className="!text-green-400">Lives: {lives}</Text>
+          <Text className="!text-gray-400">{t('gameUI.scoreLabel', { value: score })}</Text>
+          <Text className="!text-yellow-400">{t('gameUI.waveLabel', { value: gameRef.current.wave })}</Text>
+          <Text className="!text-green-400">{t('gameUI.livesLabel', { value: lives })}</Text>
         </div>
       </div>
       {/* 游戏画布 */}
@@ -663,18 +665,18 @@ const TankBattle: React.FC<GameProps> = ({ onScoreChange, onGameOver, onGameStar
       />
       {/* 空闲/结束状态按钮 */}
       {gameState === 'idle' && (
-        <Button type="primary" className="mt-4" onClick={startGame}>Start Game</Button>
+        <Button type="primary" className="mt-4" onClick={startGame}>{t('gameUI.startGame')}</Button>
       )}
       {gameState === 'over' && (
         <div className="mt-4 text-center">
-          <Text className="!text-red-400 !block mb-2">Game Over! Score: {score}</Text>
-          <Button type="primary" onClick={startGame}>Restart</Button>
+          <Text className="!text-red-400 !block mb-2">{t('gameUI.gameOverScore', { score })}</Text>
+          <Button type="primary" onClick={startGame}>{t('gameUI.restart')}</Button>
         </div>
       )}
       {/* 游戏中：操作提示和虚拟手柄 */}
       {gameState === 'playing' && (
         <>
-          <Text className="!text-gray-500 !text-xs mt-2">Arrow keys / WASD to move, Space / Enter to shoot | Swipe / virtual buttons</Text>
+          <Text className="!text-gray-500 !text-xs mt-2">{t('gameUI.hints.tankBattle')}</Text>
           <VirtualGamepad
             directions={{
               up: () => handleDirection('UP'),
@@ -683,7 +685,7 @@ const TankBattle: React.FC<GameProps> = ({ onScoreChange, onGameOver, onGameStar
               right: () => handleDirection('RIGHT'),
               fire: handleShoot,
             }}
-            actions={[{ label: 'Shoot', action: handleShoot }]}
+            actions={[{ label: t('gameUI.shoot'), action: handleShoot }]}
           />
         </>
       )}

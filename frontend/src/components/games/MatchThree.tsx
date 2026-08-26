@@ -19,6 +19,7 @@
  */
 
 import { useEffect, useRef, useState, useCallback } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Button, Typography } from 'antd';
 
 const { Title, Text } = Typography;
@@ -74,6 +75,7 @@ interface SwapAnim {
 }
 
 const MatchThree: React.FC<GameProps> = ({ onScoreChange, onGameOver, onGameStart }) => {
+  const { t } = useTranslation('games');
   // Canvas 引用
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
@@ -594,7 +596,7 @@ const MatchThree: React.FC<GameProps> = ({ onScoreChange, onGameOver, onGameStar
       ctx.textAlign = 'center';
       ctx.shadowColor = '#f1c40f';
       ctx.shadowBlur = 8;
-      ctx.fillText(`Combo x${combo}!`, CANVAS_W / 2, 25);
+      ctx.fillText(t('gameUI.comboBang', { multiplier: combo }), CANVAS_W / 2, 25);
       ctx.shadowBlur = 0;
     }
 
@@ -603,9 +605,9 @@ const MatchThree: React.FC<GameProps> = ({ onScoreChange, onGameOver, onGameStar
       ctx.fillStyle = '#e67e22';
       ctx.font = 'bold 16px sans-serif';
       ctx.textAlign = 'center';
-      ctx.fillText('Reshuffle!', CANVAS_W / 2, CANVAS_H - 10);
+      ctx.fillText(t('gameUI.reshuffle'), CANVAS_W / 2, CANVAS_H - 10);
     }
-  }, [getColorsForLevel]);
+  }, [getColorsForLevel, t]);
 
   /**
    * 执行宝石交换
@@ -799,21 +801,21 @@ const MatchThree: React.FC<GameProps> = ({ onScoreChange, onGameOver, onGameStar
   return (
     <div className="flex flex-col items-center">
       <div className="flex items-center justify-between w-full max-w-[420px] mb-3">
-        <Title level={4} className="!text-white !mb-0">Match Three</Title>
+        <Title level={4} className="!text-white !mb-0">{t('onlineGames.games.match-three.name')}</Title>
         <div className="flex gap-3">
           {gameState === 'playing' && (
             <>
-              <Text className="!text-yellow-400">Level {level}</Text>
-              <Text className="!text-gray-400">Target: {targetScore}</Text>
+              <Text className="!text-yellow-400">{t('gameUI.levelLabel', { value: level })}</Text>
+              <Text className="!text-gray-400">{t('gameUI.targetLabel', { value: targetScore })}</Text>
             </>
           )}
-          <Text className="!text-gray-400">Score: {score}</Text>
-          <Text className="!text-gray-400">Matches: {matches}</Text>
+          <Text className="!text-gray-400">{t('gameUI.scoreLabel', { value: score })}</Text>
+          <Text className="!text-gray-400">{t('gameUI.matchesLabel', { value: matches })}</Text>
         </div>
       </div>
       {gameState === 'playing' && (
         <div className="w-full max-w-[420px] text-center mb-1">
-          <Text className="!text-gray-400">Moves left: {movesLeft}</Text>
+          <Text className="!text-gray-400">{t('gameUI.movesLeftLabel', { value: movesLeft })}</Text>
         </div>
       )}
       <div className="relative">
@@ -830,28 +832,28 @@ const MatchThree: React.FC<GameProps> = ({ onScoreChange, onGameOver, onGameStar
           <div className="absolute inset-0 flex items-center justify-center bg-black/60 rounded-lg">
             <div className="text-center">
               <Text className="!text-yellow-400 !text-2xl !font-bold !block">
-                Level {level} Clear! 🎉
+                {t('gameUI.levelClear', { level })}
               </Text>
               <Text className="!text-white !text-lg !block mt-2">
-                Total: {totalScore}
+                {t('gameUI.totalLabel', { value: totalScore })}
               </Text>
             </div>
           </div>
         )}
       </div>
       {gameState === 'idle' && (
-        <Button type="primary" className="mt-4" onClick={startGame}>Start Game</Button>
+        <Button type="primary" className="mt-4" onClick={startGame}>{t('gameUI.startGame')}</Button>
       )}
       {gameState === 'over' && (
         <div className="mt-4 text-center">
           <Text className="!text-red-400 !block mb-2">
-            Game Over! Level {level}, Score: {totalScore}
+            {t('gameUI.gameOverLevelScore', { level, score: totalScore })}
           </Text>
-          <Button type="primary" onClick={startGame}>Restart</Button>
+          <Button type="primary" onClick={startGame}>{t('gameUI.restart')}</Button>
         </div>
       )}
       {gameState === 'playing' && !levelUp && (
-        <Text className="!text-gray-500 !text-xs mt-2">Click a gem to select it, then click an adjacent gem to swap</Text>
+        <Text className="!text-gray-500 !text-xs mt-2">{t('gameUI.hints.matchThree')}</Text>
       )}
     </div>
   );

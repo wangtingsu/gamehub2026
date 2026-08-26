@@ -79,5 +79,287 @@
     "allGames": "Tous les Jeux Cosy",
     "seoTitle": "Jeux Cosy | GameHub",
     "seoDescription": "Recommandations de jeux chaleureux et apaisants"
+  },
+  "onlineGames": {
+    "title": "Jeux en Ligne",
+    "subtitle": "Sans téléchargement, jouez instantanément",
+    "searchPlaceholder": "Rechercher des jeux...",
+    "noResults": "Aucun jeu correspondant trouvé",
+    "noResultsHint": "Essayez un autre mot-clé ou une autre catégorie",
+    "seoTitle": "Mini-jeux gratuits en ligne - Jeu instantané, sans téléchargement | GameHub",
+    "seoDescription": "GameHub propose plus de 20 mini-jeux gratuits en ligne, dont Snake, Tetris, 2048, Gomoku, Démineur et bien d'autres classiques. Sans téléchargement — jouez instantanément dans votre navigateur, sur ordinateur ou mobile.",
+    "seoKeywords": "jeux en ligne, mini-jeux gratuits, jeux web, snake, tetris, 2048, gomoku, démineur, jeux HTML5, jeux de navigateur, jeu instantané, sans téléchargement",
+    "breadcrumbHome": "Accueil",
+    "itemListName": "Collection de Mini-jeux Gratuits en Ligne",
+    "itemListDescription": "GameHub propose plus de 20 mini-jeux gratuits en ligne",
+    "categories": {
+      "all": "Tous",
+      "casual": "Casual",
+      "puzzle": "Puzzle",
+      "action": "Action",
+      "strategy": "Stratégie"
+    },
+    "faq": {
+      "q1": "Ces jeux en ligne doivent-ils être téléchargés ?",
+      "a1": "Pas du tout ! Tous les jeux s'exécutent directement dans votre navigateur — cliquez pour jouer, sans téléchargement ni installation.",
+      "q2": "Les jeux en ligne sont-ils gratuits ?",
+      "a2": "Oui, tous les mini-jeux de GameHub sont entièrement gratuits — jouez à tout sans débourser un centime.",
+      "q3": "Puis-je jouer à ces jeux sur mon téléphone ?",
+      "a3": "Oui ! Tous les jeux sont optimisés pour les navigateurs de bureau et mobiles, vous pouvez donc jouer à tout moment, où que vous soyez.",
+      "q4": "Ai-je besoin d'un compte pour jouer ?",
+      "a4": "Aucune inscription requise — jouez sans vous connecter. Créer un compte vous permet de sauvegarder votre progression et de rejoindre les discussions de la communauté."
+    },
+    "games": {
+      "snake": {
+        "name": "Serpent",
+        "description": "Contrôlez un serpent qui avance sans cesse, en mangeant de la nourriture dans une arène fermée. Chaque nourriture fait grandir votre serpent et accélérer. À mesure que votre corps s'allonge, votre marge de manœuvre se réduit — planifiez précisément votre trajectoire pour éviter de heurter les murs ou votre propre queue.",
+        "instructions": "Utilisez les flèches pour diriger, mangez pour grandir et évitez de heurter les murs ou vous-même"
+      },
+      "tetris": {
+        "name": "Tetris",
+        "description": "Sept pièces de formes différentes tombent sans arrêt du haut de l'écran, et vous devez rapidement décider du meilleur emplacement pour chacune. Alignez les blocs pour remplir une rangée entière et la vider pour marquer des points ; vider plusieurs rangées à la fois déclenche des bonus de combo. À mesure que vous videz des rangées, la vitesse de chute augmente, montant la tension.",
+        "instructions": "← → déplacer, ↑ tourner, ↓ accélérer, Espace pour lâcher"
+      },
+      "brick-breaker": {
+        "name": "Casse-briques",
+        "description": "Une raquette se trouve en bas de l'écran tandis qu'une balle rebondit entre la raquette et un mur de briques. Déplacez la raquette pour rattraper et renvoyer la balle vers le haut pour casser les briques colorées. Chaque brique cassée marque des points ; videz-les toutes pour passer le niveau. Les différentes couleurs valent des points différents, et certaines briques nécessitent plusieurs coups pour se briser.",
+        "instructions": "Déplacez la souris pour contrôler la raquette et cassez toutes les briques pour passer le niveau"
+      },
+      "gobang": {
+        "name": "Gomoku",
+        "description": "Jouez au Gomoku (cinq en ligne) contre l'IA sur un plateau de 15×15. Vous jouez les noirs et commencez ; l'IA joue les blancs. Placez les pierres à tour de rôle sur les intersections, en visant à être le premier à relier cinq en ligne horizontalement, verticalement ou en diagonale. L'IA a plusieurs niveaux de difficulté et attaquera tout en défendant contre vos trois et quatre ouverts.",
+        "instructions": "Cliquez sur une intersection pour poser votre pierre ; alignez cinq en ligne horizontalement, verticalement ou en diagonale pour gagner"
+      },
+      "minesweeper": {
+        "name": "Démineur",
+        "description": "Une grille de cases cache des mines, et vous devez utiliser les indices numériques pour déduire quelles cases sont sûres. Chaque nombre révélé vous indique combien de mines se trouvent dans les 8 cases environnantes. Utilisez la logique pour marquer les mines et révéler la zone sûre, jusqu'à découvrir toutes les cases sans mine.",
+        "instructions": "Clic gauche pour révéler une case, clic droit pour marquer une mine ; le nombre indique les mines proches"
+      },
+      "game2048": {
+        "name": "2048",
+        "description": "Sur un plateau de 4×4, chaque mouvement fait glisser toutes les tuiles numériques dans une direction, fusionnant les nombres égaux adjacents en leur somme — 2 et 2 deviennent 4, 4 et 4 deviennent 8, et ainsi de suite. Après chaque mouvement, un nouveau 2 ou 4 apparaît dans une case vide aléatoire. Continuez à fusionner pour construire des nombres plus grands, en visant 2048 et au-delà.",
+        "instructions": "Utilisez les flèches ou glissez pour fusionner les nombres égaux jusqu'à atteindre 2048"
+      },
+      "memory": {
+        "name": "Memory",
+        "description": "Des paires de cartes assorties reposent face cachée, mélangées sur la table. Retournez deux cartes à la fois — si elles correspondent, elles restent face visible ; sinon, elles se retournent. Mémorisez la position et l'image de chaque carte pour trouver toutes les paires en un nombre limité de retournements. À mesure que les niveaux avancent, davantage de cartes sont ajoutées pour tester votre mémoire.",
+        "instructions": "Retournez les cartes et trouvez les paires"
+      },
+      "pong": {
+        "name": "Pong",
+        "description": "Le classique Pong à deux joueurs, en solo — vous contrôlez la raquette de gauche, l'IA contrôle celle de droite. Gardez la balle en jeu en vous déplaçant vers son point de chute et en la renvoyant vers le camp adverse. Si la balle passe votre raquette, l'adversaire marque. L'IA joue à une difficulté équitable et enverra des tirs en angle retors pour tester vos réflexes.",
+        "instructions": "Déplacez la souris pour contrôler la raquette ; le premier à 5 points gagne"
+      },
+      "tank-battle": {
+        "name": "Bataille de Chars",
+        "description": "Conduisez un char jaune à travers un labyrinthe de murs de briques, en combattant des vagues de chars ennemis rouges. La carte mélange des murs de briques destructibles et des murs d'acier indestructibles — utilisez le couvert pour esquiver le feu ennemi, ou tirez à travers les briques pour ouvrir de nouvelles routes. Votre base (une icône d'aigle) se trouve en bas ; si elle est détruite, la partie se termine. Éliminez tous les chars ennemis pour passer le niveau.",
+        "instructions": "Flèches / ZQSD pour se déplacer, Espace / Entrée pour tirer ; détruisez tous les chars ennemis en protégeant votre base"
+      },
+      "magic-trampoline": {
+        "name": "Trampoline Magique",
+        "description": "Un petit personnage rebondit sans cesse sur un trampoline. Déplacez le trampoline à gauche et à droite pour l'attraper tout en collectant des étoiles dorées flottant dans les airs. À mesure que vous montez, les obstacles à pointes rouges deviennent plus fréquents — un seul contact envoie votre personnage valser. Des visuels éclatants et un rythme bondissant le rendent facile à prendre en main mais difficile à maîtriser, parfait pour une partie rapide.",
+        "instructions": "Utilisez ← → pour vous déplacer, collectez les étoiles dorées et esquivez les pointes rouges — plus vous rebondissez haut, meilleur est le score"
+      },
+      "space-shooter": {
+        "name": "Tir Spatial",
+        "description": "Pilotez un chasseur stellaire contre des vagues interminables de vaisseaux aliens. Votre chasseur tire automatiquement tandis que les ennemis déferlent d'en haut — simples soldats, plongeurs rapides et boss résistants. Détruire des ennemis fait tomber des améliorations de puissance de feu, des boucliers et des étoiles bonus. À mesure que votre score grimpe, la densité ennemie et les motifs de tirs dégénèrent en un enfer de balles qui fait monter l'adrénaline.",
+        "instructions": "Flèches pour vous déplacer ; vous tirez automatiquement, ramassez les bonus et esquivez les attaques ennemies"
+      },
+      "whack-a-mole": {
+        "name": "Tape-taupe",
+        "description": "Neuf trous s'alignent sur la table, et des taupes mignonnes mais rusées surgissent au hasard — frappez-les aussi vite que possible ! Les taupes apparaissent à des endroits et moments imprévisibles, parfois l'une après l'autre dans le même trou, parfois plusieurs à la fois. De temps en temps, une taupe au casque doré apparaît pour des points bonus. Un classique d'arcade qui teste vitesse et réflexes.",
+        "instructions": "Tapez les taupes quand elles surgissent ; frappez-en le plus possible en 30 secondes"
+      },
+      "match-three": {
+        "name": "Match-3",
+        "description": "Un plateau de 8×8 est rempli de gemmes colorées. Échangez deux gemmes adjacentes pour que trois ou plus de la même couleur s'alignent — elles éclateront et disparaîtront, les gemmes du dessus tomberont en place et de nouvelles gemmes tomberont d'en haut. Associer 4 crée une gemme rayée (efface toute une rangée/colonne) ; associer 5 crée une gemme arc-en-ciel (efface toutes les gemmes d'une couleur). Les réactions en chaîne déclenchent des combos qui multiplient votre score.",
+        "instructions": "Sélectionnez une gemme puis touchez une gemme adjacente pour les échanger ; associez 3+ de la même couleur pour effacer et marquer"
+      },
+      "speed-racer": {
+        "name": "Course Rapide",
+        "description": "Foncez sur une autoroute droite à trois voies tandis que des voitures plus lentes apparaissent sans cesse devant vous. Changez de voie pour vous faufiler dans le trafic en passant aussi près que possible pour gagner des points bonus. La vitesse augmente avec la distance, passant d'une croisière relaxante à une course effrénée — heurtez une voiture et c'est terminé.",
+        "instructions": "← → pour changer de voie et esquiver les voitures ; ça va de plus en plus vite"
+      },
+      "bubble-shooter": {
+        "name": "Tir de Bulles",
+        "description": "Un amas de bulles colorées pend d'en haut, et un lanceur se trouve en bas. Visez des bulles de la même couleur et tirez pour les relier — lorsque 3 bulles identiques ou plus se touchent, elles éclatent. Un tir qui ne forme pas de correspondance colle à l'amas et le pousse vers le bas. Une fois que les bulles franchissent la ligne d'alerte inférieure, vous perdez.",
+        "instructions": "Déplacez la souris pour viser, cliquez pour tirer ; associez 3+ de la même couleur pour les éclater"
+      },
+      "sliding-puzzle": {
+        "name": "Taquin",
+        "description": "Un plateau de 4×4 avec 16 cases contient des tuiles numérotées de 1 à 15, laissant un espace vide. Les tuiles sont mélangées, et vous devez faire glisser les tuiles adjacentes dans le trou pour restaurer les nombres dans leur ordre correct 1–15, de haut en bas et de gauche à droite. Ça paraît simple, mais c'est un vrai test de patience et de planification.",
+        "instructions": "Touchez une tuile pour la faire glisser dans le vide et rangez les nombres 1–15 dans l'ordre"
+      },
+      "jump-adventure": {
+        "name": "Aventure de Saut",
+        "description": "Un petit cube se tient sur une plateforme, la suivante devant lui. Maintenez pour charger et relâchez pour sauter, en posant le cube avec précision sur la plateforme suivante. Les écarts et tailles de plateformes varient — certaines sont proches et demandent une pression légère, d'autres sont loin et demandent toute la puissance. Atterrir en plein centre rapporte un bonus parfait ; atterrir sur le bord vous laisse vacillant ; dépasser vous envoie dans le vide. Chaque saut est +1, et juger la distance est essentiel.",
+        "instructions": "Clic / Espace pour sauter, maintenez pour charger un saut plus long, atterrissez sur les plateformes et évitez les trous"
+      },
+      "archery-master": {
+        "name": "Maître Archer",
+        "description": "Placez-vous sur la ligne de tir avec une cible circulaire suspendue à une distance fixe. Tendez, visez et relâchez pour atteindre le centre. La cible est divisée en 10 anneaux, de 1 point au bord extérieur à 10 au centre — plus près du centre, plus le score est élevé. Le vent change aléatoirement et courbe la trajectoire de votre flèche, alors ajustez votre visée à la girouette. Chaque manche compte 10 flèches ; le total le plus élevé gagne.",
+        "instructions": "Maintenez pour tendre, relâchez pour tirer ; surveillez le vent et visez la cible"
+      },
+      "guandan": {
+        "name": "Guandan",
+        "description": "Un jeu de cartes à levées pour quatre joueurs en deux équipes, utilisant deux jeux (108 cartes, deux jokers chacun). Vous et l'IA en face de vous êtes partenaires ; les deux autres IA sont vos adversaires. En commençant par 2, le camp gagnant monte de niveau à chaque manche (2→3→4…→A). Le système de types de cartes est riche — simples, paires, suites, plus bombes, quinte flush et fusées pour dominer. Les bombes battent les jeux normaux, les plus grosses bombes battent les plus petites, et la stratégie d'assemblage et de jeu est très profonde.",
+        "instructions": "Jouez en équipes de deux, annoncez par type de carte ; la première équipe à vider sa main gagne. Prend en charge simples, paires, brelans, brelans avec paire, suites, plaques d'acier, suites de paires, bombes, quintes flush et fusées"
+      }
+    },
+    "play": {
+      "backToGames": "Retour aux jeux",
+      "howToPlay": "Comment jouer",
+      "moreGames": "Plus de jeux",
+      "gameNotFound": "Jeu introuvable",
+      "players": "{{num}} joueurs",
+      "seoTitle": "{{name}} | Jeux en ligne GameHub",
+      "seoKeywords": "{{name}}, {{category}}, jeux en ligne, mini-jeux, jeux en ligne GameHub, jeux de navigateur",
+      "howToName": "Comment jouer à {{name}}"
+    }
+  },
+  "gameUI": {
+    "startGame": "Commencer",
+    "restart": "Recommencer",
+    "playAgain": "Rejouer",
+    "nextRound": "Manche suivante",
+    "play": "Jouer",
+    "pass": "Passer",
+    "hint": "Indice",
+    "sort": "Trier",
+    "you": "Vous",
+    "playerLabel": "Joueur {{n}}",
+    "scoreLabel": "Score : {{value}}",
+    "distanceLabel": "Distance : {{value}}",
+    "heightLabel": "Hauteur : {{value}}m",
+    "movesLabel": "Coups : {{value}}",
+    "timeLabel": "Temps : {{value}}",
+    "livesLabel": "Vies : {{value}}",
+    "bestLabel": "Record : {{value}}",
+    "levelLabel": "Niveau : {{value}}",
+    "gameOver": "Partie terminée !",
+    "youWin": "Vous avez gagné !",
+    "aiWins": "L'IA gagne !",
+    "draw": "Égalité !",
+    "levelComplete": "Niveau terminé !",
+    "hitAMine": "Vous avez touché une mine !",
+    "gameOverScore": "Partie terminée ! Score : {{score}}",
+    "gameOverDistance": "Partie terminée ! Distance : {{score}}",
+    "gameOverScoreHeight": "Partie terminée ! Score : {{score}} | Hauteur : {{height}}m",
+    "gameOverLevelScore": "Partie terminée ! Niveau {{level}}, Score : {{score}}",
+    "levelCompleteScore": "Niveau terminé ! Score : {{score}}",
+    "hints": {
+      "brickBreaker": "Déplacez la souris / glissez / utilisez les flèches pour contrôler la raquette",
+      "bubbleShooter": "Déplacez la souris pour viser, cliquez ou appuyez sur Espace pour tirer",
+      "matchThree": "Cliquez sur une gemme pour la sélectionner, puis sur une gemme adjacente pour les échanger",
+      "whackAMole": "Cliquez sur les taupes pour les frapper !",
+      "memory": "Cliquez sur les cartes pour les retourner et trouvez toutes les paires",
+      "slidingPuzzle": "Cliquez sur une tuile pour la déplacer / Utilisez les flèches",
+      "minesweeper": "Clic gauche pour révéler | Clic droit pour marquer",
+      "pong": "Déplacez la souris / glissez / utilisez les flèches pour contrôler la raquette, premier à 5 points",
+      "gobang": "À votre tour, cliquez sur le plateau pour poser une pierre (les noirs commencent)",
+      "archeryMaster": "Maintenez pour charger, relâchez pour tirer (Souris/Tactile/Espace)",
+      "snake": "Flèches / Glissez / Boutons virtuels pour vous déplacer",
+      "tetris": "Clavier : ← → ↑ ↓ Espace",
+      "game2048": "Flèches / Glissez / Croix directionnelle virtuelle",
+      "spaceShooter": "Flèches/WASD pour bouger, tir automatique | Glissez / boutons virtuels",
+      "speedRacer": "← → Flèches / Boutons gauche-droite / Glissez pour diriger",
+      "jumpAdventure": "Cliquez / Espace pour sauter, maintenez pour charger et sauter plus loin",
+      "tankBattle": "Flèches / WASD pour bouger, Espace / Entrée pour tirer | Glissez / boutons virtuels",
+      "magicTrampoline": "Flèches/AD pour bouger, ramassez les étoiles et évitez les piques | Glissez / boutons virtuels"
+    },
+    "power": "Puissance",
+    "wind": "Vent",
+    "combo": "Combo x{{multiplier}}",
+    "arrowsLeft": "Flèches restantes",
+    "bonusArrow": "Flèche bonus !",
+    "frozen": "❄️ Gelé ❄️",
+    "miss": "Raté !",
+    "guandan": {
+      "clickToDeal": "Cliquez sur « Commencer » pour distribuer",
+      "clickToStart": "Cliquez sur « Commencer » pour lancer une partie de Guandan",
+      "yourTurn": "À vous de jouer",
+      "yourTurnFree": "À vous de jouer — jeu libre",
+      "invalidPlay": "Coup invalide",
+      "youMustPlay": "Vous devez jouer",
+      "hintCards": "Indice : {{num}} carte(s)",
+      "noPlayableCards": "Aucune carte jouable",
+      "handSorted": "Main triée",
+      "playerFinished": "Le joueur {{n}} a terminé !",
+      "playerPlayed": "Le joueur {{n}} a joué {{pattern}}",
+      "playerThinking": "Le joueur {{n}} réfléchit...",
+      "playerPassed": "Le joueur {{n}} a passé",
+      "roundOverLevels": "Manche terminée ! Monte de {{steps}} niveau(x) → {{level}}",
+      "roundOverContinue": "Manche terminée, cliquez sur « Manche suivante » pour continuer",
+      "youFinished": "Vous avez terminé",
+      "finished": "✓ Terminé",
+      "aiThinking": "L'IA réfléchit...",
+      "clickCardsToPlay": "Cliquez sur les cartes pour les sélectionner, puis sur « Jouer »",
+      "roundOver": "Manche terminée",
+      "upLevels": "Monte de {{steps}} niveau(x) → Niveau {{level}}",
+      "clickNextRound": "Cliquez sur « Manche suivante » pour continuer",
+      "reasonSelectCards": "Sélectionnez des cartes à jouer",
+      "reasonNotInHand": "Les cartes sélectionnées ne sont pas dans votre main",
+      "reasonInvalidCombo": "Combinaison de cartes invalide",
+      "reasonCannotBeat": "Impossible de battre le jeu actuel",
+      "patterns": {
+        "single": "Simple",
+        "pair": "Paire",
+        "triple": "Brelan",
+        "triple_with_pair": "Brelan avec paire",
+        "straight": "Suite",
+        "pair_straight": "Suite de paires",
+        "triple_pair": "Plaque d'acier",
+        "triple_triple": "Double brelan",
+        "bomb": "Bombe",
+        "straight_flush": "Quinte flush",
+        "rocket": "Fusée"
+      },
+      "rankings": {
+        "first": "1er",
+        "second": "2e",
+        "third": "3e",
+        "last": "Dernier"
+      },
+      "roles": {
+        "partner": "Partenaire",
+        "teammate": "Coéquipier",
+        "opponent": "Adversaire"
+      }
+    },
+    "aiThinking": "🤔 L'IA réfléchit...",
+    "youGoFirst": "Vous commencez (Noirs)",
+    "score": "Score",
+    "best": "Record",
+    "reached2048": "Vous avez atteint 2048 !",
+    "continue": "Continuer",
+    "congratsMoves": "Félicitations ! Terminé en {{moves}} coups !",
+    "youAiScore": "Vous : {{player}} | IA : {{ai}}",
+    "waveLabel": "Vague : {{value}}",
+    "shoot": "Tirer",
+    "difficultyLabel": "Difficulté : {{value}}",
+    "easy": "Facile",
+    "medium": "Normal",
+    "hard": "Difficile",
+    "timeSecLabel": "Temps : {{value}}s",
+    "frozen5s": "⚠️ Gelé 5s !",
+    "targetLabel": "Objectif : {{value}}",
+    "matchesLabel": "Éliminations : {{value}}",
+    "movesLeftLabel": "Coups restants : {{value}}",
+    "totalLabel": "Total : {{value}}",
+    "levelClear": "Niveau {{level}} terminé ! 🎉",
+    "reshuffle": "Re-mélanger !",
+    "comboBang": "Combo x{{multiplier}} !",
+    "speedLabel": "Vitesse : {{value}}%",
+    "left": "Gauche",
+    "right": "Droite",
+    "arrowsLabel": "Flèches : {{value}}/{{max}}",
+    "shotsLeftLabel": "Tirs restants : {{value}}",
+    "warningBubbles": "Attention ! Les bulles atteignent le bas !",
+    "sizeEasy": "3×3 Facile",
+    "sizeNormal": "4×4 Normal",
+    "sizeHard": "5×5 Difficile",
+    "solvedInfo": "{{size}} · Temps {{time}} · {{moves}} coups",
+    "cardsCount": "{{value}} cartes",
+    "done": "✓ Terminé"
   }
 }

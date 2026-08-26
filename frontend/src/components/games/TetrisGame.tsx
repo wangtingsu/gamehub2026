@@ -3,6 +3,7 @@
  * 侧边控制按钮 + 画布自适应
  */
 import { useEffect, useRef, useState, useCallback } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Button, Typography } from 'antd';
 
 const { Title, Text } = Typography;
@@ -29,6 +30,7 @@ const SHAPES: number[][][] = [
 const COLORS = ['#00f0f0','#f0f000','#a000f0','#f0a000','#0000f0','#00f000','#f00000'];
 
 const TetrisGame: React.FC<GameProps> = ({ onScoreChange, onGameOver, onGameStart }) => {
+  const { t } = useTranslation('games');
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [score, setScore] = useState(0);
   const [gameState, setGameState] = useState<'idle'|'playing'|'over'>('idle');
@@ -199,8 +201,8 @@ const TetrisGame: React.FC<GameProps> = ({ onScoreChange, onGameOver, onGameStar
   const content = (
     <div className={`flex flex-col items-center ${gameState === 'playing' ? 'fixed inset-0 z-50 bg-dark-900 pt-4' : ''}`} style={gameState==='playing'?{touchAction:'none'}:undefined}>
       <div className="flex items-center justify-between w-full px-2 mb-2" style={{ maxWidth: COLS * blockSize + 80 }}>
-        <Title level={4} className="!text-white !mb-0 !text-base sm:!text-lg">Tetris</Title>
-        <Text className="!text-gray-400 !text-sm">Score: {score}</Text>
+        <Title level={4} className="!text-white !mb-0 !text-base sm:!text-lg">{t('onlineGames.games.tetris.name')}</Title>
+        <Text className="!text-gray-400 !text-sm">{t('gameUI.scoreLabel', { value: score })}</Text>
       </div>
       <canvas ref={canvasRef} className="rounded-lg border border-dark-600" width={COLS*blockSize} height={ROWS*blockSize} />
 
@@ -213,15 +215,15 @@ const TetrisGame: React.FC<GameProps> = ({ onScoreChange, onGameOver, onGameStar
             <button className={btnBase} onPointerDown={e=>{e.preventDefault();fire('down')}}>▼</button>
             <button className={`${btnBase} !bg-red-600/60 active:!bg-red-500`} onPointerDown={e=>{e.preventDefault();fire('drop')}}>⏬</button>
           </div>
-          <Text className="!text-gray-500 !text-xs mt-1">Keyboard: ← → ↑ ↓ Space</Text>
+          <Text className="!text-gray-500 !text-xs mt-1">{t('gameUI.hints.tetris')}</Text>
         </>
       )}
 
-      {gameState === 'idle' && <Button type="primary" className="mt-4" onClick={startGame}>Start Game</Button>}
+      {gameState === 'idle' && <Button type="primary" className="mt-4" onClick={startGame}>{t('gameUI.startGame')}</Button>}
       {gameState === 'over' && (
         <div className="mt-4 text-center">
-          <Text className="!text-red-400 !block mb-2">Game over! Score: {score}</Text>
-          <Button type="primary" onClick={startGame}>Restart</Button>
+          <Text className="!text-red-400 !block mb-2">{t('gameUI.gameOverScore', { score })}</Text>
+          <Button type="primary" onClick={startGame}>{t('gameUI.restart')}</Button>
         </div>
       )}
     </div>

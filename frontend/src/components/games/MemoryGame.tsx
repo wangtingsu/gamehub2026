@@ -17,6 +17,7 @@
  */
 
 import { useState, useCallback, useEffect, useRef } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Button, Typography } from 'antd';
 
 const { Title, Text } = Typography;
@@ -54,6 +55,7 @@ const createCards = (): Card[] => {
 };
 
 const MemoryGame: React.FC<GameProps> = ({ onScoreChange, onGameOver, onGameStart }) => {
+  const { t } = useTranslation('games');
   /** 卡牌列表（16张） */
   const [cards, setCards] = useState<Card[]>(createCards);
   /** 当前翻开的卡牌ID列表（最多2个） */
@@ -148,9 +150,9 @@ const MemoryGame: React.FC<GameProps> = ({ onScoreChange, onGameOver, onGameStar
   return (
     <div className="flex flex-col items-center">
       <div className="flex items-center justify-between w-full max-w-[350px] mb-3">
-        <Title level={4} className="!text-white !mb-0">Memory Match</Title>
+        <Title level={4} className="!text-white !mb-0">{t('onlineGames.games.memory.name')}</Title>
         <div className="flex items-center gap-3">
-          <Text className="!text-gray-400">Moves: {moves}</Text>
+          <Text className="!text-gray-400">{t('gameUI.movesLabel', { value: moves })}</Text>
           <Text className="!text-gray-400">{matched / 2}/{EMOJIS.length}</Text>
         </div>
       </div>
@@ -177,16 +179,16 @@ const MemoryGame: React.FC<GameProps> = ({ onScoreChange, onGameOver, onGameStar
         ))}
       </div>
       {gameState === 'idle' && (
-        <Button type="primary" className="mt-4" onClick={startGame}>Start Game</Button>
+        <Button type="primary" className="mt-4" onClick={startGame}>{t('gameUI.startGame')}</Button>
       )}
       {gameState === 'won' && (
         <div className="mt-4 text-center">
-          <Text className="!text-green-400 !block mb-2">Congratulations! You finished in {moves} moves!</Text>
-          <Button type="primary" onClick={startGame}>Play Again</Button>
+          <Text className="!text-green-400 !block mb-2">{t('gameUI.congratsMoves', { moves })}</Text>
+          <Button type="primary" onClick={startGame}>{t('gameUI.playAgain')}</Button>
         </div>
       )}
       {gameState === 'playing' && (
-        <Text className="!text-gray-500 !text-xs mt-2">Click cards to flip them and find all pairs</Text>
+        <Text className="!text-gray-500 !text-xs mt-2">{t('gameUI.hints.memory')}</Text>
       )}
     </div>
   );

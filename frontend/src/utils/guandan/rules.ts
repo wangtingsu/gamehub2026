@@ -3,6 +3,7 @@
 import { Card, Pattern, Player, PlayedCards, GameStateData } from './types';
 import { identifyPattern, canBeat } from './patterns';
 import { sortHand, removeCards } from './cards';
+import i18n from '../../i18n';
 
 export const LEVEL_ORDER = [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]; // 2→A
 
@@ -15,20 +16,20 @@ export function isValidPlay(
   currentPlayerIdx: number,
 ): { valid: boolean; played?: PlayedCards; reason?: string } {
   if (cards.length === 0) {
-    return { valid: false, reason: 'Please select cards to play' };
+    return { valid: false, reason: i18n.t('games:gameUI.guandan.reasonSelectCards') };
   }
 
   // 选中的牌必须在手牌中
   const handIds = new Set(hand.map(c => c.id));
   for (const c of cards) {
     if (!handIds.has(c.id)) {
-      return { valid: false, reason: 'Selected cards are not in your hand' };
+      return { valid: false, reason: i18n.t('games:gameUI.guandan.reasonNotInHand') };
     }
   }
 
   const played = identifyPattern(cards);
   if (!played) {
-    return { valid: false, reason: 'Invalid card combination' };
+    return { valid: false, reason: i18n.t('games:gameUI.guandan.reasonInvalidCombo') };
   }
 
   // 如果是首出（没有需要压的牌）
@@ -38,7 +39,7 @@ export function isValidPlay(
 
   // 需要压牌
   if (!canBeat(played, lastPlay)) {
-    return { valid: false, reason: 'Cannot beat the current play' };
+    return { valid: false, reason: i18n.t('games:gameUI.guandan.reasonCannotBeat') };
   }
 
   return { valid: true, played };

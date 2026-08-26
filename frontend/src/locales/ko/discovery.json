@@ -97,6 +97,10 @@
   },
   "leaderboard": {
     "title": "리더보드",
+    "gameRankings": "게임 순위",
+    "userRankings": "사용자 순위",
+    "description": "GameHub 리더보드 - 게임 및 사용자 순위",
+    "keywords": "리더보드, 게임 순위, 사용자 순위, 인기 게임, 베스트 게임",
     "tabs": {
       "topRated": "최고 평점",
       "mostReviewed": "리뷰 최다",
@@ -109,7 +113,18 @@
       "rating": "평점",
       "reviewCount": "리뷰 수",
       "score": "점수",
-      "trend": "추세"
+      "trend": "추세",
+      "user": "사용자",
+      "level": "레벨",
+      "experience": "경험치 (XP)",
+      "points": "포인트",
+      "achievements": "업적"
+    },
+    "userTypes": {
+      "experience": "경험치",
+      "level": "레벨",
+      "points": "포인트",
+      "achievements": "업적"
     },
     "trends": {
       "up": "상승",
@@ -117,6 +132,15 @@
       "stable": "안정"
     },
     "noData": "리더보드 데이터가 없습니다"
+  },
+  "trending": {
+    "title": "트렌딩",
+    "description": "GameHub 트렌딩 - 가장 인기 있는 게임과 콘텐츠를 찾아보세요",
+    "keywords": "트렌딩 게임, 인기 게임, 인기, GameHub",
+    "rating": "평점",
+    "hot": "인기",
+    "heat": "인기",
+    "noContent": "트렌딩 콘텐츠가 없습니다"
   },
   "trends": {
     "title": "트렌드",

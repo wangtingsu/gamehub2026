@@ -97,6 +97,10 @@
   },
   "leaderboard": {
     "title": "Leaderboard",
+    "gameRankings": "Game Rankings",
+    "userRankings": "User Rankings",
+    "description": "GameHub Leaderboard - Game and User Rankings",
+    "keywords": "leaderboard, game rankings, user rankings, popular games, best games",
     "tabs": {
       "topRated": "Top Rated",
       "mostReviewed": "Most Reviewed",
@@ -109,7 +113,18 @@
       "rating": "Rating",
       "reviewCount": "Reviews",
       "score": "Score",
-      "trend": "Trend"
+      "trend": "Trend",
+      "user": "User",
+      "level": "Level",
+      "experience": "Experience (XP)",
+      "points": "Points",
+      "achievements": "Achievements"
+    },
+    "userTypes": {
+      "experience": "Experience",
+      "level": "Level",
+      "points": "Points",
+      "achievements": "Achievements"
     },
     "trends": {
       "up": "Up",
@@ -117,6 +132,15 @@
       "stable": "Stable"
     },
     "noData": "No leaderboard data"
+  },
+  "trending": {
+    "title": "Trending",
+    "description": "GameHub Trending - Discover the most popular games and content",
+    "keywords": "trending games, popular games, most popular, GameHub",
+    "rating": "Rating",
+    "hot": "HOT",
+    "heat": "heat",
+    "noContent": "No trending content"
   },
   "trends": {
     "title": "Trends",

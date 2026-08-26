@@ -9,6 +9,7 @@
  * 碰撞障碍物则游戏结束，尽可能获得更高分数。
  */
 import { useEffect, useRef, useState, useCallback } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Button, Typography } from 'antd';
 
 const { Title, Text } = Typography;
@@ -55,6 +56,7 @@ const CAR_COLORS = ['#e74c3c', '#3498db', '#2ecc71', '#f39c12', '#9b59b6', '#1ab
  * 使用 Canvas 实现渲染，包含键盘/触摸/按钮多种操控方式
  */
 const SpeedRacer: React.FC<GameProps> = ({ onScoreChange, onGameOver, onGameStart }) => {
+  const { t } = useTranslation('games');
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
   /** 当前得分 */
@@ -447,8 +449,8 @@ const SpeedRacer: React.FC<GameProps> = ({ onScoreChange, onGameOver, onGameStar
     ctx.fillStyle = '#aaa';
     ctx.font = '12px sans-serif';
     ctx.textAlign = 'left';
-    ctx.fillText(`Speed: ${speedPercent}%`, 8, 20);
-  }, [drawRoad, drawCar, drawTruck, drawBarrier, getLaneX]);
+    ctx.fillText(t('gameUI.speedLabel', { value: speedPercent }), 8, 20);
+  }, [drawRoad, drawCar, drawTruck, drawBarrier, getLaneX, t]);
 
   /**
    * 游戏主循环（由 requestAnimationFrame 驱动）
@@ -639,10 +641,10 @@ const SpeedRacer: React.FC<GameProps> = ({ onScoreChange, onGameOver, onGameStar
     <div className="flex flex-col items-center">
       {/* 游戏标题栏：游戏名、当前得分、最高分 */}
       <div className="flex items-center justify-between w-full max-w-[400px] mb-3">
-        <Title level={4} className="!text-white !mb-0">Speed Racer</Title>
+        <Title level={4} className="!text-white !mb-0">{t('onlineGames.games.speed-racer.name')}</Title>
         <div className="flex items-center gap-3">
-          <Text className="!text-gray-400">Score: {score}</Text>
-          <Text className="!text-yellow-400">Best: {highScore}</Text>
+          <Text className="!text-gray-400">{t('gameUI.scoreLabel', { value: score })}</Text>
+          <Text className="!text-yellow-400">{t('gameUI.bestLabel', { value: highScore })}</Text>
         </div>
       </div>
       {/* 游戏画布 */}
@@ -654,24 +656,24 @@ const SpeedRacer: React.FC<GameProps> = ({ onScoreChange, onGameOver, onGameStar
       />
       {/* 空闲状态：显示开始按钮 */}
       {gameState === 'idle' && (
-        <Button type="primary" className="mt-4" onClick={startGame}>Start Game</Button>
+        <Button type="primary" className="mt-4" onClick={startGame}>{t('gameUI.startGame')}</Button>
       )}
       {/* 游戏中：显示左右控制按钮 */}
       {gameState === 'playing' && (
         <div className="flex gap-4 mt-2">
-          <Button onClick={moveLeft} className="!px-6">Left</Button>
-          <Button onClick={moveRight} className="!px-6">Right</Button>
+          <Button onClick={moveLeft} className="!px-6">{t('gameUI.left')}</Button>
+          <Button onClick={moveRight} className="!px-6">{t('gameUI.right')}</Button>
         </div>
       )}
       {/* 游戏中：操作提示 */}
       {gameState === 'playing' && (
-        <Text className="!text-gray-500 !text-xs mt-2">← → Arrow keys / Left-Right buttons / Swipe to steer</Text>
+        <Text className="!text-gray-500 !text-xs mt-2">{t('gameUI.hints.speedRacer')}</Text>
       )}
       {/* 游戏结束：显示得分和重新开始按钮 */}
       {gameState === 'over' && (
         <div className="mt-4 text-center">
-          <Text className="!text-red-400 !block mb-2">Game Over! Score: {score}</Text>
-          <Button type="primary" onClick={startGame}>Restart</Button>
+          <Text className="!text-red-400 !block mb-2">{t('gameUI.gameOverScore', { score })}</Text>
+          <Button type="primary" onClick={startGame}>{t('gameUI.restart')}</Button>
         </div>
       )}
     </div>

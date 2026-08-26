@@ -97,6 +97,10 @@
   },
   "leaderboard": {
     "title": "ランキング",
+    "gameRankings": "ゲームランキング",
+    "userRankings": "ユーザーランキング",
+    "description": "GameHub ランキング - ゲームとユーザーのランキング",
+    "keywords": "ランキング, ゲームランキング, ユーザーランキング, 人気ゲーム, ベストゲーム",
     "tabs": {
       "topRated": "高評価",
       "mostReviewed": "レビュー最多",
@@ -109,7 +113,18 @@
       "rating": "評価",
       "reviewCount": "レビュー数",
       "score": "スコア",
-      "trend": "トレンド"
+      "trend": "トレンド",
+      "user": "ユーザー",
+      "level": "レベル",
+      "experience": "経験値 (XP)",
+      "points": "ポイント",
+      "achievements": "実績"
+    },
+    "userTypes": {
+      "experience": "経験値",
+      "level": "レベル",
+      "points": "ポイント",
+      "achievements": "実績"
     },
     "trends": {
       "up": "上昇",
@@ -117,6 +132,15 @@
       "stable": "安定"
     },
     "noData": "ランキングデータはありません"
+  },
+  "trending": {
+    "title": "トレンド",
+    "description": "GameHub トレンド - 人気のゲームとコンテンツを発見",
+    "keywords": "トレンド, 人気ゲーム, 人気, GameHub",
+    "rating": "評価",
+    "hot": "人気",
+    "heat": "人気",
+    "noContent": "トレンドコンテンツはありません"
   },
   "trends": {
     "title": "トレンド",

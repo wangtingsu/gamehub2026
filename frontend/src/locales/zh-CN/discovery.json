@@ -97,6 +97,10 @@
   },
   "leaderboard": {
     "title": "排行榜",
+    "gameRankings": "游戏排行",
+    "userRankings": "用户排行",
+    "description": "GameHub 排行榜 - 游戏与用户排名",
+    "keywords": "排行榜, 游戏排行, 用户排行, 热门游戏, 最佳游戏",
     "tabs": {
       "topRated": "评分最高",
       "mostReviewed": "评测最多",
@@ -109,7 +113,18 @@
       "rating": "评分",
       "reviewCount": "评测数",
       "score": "综合得分",
-      "trend": "趋势"
+      "trend": "趋势",
+      "user": "用户",
+      "level": "等级",
+      "experience": "经验值 (XP)",
+      "points": "积分",
+      "achievements": "成就"
+    },
+    "userTypes": {
+      "experience": "经验",
+      "level": "等级",
+      "points": "积分",
+      "achievements": "成就"
     },
     "trends": {
       "up": "上升",
@@ -117,6 +132,15 @@
       "stable": "持平"
     },
     "noData": "暂无排行榜数据"
+  },
+  "trending": {
+    "title": "热门趋势",
+    "description": "GameHub 热门内容 - 发现最受欢迎的游戏和内容",
+    "keywords": "热门游戏,趋势,最受欢迎,GameHub",
+    "rating": "评分",
+    "hot": "热门",
+    "heat": "热度",
+    "noContent": "暂无热门内容"
   },
   "trends": {
     "title": "趋势分析",

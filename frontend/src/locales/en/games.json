@@ -79,5 +79,287 @@
     "allGames": "All Cozy Games",
     "seoTitle": "Cozy Games | GameHub",
     "seoDescription": "Warm and soothing game recommendations"
+  },
+  "onlineGames": {
+    "title": "Online Games",
+    "subtitle": "No download, play instantly",
+    "searchPlaceholder": "Search games...",
+    "noResults": "No matching games found",
+    "noResultsHint": "Try another keyword or category",
+    "seoTitle": "Free Online Mini Games - Instant Play, No Download | GameHub",
+    "seoDescription": "GameHub offers 20+ free online mini games, including Snake, Tetris, 2048, Gomoku, Minesweeper and more classics. No download needed — play instantly in your browser, on desktop or mobile.",
+    "seoKeywords": "online games, free mini games, web games, snake, tetris, 2048, gomoku, minesweeper, HTML5 games, browser games, instant play, no download",
+    "breadcrumbHome": "Home",
+    "itemListName": "Free Online Mini Games Collection",
+    "itemListDescription": "GameHub offers 20+ free online mini games",
+    "categories": {
+      "all": "All",
+      "casual": "Casual",
+      "puzzle": "Puzzle",
+      "action": "Action",
+      "strategy": "Strategy"
+    },
+    "faq": {
+      "q1": "Do these online games need to be downloaded?",
+      "a1": "Not at all! All games run directly in your browser — click to play with no downloads or installation.",
+      "q2": "Are the online games free?",
+      "a2": "Yes, all mini games on GameHub are completely free — play everything without paying a cent.",
+      "q3": "Can I play these games on my phone?",
+      "a3": "Yes! All games are optimized for desktop and mobile browsers, so you can play anytime, anywhere.",
+      "q4": "Do I need an account to play?",
+      "a4": "No registration required — play without logging in. Registering an account lets you save progress and join community discussions."
+    },
+    "games": {
+      "snake": {
+        "name": "Snake",
+        "description": "Control a snake that keeps moving, eating food in an enclosed arena. Each piece of food makes your snake grow and speed up. As your body grows longer, your room to maneuver shrinks — plan your path precisely to avoid hitting the walls or your own tail.",
+        "instructions": "Use the arrow keys to steer, eat food to grow, and avoid hitting the walls or yourself"
+      },
+      "tetris": {
+        "name": "Tetris",
+        "description": "Seven differently-shaped pieces fall steadily from the top of the screen, and you must quickly decide the best spot for each. Line up the blocks to fill an entire row and clear it for points; clearing multiple rows at once triggers combo bonuses. As you clear rows, the fall speed increases, ramping up the tension.",
+        "instructions": "← → move, ↑ rotate, ↓ speed up, Space to drop"
+      },
+      "brick-breaker": {
+        "name": "Brick Breaker",
+        "description": "A paddle sits at the bottom of the screen while a ball bounces between the paddle and a wall of bricks. Move the paddle to catch and bounce the ball back up to smash the colorful bricks. Every brick you break scores points; clear them all to pass the level. Different colors are worth different points, and some bricks need several hits to shatter.",
+        "instructions": "Move the mouse to control the paddle and break all the bricks to clear the level"
+      },
+      "gobang": {
+        "name": "Gomoku",
+        "description": "Play Gomoku (Five in a Row) against the AI on a 15×15 board. You play black and move first; the AI plays white. Take turns placing stones on the intersections, aiming to be the first to connect five in a row horizontally, vertically, or diagonally. The AI has multiple difficulty levels and will attack while also defending against your open threes and fours.",
+        "instructions": "Click an intersection to place your stone; line up five in a row horizontally, vertically, or diagonally to win"
+      },
+      "minesweeper": {
+        "name": "Minesweeper",
+        "description": "A grid of squares hides hidden mines, and you must use the number clues to deduce which squares are safe. Each revealed number tells you how many mines are in the 8 surrounding squares. Use logic to flag the mines and reveal the safe area, until every non-mine square is uncovered.",
+        "instructions": "Left-click to reveal a cell, right-click to flag a mine; the number shows nearby mines"
+      },
+      "game2048": {
+        "name": "2048",
+        "description": "On a 4×4 board, each move slides all number tiles in one direction, merging adjacent equal numbers into their sum — 2 and 2 become 4, 4 and 4 become 8, and so on. After each move a new 2 or 4 appears in a random empty cell. Keep merging to build bigger numbers, aiming for 2048 and beyond.",
+        "instructions": "Use arrow keys or swipe to merge matching numbers until you reach 2048"
+      },
+      "memory": {
+        "name": "Memory Match",
+        "description": "Pairs of matching cards lie face-down, shuffled on the table. Flip two cards at a time — if they match, they stay face-up; if not, they flip back. Memorize each card's position and picture to find all pairs within a limited number of flips. As levels advance, more cards are added to test your memory.",
+        "instructions": "Flip cards and find matching pairs"
+      },
+      "pong": {
+        "name": "Pong",
+        "description": "The classic two-player Pong, solo — you control the left paddle, the AI controls the right. Keep the ball in play by moving to its landing spot and returning it to the opponent's side. If the ball gets past your paddle, the opponent scores. The AI plays at a fair difficulty and will send tricky angled shots to test your reflexes.",
+        "instructions": "Move the mouse to control the paddle; first to 5 points wins"
+      },
+      "tank-battle": {
+        "name": "Tank Battle",
+        "description": "Drive a yellow tank through a brick-walled maze, battling waves of red enemy tanks. The map mixes destructible brick walls with indestructible steel walls — use cover to dodge enemy fire, or shoot through bricks to open new routes. Your base (an eagle icon) sits at the bottom; if it's destroyed, the game ends. Clear every enemy tank to pass the level.",
+        "instructions": "Arrow keys/WASD to move, Space/Enter to shoot; destroy all enemy tanks while protecting your base"
+      },
+      "magic-trampoline": {
+        "name": "Magic Trampoline",
+        "description": "A little character bounces endlessly on a trampoline. Move the trampoline left and right to catch them while collecting golden stars floating in the air. As you climb higher, red spike obstacles grow more frequent — one touch sends your character flying. Bright visuals and bouncy rhythm make it easy to pick up but hard to master, perfect for a quick session.",
+        "instructions": "Use ← → to move, collect golden stars, dodge red spikes — the higher you bounce, the better the score"
+      },
+      "space-shooter": {
+        "name": "Space Shooter",
+        "description": "Pilot a starfighter against endless waves of alien ships. Your fighter fires automatically while enemies stream in from the top — grunts, fast divers, and tanky bosses. Destroying enemies drops firepower upgrades, shields, and bonus stars. As your score climbs, enemy density and bullet patterns escalate into a bullet-hell frenzy that gets your adrenaline pumping.",
+        "instructions": "Arrow keys to move; you auto-fire, collect power-ups, and dodge enemy attacks"
+      },
+      "whack-a-mole": {
+        "name": "Whack-a-Mole",
+        "description": "Nine holes line up on the table, and cute-but-sneaky moles pop up at random — whack them as fast as you can! Moles appear at unpredictable spots and times, sometimes one after another in the same hole, sometimes several at once. Occasionally a golden helmeted mole appears for bonus points. A classic arcade test of speed and reflexes.",
+        "instructions": "Tap the moles when they pop up; hit as many as you can in 30 seconds"
+      },
+      "match-three": {
+        "name": "Match-3",
+        "description": "An 8×8 board is filled with colorful gems. Swap two adjacent gems so three or more of the same color line up — they'll pop and clear, gems above fall into place, and new gems drop from the top. Matching 4 creates a striped gem (clears a whole row/column); matching 5 creates a rainbow gem (clears every gem of one color). Chain reactions trigger combos that multiply your score.",
+        "instructions": "Select a gem, then tap an adjacent gem to swap; match 3+ of the same color to clear and score"
+      },
+      "speed-racer": {
+        "name": "Speed Racer",
+        "description": "Race down a straight three-lane highway as slower cars keep appearing ahead of you. Switch lanes to weave through traffic while passing as close as possible for extra points. Speed rises with distance, going from a relaxing cruise to a full-on rush — hit a car and you're done.",
+        "instructions": "← → to switch lanes and dodge oncoming cars; it gets faster and faster"
+      },
+      "bubble-shooter": {
+        "name": "Bubble Shooter",
+        "description": "A cluster of colorful bubbles hangs from the top, and a shooter sits at the bottom. Aim at bubbles of the same color and fire to connect them — when 3 or more matching bubbles touch, they pop. A shot that doesn't form a match sticks to the cluster and pushes it downward. Once the bubbles cross the bottom warning line, you lose.",
+        "instructions": "Move the mouse to aim, click to shoot; match 3+ of the same color to pop them"
+      },
+      "sliding-puzzle": {
+        "name": "Sliding Puzzle",
+        "description": "A 4×4 board with 16 cells holds tiles numbered 1 through 15, leaving one empty space. The tiles are scrambled, and you must slide adjacent tiles into the gap to restore the numbers to their correct 1–15 order, top-to-bottom, left-to-right. Looks simple, but it's a serious test of patience and planning.",
+        "instructions": "Tap a tile to slide it into the empty space and arrange the numbers 1–15 in order"
+      },
+      "jump-adventure": {
+        "name": "Jump Adventure",
+        "description": "A small cube stands on a platform with the next one ahead. Hold to charge and release to jump, landing the cube precisely on the next platform. Gaps and platform sizes vary — some are close and need a light tap, others are far and need full power. Landing dead-center earns a perfect bonus; landing on the edge leaves you teetering; overshooting sends you into the void. Each jump is +1, and judging the distance is everything.",
+        "instructions": "Click/Space to jump, hold to charge for a longer jump, land on platforms to keep going, and avoid the gaps"
+      },
+      "archery-master": {
+        "name": "Archery Master",
+        "description": "Stand at the firing line with a circular target hanging at a set distance. Draw, aim, and release to hit the bullseye. The target is divided into 10 rings, from 1 point at the outer edge to 10 at the center — the closer to the bullseye, the higher the score. Wind shifts randomly and bends your arrow's path, so adjust your aim to the wind gauge. Each round is 10 arrows; highest total wins.",
+        "instructions": "Hold to draw, release to shoot; watch the wind and aim for the bullseye"
+      },
+      "guandan": {
+        "name": "Guandan",
+        "description": "A four-player, two-team trick-taking card game using two decks (108 cards, two jokers each). You and the AI across from you are partners; the other two AIs are your opponents. Starting from 2, the winning side levels up each round (2→3→4…→A). The card type system is rich — singles, pairs, straights, plus bombs, straight flushes, and rockets for dominance. Bombs beat normal plays, bigger bombs beat smaller ones, and the strategy of how you meld and play runs deep.",
+        "instructions": "Play in teams of two, meld by card type, first team to empty their hand wins. Supports singles, pairs, triples, triples-with-pair, straights, steel plates, bundles, bombs, straight flushes, and rockets"
+      }
+    },
+    "play": {
+      "backToGames": "Back to Games",
+      "howToPlay": "How to Play",
+      "moreGames": "More Games",
+      "gameNotFound": "Game not found",
+      "players": "{{num}} players",
+      "seoTitle": "{{name}} | GameHub Online Games",
+      "seoKeywords": "{{name}}, {{category}}, online games, mini games, GameHub online games, browser games",
+      "howToName": "How to play {{name}}"
+    }
+  },
+  "gameUI": {
+    "startGame": "Start Game",
+    "restart": "Restart",
+    "playAgain": "Play Again",
+    "nextRound": "Next Round",
+    "play": "Play",
+    "pass": "Pass",
+    "hint": "Hint",
+    "sort": "Sort",
+    "you": "You",
+    "playerLabel": "Player {{n}}",
+    "scoreLabel": "Score: {{value}}",
+    "distanceLabel": "Distance: {{value}}",
+    "heightLabel": "Height: {{value}}m",
+    "movesLabel": "Moves: {{value}}",
+    "timeLabel": "Time: {{value}}",
+    "livesLabel": "Lives: {{value}}",
+    "bestLabel": "Best: {{value}}",
+    "levelLabel": "Level: {{value}}",
+    "gameOver": "Game Over!",
+    "youWin": "You Win!",
+    "aiWins": "AI Wins!",
+    "draw": "Draw!",
+    "levelComplete": "Level Complete!",
+    "hitAMine": "Hit a mine!",
+    "gameOverScore": "Game Over! Score: {{score}}",
+    "gameOverDistance": "Game Over! Distance: {{score}}",
+    "gameOverScoreHeight": "Game Over! Score: {{score}} | Height: {{height}}m",
+    "gameOverLevelScore": "Game Over! Level {{level}}, Score: {{score}}",
+    "levelCompleteScore": "Level Complete! Score: {{score}}",
+    "hints": {
+      "brickBreaker": "Move mouse / Swipe / Arrow keys to control the paddle",
+      "bubbleShooter": "Move the mouse to aim, click or press Space to shoot",
+      "matchThree": "Click a gem to select it, then click an adjacent gem to swap",
+      "whackAMole": "Click the moles to whack them!",
+      "memory": "Click cards to flip them and find all pairs",
+      "slidingPuzzle": "Click a tile to move / Use arrow keys",
+      "minesweeper": "Left click to reveal | Right click to flag",
+      "pong": "Move mouse / swipe / arrow keys to control paddle, first to 5 wins",
+      "gobang": "Your turn, click the board to place a piece (Black goes first)",
+      "archeryMaster": "Hold to charge, release to shoot (Mouse/Touch/Space)",
+      "snake": "Arrow keys / Swipe / Virtual gamepad to move",
+      "tetris": "Keyboard: ← → ↑ ↓ Space",
+      "game2048": "Arrow keys / Swipe / Virtual D-pad",
+      "spaceShooter": "Arrow keys/WASD to move, auto-fire | Swipe / virtual buttons",
+      "speedRacer": "← → Arrow keys / Left-Right buttons / Swipe to steer",
+      "jumpAdventure": "Click / Space to jump, hold to charge and jump farther",
+      "tankBattle": "Arrow keys / WASD to move, Space / Enter to shoot | Swipe / virtual buttons",
+      "magicTrampoline": "Arrow keys/AD to move, collect stars and avoid spikes | Swipe / virtual buttons"
+    },
+    "power": "Power",
+    "wind": "Wind",
+    "combo": "Combo x{{multiplier}}",
+    "arrowsLeft": "Arrows left",
+    "bonusArrow": "Bonus arrow!",
+    "frozen": "❄️ Frozen ❄️",
+    "miss": "Miss!",
+    "guandan": {
+      "clickToDeal": "Click \"Start Game\" to deal",
+      "clickToStart": "Click \"Start Game\" to start a game of Guandan",
+      "yourTurn": "Your turn",
+      "yourTurnFree": "Your turn — free play",
+      "invalidPlay": "Invalid play",
+      "youMustPlay": "You must play",
+      "hintCards": "Hint: {{num}} card(s)",
+      "noPlayableCards": "No playable cards",
+      "handSorted": "Hand sorted",
+      "playerFinished": "Player {{n}} finished!",
+      "playerPlayed": "Player {{n}} played {{pattern}}",
+      "playerThinking": "Player {{n}} is thinking...",
+      "playerPassed": "Player {{n}} passed",
+      "roundOverLevels": "Round over! Up {{steps}} level(s) → {{level}}",
+      "roundOverContinue": "Round over, click \"Next Round\" to continue",
+      "youFinished": "You finished",
+      "finished": "✓ Finished",
+      "aiThinking": "AI is thinking...",
+      "clickCardsToPlay": "Click cards to select, then click \"Play\" to play",
+      "roundOver": "Round Over",
+      "upLevels": "Up {{steps}} level(s) → Level {{level}}",
+      "clickNextRound": "Click \"Next Round\" to continue",
+      "reasonSelectCards": "Please select cards to play",
+      "reasonNotInHand": "Selected cards are not in your hand",
+      "reasonInvalidCombo": "Invalid card combination",
+      "reasonCannotBeat": "Cannot beat the current play",
+      "patterns": {
+        "single": "Single",
+        "pair": "Pair",
+        "triple": "Triple",
+        "triple_with_pair": "Triple with Pair",
+        "straight": "Straight",
+        "pair_straight": "Pair Straight",
+        "triple_pair": "Steel Plate",
+        "triple_triple": "Triple Triple",
+        "bomb": "Bomb",
+        "straight_flush": "Straight Flush",
+        "rocket": "Rocket"
+      },
+      "rankings": {
+        "first": "1st",
+        "second": "2nd",
+        "third": "3rd",
+        "last": "Last"
+      },
+      "roles": {
+        "partner": "Partner",
+        "teammate": "Teammate",
+        "opponent": "Opponent"
+      }
+    },
+    "aiThinking": "🤔 AI is thinking...",
+    "youGoFirst": "You go first (Black)",
+    "score": "Score",
+    "best": "Best",
+    "reached2048": "You reached 2048!",
+    "continue": "Continue",
+    "congratsMoves": "Congratulations! You finished in {{moves}} moves!",
+    "youAiScore": "You: {{player}} | AI: {{ai}}",
+    "waveLabel": "Wave: {{value}}",
+    "shoot": "Shoot",
+    "difficultyLabel": "Difficulty: {{value}}",
+    "easy": "Easy",
+    "medium": "Medium",
+    "hard": "Hard",
+    "timeSecLabel": "Time: {{value}}s",
+    "frozen5s": "⚠️ Frozen 5s!",
+    "targetLabel": "Target: {{value}}",
+    "matchesLabel": "Matches: {{value}}",
+    "movesLeftLabel": "Moves left: {{value}}",
+    "totalLabel": "Total: {{value}}",
+    "levelClear": "Level {{level}} Clear! 🎉",
+    "reshuffle": "Reshuffle!",
+    "comboBang": "Combo x{{multiplier}}!",
+    "speedLabel": "Speed: {{value}}%",
+    "left": "Left",
+    "right": "Right",
+    "arrowsLabel": "Arrows: {{value}}/{{max}}",
+    "shotsLeftLabel": "Shots left: {{value}}",
+    "warningBubbles": "Warning! Bubbles are reaching the bottom!",
+    "sizeEasy": "3×3 Easy",
+    "sizeNormal": "4×4 Normal",
+    "sizeHard": "5×5 Hard",
+    "solvedInfo": "{{size}} · Time {{time}} · {{moves}} moves",
+    "cardsCount": "{{value}} cards",
+    "done": "✓ Done"
   }
 }

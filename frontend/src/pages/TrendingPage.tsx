@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Card, List, Tag, Select, Spin, Empty, Rate, Typography } from 'antd';
 import { FireOutlined, RightOutlined } from '@ant-design/icons';
 import { useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { useTrendingContent } from '../api/hooks';
 import SEO from '../components/SEO';
 
@@ -9,6 +10,7 @@ const { Title } = Typography;
 
 const TrendingPage: React.FC = () => {
   const navigate = useNavigate();
+  const { t } = useTranslation('discovery');
   const [limit] = useState<number>(20);
   const { data: trending, isLoading } = useTrendingContent(limit);
 
@@ -22,14 +24,14 @@ const TrendingPage: React.FC = () => {
   return (
     <div className=" py-2">
       <SEO
-        title="热门趋势 | GameHub"
-        description="GameHub 热门内容 - 发现最受欢迎的游戏和内容"
-        keywords="热门游戏,趋势,最受欢迎,GameHub"
+        title={t('trending.title')}
+        description={t('trending.description')}
+        keywords={t('trending.keywords')}
       />
 
       <Title level={1} className="mb-6 flex items-center !text-white">
         <FireOutlined className="mr-3 text-red-500" />
-        热门趋势
+        {t('trending.title')}
       </Title>
 
       <Card className="shadow-sm bg-dark-800 border-dark-700">
@@ -46,7 +48,7 @@ const TrendingPage: React.FC = () => {
                   <div className="flex items-center space-x-4">
                     <div className="text-right">
                       <div className="text-sm font-semibold text-white">{item.rating || '-'}</div>
-                      <div className="text-xs text-gray-400">评分</div>
+                      <div className="text-xs text-gray-400">{t('trending.rating')}</div>
                     </div>
                     <RightOutlined className="text-gray-300" />
                   </div>
@@ -76,11 +78,11 @@ const TrendingPage: React.FC = () => {
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center space-x-2">
                       <h4 className="font-semibold truncate text-white">{item.title}</h4>
-                      <Tag color="red" className="flex-shrink-0 text-xs">HOT</Tag>
+                      <Tag color="red" className="flex-shrink-0 text-xs">{t('trending.hot')}</Tag>
                     </div>
                     <div className="flex items-center space-x-2 mt-1">
-                      <span className="text-xs text-gray-400">{item.reason}</span>
-                      {item.likes && <span className="text-xs text-gray-400">· {item.likes} 热度</span>}
+                      <span className="text-xs text-gray-400">{t('trending.title')}</span>
+                      {item.likes && <span className="text-xs text-gray-400">· {item.likes} {t('trending.heat')}</span>}
                     </div>
                     {item.rating && (
                       <div className="mt-1">
@@ -93,7 +95,7 @@ const TrendingPage: React.FC = () => {
             )}
           />
         ) : (
-          <Empty description="暂无热门内容" className="py-20" />
+          <Empty description={t('trending.noContent')} className="py-20" />
         )}
       </Card>
     </div>

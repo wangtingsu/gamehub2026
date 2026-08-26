@@ -79,5 +79,287 @@
     "allGames": "Todos los Juegos Acogedores",
     "seoTitle": "Juegos Acogedores | GameHub",
     "seoDescription": "Recomendaciones de juegos cálidos y relajantes"
+  },
+  "onlineGames": {
+    "title": "Juegos en Línea",
+    "subtitle": "Sin descargas, juega al instante",
+    "searchPlaceholder": "Buscar juegos...",
+    "noResults": "No se encontraron juegos coincidentes",
+    "noResultsHint": "Prueba con otra palabra clave o categoría",
+    "seoTitle": "Mini Juegos Gratis en Línea - Juego Inmediato, Sin Descarga | GameHub",
+    "seoDescription": "GameHub ofrece más de 20 mini juegos gratis en línea, incluyendo Snake, Tetris, 2048, Gomoku, Buscaminas y más clásicos. Sin descargas — juega al instante en tu navegador, en escritorio o móvil.",
+    "seoKeywords": "juegos en línea, mini juegos gratis, juegos web, snake, tetris, 2048, gomoku, buscaminas, juegos HTML5, juegos de navegador, juego inmediato, sin descarga",
+    "breadcrumbHome": "Inicio",
+    "itemListName": "Colección de Mini Juegos Gratis en Línea",
+    "itemListDescription": "GameHub ofrece más de 20 mini juegos gratis en línea",
+    "categories": {
+      "all": "Todos",
+      "casual": "Casual",
+      "puzzle": "Puzle",
+      "action": "Acción",
+      "strategy": "Estrategia"
+    },
+    "faq": {
+      "q1": "¿Estos juegos en línea necesitan descargarse?",
+      "a1": "¡Para nada! Todos los juegos se ejecutan directamente en tu navegador — haz clic y juega sin descargas ni instalación.",
+      "q2": "¿Los juegos en línea son gratis?",
+      "a2": "Sí, todos los mini juegos de GameHub son completamente gratis — juega todo sin pagar un centavo.",
+      "q3": "¿Puedo jugar a estos juegos en mi teléfono?",
+      "a3": "¡Sí! Todos los juegos están optimizados para navegadores de escritorio y móvil, así que puedes jugar en cualquier momento y lugar.",
+      "q4": "¿Necesito una cuenta para jugar?",
+      "a4": "No es necesario registrarse — juega sin iniciar sesión. Registrar una cuenta te permite guardar tu progreso y unirte a las discusiones de la comunidad."
+    },
+    "games": {
+      "snake": {
+        "name": "Serpiente",
+        "description": "Controla una serpiente que no deja de moverse, comiendo comida en una arena cerrada. Cada pieza de comida hace que tu serpiente crezca y acelere. A medida que tu cuerpo crece, tu espacio de maniobra se reduce — planifica tu camino con precisión para evitar chocar contra las paredes o contra tu propia cola.",
+        "instructions": "Usa las flechas para dirigir, come comida para crecer y evita chocar contra las paredes o contra ti mismo"
+      },
+      "tetris": {
+        "name": "Tetris",
+        "description": "Siete piezas de formas diferentes caen sin parar desde la parte superior de la pantalla, y debes decidir rápidamente el mejor lugar para cada una. Alinea los bloques para llenar una fila completa y límpiala para sumar puntos; limpiar varias filas a la vez activa bonos por combo. A medida que limpias filas, la velocidad de caída aumenta, subiendo la tensión.",
+        "instructions": "← → mover, ↑ rotar, ↓ acelerar, Espacio para soltar"
+      },
+      "brick-breaker": {
+        "name": "Romper Ladrillos",
+        "description": "Una paleta se sitúa en la parte inferior de la pantalla mientras una pelota rebota entre la paleta y una pared de ladrillos. Mueve la paleta para atrapar y devolver la pelota y romper los coloridos ladrillos. Cada ladrillo que rompes suma puntos; límpialos todos para pasar de nivel. Los distintos colores valen puntos diferentes, y algunos ladrillos necesitan varios golpes para romperse.",
+        "instructions": "Mueve el ratón para controlar la paleta y rompe todos los ladrillos para pasar de nivel"
+      },
+      "gobang": {
+        "name": "Gomoku",
+        "description": "Juega al Gomoku (cinco en línea) contra la IA en un tablero de 15×15. Tú juegas con las negras y mueves primero; la IA juega con las blancas. Coloquen piedras por turnos en las intersecciones, con el objetivo de ser el primero en conectar cinco en línea horizontal, vertical o diagonal. La IA tiene varios niveles de dificultad y atacará mientras también defiende contra tus tres y cuatro abiertos.",
+        "instructions": "Haz clic en una intersección para colocar tu piedra; alinea cinco en línea horizontal, vertical o diagonal para ganar"
+      },
+      "minesweeper": {
+        "name": "Buscaminas",
+        "description": "Una cuadrícula de casillas esconde minas, y debes usar las pistas numéricas para deducir qué casillas son seguras. Cada número revelado te dice cuántas minas hay en las 8 casillas circundantes. Usa la lógica para marcar las minas y revelar la zona segura, hasta descubrir todas las casillas sin mina.",
+        "instructions": "Clic izquierdo para revelar una casilla, clic derecho para marcar una mina; el número indica las minas cercanas"
+      },
+      "game2048": {
+        "name": "2048",
+        "description": "En un tablero de 4×4, cada movimiento desliza todas las fichas numéricas en una dirección, fusionando números iguales adyacentes en su suma — 2 y 2 se convierten en 4, 4 y 4 en 8, y así sucesivamente. Después de cada movimiento aparece un nuevo 2 o 4 en una celda vacía aleatoria. Sigue fusionando para construir números más grandes, apuntando a 2048 y más allá.",
+        "instructions": "Usa las flechas o desliza para fusionar números iguales hasta llegar a 2048"
+      },
+      "memory": {
+        "name": "Memoria",
+        "description": "Pares de cartas iguales yacen boca abajo, barajadas sobre la mesa. Voltea dos cartas a la vez — si coinciden, quedan boca arriba; si no, se voltean de nuevo. Memoriza la posición y la imagen de cada carta para encontrar todas las parejas en un número limitado de giros. A medida que avanzas de nivel, se añaden más cartas para poner a prueba tu memoria.",
+        "instructions": "Voltea cartas y encuentra las parejas"
+      },
+      "pong": {
+        "name": "Pong",
+        "description": "El clásico Pong de dos jugadores, en solitario — tú controlas la paleta izquierda y la IA controla la derecha. Mantén la pelota en juego moviéndote a su punto de aterrizaje y devolviéndola al lado del oponente. Si la pelota pasa tu paleta, el oponente anota. La IA juega con una dificultad justa y enviará tiros en ángulo difíciles para poner a prueba tus reflejos.",
+        "instructions": "Mueve el ratón para controlar la paleta; gana el primero en llegar a 5 puntos"
+      },
+      "tank-battle": {
+        "name": "Batalla de Tanques",
+        "description": "Conduce un tanque amarillo por un laberinto de paredes de ladrillo, luchando contra oleadas de tanques enemigos rojos. El mapa mezcla paredes de ladrillo destructibles con paredes de acero indestructibles — usa cobertura para esquivar el fuego enemigo, o dispara a través de los ladrillos para abrir nuevas rutas. Tu base (un icono de águila) está abajo; si se destruye, el juego termina. Elimina todos los tanques enemigos para pasar de nivel.",
+        "instructions": "Flechas / WASD para moverte, Espacio / Enter para disparar; destruye todos los tanques enemigos protegiendo tu base"
+      },
+      "magic-trampoline": {
+        "name": "Trampolín Mágico",
+        "description": "Un pequeño personaje rebota sin parar en una cama elástica. Mueve la cama elástica a izquierda y derecha para atraparlo mientras recolectas estrellas doradas flotando en el aire. A medida que subes, los obstáculos de púas rojas son más frecuentes — un toque lanza a tu personaje por los aires. Visuales brillantes y ritmo saltarín lo hacen fácil de empezar pero difícil de dominar, perfecto para una sesión rápida.",
+        "instructions": "Usa ← → para moverte, recolecta estrellas doradas y esquiva las púas rojas — cuanto más alto rebotes, mejor puntuación"
+      },
+      "space-shooter": {
+        "name": "Disparos Espaciales",
+        "description": "Pilota un caza estelar contra oleadas interminables de naves alienígenas. Tu caza dispara automáticamente mientras los enemigos entran desde arriba — soldados rasos, buceadores rápidos y jefes resistentes. Destruir enemigos suelta mejoras de potencia de fuego, escudos y estrellas de bonificación. A medida que sube tu puntuación, la densidad enemiga y los patrones de balas escalan hasta un frenesí de infierno de balas que te dispara la adrenalina.",
+        "instructions": "Flechas para moverte; disparas automáticamente, recoge mejoras y esquiva los ataques enemigos"
+      },
+      "whack-a-mole": {
+        "name": "Golpea al Topo",
+        "description": "Nueve agujeros se alinean sobre la mesa, y topos monísimos pero astutos asoman la cabeza al azar — ¡golpéalos lo más rápido que puedas! Los topos aparecen en puntos y momentos impredecibles, a veces uno tras otro en el mismo agujero, a veces varios a la vez. De vez en cuando aparece un topo con casco dorado que da puntos de bonificación. Una clásica prueba arcade de velocidad y reflejos.",
+        "instructions": "Toca los topos cuando asomen; golpea tantos como puedas en 30 segundos"
+      },
+      "match-three": {
+        "name": "Match-3",
+        "description": "Un tablero de 8×8 se llena de gemas coloridas. Intercambia dos gemas adyacentes para que tres o más del mismo color se alineen — explotarán y se limpiarán, las gemas de arriba caen a su lugar y nuevas gemas bajan desde arriba. Igualar 4 crea una gema rayada (limpia una fila/columna entera); igualar 5 crea una gema arcoíris (limpia todas las gemas de un color). Las reacciones en cadena activan combos que multiplican tu puntuación.",
+        "instructions": "Selecciona una gema y toca una adyacente para intercambiarlas; junta 3+ del mismo color para limpiar y sumar"
+      },
+      "speed-racer": {
+        "name": "Carreras",
+        "description": "Corre por una autopista recta de tres carriles mientras aparecen coches más lentos delante de ti. Cambia de carril para sortear el tráfico pasando lo más cerca posible para ganar puntos extra. La velocidad sube con la distancia, pasando de un crucero relajante a una carrera total — choca con un coche y se acabó.",
+        "instructions": "← → para cambiar de carril y esquivar los coches; cada vez es más rápido"
+      },
+      "bubble-shooter": {
+        "name": "Disparos de Burbujas",
+        "description": "Un racimo de burbujas coloridas cuelga de arriba, y un lanzador está abajo. Apunta a burbujas del mismo color y dispara para conectarlas — cuando 3 o más burbujas iguales se tocan, explotan. Un disparo que no forma una coincidencia se pega al racimo y lo empuja hacia abajo. Una vez que las burbujas cruzan la línea de advertencia inferior, pierdes.",
+        "instructions": "Mueve el ratón para apuntar, haz clic para disparar; junta 3+ del mismo color para reventarlas"
+      },
+      "sliding-puzzle": {
+        "name": "Rompecabezas Deslizante",
+        "description": "Un tablero de 4×4 con 16 celdas contiene fichas numeradas del 1 al 15, dejando un espacio vacío. Las fichas están desordenadas, y debes deslizar las fichas adyacentes al hueco para restaurar los números a su orden correcto 1–15, de arriba a abajo y de izquierda a derecha. Parece simple, pero es una seria prueba de paciencia y planificación.",
+        "instructions": "Toca una ficha para deslizarla al hueco y ordena los números 1–15"
+      },
+      "jump-adventure": {
+        "name": "Aventura de Saltos",
+        "description": "Un pequeño cubo está sobre una plataforma con la siguiente delante. Mantén pulsado para cargar y suelta para saltar, aterrizando el cubo con precisión en la siguiente plataforma. Los huecos y tamaños de plataforma varían — algunos están cerca y necesitan un toque ligero, otros están lejos y necesitan toda la potencia. Aterrizar en el centro exacto otorga un bono perfecto; aterrizar en el borde te deja tambaleándote; pasarte de largo te lanza al vacío. Cada salto es +1, y juzgar la distancia lo es todo.",
+        "instructions": "Clic / Espacio para saltar, mantén para cargar un salto más largo, aterriza en las plataformas y evita los huecos"
+      },
+      "archery-master": {
+        "name": "Maestro del Arco",
+        "description": "Ponte en la línea de tiro con una diana circular colgando a una distancia fija. Tensa, apunta y suelta para dar en el centro. La diana se divide en 10 anillos, de 1 punto en el borde exterior a 10 en el centro — cuanto más cerca del centro, mayor la puntuación. El viento cambia aleatoriamente y curva la trayectoria de tu flecha, así que ajusta tu puntería al indicador de viento. Cada ronda son 10 flechas; gana el total más alto.",
+        "instructions": "Mantén para tensar, suelta para disparar; observa el viento y apunta a la diana"
+      },
+      "guandan": {
+        "name": "Guandan",
+        "description": "Un juego de cartas de bazas para cuatro jugadores en dos equipos, con dos barajas (108 cartas, dos comodines cada una). Tú y la IA frente a ti sois pareja; las otras dos IA son tus oponentes. Empezando desde el 2, el bando ganador sube de nivel cada ronda (2→3→4…→A). El sistema de tipos de cartas es rico — cartas sueltas, parejas, escaleras, más bombas, escaleras de color y cohetes para dominar. Las bombas ganan a las jugadas normales, las bombas más grandes ganan a las más pequeñas, y la estrategia de cómo combinas y juegas es muy profunda.",
+        "instructions": "Juega en equipos de dos, combina por tipo de carta; gana el primer equipo en quedarse sin cartas. Admite simples, parejas, tríos, tríos con pareja, escaleras, planchas de acero, escaleras de parejas, bombas, escaleras de color y cohetes"
+      }
+    },
+    "play": {
+      "backToGames": "Volver a los juegos",
+      "howToPlay": "Cómo jugar",
+      "moreGames": "Más juegos",
+      "gameNotFound": "Juego no encontrado",
+      "players": "{{num}} jugadores",
+      "seoTitle": "{{name}} | Juegos en línea de GameHub",
+      "seoKeywords": "{{name}}, {{category}}, juegos en línea, mini juegos, juegos en línea de GameHub, juegos de navegador",
+      "howToName": "Cómo jugar a {{name}}"
+    }
+  },
+  "gameUI": {
+    "startGame": "Empezar",
+    "restart": "Reiniciar",
+    "playAgain": "Jugar de nuevo",
+    "nextRound": "Siguiente ronda",
+    "play": "Jugar",
+    "pass": "Pasar",
+    "hint": "Pista",
+    "sort": "Ordenar",
+    "you": "Tú",
+    "playerLabel": "Jugador {{n}}",
+    "scoreLabel": "Puntuación: {{value}}",
+    "distanceLabel": "Distancia: {{value}}",
+    "heightLabel": "Altura: {{value}}m",
+    "movesLabel": "Movimientos: {{value}}",
+    "timeLabel": "Tiempo: {{value}}",
+    "livesLabel": "Vidas: {{value}}",
+    "bestLabel": "Récord: {{value}}",
+    "levelLabel": "Nivel: {{value}}",
+    "gameOver": "¡Fin del juego!",
+    "youWin": "¡Has ganado!",
+    "aiWins": "¡Gana la IA!",
+    "draw": "¡Empate!",
+    "levelComplete": "¡Nivel completado!",
+    "hitAMine": "¡Has pisado una mina!",
+    "gameOverScore": "¡Fin del juego! Puntuación: {{score}}",
+    "gameOverDistance": "¡Fin del juego! Distancia: {{score}}",
+    "gameOverScoreHeight": "¡Fin del juego! Puntuación: {{score}} | Altura: {{height}}m",
+    "gameOverLevelScore": "¡Fin del juego! Nivel {{level}}, Puntuación: {{score}}",
+    "levelCompleteScore": "¡Nivel completado! Puntuación: {{score}}",
+    "hints": {
+      "brickBreaker": "Mueve el ratón / desliza / usa las flechas para controlar la paleta",
+      "bubbleShooter": "Mueve el ratón para apuntar, haz clic o pulsa Espacio para disparar",
+      "matchThree": "Haz clic en una gema para seleccionarla y luego en una adyacente para intercambiarlas",
+      "whackAMole": "¡Haz clic en los topos para golpearlos!",
+      "memory": "Haz clic en las cartas para voltearlas y encuentra todas las parejas",
+      "slidingPuzzle": "Haz clic en una ficha para moverla / Usa las flechas",
+      "minesweeper": "Clic izquierdo para revelar | Clic derecho para marcar",
+      "pong": "Mueve el ratón / desliza / usa las flechas para controlar la paleta; gana el primero en 5 puntos",
+      "gobang": "Tu turno, haz clic en el tablero para colocar una ficha (las negras empiezan)",
+      "archeryMaster": "Mantén para cargar, suelta para disparar (Ratón/Táctil/Espacio)",
+      "snake": "Flechas / Desliza / Botones virtuales para moverte",
+      "tetris": "Teclado: ← → ↑ ↓ Espacio",
+      "game2048": "Flechas / Desliza / D-pad virtual",
+      "spaceShooter": "Flechas/WASD para moverte, disparo automático | Desliza / botones virtuales",
+      "speedRacer": "← → Flechas / Botones izquierda-derecha / Desliza para girar",
+      "jumpAdventure": "Haz clic / Espacio para saltar, mantén para cargar y saltar más lejos",
+      "tankBattle": "Flechas / WASD para moverte, Espacio / Enter para disparar | Desliza / botones virtuales",
+      "magicTrampoline": "Flechas/AD para moverte, recoge estrellas y esquiva pinchos | Desliza / botones virtuales"
+    },
+    "power": "Fuerza",
+    "wind": "Viento",
+    "combo": "Combo x{{multiplier}}",
+    "arrowsLeft": "Flechas restantes",
+    "bonusArrow": "¡Flecha extra!",
+    "frozen": "❄️ Congelado ❄️",
+    "miss": "¡Fallo!",
+    "guandan": {
+      "clickToDeal": "Haz clic en \"Empezar\" para repartir",
+      "clickToStart": "Haz clic en \"Empezar\" para comenzar una partida de Guandan",
+      "yourTurn": "Tu turno",
+      "yourTurnFree": "Tu turno — juego libre",
+      "invalidPlay": "Jugada inválida",
+      "youMustPlay": "Debes jugar",
+      "hintCards": "Pista: {{num}} carta(s)",
+      "noPlayableCards": "No hay cartas jugables",
+      "handSorted": "Mano ordenada",
+      "playerFinished": "¡El jugador {{n}} terminó!",
+      "playerPlayed": "El jugador {{n}} jugó {{pattern}}",
+      "playerThinking": "El jugador {{n}} está pensando...",
+      "playerPassed": "El jugador {{n}} pasó",
+      "roundOverLevels": "¡Ronda terminada! Sube {{steps}} nivel(es) → {{level}}",
+      "roundOverContinue": "Ronda terminada, haz clic en \"Siguiente ronda\" para continuar",
+      "youFinished": "Terminaste",
+      "finished": "✓ Terminado",
+      "aiThinking": "La IA está pensando...",
+      "clickCardsToPlay": "Haz clic en las cartas para seleccionarlas y luego en \"Jugar\"",
+      "roundOver": "Ronda terminada",
+      "upLevels": "Sube {{steps}} nivel(es) → Nivel {{level}}",
+      "clickNextRound": "Haz clic en \"Siguiente ronda\" para continuar",
+      "reasonSelectCards": "Selecciona cartas para jugar",
+      "reasonNotInHand": "Las cartas seleccionadas no están en tu mano",
+      "reasonInvalidCombo": "Combinación de cartas inválida",
+      "reasonCannotBeat": "No puedes superar la jugada actual",
+      "patterns": {
+        "single": "Simple",
+        "pair": "Pareja",
+        "triple": "Trío",
+        "triple_with_pair": "Trío con pareja",
+        "straight": "Escalera",
+        "pair_straight": "Escalera de parejas",
+        "triple_pair": "Plancha de acero",
+        "triple_triple": "Trío doble",
+        "bomb": "Bomba",
+        "straight_flush": "Escalera de color",
+        "rocket": "Cohete"
+      },
+      "rankings": {
+        "first": "1º",
+        "second": "2º",
+        "third": "3º",
+        "last": "Último"
+      },
+      "roles": {
+        "partner": "Pareja",
+        "teammate": "Compañero",
+        "opponent": "Oponente"
+      }
+    },
+    "aiThinking": "🤔 La IA está pensando...",
+    "youGoFirst": "Empiezas tú (Negras)",
+    "score": "Puntuación",
+    "best": "Récord",
+    "reached2048": "¡Has llegado a 2048!",
+    "continue": "Continuar",
+    "congratsMoves": "¡Enhorabuena! ¡Lo terminaste en {{moves}} movimientos!",
+    "youAiScore": "Tú: {{player}} | IA: {{ai}}",
+    "waveLabel": "Oleada: {{value}}",
+    "shoot": "Disparar",
+    "difficultyLabel": "Dificultad: {{value}}",
+    "easy": "Fácil",
+    "medium": "Normal",
+    "hard": "Difícil",
+    "timeSecLabel": "Tiempo: {{value}}s",
+    "frozen5s": "⚠️ ¡Congelado 5s!",
+    "targetLabel": "Objetivo: {{value}}",
+    "matchesLabel": "Eliminaciones: {{value}}",
+    "movesLeftLabel": "Movimientos restantes: {{value}}",
+    "totalLabel": "Total: {{value}}",
+    "levelClear": "¡Nivel {{level}} superado! 🎉",
+    "reshuffle": "¡Reorganizar!",
+    "comboBang": "¡Combo x{{multiplier}}!",
+    "speedLabel": "Velocidad: {{value}}%",
+    "left": "Izquierda",
+    "right": "Derecha",
+    "arrowsLabel": "Flechas: {{value}}/{{max}}",
+    "shotsLeftLabel": "Disparos restantes: {{value}}",
+    "warningBubbles": "¡Aviso! ¡Las burbujas están llegando al fondo!",
+    "sizeEasy": "3×3 Fácil",
+    "sizeNormal": "4×4 Normal",
+    "sizeHard": "5×5 Difícil",
+    "solvedInfo": "{{size}} · Tiempo {{time}} · {{moves}} movimientos",
+    "cardsCount": "{{value}} cartas",
+    "done": "✓ Hecho"
   }
 }

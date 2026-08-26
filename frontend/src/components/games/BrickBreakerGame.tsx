@@ -9,6 +9,7 @@
  */
 
 import { useEffect, useRef, useState, useCallback } from 'react';
+import { useTranslation } from 'react-i18next';
 import VirtualGamepad from './VirtualGamepad';
 import { Button, Typography } from 'antd';
 
@@ -53,6 +54,7 @@ const BRICK_TOP = 40;
  * 使用 Canvas 实现经典打砖块游戏，包含碰撞检测、得分和过关机制
  */
 const BrickBreakerGame: React.FC<GameProps> = ({ onScoreChange, onGameOver, onGameStart }) => {
+  const { t } = useTranslation('games');
   /** Canvas 引用 */
   const canvasRef = useRef<HTMLCanvasElement>(null);
   /** 当前得分 */
@@ -288,26 +290,26 @@ const BrickBreakerGame: React.FC<GameProps> = ({ onScoreChange, onGameOver, onGa
   return (
     <div className="flex flex-col items-center">
       <div className="flex items-center justify-between w-full max-w-[480px] mb-3">
-        <Title level={4} className="!text-white !mb-0">Brick Breaker</Title>
-        <Text className="!text-gray-400">Score: {score}</Text>
+        <Title level={4} className="!text-white !mb-0">{t('onlineGames.games.brick-breaker.name')}</Title>
+        <Text className="!text-gray-400">{t('gameUI.scoreLabel', { value: score })}</Text>
       </div>
       <canvas ref={canvasRef} width={W} height={H} className="rounded-lg border border-dark-600" />
-      {gameState === 'idle' && <Button type="primary" className="mt-4" onClick={startGame}>Start Game</Button>}
+      {gameState === 'idle' && <Button type="primary" className="mt-4" onClick={startGame}>{t('gameUI.startGame')}</Button>}
       {gameState === 'over' && (
         <div className="mt-4 text-center">
-          <Text className="!text-red-400 !block mb-2">Game Over! Score: {score}</Text>
-          <Button type="primary" onClick={startGame}>Restart</Button>
+          <Text className="!text-red-400 !block mb-2">{t('gameUI.gameOverScore', { score })}</Text>
+          <Button type="primary" onClick={startGame}>{t('gameUI.restart')}</Button>
         </div>
       )}
       {gameState === 'win' && (
         <div className="mt-4 text-center">
-          <Text className="!text-green-400 !block mb-2">Level Complete! Score: {score}</Text>
-          <Button type="primary" onClick={startGame}>Play Again</Button>
+          <Text className="!text-green-400 !block mb-2">{t('gameUI.levelCompleteScore', { score })}</Text>
+          <Button type="primary" onClick={startGame}>{t('gameUI.playAgain')}</Button>
         </div>
       )}
       {gameState === 'playing' && (
         <>
-          <Text className="!text-gray-500 !text-xs mt-2">Move mouse / Swipe / Arrow keys to control the paddle</Text>
+          <Text className="!text-gray-500 !text-xs mt-2">{t('gameUI.hints.brickBreaker')}</Text>
           <VirtualGamepad
             directions={{
               left: movePaddleLeft,

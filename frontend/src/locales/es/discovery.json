@@ -97,6 +97,10 @@
   },
   "leaderboard": {
     "title": "Clasificación",
+    "gameRankings": "Ranking de juegos",
+    "userRankings": "Ranking de usuarios",
+    "description": "Clasificación de GameHub - Ranking de juegos y usuarios",
+    "keywords": "clasificación, ranking de juegos, ranking de usuarios, juegos populares, mejores juegos",
     "tabs": {
       "topRated": "Mejor valorados",
       "mostReviewed": "Más reseñados",
@@ -109,7 +113,18 @@
       "rating": "Valoración",
       "reviewCount": "Reseñas",
       "score": "Puntuación",
-      "trend": "Tendencia"
+      "trend": "Tendencia",
+      "user": "Usuario",
+      "level": "Nivel",
+      "experience": "Experiencia (XP)",
+      "points": "Puntos",
+      "achievements": "Logros"
+    },
+    "userTypes": {
+      "experience": "Experiencia",
+      "level": "Nivel",
+      "points": "Puntos",
+      "achievements": "Logros"
     },
     "trends": {
       "up": "Subiendo",
@@ -117,6 +132,15 @@
       "stable": "Estable"
     },
     "noData": "No hay datos de clasificación"
+  },
+  "trending": {
+    "title": "Tendencias",
+    "description": "Tendencias de GameHub - Descubre los juegos y contenidos más populares",
+    "keywords": "juegos de tendencia, juegos populares, populares, GameHub",
+    "rating": "Valoración",
+    "hot": "Popular",
+    "heat": "popularidad",
+    "noContent": "No hay contenido de tendencia"
   },
   "trends": {
     "title": "Tendencias",

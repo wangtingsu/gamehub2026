@@ -9,6 +9,7 @@
  */
 
 import { useEffect, useRef, useState, useCallback } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Button, Typography } from 'antd';
 
 const { Title, Text } = Typography;
@@ -36,6 +37,7 @@ const PADDING = 24;
  * 玩家 vs AI，使用 Canvas 绘制棋盘和棋子，AI 使用启发式评分算法
  */
 const GobangGame: React.FC<GameProps> = ({ onScoreChange, onGameOver, onGameStart }) => {
+  const { t } = useTranslation('games');
   /** Canvas 引用 */
   const canvasRef = useRef<HTMLCanvasElement>(null);
   /** 游戏状态：空闲 / 进行中 / 结束 */
@@ -362,8 +364,8 @@ const GobangGame: React.FC<GameProps> = ({ onScoreChange, onGameOver, onGameStar
   return (
     <div className="flex flex-col items-center">
       <div className="flex items-center justify-between w-full max-w-[480px] mb-3">
-        <Title level={4} className="!text-white !mb-0">Gobang</Title>
-        <Text className="!text-gray-400">You go first (Black)</Text>
+        <Title level={4} className="!text-white !mb-0">{t('onlineGames.games.gobang.name')}</Title>
+        <Text className="!text-gray-400">{t('gameUI.youGoFirst')}</Text>
       </div>
       <canvas
         ref={canvasRef}
@@ -378,19 +380,19 @@ const GobangGame: React.FC<GameProps> = ({ onScoreChange, onGameOver, onGameStar
         className="rounded-lg cursor-pointer border border-dark-600"
         style={{ cursor: gameState === 'playing' ? 'pointer' : 'default' }}
       />
-      {gameState === 'idle' && <Button type="primary" className="mt-4" onClick={startGame}>Start Game</Button>}
+      {gameState === 'idle' && <Button type="primary" className="mt-4" onClick={startGame}>{t('gameUI.startGame')}</Button>}
       {gameState === 'over' && (
         <div className="mt-4 text-center">
           <Text className={`!block mb-2 ${winner === 'player' ? '!text-green-400' : '!text-red-400'}`}>
-            {winner === 'player' ? 'You Win!' : winner === 'ai' ? 'AI Wins!' : 'Draw!'}
+            {winner === 'player' ? t('gameUI.youWin') : winner === 'ai' ? t('gameUI.aiWins') : t('gameUI.draw')}
           </Text>
-          <Button type="primary" onClick={startGame}>Restart</Button>
+          <Button type="primary" onClick={startGame}>{t('gameUI.restart')}</Button>
         </div>
       )}
       {gameState === 'playing' && (
         aiThinking.current
-          ? <Text className="!text-yellow-400 !text-xs mt-2">🤔 AI is thinking...</Text>
-          : <Text className="!text-gray-500 !text-xs mt-2">Your turn, click the board to place a piece (Black goes first)</Text>
+          ? <Text className="!text-yellow-400 !text-xs mt-2">{t('gameUI.aiThinking')}</Text>
+          : <Text className="!text-gray-500 !text-xs mt-2">{t('gameUI.hints.gobang')}</Text>
       )}
     </div>
   );
