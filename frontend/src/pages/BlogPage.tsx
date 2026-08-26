@@ -66,12 +66,12 @@ const BlogPage = () => {
       <div className="py-2 max-w-[1600px] mx-auto px-2 sm:px-4">
         {/* 标题 */}
         <Title level={1} className="!text-white !text-2xl md:!text-3xl !mb-2">{t('blog.title', 'GameHub Blog – News, Guides & More')}</Title>
-        <Paragraph className="!text-gray-400 !mb-6">Guides, reviews, and news — all on the GameHub Blog</Paragraph>
+        <Paragraph className="!text-gray-400 !mb-6">{t('blog.tagline')}</Paragraph>
 
         {/* ====== Editor's Picks ====== */}
         {mainPick && (
           <section className="mb-6">
-            <Title level={2} className="!text-white !text-xl !mb-6">Editor's Picks</Title>
+            <Title level={2} className="!text-white !text-xl !mb-6">{t('blog.editorsPicks')}</Title>
             <div className="flex flex-col lg:flex-row gap-4">
               {/* 主推荐文章（大卡） */}
               <Link to={`/${lang}/blog/${mainPick.id}`} className="lg:w-1/2 no-underline group block">
@@ -83,7 +83,7 @@ const BlogPage = () => {
                       <div className="w-full h-full bg-gradient-to-br from-blue-900 to-purple-900 flex items-center justify-center text-6xl">📰</div>
                     )}
                     <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-4">
-                      <Tag color="blue" className="mb-2">{mainPick.category || 'Blog'}</Tag>
+                      <Tag color="blue" className="mb-2">{mainPick.category || t('blog.categoryBlog')}</Tag>
                     </div>
                   </div>
                   <div className="p-5">
@@ -93,7 +93,7 @@ const BlogPage = () => {
                     <Paragraph className="!text-gray-400 !text-sm line-clamp-2 !mb-3">{mainPick.excerpt || ''}</Paragraph>
                     <div className="flex items-center gap-3">
                       <Avatar size={24} icon={<UserOutlined />} className="bg-blue-600" />
-                      <span className="text-gray-400 text-xs">{mainPick.authorName || mainPick.author || 'Anonymous'}</span>
+                      <span className="text-gray-400 text-xs">{mainPick.authorName || mainPick.author || t('blog.anonymous')}</span>
                       <span className="text-gray-600 text-xs"><CalendarOutlined className="mr-1" />{fmt(mainPick.publishedAt||mainPick.publishDate)}</span>
                     </div>
                   </div>
@@ -109,10 +109,10 @@ const BlogPage = () => {
                         {a.coverImageUrl ? <img src={a.coverImageUrl} alt="" className="w-full h-full object-cover" loading="lazy" /> : <div className="w-full h-full flex items-center justify-center text-xl">📄</div>}
                       </div>
                       <div className="flex-1 p-3 min-w-0">
-                        <Tag color="blue" className="text-[10px] mb-1">{a.category || 'Blog'}</Tag>
+                        <Tag color="blue" className="text-[10px] mb-1">{a.category || t('blog.categoryBlog')}</Tag>
                         <h4 className="text-white text-sm font-medium line-clamp-2 group-hover:text-blue-400 mb-1">{a.title}</h4>
                         <div className="flex items-center gap-2 text-xs text-gray-600">
-                          <span className="truncate">{a.authorName || a.author || 'Anonymous'}</span>
+                          <span className="truncate">{a.authorName || a.author || t('blog.anonymous')}</span>
                           <span className="ml-auto flex-shrink-0">{fmt(a.publishedAt||a.publishDate)}</span>
                         </div>
                       </div>
@@ -130,7 +130,7 @@ const BlogPage = () => {
             <div className="flex items-center justify-between mb-4">
               <Title level={3} className="!text-white !text-lg !mb-0">{s.name}</Title>
               <Link to={`/${lang}/blog/space/${s.slug}`} className="text-blue-400 text-sm hover:text-blue-300 flex items-center gap-1">
-                More <RightOutlined />
+                {t('blog.more')} <RightOutlined />
               </Link>
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
@@ -158,7 +158,7 @@ const BlogPage = () => {
         {/* ====== Latest Updates ====== */}
         {latest.length > 0 && (
           <section>
-            <Title level={2} className="!text-white !text-xl !mb-6">Latest Updates</Title>
+            <Title level={2} className="!text-white !text-xl !mb-6">{t('blog.latestUpdates')}</Title>
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-3">
               {latest.slice((latestPage-1)*PAGE_SIZE, latestPage*PAGE_SIZE).map(a => (
                 <Link key={a.id} to={`/${lang}/blog/${a.id}`} className="no-underline group block">
@@ -171,10 +171,10 @@ const BlogPage = () => {
                       )}
                     </div>
                     <div className="flex-1 min-w-0">
-                      <Tag color="blue" className="text-[10px] mb-1">{a.category || 'Blog'}</Tag>
+                      <Tag color="blue" className="text-[10px] mb-1">{a.category || t('blog.categoryBlog')}</Tag>
                       <h4 className="text-white text-sm font-medium line-clamp-2 group-hover:text-blue-400 mb-1">{a.title}</h4>
                       <div className="flex items-center gap-2 text-xs text-gray-600">
-                        <span>{a.authorName || a.author || 'Anonymous'}</span>
+                        <span>{a.authorName || a.author || t('blog.anonymous')}</span>
                         <span className="ml-auto">{fmt(a.publishedAt||a.publishDate)}</span>
                       </div>
                     </div>

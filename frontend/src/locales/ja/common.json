@@ -1284,6 +1284,12 @@
     },
     "gameSection": "ゲームセクション",
     "title": "ブログスペース",
-    "subtitle": "ゲームブログ、お気に入りの記事を見つけよう"
+    "subtitle": "ゲームブログ、お気に入りの記事を見つけよう",
+    "tagline": "ガイド、レビュー、ニュース — すべて GameHub ブログで",
+    "editorsPicks": "編集者のおすすめ",
+    "latestUpdates": "最新の更新",
+    "more": "もっと見る",
+    "anonymous": "匿名",
+    "categoryBlog": "ブログ"
   }
 }

@@ -1280,6 +1280,12 @@
     },
     "gameSection": "Game Sections",
     "title": "Blog Space",
-    "subtitle": "Game blog space, discover articles you love"
+    "subtitle": "Game blog space, discover articles you love",
+    "tagline": "Guides, reviews, and news — all on the GameHub Blog",
+    "editorsPicks": "Editor's Picks",
+    "latestUpdates": "Latest Updates",
+    "more": "More",
+    "anonymous": "Anonymous",
+    "categoryBlog": "Blog"
   }
 }

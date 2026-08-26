@@ -1284,6 +1284,12 @@
     },
     "gameSection": "Sections jeux",
     "title": "Espace Blog",
-    "subtitle": "Blog de jeux, découvrez des articles"
+    "subtitle": "Blog de jeux, découvrez des articles",
+    "tagline": "Guides, avis et actualités — tout sur le Blog GameHub",
+    "editorsPicks": "Sélection de l'éditeur",
+    "latestUpdates": "Dernières mises à jour",
+    "more": "Plus",
+    "anonymous": "Anonyme",
+    "categoryBlog": "Blog"
   }
 }

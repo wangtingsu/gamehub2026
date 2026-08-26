@@ -1280,6 +1280,12 @@
     },
     "gameSection": "游戏专区",
     "title": "博客空间",
-    "subtitle": "游戏专区博客，发现你感兴趣的游戏文章"
+    "subtitle": "游戏专区博客，发现你感兴趣的游戏文章",
+    "tagline": "攻略、评测与资讯 — 尽在 GameHub 博客",
+    "editorsPicks": "编辑精选",
+    "latestUpdates": "最新更新",
+    "more": "更多",
+    "anonymous": "匿名用户",
+    "categoryBlog": "博客"
   }
 }

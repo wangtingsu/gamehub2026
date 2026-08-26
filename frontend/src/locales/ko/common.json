@@ -1284,6 +1284,12 @@
     },
     "gameSection": "게임 섹션",
     "title": "블로그 공간",
-    "subtitle": "게임 블로그, 관심 있는 글을 발견하세요"
+    "subtitle": "게임 블로그, 관심 있는 글을 발견하세요",
+    "tagline": "가이드, 리뷰, 뉴스 — 모두 GameHub 블로그에서",
+    "editorsPicks": "에디터 추천",
+    "latestUpdates": "최신 업데이트",
+    "more": "더 보기",
+    "anonymous": "익명",
+    "categoryBlog": "블로그"
   }
 }
