@@ -1135,7 +1135,73 @@
     "email": "电子邮件",
     "community": "社区",
     "joinDiscord": "加入我们的 Discord 社区",
-    "business": "商务合作"
+    "business": "商务合作",
+    "heroDescription": "GameHub 是一个专注于游戏爱好者的社区平台，我们致力于为玩家提供最好的游戏资讯、评测、交流和发现体验。",
+    "missionDescription": "连接全球游戏爱好者，打造一个开放、包容、专业的游戏社区。我们相信游戏不仅仅是娱乐，更是连接人与人、文化与文化的桥梁。通过 GameHub，我们希望帮助玩家发现更多优质游戏，分享游戏体验，建立有意义的连接。",
+    "visionDescription": "成为全球最受玩家信赖的游戏社区平台，为数百万游戏爱好者提供最好的服务。我们致力于构建一个集游戏资讯、评测、社区、交易于一体的综合性平台，让每个玩家都能在这里找到属于自己的游戏家园。",
+    "values": [
+      {
+        "icon": "TeamOutlined",
+        "title": "玩家至上",
+        "description": "我们始终将玩家的需求和体验放在首位，致力于打造最优质的游戏社区平台。"
+      },
+      {
+        "icon": "RocketOutlined",
+        "title": "技术创新",
+        "description": "不断探索和应用最新技术，为玩家提供流畅、智能的游戏服务平台。"
+      },
+      {
+        "icon": "HeartOutlined",
+        "title": "热爱游戏",
+        "description": "我们是一群热爱游戏的开发者，希望通过我们的平台连接更多游戏爱好者。"
+      },
+      {
+        "icon": "TrophyOutlined",
+        "title": "追求卓越",
+        "description": "在内容质量、用户体验和技术创新上追求极致，永不满足于现状。"
+      }
+    ],
+    "contacts": [
+      {
+        "label": "电子邮箱",
+        "value": "contact@gghubs.com"
+      },
+      {
+        "label": "商务合作",
+        "value": "partner@gghubs.com"
+      },
+      {
+        "label": "用户支持",
+        "value": "support@gghubs.com"
+      }
+    ],
+    "timelineItems": [
+      {
+        "year": "2024",
+        "title": "项目启动",
+        "description": "GameHub 项目启动，团队组建完成"
+      },
+      {
+        "year": "2025 Q1",
+        "title": "天使轮融资",
+        "description": "完成天使轮融资，开始产品研发"
+      },
+      {
+        "year": "2025 Q3",
+        "title": "内测版上线",
+        "description": "平台内测版上线，获得首批 1000 名用户"
+      },
+      {
+        "year": "2026 Q1",
+        "title": "正式版发布",
+        "description": "正式版发布，用户突破 10 万"
+      },
+      {
+        "year": "2026 Q2",
+        "title": "移动端计划",
+        "description": "计划推出移动端 App，拓展国际市场"
+      }
+    ]
   },
   "ai": {
     "seoTitle": "AI 助手 | GameHub",

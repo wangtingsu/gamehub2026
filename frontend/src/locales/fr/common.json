@@ -1139,7 +1139,73 @@
     "email": "Email",
     "community": "Communaute",
     "joinDiscord": "Rejoindre Discord",
-    "business": "Partenariats"
+    "business": "Partenariats",
+    "heroDescription": "GameHub est une plateforme communautaire dédiée aux passionnés de jeux vidéo, engagée à offrir aux joueurs la meilleure expérience en matière d'actualités, de critiques, d'échanges et de découverte de jeux.",
+    "missionDescription": "Connecter les passionnés de jeux vidéo du monde entier et construire une communauté ouverte, inclusive et professionnelle. Nous croyons que les jeux sont plus qu'un simple divertissement : ce sont des ponts qui relient les personnes et les cultures. Grâce à GameHub, nous voulons aider les joueurs à découvrir davantage de jeux de qualité, à partager leurs expériences et à tisser des liens significatifs.",
+    "visionDescription": "Devenir la plateforme communautaire de jeux vidéo la plus fiable au monde, au service de millions de passionnés. Nous nous engageons à construire une plateforme complète réunissant actualités, critiques, communauté et échanges, afin que chaque joueur puisse y trouver son propre foyer de jeu.",
+    "values": [
+      {
+        "icon": "TeamOutlined",
+        "title": "Le joueur d'abord",
+        "description": "Nous plaçons toujours les besoins et l’expérience des joueurs au premier plan, déterminés à créer la meilleure plateforme communautaire."
+      },
+      {
+        "icon": "RocketOutlined",
+        "title": "Innovation technique",
+        "description": "Nous explorons et appliquons constamment les dernières technologies pour offrir une plateforme de jeu fluide et intelligente."
+      },
+      {
+        "icon": "HeartOutlined",
+        "title": "Passion du jeu",
+        "description": "Nous sommes une équipe de développeurs passionnés de jeux, désireux de connecter davantage de passionnés via notre plateforme."
+      },
+      {
+        "icon": "TrophyOutlined",
+        "title": "Quête d'excellence",
+        "description": "Nous visons le meilleur en qualité de contenu, expérience utilisateur et innovation, sans jamais nous contenter du statu quo."
+      }
+    ],
+    "contacts": [
+      {
+        "label": "E-mail",
+        "value": "contact@gghubs.com"
+      },
+      {
+        "label": "Partenariats",
+        "value": "partner@gghubs.com"
+      },
+      {
+        "label": "Support",
+        "value": "support@gghubs.com"
+      }
+    ],
+    "timelineItems": [
+      {
+        "year": "2024",
+        "title": "Lancement du projet",
+        "description": "Lancement du projet GameHub, équipe constituée"
+      },
+      {
+        "year": "2025 Q1",
+        "title": "Tour d'amorçage",
+        "description": "Tour de financement d'amorçage terminé, début du développement du produit"
+      },
+      {
+        "year": "2025 Q3",
+        "title": "Bêta fermée",
+        "description": "Bêta fermée lancée, premiers 1 000 utilisateurs"
+      },
+      {
+        "year": "2026 Q1",
+        "title": "Lancement officiel",
+        "description": "Lancement officiel, plus de 100 000 utilisateurs"
+      },
+      {
+        "year": "2026 Q2",
+        "title": "Projets mobiles",
+        "description": "Projet d'app mobile pour s'étendre aux marchés internationaux"
+      }
+    ]
   },
   "ai": {
     "seoTitle": "Assistant IA",
