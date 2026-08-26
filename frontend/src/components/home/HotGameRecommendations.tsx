@@ -83,7 +83,7 @@ const HotGameRecommendations = () => {
                     </div>
                     {index < 3 && (
                       <Tag color="red" className="absolute top-2 right-2 text-[10px] leading-none px-1 border-0">
-                        HOT
+                        {t('hot')}
                       </Tag>
                     )}
                   </div>
@@ -97,7 +97,7 @@ const HotGameRecommendations = () => {
                   </div>
                 )}
                 {item.reason && (
-                  <Tag color="orange" className="text-xs mt-2">{item.reason}</Tag>
+                  <Tag color="orange" className="text-xs mt-2">{t(`reason.${item.reason}`, { defaultValue: item.reason })}</Tag>
                 )}
               </Card>
             </motion.div>

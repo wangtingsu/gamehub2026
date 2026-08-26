@@ -30,5 +30,9 @@
     "blog": "Blog",
     "guide": "Guide"
   },
-  "noCodes": "Aucun code disponible pour le moment"
+  "noCodes": "Aucun code disponible pour le moment",
+  "reason": {
+    "Trending": "Tendance"
+  },
+  "hot": "Populaire"
 }
