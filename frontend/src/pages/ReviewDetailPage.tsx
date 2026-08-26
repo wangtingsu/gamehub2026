@@ -5,12 +5,14 @@ import { useReview, useGame, useGameReviews, useReviews } from '../api/hooks';
 import CommentList from '../components/comments/CommentList';
 import SEO from '../components/SEO';
 import SEOBreadcrumb from '../components/SEOBreadcrumb';
+import { useTranslation } from 'react-i18next';
 
 const { Title, Paragraph, Text } = Typography;
 
 const ReviewDetailPage = () => {
   const { id, lang: paramLang } = useParams<{ id: string; lang?: string }>();
   const navigate = useNavigate();
+  const { t } = useTranslation('games');
   const lang = paramLang || 'cn';
   const { data: review, isLoading: reviewLoading, error: reviewError } = useReview(id || '');
   const { data: game, isLoading: gameLoading } = useGame(review?.gameId || '');
@@ -311,7 +313,7 @@ const ReviewDetailPage = () => {
                   <Text strong>游戏类型</Text>
                   <div className="text-right">
                     {(game.genres || []).map(genre => (
-                      <div key={genre}>{genre}</div>
+                      <div key={genre}>{t(`genreNames.${genre}`, { defaultValue: genre })}</div>
                     ))}
                   </div>
                 </div>

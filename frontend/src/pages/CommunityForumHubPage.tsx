@@ -22,6 +22,7 @@ const CommunityForumHubPage = () => {
   const navigate = useNavigate();
   const { lang } = useParams<{ lang: string }>();
   const { t } = useTranslation();
+  const { t: tg } = useTranslation('games');
   const currentLang = lang || 'cn';
   const [searchText, setSearchText] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
@@ -157,7 +158,7 @@ const CommunityForumHubPage = () => {
                     {/* 标签 */}
                     <div className="flex flex-wrap gap-1 mb-3">
                       {(game.genres || []).slice(0, 2).map((genre: string, idx: number) => (
-                        <Tag key={idx} color="blue" className="text-[11px] leading-none px-1.5 py-0.5">{genre}</Tag>
+                        <Tag key={idx} color="blue" className="text-[11px] leading-none px-1.5 py-0.5">{tg(`genreNames.${genre}`, { defaultValue: genre })}</Tag>
                       ))}
                     </div>
 

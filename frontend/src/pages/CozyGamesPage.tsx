@@ -72,7 +72,7 @@ export default function CozyGamesPage() {
                           </div>
                           <Paragraph className="!text-gray-500 !text-xs line-clamp-2 !mb-2">{game.description}</Paragraph>
                           <div className="flex flex-wrap gap-1">
-                            {(game.genres || []).slice(0, 3).map((g: string) => <Tag key={g} className="text-[10px] bg-dark-700 border-0 text-gray-300">{g}</Tag>)}
+                            {(game.genres || []).slice(0, 3).map((g: string) => <Tag key={g} className="text-[10px] bg-dark-700 border-0 text-gray-300">{t(`genreNames.${g}`, { defaultValue: g })}</Tag>)}
                           </div>
                         </div>
                       </div>

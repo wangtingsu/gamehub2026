@@ -1,4 +1,5 @@
 import { useState, useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useNavigate, useParams } from 'react-router-dom';
 import { Card, Row, Col, Input, Select, Slider, Button, Rate, Tag, Spin, Empty, Alert, Typography } from 'antd';
 import { SearchOutlined, FilterOutlined, DollarOutlined, RocketOutlined, ThunderboltOutlined, ArrowLeftOutlined } from '@ant-design/icons';
@@ -73,6 +74,7 @@ const platformOptions = ['全部', 'PC', 'PS4', 'PS5', 'Xbox One', 'Xbox Series 
 
 const CategoryGamesPage = () => {
   const navigate = useNavigate();
+  const { t } = useTranslation('games');
   const { lang, category } = useParams<{ lang: string; category: string }>();
   const { data: games = [], isLoading, isError } = useGames();
   const [searchText, setSearchText] = useState('');
@@ -374,7 +376,7 @@ const CategoryGamesPage = () => {
                         <div className="mb-4">
                           <div className="flex flex-wrap gap-1 mb-2">
                             {game.genres.slice(0, 2).map(genre => (
-                              <Tag key={genre} color="blue" className="text-xs">{genre}</Tag>
+                              <Tag key={genre} color="blue" className="text-xs">{t(`genreNames.${genre}`, { defaultValue: genre })}</Tag>
                             ))}
                             {game.genres.length > 2 && (
                               <Tag className="text-xs">+{game.genres.length - 2}</Tag>

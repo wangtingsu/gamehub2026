@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import {
   Typography,
@@ -32,6 +33,7 @@ const PAGE_SIZE = 24;
 
 const GameForumHubPage = () => {
   const navigate = useNavigate();
+  const { t } = useTranslation('games');
   const [searchText, setSearchText] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
 
@@ -188,7 +190,7 @@ const GameForumHubPage = () => {
                       <div className="flex flex-wrap gap-1 mb-3">
                         {(game.genres || []).slice(0, 2).map((genre, idx) => (
                           <Tag key={idx} color="blue" className="text-[11px] leading-none px-1.5 py-0.5">
-                            {genre}
+                            {t(`genreNames.${genre}`, { defaultValue: genre })}
                           </Tag>
                         ))}
                         {(game.genres?.length || 0) > 2 && (

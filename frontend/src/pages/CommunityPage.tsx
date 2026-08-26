@@ -19,6 +19,7 @@ const CommunityPage = () => {
   const [expandedId, setExpandedId] = useState<string | null>(null);
   const [followed, setFollowed] = useState<any[]>([]);
   const { t } = useTranslation();
+  const { t: tg } = useTranslation('games');
   const navigate = useNavigate();
   const pageSize = 8;
 
@@ -84,7 +85,7 @@ const CommunityPage = () => {
       <Avatar shape="square" size={32} src={game.imageUrl || game.coverImageUrl} className="flex-shrink-0">{game.title?.[0]}</Avatar>
       <div className="flex-1 min-w-0">
         <div className="text-white text-xs truncate">{game.title}</div>
-        <div className="text-gray-500 text-[10px]">{game.genres?.slice(0, 2).join(' / ') || ''}</div>
+        <div className="text-gray-500 text-[10px]">{(game.genres || []).slice(0, 2).map((g: string) => tg(`genreNames.${g}`, { defaultValue: g })).join(' / ')}</div>
       </div>
       <button className="text-gray-600 hover:text-red-400 text-xs opacity-0 group-hover:opacity-100 transition-opacity"
         onClick={e => { e.stopPropagation(); unfollow(String(game.id)); }}>✕</button>

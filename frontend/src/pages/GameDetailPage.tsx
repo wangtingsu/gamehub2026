@@ -56,6 +56,7 @@ const GameDetailPage = () => {
   const { isAuthenticated, user } = useAuth();
   const lang = paramLang || 'cn';
   const { t } = useTranslation();
+  const { t: tg } = useTranslation('games');
   const { data: game, isLoading, isError, error: gameError } = useGame(id || '');
   const { data: reviews = [], isLoading: reviewsLoading } = useGameReviews(id || '');
   const { data: forumPosts = [], isLoading: forumLoading } = useGamePosts(id || '');
@@ -259,7 +260,7 @@ const GameDetailPage = () => {
                 <Rate allowHalf defaultValue={game.rating / 2} disabled style={{ fontSize: 18 }} />
                 <div className="flex flex-wrap gap-1">
                   {(game.genres || []).slice(0,3).map((g: string, i: number) => (
-                    <Tag key={i} color="blue" className="bg-white/20 border-0">{g}</Tag>
+                    <Tag key={i} color="blue" className="bg-white/20 border-0">{tg(`genreNames.${g}`, { defaultValue: g })}</Tag>
                   ))}
                 </div>
               </div>
@@ -581,7 +582,7 @@ const GameDetailPage = () => {
                 </Descriptions.Item>
                 <Descriptions.Item label={<span className="text-gray-400">Genres</span>}>
                   <div className="flex flex-wrap gap-1">
-                    {(game.genres || []).slice(0,4).map((g, i) => <Tag key={i} color="blue" className="text-xs">{g}</Tag>)}
+                    {(game.genres || []).slice(0,4).map((g, i) => <Tag key={i} color="blue" className="text-xs">{tg(`genreNames.${g}`, { defaultValue: g })}</Tag>)}
                   </div>
                 </Descriptions.Item>
               </Descriptions>

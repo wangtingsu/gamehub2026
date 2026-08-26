@@ -4,6 +4,7 @@ import { Typography, Button, Avatar, Skeleton, Alert, Pagination, Tag, Modal, In
 import { ArrowLeftOutlined, MessageOutlined, UserOutlined, CalendarOutlined, LikeOutlined, StarFilled, PlusOutlined, PictureOutlined, LoadingOutlined } from '@ant-design/icons';
 import { useGame, useGamePosts, useGames } from '../api/hooks';
 import { useAuth } from '../contexts/AuthContext';
+import { useTranslation } from 'react-i18next';
 import SEO from '../components/SEO';
 import BlogRenderContent from '../components/blog/BlogRenderContent';
 
@@ -15,6 +16,7 @@ const GameForumPage = () => {
   const { id, lang } = useParams<{ id: string; lang: string }>();
   const navigate = useNavigate();
   const { isAuthenticated } = useAuth();
+  const { t } = useTranslation('games');
   const currentLang = lang || 'cn';
   const [currentPage, setCurrentPage] = useState(1);
   const [followed, setFollowed] = useState<any[]>([]);
@@ -148,7 +150,7 @@ const GameForumPage = () => {
             <div className="flex items-start justify-between mb-2">
               <div>
                 <Title level={2} className="!text-white !mb-1">{game.title} 论坛</Title>
-                <div className="flex flex-wrap gap-1 mb-2">{(game.genres || []).map((g: string) => <Tag key={g} className="text-xs bg-dark-700 border-0 text-gray-300">{g}</Tag>)}</div>
+                <div className="flex flex-wrap gap-1 mb-2">{(game.genres || []).map((g: string) => <Tag key={g} className="text-xs bg-dark-700 border-0 text-gray-300">{t(`genreNames.${g}`, { defaultValue: g })}</Tag>)}</div>
               </div>
               <Button type={isFollowed ? 'default' : 'primary'} icon={<StarFilled />} onClick={isFollowed ? unfollow : follow}
                 className={isFollowed ? '!bg-dark-700 !text-yellow-400 !border-dark-600' : ''}>{isFollowed ? '已关注' : '关注'}</Button>

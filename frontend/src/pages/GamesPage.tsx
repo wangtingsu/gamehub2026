@@ -315,7 +315,7 @@ const GamesPage = () => {
         </div>
         <div className="flex flex-wrap gap-1 mb-2">
           {game.genres.slice(0, 2).map(genre => (
-            <Tag key={genre} className="text-xs leading-none" color="blue">{genre}</Tag>
+            <Tag key={genre} className="text-xs leading-none" color="blue">{t(`genreNames.${genre}`, { defaultValue: genre })}</Tag>
           ))}
         </div>
         <div className="flex items-center justify-between">
@@ -694,7 +694,7 @@ const GamesPage = () => {
                                   <div className="flex flex-wrap gap-1 mb-2">
                                     {game.genres.slice(0, 2).map(genre => (
                                       <Tag key={genre} color="blue" className="text-xs">
-                                        {genre}
+                                        {t(`genreNames.${genre}`, { defaultValue: genre })}
                                       </Tag>
                                     ))}
                                     {game.genres.length > 2 && (

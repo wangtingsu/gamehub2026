@@ -12,6 +12,7 @@ import LazyLoadImageComponent from 'react-lazy-load-image-component';
 const { LazyLoadImage } = LazyLoadImageComponent as any;
 import SEO from '../components/SEO';
 import RecommendedGames from '../components/recommendations/RecommendedGames';
+import { useTranslation } from 'react-i18next';
 import { usePersonalizedRecommendations, useGames, useTrendingContent } from '../api/hooks';
 import type { Game } from '../api/types';
 
@@ -42,6 +43,7 @@ const fallbackIndieGames: Game[] = [
 const GameLibraryPage = () => {
   const navigate = useNavigate();
   const { lang } = useParams<{ lang: string }>();
+  const { t } = useTranslation('games');
 
   const { data: recommendations, isLoading: recLoading, isError: recError } = usePersonalizedRecommendations(8);
   const { data: allGames = [], isLoading: gamesLoading, isError: gamesError } = useGames();
@@ -120,7 +122,7 @@ const GameLibraryPage = () => {
         </div>
         <div className="flex flex-wrap gap-1 mb-2">
           {game.genres.slice(0, 2).map(genre => (
-            <Tag key={genre} className="text-xs leading-none" color="blue">{genre}</Tag>
+            <Tag key={genre} className="text-xs leading-none" color="blue">{t(`genreNames.${genre}`, { defaultValue: genre })}</Tag>
           ))}
         </div>
         <div className="flex items-center justify-between">
