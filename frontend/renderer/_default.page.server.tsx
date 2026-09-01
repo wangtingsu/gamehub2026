@@ -142,6 +142,155 @@ function getPageMeta(urlPathname: string, lang: string) {
   return build(t('seo.defaultTitle'), t('seo.defaultDescription'))
 }
 
+/** 将相对 URL 归一为绝对 URL（图片等字段可能返回相对路径） */
+function absUrl(url: string): string {
+  if (!url) return ''
+  if (/^https?:\/\//.test(url)) return url
+  return `${SITE_URL}${url.startsWith('/') ? '' : '/'}${url}`
+}
+
+/**
+ * 根据页面类型生成 JSON-LD 结构化数据（Schema.org @graph）
+ *
+ * 覆盖六类富结果资格（与客户端 SEO.tsx / SEOBreadcrumb.tsx 对齐）：
+ * 1. WebSite —— 站点 + 站内搜索（全站）
+ * 2. Organization —— 组织信息（全站）
+ * 3. ItemList —— 游戏列表（首页/游戏库，强化内链与收录）
+ * 4. VideoGame —— 游戏详情（富结果：评分、平台、发行商）
+ * 5. NewsArticle —— 新闻/资讯详情（富结果：作者、发布时间）
+ * 6. BreadcrumbList —— 面包屑导航（详情页）
+ *
+ * 由 render() 在服务端直接注入 HTML，确保爬虫无需执行 JS 即可读到结构化数据。
+ */
+function buildJsonLdGraph(opts: {
+  pageMeta: { title: string; description: string }
+  urlPathname: string
+  canonicalUrl: string
+  games: Game[] | undefined
+  news: NewsArticle[] | undefined
+  gameDetail: Game | null
+  newsDetail: NewsArticle | null
+}): Array<Record<string, unknown>> {
+  const { pageMeta, urlPathname, canonicalUrl, games, news, gameDetail, newsDetail } = opts
+  const graph: Array<Record<string, unknown>> = []
+
+  const langPrefix = urlPathname.match(/^\/(en|cn|ja|ko|es|fr)(?=\/|$)/)?.[1] || 'en'
+
+  // 1. WebSite
+  graph.push({
+    '@type': 'WebSite',
+    name: SITE_NAME,
+    url: SITE_URL,
+    description: pageMeta.description,
+    potentialAction: {
+      '@type': 'SearchAction',
+      target: { '@type': 'EntryPoint', urlTemplate: `${SITE_URL}/search?q={search_term_string}` },
+      'query-input': 'required name=search_term_string',
+    },
+  })
+
+  // 2. Organization
+  graph.push({
+    '@type': 'Organization',
+    name: SITE_NAME,
+    url: SITE_URL,
+    logo: OG_IMAGE,
+    sameAs: [
+      'https://twitter.com/gamehub',
+      'https://facebook.com/gamehub',
+      'https://instagram.com/gamehub',
+    ],
+  })
+
+  // 3. ItemList —— 首页/游戏库列出可抓取的游戏条目
+  const gameList = Array.isArray(games) ? games : []
+  if (gameList.length > 0) {
+    graph.push({
+      '@type': 'ItemList',
+      name: 'GameHub Games',
+      numberOfItems: gameList.length,
+      itemListElement: gameList.map((g, i) => ({
+        '@type': 'ListItem',
+        position: i + 1,
+        name: g.title,
+        url: `${SITE_URL}/${langPrefix}/games/${g.id}`,
+      })),
+    })
+  }
+
+  // 4. VideoGame —— 游戏详情富结果
+  if (gameDetail) {
+    const node: Record<string, unknown> = {
+      '@type': 'VideoGame',
+      name: gameDetail.title,
+      description: gameDetail.description,
+      url: canonicalUrl,
+      applicationCategory: 'Game',
+    }
+    if (gameDetail.imageUrl) node.image = absUrl(gameDetail.imageUrl)
+    if (Array.isArray(gameDetail.genres) && gameDetail.genres.length) node.genre = gameDetail.genres
+    if (Array.isArray(gameDetail.platforms) && gameDetail.platforms.length) {
+      node.gamePlatform = gameDetail.platforms
+      node.operatingSystem = gameDetail.platforms
+    }
+    if (gameDetail.developer) node.author = { '@type': 'Organization', name: gameDetail.developer }
+    if (gameDetail.publisher) node.publisher = { '@type': 'Organization', name: gameDetail.publisher }
+    if (gameDetail.releaseDate) node.datePublished = gameDetail.releaseDate
+    if (typeof gameDetail.rating === 'number') {
+      node.aggregateRating = {
+        '@type': 'AggregateRating',
+        ratingValue: gameDetail.rating,
+        ratingCount: (gameDetail as any).reviewCount || 0,
+        bestRating: 5,
+        worstRating: 1,
+      }
+    }
+    graph.push(node)
+  }
+
+  // 5. NewsArticle —— 新闻/资讯详情富结果
+  if (newsDetail) {
+    const node: Record<string, unknown> = {
+      '@type': 'NewsArticle',
+      headline: newsDetail.title,
+      description: newsDetail.summary || newsDetail.content || '',
+      url: canonicalUrl,
+      datePublished: newsDetail.publishDate,
+      author: { '@type': 'Person', name: newsDetail.author || DEFAULT_AUTHOR },
+      publisher: {
+        '@type': 'Organization',
+        name: SITE_NAME,
+        logo: { '@type': 'ImageObject', url: OG_IMAGE },
+      },
+    }
+    if (newsDetail.imageUrl) node.image = absUrl(newsDetail.imageUrl)
+    graph.push(node)
+  }
+
+  // 6. BreadcrumbList —— 详情页面包屑
+  if (gameDetail || newsDetail) {
+    const items: Array<{ name: string; url: string }> = [{ name: 'Home', url: `${SITE_URL}/${langPrefix}` }]
+    if (gameDetail) {
+      items.push({ name: 'Games', url: `${SITE_URL}/${langPrefix}/games` })
+      items.push({ name: gameDetail.title, url: canonicalUrl })
+    } else if (newsDetail) {
+      items.push({ name: 'News', url: `${SITE_URL}/${langPrefix}/news` })
+      items.push({ name: newsDetail.title, url: canonicalUrl })
+    }
+    graph.push({
+      '@type': 'BreadcrumbList',
+      itemListElement: items.map((it, i) => ({
+        '@type': 'ListItem',
+        position: i + 1,
+        name: it.name,
+        item: it.url,
+      })),
+    })
+  }
+
+  return graph
+}
+
 /**
  * 服务器端数据预取函数
  *
@@ -319,6 +468,39 @@ async function render(pageContext: PageContextServer) {
     newsDetail = serverQueryClient.getQueryData<NewsArticle>(queryKeys.news.detail(newsIdMatch[1])) ?? null
   }
 
+  // 每页独立 title/description：详情页用真实内容标题，而非 slug 占位（SEO 收录基建）
+  const truncate = (s: string, max = 160) => (s.length > max ? `${s.slice(0, max - 3)}...` : s)
+  if (gameDetail?.title) {
+    pageMeta.title = gameDetail.title
+    pageMeta.ogTitle = gameDetail.title
+    if (gameDetail.description?.trim()) {
+      pageMeta.description = truncate(gameDetail.description.trim())
+      pageMeta.ogDescription = pageMeta.description
+    }
+  } else if (newsDetail?.title) {
+    pageMeta.title = newsDetail.title
+    pageMeta.ogTitle = newsDetail.title
+    const desc = (newsDetail.summary || newsDetail.content)?.trim()
+    if (desc) {
+      pageMeta.description = truncate(desc)
+      pageMeta.ogDescription = pageMeta.description
+    }
+  }
+
+  // 生成六类 JSON-LD 结构化数据（服务端直接注入，爬虫无需执行 JS）
+  const jsonLdScript = JSON.stringify({
+    '@context': 'https://schema.org',
+    '@graph': buildJsonLdGraph({
+      pageMeta,
+      urlPathname,
+      canonicalUrl,
+      games,
+      news,
+      gameDetail,
+      newsDetail,
+    }),
+  }).replace(/</g, '\\u003c')
+
   const bodyHtml = renderToString(
     <ServerContent
       urlPathname={urlPathname}
@@ -366,38 +548,7 @@ async function render(pageContext: PageContextServer) {
     <meta name="twitter:image" content="${OG_IMAGE}" />
     <meta name="twitter:site" content="${TWITTER_HANDLE}" />
     <meta name="twitter:creator" content="${TWITTER_HANDLE}" />
-    <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@graph": [
-        {
-          "@type": "WebSite",
-          "name": "${SITE_NAME}",
-          "url": "${SITE_URL}",
-          "description": ${JSON.stringify(pageMeta.description)},
-          "potentialAction": {
-            "@type": "SearchAction",
-            "target": {
-              "@type": "EntryPoint",
-              "urlTemplate": "${SITE_URL}/search?q={search_term_string}"
-            },
-            "query-input": "required name=search_term_string"
-          }
-        },
-        {
-          "@type": "Organization",
-          "name": "${SITE_NAME}",
-          "url": "${SITE_URL}",
-          "logo": "${OG_IMAGE}",
-          "sameAs": [
-            "https://twitter.com/gamehub",
-            "https://facebook.com/gamehub",
-            "https://instagram.com/gamehub"
-          ]
-        }
-      ]
-    }
-    </script>
+    <script type="application/ld+json">${jsonLdScript}</script>
   </head>
   <body>
     <div id="root">${bodyHtml}</div>
