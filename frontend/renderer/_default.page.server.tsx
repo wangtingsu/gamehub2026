@@ -19,6 +19,9 @@ import { queryKeys } from '../src/api/hooks'
 import apiService from '../src/api/index'
 import i18n from '../src/i18n.server'
 import type { PageContextServer } from 'vike/types'
+import { renderToString } from 'react-dom/server'
+import type { Game, NewsArticle, Review } from '../src/api/types'
+import ServerContent from '../src/components/ServerContent'
 
 /**
  * 服务端渲染环境配置
@@ -293,6 +296,41 @@ async function render(pageContext: PageContextServer) {
     ? '<!-- SSR_CLIENT_SCRIPTS_PLACEHOLDER -->'
     : '<script type="module" src="/@vite/client"><\/script>'
 
+  // 渲染正文：读取预取数据，renderToString 成静态 HTML 注入 #root（SEO，让爬虫看到真实内容）
+  const games = serverQueryClient.getQueryData<Game[]>(
+    queryKeys.games.list({ page: 1, limit: 8 }),
+  )
+  const news = serverQueryClient.getQueryData<NewsArticle[]>(
+    queryKeys.news.list({ page: 1, limit: 6 }),
+  )
+  const reviews = serverQueryClient.getQueryData<Review[]>(
+    queryKeys.reviews.list({ page: 1, limit: 4, sort: 'popular' }),
+  )
+
+  let gameDetail: Game | null = null
+  const gameIdMatch = urlPathname.match(/\/games\/([^/]+)/)
+  if (gameIdMatch) {
+    gameDetail = serverQueryClient.getQueryData<Game>(queryKeys.games.detail(gameIdMatch[1])) ?? null
+  }
+
+  let newsDetail: NewsArticle | null = null
+  const newsIdMatch = urlPathname.match(/\/news\/([^/]+)/)
+  if (newsIdMatch) {
+    newsDetail = serverQueryClient.getQueryData<NewsArticle>(queryKeys.news.detail(newsIdMatch[1])) ?? null
+  }
+
+  const bodyHtml = renderToString(
+    <ServerContent
+      urlPathname={urlPathname}
+      pageMeta={pageMeta}
+      games={games}
+      news={news}
+      reviews={reviews}
+      gameDetail={gameDetail}
+      newsDetail={newsDetail}
+    />,
+  )
+
   return {
     documentHtml: `<!DOCTYPE html>
 <html lang="${i18nLang}">
@@ -362,7 +400,7 @@ async function render(pageContext: PageContextServer) {
     </script>
   </head>
   <body>
-    <div id="root"></div>
+    <div id="root">${bodyHtml}</div>
     <script id="vike_pageContext" type="application/json">${pageContextSerialized}<\/script>
     ${clientScript}
     <script>
