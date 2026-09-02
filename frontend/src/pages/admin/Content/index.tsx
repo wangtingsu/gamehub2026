@@ -194,7 +194,9 @@ const Content: React.FC = () => {
       setLoading(true);
       switch (activeTab) {
         case 'news': {
-          const data = await apiService.getNews({ limit: 200 });
+          // 管理后台始终按主语言（中文基础列）拉取，避免 i18n.language 为 en 时
+          // 把标题/正文本地化成英文，导致「简体中文」编辑页被回填成英文。
+          const data = await apiService.getNews({ limit: 200, lang: 'zh-CN' });
           // 过滤掉博客分类的文章
           setNews(data.filter((item: any) => {
             const cat = String(item.category || '');
