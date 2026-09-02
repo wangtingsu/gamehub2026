@@ -14,6 +14,7 @@ import {
 } from '@ant-design/icons';
 import ActionButtons from '../components/ActionButtons';
 import BlogEditor from '../../../components/blog/BlogEditor';
+import BlogRenderContent from '../../../components/blog/BlogRenderContent';
 import { apiService } from '../../../api';
 import type { NewsArticle, Review, CommunityPost, NewsCategory, ReviewTemplate, Guide } from '../../../api/types';
 import SEO from '../../../components/SEO';
@@ -644,11 +645,17 @@ const Content: React.FC = () => {
 
     Modal.info({
       title,
-      width: 600,
+      width: type === 'news' ? 720 : 600,
       content: (
         <div className="space-y-4">
           {extra}
-          <div className="text-gray-700 whitespace-pre-line">{contentText}</div>
+          {type === 'news' ? (
+            <div className="bg-slate-900 rounded-lg p-4 max-h-[60vh] overflow-y-auto">
+              <BlogRenderContent content={contentText} />
+            </div>
+          ) : (
+            <div className="text-gray-700 whitespace-pre-line">{contentText}</div>
+          )}
         </div>
       ),
     });
