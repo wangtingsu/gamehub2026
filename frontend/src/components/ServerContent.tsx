@@ -10,6 +10,8 @@
  *   不依赖 React Query（useQuery）、不依赖浏览器 API（window/localStorage）。
  * - 内部链接使用原生 <a href>，便于爬虫抓取，也避免引入 StaticRouter。
  * - 客户端 hydration 阶段由 createRoot 全量接管替换，此处仅服务爬虫。
+ * - 根节点带 hidden 属性：对真实用户视觉隐藏（避免无样式正文在 JS 加载前闪屏，
+ *   表现为「先显示一段新闻稿」），但文本仍在 HTML 源码中，爬虫照常读取。
  */
 import type { Game, NewsArticle, Review } from '../api/types'
 
@@ -53,7 +55,7 @@ export default function ServerContent({
   const reviewList = Array.isArray(reviews) ? reviews : []
 
   return (
-    <div>
+    <div hidden>
       <h1>{pageMeta.title}</h1>
       <p>{pageMeta.description}</p>
 
