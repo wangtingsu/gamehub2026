@@ -15,6 +15,7 @@ import { NewsArticle } from '../api/types';
 import CommentList from '../components/comments/CommentList';
 import SEO from '../components/SEO';
 import SEOBreadcrumb from '../components/SEOBreadcrumb';
+import BlogRenderContent from '../components/blog/BlogRenderContent';
 import { useTranslation } from 'react-i18next';
 
 const { Title, Paragraph, Text } = Typography;
@@ -125,9 +126,7 @@ const NewsDetailPage = () => {
                     <div className="prose max-w-none">
                       <Paragraph className="text-lg leading-relaxed mb-6 text-gray-300">{article.summary}</Paragraph>
                       <Divider />
-                      <div className="text-xl leading-relaxed text-gray-200">
-                        {article.content.split('\n').map((p, i) => <Paragraph key={i} className="mb-6">{p}</Paragraph>)}
-                      </div>
+                      <BlogRenderContent content={article.content} />
                     </div>
                     <div className="mt-8 pt-8 border-t border-dark-700">
                       <div className="flex flex-wrap gap-2 mb-4">
