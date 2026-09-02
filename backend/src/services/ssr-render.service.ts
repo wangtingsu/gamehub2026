@@ -297,9 +297,11 @@ function getClientAssets(): { headTags: string; bodyScripts: string } {
 
 /**
  * 获取前端构建指纹
- * 对构建清单（hydrate manifest 或 assets.json）整份内容做 MD5 摘要。
- * 清单记录了每个模块（含懒加载页面分块）到其哈希文件名的映射，
- * 因此任何源码改动都会改变清单内容 → 改变指纹 → 旧的 ISR 缓存键自动失效。
+ * 对「客户端构建清单 + SSR server bundle」的整份内容做 MD5 摘要。
+ * - 客户端 manifest（assets.json / hydrate manifest）记录了每个模块到其哈希文件名的映射，
+ *   反映客户端 chunk 变化。
+ * - SSR server bundle（renderer_default-page-server.mjs）反映服务端渲染逻辑变化。
+ * 二者任一变化都会改变指纹 → 旧的 ISR 缓存键自动失效，避免返回过期 HTML。
  * 结果缓存 5 秒，避免每个请求都读磁盘。
  */
 export function getBuildFingerprint(): string {
@@ -314,12 +316,17 @@ export function getBuildFingerprint(): string {
       '/app/frontend-dist/hydrate/.vite/manifest.json',
       '/app/frontend-dist/.vite/manifest.json',
       '/app/frontend-dist/assets.json',
+      '/app/frontend-dist/server/entries/renderer_default-page-server.mjs',
     ]
+    const hash = crypto.createHash('md5')
+    let found = false
     for (const p of possiblePaths) {
       if (!fs.existsSync(p)) continue
-      const raw = fs.readFileSync(p, 'utf-8')
-      fingerprint = crypto.createHash('md5').update(raw).digest('hex').slice(0, 16)
-      break
+      hash.update(fs.readFileSync(p, 'utf-8'))
+      found = true
+    }
+    if (found) {
+      fingerprint = hash.digest('hex').slice(0, 16)
     }
   } catch (error) {
     logger.warn('获取前端构建指纹失败，ISR 缓存键将不含指纹', { error })
