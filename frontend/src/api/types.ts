@@ -331,6 +331,16 @@ export interface FavoriteStats {
 }
 
 // 新闻相关类型
+export interface NewsArticleTranslation {
+  title?: string;
+  content?: string;
+  excerpt?: string;
+}
+
+export type NewsArticleTranslations = Partial<
+  Record<'en' | 'ja' | 'ko' | 'es' | 'fr', NewsArticleTranslation>
+>;
+
 export interface NewsArticle {
   id: string;
   title: string;
@@ -346,6 +356,7 @@ export interface NewsArticle {
   isPinned?: boolean;
   reviewStatus?: ReviewStatusType;
   reviewComment?: string;
+  translations?: NewsArticleTranslations;
 }
 
 // 博客相关类型

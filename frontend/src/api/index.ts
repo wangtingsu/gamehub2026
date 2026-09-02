@@ -17,6 +17,7 @@
 
 import apiClient, { adminApiClient } from './client';
 import mockApiClient from './mockClient';
+import i18n from '../i18n';
 import type { ApiConfig, Game, NewsArticle, BlogArticle, Review, CommunityPost, User, PaginationParams, AuthResponseData, LoginRequest, RegisterRequest, LoginByPhoneRequest, RegisterByPhoneRequest, SendSmsCodeRequest, OAuthProvidersResponse, Favorite, FavoriteStatus, FavoriteStats, ReviewCreateRequest, ReviewUpdateRequest, Comment, CommentCreateInput, CommentStats, CommentLikeResponse, ParentType, SearchFilters, SearchResult, SearchSuggestion, NotificationQueryParams, Notification, UserGameLibrary, PlatformOwnership, AboutAllData, UploadConfig, UploadedFileInfo, UploadImageInfo, UploadDocumentInfo, EmailTemplate, EmailQueueStatus, EmailSendResult, EmailBulkSummary, FollowStatus, FollowStats, FollowUser, LikeStatus, LikeStats, LikeEntry, LikeTargetType, NewsCategory, NewsCategoryCreateInput, NewsCategoryUpdateInput, ReviewTemplate, ReviewTemplateCreateInput, ReviewTemplateUpdateInput, Guide, GuideCreateInput, GuideUpdateInput, GuideDifficulty, BlogCreateInput, BlogUpdateInput, TrendPoint } from './types';
 import { LibraryStatus, PlatformType } from './types';
 import type { UserGrowthPoint, GamePopularityItem, ContentEngagement, Distributions, ActiveUserData, ActiveUserDataPoint, DashboardStats, DashboardTrendPoint, AuditLogStat, UserTag, UserSegment, SegmentMember, BehaviorProfile, BehaviorDistributions, PeakHourData, AdvancedSearchFilters, RecommendationItem, LeaderboardEntry, SearchTrend, SearchTrendData, GameTrendData, DistributionData, CommunitySummary, XpTransaction, PointTransaction, GamificationStats, PlatformAchievement, UserPlatformAchievement, Conversation, Message, UserLeaderboardEntry, ImageTo3dTask } from './types';
@@ -43,8 +44,8 @@ abstract class BaseApiService {
   abstract createGame(data: Record<string, unknown>): Promise<Game>;
   abstract updateGame(id: string, data: Record<string, unknown>): Promise<Game>;
   abstract deleteGame(id: string): Promise<void>;
-  abstract getNews(params?: PaginationParams): Promise<NewsArticle[]>;
-  abstract getNewsArticle(id: string): Promise<NewsArticle>;
+  abstract getNews(params?: PaginationParams & { lang?: string }): Promise<NewsArticle[]>;
+  abstract getNewsArticle(id: string, lang?: string): Promise<NewsArticle>;
   abstract createNewsArticle(data: Record<string, unknown>): Promise<NewsArticle>;
   abstract updateNewsArticle(id: string, data: Record<string, unknown>): Promise<NewsArticle>;
   abstract deleteNewsArticle(id: string): Promise<void>;
@@ -577,8 +578,9 @@ class RealApiService extends BaseApiService {
     await this.client.delete(`/games/${id}`);
   }
 
-  async getNews(params?: PaginationParams) {
-    const response = await this.client.get<{ news: any[]; pagination: any }>('/news', params);
+  async getNews(params?: PaginationParams & { lang?: string }) {
+    const lang = params?.lang || i18n.language;
+    const response = await this.client.get<{ news: any[]; pagination: any }>('/news', { ...params, lang });
     return (response.news || []).map((item: any) => ({
       id: item.id,
       title: item.title,
@@ -593,11 +595,12 @@ class RealApiService extends BaseApiService {
       likes: item.likes || 0,
       isPinned: Boolean(item.isPinned ?? item.is_pinned),
       reviewStatus: item.reviewStatus || item.review_status || 'pending',
+      translations: item.translations,
     }));
   }
 
-  async getNewsArticle(id: string) {
-    const response = await this.client.get<any>(`/news/${id}`);
+  async getNewsArticle(id: string, lang?: string) {
+    const response = await this.client.get<any>(`/news/${id}`, { lang: lang || i18n.language });
     const item = response;
     return {
       id: item.id,
@@ -612,6 +615,7 @@ class RealApiService extends BaseApiService {
       views: item.views || 0,
       likes: item.likes || 0,
       isPinned: Boolean(item.isPinned ?? item.is_pinned),
+      translations: item.translations,
     } as NewsArticle;
   }
 
@@ -1982,13 +1986,13 @@ class MockApiService extends BaseApiService {
     console.log('Mock: 删除游戏', id);
   }
 
-  async getNews(params?: PaginationParams) {
+  async getNews(params?: PaginationParams & { lang?: string }) {
     const response = await this.mockClient.getNews(params);
     const mockNews = response.data?.news || [];
     return mockNews.map(news => this.convertMockNews(news));
   }
 
-  async getNewsArticle(id: string) {
+  async getNewsArticle(id: string, lang?: string) {
     const response = await this.mockClient.getNewsArticle(id);
     if (!response.data?.article) {
       throw new Error('新闻不存在');

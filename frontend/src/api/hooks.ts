@@ -13,6 +13,7 @@
 
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import apiService from './index';
+import i18n from '../i18n';
 import { useAuth } from '../contexts/AuthContext';
 import type { PaginationParams, ReviewCreateRequest, ReviewUpdateRequest, SearchFilters, NotificationQueryParams, Review, LibraryStatus, PlatformOwnership, PlatformType, AboutAllData, AdvancedSearchFilters, GamificationStats, XpTransaction, PointTransaction, PlatformAchievement, UserPlatformAchievement, Conversation, Message, UserLeaderboardEntry, Guide, GuideCreateInput, GuideUpdateInput, BlogCreateInput, BlogUpdateInput } from './types';
 
@@ -184,9 +185,10 @@ export const useGame = (id: string) => {
  * @returns 新闻文章列表，retry=1, staleTime=30s
  */
 export const useNews = (params?: PaginationParams) => {
+  const lang = i18n.language;
   return useQuery({
-    queryKey: queryKeys.news.list(params),
-    queryFn: () => apiService.getNews(params),
+    queryKey: queryKeys.news.list({ ...params, lang }),
+    queryFn: () => apiService.getNews({ ...params, lang }),
     select: (response) => response || [],
     retry: 1,
     staleTime: 30000,
@@ -200,9 +202,10 @@ export const useNews = (params?: PaginationParams) => {
  * @returns 新闻文章详情
  */
 export const useNewsArticle = (id: string) => {
+  const lang = i18n.language;
   return useQuery({
-    queryKey: queryKeys.news.detail(id),
-    queryFn: () => apiService.getNewsArticle(id),
+    queryKey: [...queryKeys.news.details(), id, lang],
+    queryFn: () => apiService.getNewsArticle(id, lang),
     select: (response) => response,
     enabled: !!id,
   });

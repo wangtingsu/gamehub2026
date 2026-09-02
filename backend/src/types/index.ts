@@ -488,6 +488,16 @@ export interface GameUpdateInput {
 
 // 新闻相关类型
 
+/** 新闻单语言翻译内容（对应 news 表的 title_xx / content_xx / excerpt_xx 列） */
+export interface NewsTranslation {
+  title?: string;
+  content?: string;
+  excerpt?: string;
+}
+
+/** 新闻多语言翻译集合，键为数据库列后缀（en/ja/ko/es/fr；中文「zh」对应基础列，不在此集合内） */
+export type NewsTranslations = Partial<Record<'en' | 'ja' | 'ko' | 'es' | 'fr', NewsTranslation>>;
+
 /** 新闻实体 */
 export interface News {
   id: string;
@@ -510,6 +520,9 @@ export interface News {
   gameName?: string;
   createdAt: Date;
   updatedAt: Date;
+
+  // 多语言翻译内容
+  translations?: NewsTranslations;
 
   // 审核字段
   reviewStatus?: ReviewStatus;
@@ -536,6 +549,7 @@ export interface NewsCreateInput {
   status?: ReviewStatus;
   isPinned?: boolean;
   gameName?: string;
+  translations?: NewsTranslations;
 }
 
 /** 新闻更新输入 */
@@ -549,6 +563,7 @@ export interface NewsUpdateInput {
   isPublished?: boolean;
   isPinned?: boolean;
   gameName?: string;
+  translations?: NewsTranslations;
   reviewStatus?: ReviewStatus;
   reviewComment?: string;
 }

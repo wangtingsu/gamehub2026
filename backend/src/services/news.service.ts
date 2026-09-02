@@ -13,12 +13,74 @@ import {
   News,
   NewsCreateInput,
   NewsUpdateInput,
+  NewsTranslations,
   PaginationParams,
   ReviewStatus,
   SearchParams
 } from '../types';
 import { NotFoundError, ConflictError } from '../middlewares/error.middleware';
 import { applyAiReview } from './ai-review.service';
+
+/**
+ * 新闻多语言支持的翻译列后缀（不含中文——中文对应基础列 title/content/excerpt）。
+ * 与 news 表的 title_xx / content_xx / excerpt_xx 列一一对应。
+ */
+const TRANSLATION_SUFFIXES = ['en', 'ja', 'ko', 'es', 'fr'] as const;
+type TranslationSuffix = typeof TRANSLATION_SUFFIXES[number];
+
+/**
+ * 将请求语言代码映射为翻译列后缀。
+ * 中文（zh-CN / zh / cn）映射为基础列（返回 null），其余取小写前两段并校验。
+ *
+ * @param lang - 语言代码（如 "en"、"zh-CN"、"ja"），默认 zh-CN
+ * @returns 翻译列后缀，中文或未支持语言返回 null（回退基础列）
+ */
+const langToSuffix = (lang?: string): TranslationSuffix | null => {
+  const l = (lang || 'zh-CN').toLowerCase();
+  if (l === 'zh-cn' || l === 'zh' || l === 'cn') return null;
+  const base = l.split('-')[0];
+  return (TRANSLATION_SUFFIXES as readonly string[]).includes(base)
+    ? (base as TranslationSuffix)
+    : null;
+};
+
+/**
+ * 根据语言本地化新闻字段。
+ * 用该语言的翻译覆盖 title/content/excerpt，为空则回退基础列；其余字段原样保留。
+ *
+ * @param news - 原始 News 对象（含 translations）
+ * @param lang - 请求语言代码
+ * @returns 本地化后的 News 对象
+ */
+const localizeNews = (news: News, lang?: string): News => {
+  const suffix = langToSuffix(lang);
+  if (!suffix) return news; // 中文或未支持语言 → 基础列
+  const tr = news.translations?.[suffix];
+  if (!tr) return news;
+  return {
+    ...news,
+    title: tr.title || news.title,
+    content: tr.content || news.content,
+    excerpt: tr.excerpt || news.excerpt,
+  };
+};
+
+/**
+ * 从翻译对象生成数据库列名与参数（用于 createNews 的 INSERT）。
+ *
+ * @param translations - 多语言翻译对象
+ * @returns 翻译列名数组与对应参数数组
+ */
+const translationColumns = (translations?: NewsTranslations): { cols: string[]; params: any[] } => {
+  const cols: string[] = [];
+  const params: any[] = [];
+  for (const suffix of TRANSLATION_SUFFIXES) {
+    const tr = translations?.[suffix];
+    cols.push(`title_${suffix}`, `content_${suffix}`, `excerpt_${suffix}`);
+    params.push(tr?.title || null, tr?.content || null, tr?.excerpt || null);
+  }
+  return { cols, params };
+};
 
 /**
  * 将数据库行映射为 News 对象
@@ -29,32 +91,50 @@ import { applyAiReview } from './ai-review.service';
  * @param dbNews - 数据库查询结果行
  * @returns 标准化的 News 对象
  */
-const mapNewsFromDb = (dbNews: any): News => ({
-  id: dbNews.id.toString(),
-  title: dbNews.title,
-  slug: dbNews.slug,
-  content: dbNews.content,
-  excerpt: dbNews.excerpt || '',
-  coverImageUrl: dbNews.cover_image_url,
-  authorId: dbNews.author_id.toString(),
-  authorName: dbNews.author_name || null,
-  authorDisplayName: dbNews.author_display_name || null,
-  category: dbNews.category,
-  tags: typeof dbNews.tags === 'string' ? JSON.parse(dbNews.tags) : dbNews.tags || [],
-  isPublished: Boolean(dbNews.is_published),
-  isPinned: Boolean(dbNews.is_pinned),
-  gameName: dbNews.game_name || undefined,
-  publishedAt: dbNews.published_at ? new Date(dbNews.published_at) : undefined,
-  views: dbNews.views,
-  likes: dbNews.likes,
-  comments: dbNews.comments,
-  createdAt: new Date(dbNews.created_at),
-  updatedAt: new Date(dbNews.updated_at),
-  reviewStatus: dbNews.review_status as ReviewStatus | undefined,
-  reviewComment: dbNews.review_comment || undefined,
-  reviewedBy: dbNews.reviewed_by ? String(dbNews.reviewed_by) : undefined,
-  reviewedAt: dbNews.reviewed_at ? new Date(dbNews.reviewed_at) : undefined,
-});
+const mapNewsFromDb = (dbNews: any): News => {
+  // 读取多语言翻译列（不含中文，中文对应基础列）
+  const translations: NewsTranslations = {};
+  for (const suffix of TRANSLATION_SUFFIXES) {
+    const title = dbNews[`title_${suffix}`];
+    const content = dbNews[`content_${suffix}`];
+    const excerpt = dbNews[`excerpt_${suffix}`];
+    if (title || content || excerpt) {
+      translations[suffix] = {
+        ...(title ? { title } : {}),
+        ...(content ? { content } : {}),
+        ...(excerpt ? { excerpt } : {}),
+      };
+    }
+  }
+
+  return {
+    id: dbNews.id.toString(),
+    title: dbNews.title,
+    slug: dbNews.slug,
+    content: dbNews.content,
+    excerpt: dbNews.excerpt || '',
+    coverImageUrl: dbNews.cover_image_url,
+    authorId: dbNews.author_id.toString(),
+    authorName: dbNews.author_name || null,
+    authorDisplayName: dbNews.author_display_name || null,
+    category: dbNews.category,
+    tags: typeof dbNews.tags === 'string' ? JSON.parse(dbNews.tags) : dbNews.tags || [],
+    isPublished: Boolean(dbNews.is_published),
+    isPinned: Boolean(dbNews.is_pinned),
+    gameName: dbNews.game_name || undefined,
+    publishedAt: dbNews.published_at ? new Date(dbNews.published_at) : undefined,
+    views: dbNews.views,
+    likes: dbNews.likes,
+    comments: dbNews.comments,
+    createdAt: new Date(dbNews.created_at),
+    updatedAt: new Date(dbNews.updated_at),
+    translations,
+    reviewStatus: dbNews.review_status as ReviewStatus | undefined,
+    reviewComment: dbNews.review_comment || undefined,
+    reviewedBy: dbNews.reviewed_by ? String(dbNews.reviewed_by) : undefined,
+    reviewedAt: dbNews.reviewed_at ? new Date(dbNews.reviewed_at) : undefined,
+  };
+};
 
 /**
  * 将 camelCase 字符串转换为 snake_case
@@ -82,7 +162,8 @@ const camelToSnakeCase = (str: string): string => {
  */
 export const getNews = async (
   pagination: PaginationParams = {},
-  filters: { category?: string; publishedOnly?: boolean; reviewStatus?: string } = {}
+  filters: { category?: string; publishedOnly?: boolean; reviewStatus?: string } = {},
+  lang?: string
 ): Promise<{ news: News[]; total: number; page: number; limit: number }> => {
   const { page = 1, limit = 20, sortBy = 'createdAt', sortOrder = 'desc' } = pagination;
   const offset = (page - 1) * limit;
@@ -141,7 +222,7 @@ export const getNews = async (
   const dataParams = [...queryParams, limit, offset];
   const result = await query(dataSql, dataParams);
 
-  const news = result.map(mapNewsFromDb);
+  const news = result.map(mapNewsFromDb).map((n) => localizeNews(n, lang));
 
   logger.debug(`获取新闻列表成功，第${page}页，每页${limit}条，共${total}条`);
 
@@ -164,7 +245,8 @@ export const getNews = async (
  * @returns 搜索结果及分页元数据
  */
 export const searchNews = async (
-  searchParams: SearchParams
+  searchParams: SearchParams,
+  lang?: string
 ): Promise<{ news: News[]; total: number; page: number; limit: number; query?: string }> => {
   const { query: searchQuery = '', page = 1, limit = 20, filters = {} } = searchParams;
   const offset = (page - 1) * limit;
@@ -221,7 +303,7 @@ export const searchNews = async (
   const dataParams = [...queryParams, limit, offset];
   const result = await query(dataSql, dataParams);
 
-  const news = result.map(mapNewsFromDb);
+  const news = result.map(mapNewsFromDb).map((n) => localizeNews(n, lang));
 
   logger.debug(`搜索新闻成功，关键词: "${searchQuery}"，找到${total}条结果`);
 
@@ -243,7 +325,7 @@ export const searchNews = async (
  * @returns News 对象
  * @throws 当新闻不存在时抛出 NotFoundError
  */
-export const getNewsById = async (id: string): Promise<News> => {
+export const getNewsById = async (id: string, lang?: string): Promise<News> => {
   const result = await query(
     `SELECT n.*, u.username as author_name, u.display_name as author_display_name
      FROM news n
@@ -256,7 +338,7 @@ export const getNewsById = async (id: string): Promise<News> => {
     throw new NotFoundError(`新闻ID ${id} 不存在`);
   }
 
-  const news = mapNewsFromDb(result[0]);
+  const news = localizeNews(mapNewsFromDb(result[0]), lang);
   // 增加浏览量（每次访问 +1）
   await execute(
     'UPDATE news SET views = views + 1 WHERE id = ?',
@@ -277,7 +359,7 @@ export const getNewsById = async (id: string): Promise<News> => {
  * @returns News 对象
  * @throws 当 slug 对应的新闻不存在时抛出 NotFoundError
  */
-export const getNewsBySlug = async (slug: string): Promise<News> => {
+export const getNewsBySlug = async (slug: string, lang?: string): Promise<News> => {
   const result = await query(
     `SELECT n.*, u.username as author_name, u.display_name as author_display_name
      FROM news n
@@ -290,7 +372,7 @@ export const getNewsBySlug = async (slug: string): Promise<News> => {
     throw new NotFoundError(`新闻slug ${slug} 不存在`);
   }
 
-  const news = mapNewsFromDb(result[0]);
+  const news = localizeNews(mapNewsFromDb(result[0]), lang);
   // 增加浏览量
   await execute(
     'UPDATE news SET views = views + 1 WHERE id = ?',
@@ -342,11 +424,14 @@ export const createNews = async (
       }
     }
 
+    const { cols: trCols, params: trParams } = translationColumns(newsData.translations);
+
     const result = await execute(
       `INSERT INTO news (
         title, slug, content, excerpt, cover_image_url, author_id,
         category, tags, is_published, is_pinned, game_name, published_at, review_status
-      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+        ${trCols.length ? `, ${trCols.join(', ')}` : ''}
+      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?${trCols.length ? `, ${trCols.map(() => '?').join(', ')}` : ''})`,
       [
         newsData.title,
         slug,
@@ -361,6 +446,7 @@ export const createNews = async (
         newsData.gameName || null,
         new Date().toISOString(),
         initialStatus,
+        ...trParams,
       ]
     );
 
@@ -471,6 +557,26 @@ export const updateNews = async (
     values.push(updateData.reviewComment);
   }
 
+  // 多语言翻译字段更新
+  if (updateData.translations !== undefined) {
+    for (const suffix of TRANSLATION_SUFFIXES) {
+      const tr = updateData.translations[suffix];
+      if (!tr) continue;
+      if (tr.title !== undefined) {
+        updates.push(`title_${suffix} = ?`);
+        values.push(tr.title || null);
+      }
+      if (tr.content !== undefined) {
+        updates.push(`content_${suffix} = ?`);
+        values.push(tr.content || null);
+      }
+      if (tr.excerpt !== undefined) {
+        updates.push(`excerpt_${suffix} = ?`);
+        values.push(tr.excerpt || null);
+      }
+    }
+  }
+
   // 没有需要更新的字段则直接返回当前数据
   if (updates.length === 0) {
     return getNewsById(id);
@@ -522,7 +628,8 @@ export const updateNews = async (
  */
 export const getMyNews = async (
   userId: string,
-  pagination: PaginationParams & { status?: string } = {}
+  pagination: PaginationParams & { status?: string } = {},
+  lang?: string
 ): Promise<{ news: News[]; total: number; page: number; limit: number }> => {
   const { page = 1, limit = 20, status } = pagination;
   const offset = (page - 1) * limit;
@@ -555,7 +662,7 @@ export const getMyNews = async (
     dataParams
   );
 
-  const news = result.map(mapNewsFromDb);
+  const news = result.map(mapNewsFromDb).map((n) => localizeNews(n, lang));
 
   return { news, total, page, limit };
 };

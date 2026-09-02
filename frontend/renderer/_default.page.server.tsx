@@ -307,7 +307,7 @@ function buildJsonLdGraph(opts: {
  * @param queryClient - React Query 的 QueryClient 实例，用于执行预取操作
  * @param urlPathname - 当前请求的 URL 路径，用于判断需要预取哪些数据
  */
-async function prefetchData(queryClient: QueryClient, urlPathname: string) {
+async function prefetchData(queryClient: QueryClient, urlPathname: string, lang: string) {
   // 仅首页（/、/en、/en/、/cn、/cn/ 等）触发首页预取；避免 /en/blog/89 等子路径误命中
   if (urlPathname === '/' || /^\/(en|cn|ja|ko|es|fr)\/?$/.test(urlPathname)) {
     console.log('预取首页数据:', urlPathname)
@@ -317,8 +317,8 @@ async function prefetchData(queryClient: QueryClient, urlPathname: string) {
         queryFn: () => apiService.getGames({ page: 1, limit: 8 })
       })
       await queryClient.prefetchQuery({
-        queryKey: queryKeys.news.list({ page: 1, limit: 6 }),
-        queryFn: () => apiService.getNews({ page: 1, limit: 6 })
+        queryKey: queryKeys.news.list({ page: 1, limit: 6, lang }),
+        queryFn: () => apiService.getNews({ page: 1, limit: 6, lang })
       })
       await queryClient.prefetchQuery({
         queryKey: queryKeys.reviews.list({ page: 1, limit: 4, sort: 'popular' }),
@@ -350,8 +350,8 @@ async function prefetchData(queryClient: QueryClient, urlPathname: string) {
     if (match) {
       try {
         await queryClient.prefetchQuery({
-          queryKey: queryKeys.news.detail(match[1]),
-          queryFn: () => apiService.getNewsArticle(match[1])
+          queryKey: [...queryKeys.news.details(), match[1], lang],
+          queryFn: () => apiService.getNewsArticle(match[1], lang)
         })
       } catch (apiError) {
         console.warn('新闻详情API预取失败:', apiError)
@@ -403,7 +403,7 @@ async function render(pageContext: PageContextServer) {
     },
   })
 
-  await prefetchData(serverQueryClient, urlPathname)
+  await prefetchData(serverQueryClient, urlPathname, i18nLang)
   const dehydratedState = dehydrate(serverQueryClient)
   const isProduction = typeof process !== "undefined" && process.env.NODE_ENV === "production"
 
@@ -450,7 +450,7 @@ async function render(pageContext: PageContextServer) {
     queryKeys.games.list({ page: 1, limit: 8 }),
   )
   const news = serverQueryClient.getQueryData<NewsArticle[]>(
-    queryKeys.news.list({ page: 1, limit: 6 }),
+    queryKeys.news.list({ page: 1, limit: 6, lang: i18nLang }),
   )
   const reviews = serverQueryClient.getQueryData<Review[]>(
     queryKeys.reviews.list({ page: 1, limit: 4, sort: 'popular' }),
@@ -465,7 +465,7 @@ async function render(pageContext: PageContextServer) {
   let newsDetail: NewsArticle | null = null
   const newsIdMatch = urlPathname.match(/\/news\/([^/]+)/)
   if (newsIdMatch) {
-    newsDetail = serverQueryClient.getQueryData<NewsArticle>(queryKeys.news.detail(newsIdMatch[1])) ?? null
+    newsDetail = serverQueryClient.getQueryData<NewsArticle>([...queryKeys.news.details(), newsIdMatch[1], i18nLang]) ?? null
   }
 
   // 每页独立 title/description：详情页用真实内容标题，而非 slug 占位（SEO 收录基建）

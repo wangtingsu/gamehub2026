@@ -58,7 +58,7 @@ router.get(
   optionalAuthenticate,
   validateRequest(paginationSchema),
   asyncHandler(async (req: Request, res: Response) => {
-    const { page = 1, limit = 20, category, published, reviewStatus } = req.query;
+    const { page = 1, limit = 20, category, published, reviewStatus, lang } = req.query;
     const publishedOnly = published === undefined ? true : published === 'true';
 
     // 管理员可查看所有状态的新闻，普通用户仅看已审核
@@ -76,7 +76,8 @@ router.get(
         category: category as string,
         publishedOnly,
         reviewStatus: reviewStatusFilter,
-      }
+      },
+      lang as string | undefined
     );
 
     const totalPages = Math.ceil(total / currentLimit);
@@ -132,7 +133,7 @@ router.get(
   optionalAuthenticate,
   validateRequest(searchSchema),
   asyncHandler(async (req: Request, res: Response) => {
-    const { query, category, page = 1, limit = 20 } = req.query;
+    const { query, category, page = 1, limit = 20, lang } = req.query;
 
     const { news, total, page: currentPage, limit: currentLimit, query: searchQuery } = await newsService.searchNews({
       query: query as string,
@@ -142,7 +143,7 @@ router.get(
         category: category as string,
         publishedOnly: true,
       },
-    });
+    }, lang as string | undefined);
 
     const totalPages = Math.ceil(total / currentLimit);
 
@@ -275,12 +276,13 @@ router.get(
   optionalAuthenticate,
   asyncHandler(async (req: Request, res: Response) => {
     const { id } = req.params;
+    const lang = req.query.lang as string | undefined;
 
     // 自动判断：纯数字 ID 按主键查询，否则按 slug 查询
     const isNumeric = /^\d+$/.test(id);
     const news = isNumeric
-      ? await newsService.getNewsById(id)
-      : await newsService.getNewsBySlug(id);
+      ? await newsService.getNewsById(id, lang)
+      : await newsService.getNewsBySlug(id, lang);
 
     res.json({
       success: true,

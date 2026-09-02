@@ -24,6 +24,15 @@ const { Option } = Select;
 const { TabPane } = Tabs;
 const { TextArea } = Input;
 
+// 新闻翻译语言（不含中文——中文对应基础列 title/excerpt/content）
+const NEWS_TRANSLATION_LANGS = [
+  { key: 'en', label: 'English' },
+  { key: 'ja', label: '日本語' },
+  { key: 'ko', label: '한국어' },
+  { key: 'es', label: 'Español' },
+  { key: 'fr', label: 'Français' },
+] as const;
+
 type ContentType = 'news' | 'blogs' | 'guides' | 'reviews' | 'community' | 'blogspaces' | 'categories' | 'templates';
 
 interface ContentStats {
@@ -675,6 +684,10 @@ const Content: React.FC = () => {
       formValues.difficulty = (content as Guide).difficulty || 'medium';
       formValues.estimatedMinutes = (content as Guide).estimatedMinutes;
     }
+    // 新闻：表单字段用 excerpt（对应后端 excerpt 列），回填时从 summary 映射
+    if (type === 'news') {
+      formValues.excerpt = (content as NewsArticle).summary || (content as any).excerpt || '';
+    }
     form.setFieldsValue(formValues);
     setIsModalVisible(true);
   };
@@ -1233,13 +1246,40 @@ const Content: React.FC = () => {
         >
           {activeTab === 'news' && (
             <>
-              <Form.Item
-                label="Title"
-                name="title"
-                rules={[{ required: true, message: 'Please enter title' }]}
-              >
-                <Input placeholder="Enter news title" />
-              </Form.Item>
+              <Tabs defaultActiveKey="zh">
+                <TabPane tab="简体中文（默认）" key="zh">
+                  <Form.Item
+                    label="标题"
+                    name="title"
+                    rules={[{ required: true, message: 'Please enter title' }]}
+                  >
+                    <Input placeholder="Enter news title" />
+                  </Form.Item>
+                  <Form.Item label="摘要" name="excerpt">
+                    <TextArea rows={2} placeholder="Enter news summary (optional)" />
+                  </Form.Item>
+                  <Form.Item
+                    label="正文"
+                    name="content"
+                    rules={[{ required: true, message: 'Please enter content' }]}
+                  >
+                    <BlogEditor />
+                  </Form.Item>
+                </TabPane>
+                {NEWS_TRANSLATION_LANGS.map(({ key, label }) => (
+                  <TabPane tab={label} key={key}>
+                    <Form.Item label="标题" name={['translations', key, 'title']}>
+                      <Input placeholder={`${label} title`} />
+                    </Form.Item>
+                    <Form.Item label="摘要" name={['translations', key, 'excerpt']}>
+                      <TextArea rows={2} placeholder={`${label} summary`} />
+                    </Form.Item>
+                    <Form.Item label="正文" name={['translations', key, 'content']}>
+                      <BlogEditor />
+                    </Form.Item>
+                  </TabPane>
+                ))}
+              </Tabs>
 
               <Form.Item
                 label="Author"
@@ -1435,17 +1475,19 @@ const Content: React.FC = () => {
             </>
           )}
 
-          <Form.Item
-            label="Content"
-            name="content"
-            rules={[{ required: true, message: 'Please enter content' }]}
-          >
-            {activeTab === 'news' || activeTab === 'blogs' ? (
-              <BlogEditor />
-            ) : (
-              <TextArea rows={6} placeholder="Enter content..." />
-            )}
-          </Form.Item>
+          {activeTab !== 'news' && (
+            <Form.Item
+              label="Content"
+              name="content"
+              rules={[{ required: true, message: 'Please enter content' }]}
+            >
+              {activeTab === 'blogs' ? (
+                <BlogEditor />
+              ) : (
+                <TextArea rows={6} placeholder="Enter content..." />
+              )}
+            </Form.Item>
+          )}
 
 
           <Form.Item className="mb-0">
