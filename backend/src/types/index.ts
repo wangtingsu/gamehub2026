@@ -503,6 +503,8 @@ export interface News {
   id: string;
   title: string;
   slug: string;
+  /** 主标题：用于生成 URL slug 后缀（替代原先的英文标题作为 slug 来源） */
+  maintitle?: string;
   content: string;
   excerpt?: string;
   coverImageUrl?: string;
@@ -546,6 +548,8 @@ export interface NewsCreateInput {
   category: string;
   tags?: string[];
   slug?: string;
+  /** 主标题：用于生成 URL slug 后缀（必填，替代英文标题作为 slug 来源） */
+  maintitle?: string;
   status?: ReviewStatus;
   isPinned?: boolean;
   gameName?: string;
@@ -563,6 +567,8 @@ export interface NewsUpdateInput {
   isPublished?: boolean;
   isPinned?: boolean;
   gameName?: string;
+  /** 主标题：用于生成 URL slug 后缀 */
+  maintitle?: string;
   translations?: NewsTranslations;
   reviewStatus?: ReviewStatus;
   reviewComment?: string;

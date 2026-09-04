@@ -584,6 +584,7 @@ class RealApiService extends BaseApiService {
     return (response.news || []).map((item: any) => ({
       id: item.id,
       slug: item.slug || '',
+      maintitle: item.maintitle || '',
       title: item.title,
       summary: item.excerpt || item.summary || '',
       content: item.content || '',
@@ -606,6 +607,7 @@ class RealApiService extends BaseApiService {
     return {
       id: item.id,
       slug: item.slug || '',
+      maintitle: item.maintitle || '',
       title: item.title,
       summary: item.excerpt || item.summary || '',
       content: item.content || '',

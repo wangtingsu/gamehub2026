@@ -344,6 +344,8 @@ export type NewsArticleTranslations = Partial<
 export interface NewsArticle {
   id: string;
   slug?: string;
+  /** 主标题：用于生成 URL slug 后缀 */
+  maintitle?: string;
   title: string;
   summary: string;
   content: string;

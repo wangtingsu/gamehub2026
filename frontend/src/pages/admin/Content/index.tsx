@@ -1329,7 +1329,6 @@ const Content: React.FC = () => {
                     <Form.Item
                       label="标题"
                       name={['translations', key, 'title']}
-                      rules={key === 'en' ? [{ required: true, message: 'Please enter English title' }] : []}
                     >
                       <Input placeholder={`${label} title`} />
                     </Form.Item>
@@ -1342,6 +1341,15 @@ const Content: React.FC = () => {
                   </TabPane>
                 ))}
               </Tabs>
+
+              <Form.Item
+                label="主标题 / Main Title（URL 后缀）"
+                name="maintitle"
+                rules={[{ required: true, message: 'Please enter main title' }]}
+                tooltip="用于生成新闻链接的后缀（slug），例如 /news/your-main-title"
+              >
+                <Input placeholder="Enter main title (used for URL slug)" />
+              </Form.Item>
 
               <Form.Item
                 label="Author"

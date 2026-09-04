@@ -111,6 +111,7 @@ const mapNewsFromDb = (dbNews: any): News => {
     id: dbNews.id.toString(),
     title: dbNews.title,
     slug: dbNews.slug,
+    maintitle: dbNews.maintitle || undefined,
     content: dbNews.content,
     excerpt: dbNews.excerpt || '',
     coverImageUrl: dbNews.cover_image_url,
@@ -408,25 +409,25 @@ export const createNews = async (
 
   let newsId = '';
 
-  // 英文标题必填
-  const englishTitle = (newsData.translations?.en?.title || '').trim();
-  if (!englishTitle) {
-    throw new ValidationError('英文标题不能为空');
+  // 主标题（maintitle）必填，作为 URL slug 后缀来源
+  const maintitle = (newsData.maintitle || '').trim();
+  if (!maintitle) {
+    throw new ValidationError('主标题（maintitle）不能为空');
   }
 
   // 事务内插入文章记录
   await transaction(async () => {
-    // 英文标题唯一性校验（不区分大小写）
+    // 主标题唯一性校验（不区分大小写）
     const dupTitle = await query(
-      'SELECT id FROM news WHERE LOWER(title_en) = LOWER(?)',
-      [englishTitle]
+      'SELECT id FROM news WHERE LOWER(maintitle) = LOWER(?)',
+      [maintitle]
     );
     if (dupTitle.length > 0) {
-      throw new ConflictError(`英文标题 "${englishTitle}" 已被其他新闻使用`);
+      throw new ConflictError(`主标题 "${maintitle}" 已被其他新闻使用`);
     }
 
-    // slug 用英文标题生成（SEO 友好、无中文 URL 编码）
-    const slug = generateSlug(englishTitle);
+    // slug 用主标题生成（SEO 友好、无中文 URL 编码）
+    const slug = generateSlug(maintitle);
 
     // 非草稿模式下检查 slug 唯一性
     if (!isDraft) {
@@ -444,12 +445,13 @@ export const createNews = async (
 
     const result = await execute(
       `INSERT INTO news (
-        title, slug, content, excerpt, cover_image_url, author_id,
+        title, maintitle, slug, content, excerpt, cover_image_url, author_id,
         category, tags, is_published, is_pinned, game_name, published_at, review_status
         ${trCols.length ? `, ${trCols.join(', ')}` : ''}
-      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?${trCols.length ? `, ${trCols.map(() => '?').join(', ')}` : ''})`,
+      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?${trCols.length ? `, ${trCols.map(() => '?').join(', ')}` : ''})`,
       [
         newsData.title,
+        maintitle,
         slug,
         newsData.content,
         newsData.excerpt || '',
@@ -515,6 +517,11 @@ export const updateNews = async (
   if (updateData.title !== undefined) {
     updates.push(`title = ?`);
     values.push(updateData.title);
+  }
+
+  if (updateData.maintitle !== undefined) {
+    updates.push(`maintitle = ?`);
+    values.push(updateData.maintitle);
   }
 
   if (updateData.content !== undefined) {
@@ -593,33 +600,22 @@ export const updateNews = async (
     }
   }
 
-  // 英文标题必填 + 唯一性校验（仅当本次更新提供了英文标题时）
-  if (updateData.translations?.en?.title !== undefined) {
-    const enTitle = (updateData.translations.en.title || '').trim();
-    if (!enTitle) {
-      throw new ValidationError('英文标题不能为空');
+  // 主标题（maintitle）必填 + 唯一性校验（仅当本次更新提供了主标题时）
+  if (updateData.maintitle !== undefined) {
+    const mt = (updateData.maintitle || '').trim();
+    if (!mt) {
+      throw new ValidationError('主标题（maintitle）不能为空');
     }
     const dupTitle = await query(
-      'SELECT id FROM news WHERE LOWER(title_en) = LOWER(?) AND id != ?',
-      [enTitle, id]
+      'SELECT id FROM news WHERE LOWER(maintitle) = LOWER(?) AND id != ?',
+      [mt, id]
     );
     if (dupTitle.length > 0) {
-      throw new ConflictError(`英文标题 "${enTitle}" 已被其他新闻使用`);
+      throw new ConflictError(`主标题 "${mt}" 已被其他新闻使用`);
     }
-  }
-
-  // slug 随标题变化而重建（英文优先），保证 URL 始终指向英文 slug
-  if (updateData.title !== undefined || updateData.translations?.en?.title !== undefined) {
-    const cur = await query('SELECT title, title_en FROM news WHERE id = ?', [id]);
-    const curRow = cur[0] || {};
-    const newBaseTitle = updateData.title !== undefined ? updateData.title : curRow.title;
-    const newEnglishTitle =
-      updateData.translations?.en?.title !== undefined
-        ? updateData.translations.en.title
-        : (curRow.title_en || '');
-    const slugSource = (newEnglishTitle || '').trim() || newBaseTitle;
+    // slug 随主标题变化而重建，保证 URL 始终指向主标题 slug
     updates.push(`slug = ?`);
-    values.push(generateSlug(slugSource));
+    values.push(generateSlug(mt));
   }
 
   // 没有需要更新的字段则直接返回当前数据
