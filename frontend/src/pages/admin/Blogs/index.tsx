@@ -12,10 +12,12 @@ const { Search } = Input;
 
 /**
  * 封面图片上传组件
- * 支持：上传、URL 输入、预览、删除
+ * 支持：点击 / 拖拽 / 粘贴上传、URL 输入、预览、删除
  */
 const CoverImageField: React.FC<{ value?: string; onChange?: (url: string) => void }> = ({ value, onChange }) => {
   const [uploading, setUploading] = useState(false);
+  const [isDragOver, setIsDragOver] = useState(false);
+  const dragCounter = useRef(0);
 
   const handleUpload = async (file: File) => {
     setUploading(true);
@@ -42,15 +44,64 @@ const CoverImageField: React.FC<{ value?: string; onChange?: (url: string) => vo
     }
   };
 
+  const uploadFiles = (files: FileList | null) => {
+    if (!files || files.length === 0) return;
+    const file = files[0];
+    if (!file.type.startsWith('image/')) { message.warning('请选择图片文件'); return; }
+    handleUpload(file);
+  };
+
+  // ==================== 拖拽上传 ====================
+  const handleDragEnter = (e: React.DragEvent) => {
+    e.preventDefault(); e.stopPropagation();
+    dragCounter.current += 1;
+    if (e.dataTransfer?.types?.includes('Files')) setIsDragOver(true);
+  };
+  const handleDragOver = (e: React.DragEvent) => { e.preventDefault(); e.stopPropagation(); };
+  const handleDragLeave = (e: React.DragEvent) => {
+    e.preventDefault(); e.stopPropagation();
+    dragCounter.current -= 1;
+    if (dragCounter.current <= 0) { dragCounter.current = 0; setIsDragOver(false); }
+  };
+  const handleDrop = (e: React.DragEvent) => {
+    e.preventDefault(); e.stopPropagation();
+    setIsDragOver(false); dragCounter.current = 0;
+    uploadFiles(e.dataTransfer?.files);
+  };
+
+  // ==================== 粘贴上传 ====================
+  const handlePaste = (e: React.ClipboardEvent) => {
+    const items = e.clipboardData?.items;
+    if (!items) return;
+    for (const item of Array.from(items)) {
+      if (item.type.startsWith('image/')) {
+        e.preventDefault();
+        const file = item.getAsFile();
+        if (file) handleUpload(file);
+        return;
+      }
+    }
+  };
+
+  const dragProps = {
+    tabIndex: 0,
+    onDragEnter: handleDragEnter,
+    onDragOver: handleDragOver,
+    onDragLeave: handleDragLeave,
+    onDrop: handleDrop,
+    onPaste: handlePaste,
+    style: { outline: 'none' },
+  };
+
   if (value) {
     return (
-      <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
+      <div {...dragProps} style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
         <div style={{ position: 'relative', display: 'inline-block' }}>
           <Image
             src={value}
             width={320}
             height={180}
-            style={{ objectFit: 'cover', borderRadius: 8 }}
+            style={{ objectFit: 'cover', borderRadius: 8, border: isDragOver ? '3px dashed #1890ff' : '3px solid transparent' }}
             preview={{ mask: '点击查看大图' }}
           />
           <button
@@ -101,12 +152,13 @@ const CoverImageField: React.FC<{ value?: string; onChange?: (url: string) => vo
             删除
           </Button>
         </Space>
+        <p style={{ fontSize: 12, color: '#9ca3af' }}>支持拖拽图片到此处，或点击本区域后 Ctrl+V 粘贴截图</p>
       </div>
     );
   }
 
   return (
-    <div style={{ display: 'flex', alignItems: 'flex-start', gap: 12 }}>
+    <div {...dragProps} style={{ display: 'flex', alignItems: 'flex-start', gap: 12 }}>
       <Upload
         accept="image/*"
         showUploadList={false}
@@ -119,7 +171,8 @@ const CoverImageField: React.FC<{ value?: string; onChange?: (url: string) => vo
           style={{
             width: 200,
             height: 120,
-            border: '2px dashed #d1d5db',
+            border: isDragOver ? '2px dashed #1890ff' : '2px dashed #d1d5db',
+            background: isDragOver ? '#e6f7ff' : undefined,
             borderRadius: 8,
             display: 'flex',
             flexDirection: 'column',
@@ -134,7 +187,7 @@ const CoverImageField: React.FC<{ value?: string; onChange?: (url: string) => vo
             <PlusOutlined style={{ fontSize: 24, color: '#9ca3af' }} />
           )}
           <span style={{ fontSize: 13, color: '#9ca3af', marginTop: 8 }}>
-            {uploading ? '上传中...' : '点击上传封面图'}
+            {uploading ? '上传中...' : '点击 / 拖拽上传封面图'}
           </span>
         </div>
       </Upload>
@@ -146,7 +199,7 @@ const CoverImageField: React.FC<{ value?: string; onChange?: (url: string) => vo
           allowClear
         />
         <p style={{ fontSize: 12, color: '#9ca3af', marginTop: 4 }}>
-          支持 JPG、PNG、WebP，推荐尺寸 1200×630
+          支持 JPG、PNG、WebP，推荐尺寸 1200×630；也可拖拽图片或 Ctrl+V 粘贴截图
         </p>
       </div>
     </div>

@@ -57,6 +57,12 @@ export default defineConfig({
         target: 'http://localhost:3001',
         changeOrigin: true,
       },
+      // 管理后台登录等接口走 /admin-api 前缀，rewrite 成 /api 后透传给后端
+      '/admin-api': {
+        target: 'http://localhost:3001',
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/admin-api/, '/api'),
+      },
       '/uploads': {
         target: 'http://localhost:3001',
         changeOrigin: true,

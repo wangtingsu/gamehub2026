@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { Tabs, Table, Button, Space, Input, Modal, Form, Select, Tag, message, Popconfirm, Switch, Rate, Spin, Upload, Image } from 'antd';
 import type { ColumnsType } from 'antd/es/table';
@@ -55,16 +55,19 @@ interface CurrentContent {
   type: ContentType;
 }
 
-// 封面图片上传组件（带大图预览+删除+URL输入）
+// 封面图片上传组件（支持点击 / 拖拽 / 粘贴上传，带大图预览+删除+URL输入）
 const CoverImageUpload: React.FC<{ value?: string; onChange?: (url: string) => void }> = ({ value, onChange }) => {
   const [uploading, setUploading] = useState(false);
-  const handleUpload = async (file: RcFile) => {
+  const [isDragOver, setIsDragOver] = useState(false);
+  const dragCounter = useRef(0);
+
+  const handleUpload = async (file: RcFile | File) => {
     setUploading(true);
     try {
       const fd = new FormData(); fd.append('file', file);
       const token = localStorage.getItem('adminToken');
-      const res = await fetch('/api/v1/upload/single', {
-        method: 'POST', headers: { Authorization: `Bearer ${token}` }, body: fd,
+      const res = await fetch('/api/v1/upload/image', {
+        method: 'POST', headers: token ? { Authorization: `Bearer ${token}` } : {}, body: fd,
       });
       const d = await res.json();
       if (d.success && d.data?.file?.url) { onChange?.(d.data.file.url); message.success('上传成功'); }
@@ -73,11 +76,61 @@ const CoverImageUpload: React.FC<{ value?: string; onChange?: (url: string) => v
     finally { setUploading(false); }
   };
 
+  // 统一处理拖拽 / 粘贴得到的文件（仅接受图片）
+  const uploadFiles = (files: FileList | null) => {
+    if (!files || files.length === 0) return;
+    const file = files[0];
+    if (!file.type.startsWith('image/')) { message.warning('请选择图片文件'); return; }
+    handleUpload(file);
+  };
+
+  // ==================== 拖拽上传 ====================
+  const handleDragEnter = (e: React.DragEvent) => {
+    e.preventDefault(); e.stopPropagation();
+    dragCounter.current += 1;
+    if (e.dataTransfer?.types?.includes('Files')) setIsDragOver(true);
+  };
+  const handleDragOver = (e: React.DragEvent) => { e.preventDefault(); e.stopPropagation(); };
+  const handleDragLeave = (e: React.DragEvent) => {
+    e.preventDefault(); e.stopPropagation();
+    dragCounter.current -= 1;
+    if (dragCounter.current <= 0) { dragCounter.current = 0; setIsDragOver(false); }
+  };
+  const handleDrop = (e: React.DragEvent) => {
+    e.preventDefault(); e.stopPropagation();
+    setIsDragOver(false); dragCounter.current = 0;
+    uploadFiles(e.dataTransfer?.files);
+  };
+
+  // ==================== 粘贴上传 ====================
+  const handlePaste = (e: React.ClipboardEvent) => {
+    const items = e.clipboardData?.items;
+    if (!items) return;
+    for (const item of Array.from(items)) {
+      if (item.type.startsWith('image/')) {
+        e.preventDefault();
+        const file = item.getAsFile();
+        if (file) handleUpload(file);
+        return;
+      }
+    }
+  };
+
+  const dragProps = {
+    tabIndex: 0,
+    onDragEnter: handleDragEnter,
+    onDragOver: handleDragOver,
+    onDragLeave: handleDragLeave,
+    onDrop: handleDrop,
+    onPaste: handlePaste,
+    style: { outline: 'none' },
+  };
+
   if (value) {
     return (
-      <div className="space-y-3">
+      <div {...dragProps} className="space-y-3">
         <div className="relative inline-block group">
-          <Image src={value} width={240} height={150} style={{ objectFit: 'cover', borderRadius: 8 }} preview={{ mask: '点击查看大图' }} />
+          <Image src={value} width={240} height={150} style={{ objectFit: 'cover', borderRadius: 8, border: isDragOver ? '3px dashed #1890ff' : '3px solid transparent' }} preview={{ mask: '点击查看大图' }} />
           <button
             type="button"
             onClick={() => onChange?.('')}
@@ -93,22 +146,25 @@ const CoverImageUpload: React.FC<{ value?: string; onChange?: (url: string) => v
           </Upload>
           <Button size="small" danger onClick={() => onChange?.('')}>删除</Button>
         </div>
+        <p className="text-xs text-gray-500">支持拖拽图片到此处，或点击本区域后 Ctrl+V 粘贴截图</p>
       </div>
     );
   }
 
   return (
-    <div className="flex items-start gap-3">
+    <div {...dragProps} className="flex items-start gap-3">
       <Upload accept="image/*" showUploadList={false}
         beforeUpload={(f) => { handleUpload(f as RcFile); return false; }}>
-        <div className="flex flex-col items-center justify-center w-[200px] h-[120px] border-2 border-dashed border-gray-500 rounded-lg cursor-pointer hover:border-blue-400">
+        <div
+          className={`flex flex-col items-center justify-center w-[200px] h-[120px] border-2 border-dashed rounded-lg cursor-pointer ${isDragOver ? 'border-blue-400 bg-blue-50' : 'border-gray-500 hover:border-blue-400'}`}
+        >
           {uploading ? <Spin /> : <PlusOutlined className="text-2xl text-gray-400" />}
-          <span className="text-sm text-gray-400 mt-2">{uploading ? '上传中...' : '点击上传封面图'}</span>
+          <span className="text-sm text-gray-400 mt-2">{uploading ? '上传中...' : '点击 / 拖拽上传封面图'}</span>
         </div>
       </Upload>
       <div className="flex-1">
         <Input value={value || ''} onChange={e => onChange?.(e.target.value)} placeholder="或直接粘贴在线图片 URL" allowClear />
-        <p className="text-xs text-gray-500 mt-1">支持 jpg/png/webp，最大 50MB</p>
+        <p className="text-xs text-gray-500 mt-1">支持 jpg/png/webp，最大 50MB；也可拖拽图片或 Ctrl+V 粘贴截图</p>
       </div>
     </div>
   );
