@@ -74,7 +74,7 @@ export default function ServerContent({
             <ul>
               {newsList.map((n) => (
                 <li key={n.id}>
-                  <a href={`/${lang}/news/${n.id}`}>{n.title}</a>
+                  <a href={`/${lang}/news/${n.slug || n.id}`}>{n.title}</a>
                 </li>
               ))}
             </ul>

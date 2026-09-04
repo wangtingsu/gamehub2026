@@ -95,7 +95,7 @@ const NewsPage = () => {
           <>
             <div className="bg-dark-800 rounded-lg border border-dark-700 divide-y divide-dark-700">
               {paginatedNews.map(item => (
-                <Link to={`/${currentLang}/news/${item.id}`} key={item.id} className="block no-underline">
+                <Link to={`/${currentLang}/news/${item.slug || item.id}`} key={item.id} className="block no-underline">
                   <div className="flex items-center gap-4 px-5 py-4 hover:bg-dark-750 transition-colors group">
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center gap-2 mb-1.5">

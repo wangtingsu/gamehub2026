@@ -42,7 +42,7 @@ const FeaturedArticles = () => {
           views: item.views || 0,
           likes: item.likes || 0,
           date: item.publishDate || item.createdAt || '',
-          link: `/${currentLang}/news/${item.id}`,
+          link: `/${currentLang}/news/${item.slug || item.id}`,
         });
       });
     }

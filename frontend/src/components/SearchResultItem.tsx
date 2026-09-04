@@ -78,7 +78,7 @@ const SearchResultItem: React.FC<SearchResultItemProps> = ({ item, query }) => {
           icon: <ReadOutlined style={{ fontSize: '20px' }} />,
           color: 'bg-purple-100 text-purple-800 dark:bg-purple-900 dark:text-purple-300',
           label: '新闻',
-          route: `/${langPrefix}/news/${item.id}`,
+          route: `/${langPrefix}/news/${item.slug || item.id}`,
         };
       case 'community_post':
         return {

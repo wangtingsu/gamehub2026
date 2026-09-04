@@ -339,6 +339,7 @@ async function searchNewsV2(
     results: result.map((row: any) => ({
       id: row.id,
       type: 'news' as const,
+      slug: row.slug,
       title: row.title,
       excerpt: row.excerpt,
       coverImageUrl: row.cover_image_url,

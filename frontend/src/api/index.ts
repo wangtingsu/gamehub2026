@@ -583,6 +583,7 @@ class RealApiService extends BaseApiService {
     const response = await this.client.get<{ news: any[]; pagination: any }>('/news', { ...params, lang });
     return (response.news || []).map((item: any) => ({
       id: item.id,
+      slug: item.slug || '',
       title: item.title,
       summary: item.excerpt || item.summary || '',
       content: item.content || '',
@@ -604,6 +605,7 @@ class RealApiService extends BaseApiService {
     const item = response;
     return {
       id: item.id,
+      slug: item.slug || '',
       title: item.title,
       summary: item.excerpt || item.summary || '',
       content: item.content || '',

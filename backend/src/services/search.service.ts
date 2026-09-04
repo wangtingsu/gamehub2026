@@ -118,6 +118,7 @@ const searchNews = async (queryText: string, limit: number = 10): Promise<any[]>
   return result.map((row: any) => ({
     id: row.id,
     type: 'news',
+    slug: row.slug,
     title: row.title,
     excerpt: row.excerpt,
     coverImageUrl: row.cover_image_url,

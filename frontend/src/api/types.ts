@@ -343,6 +343,7 @@ export type NewsArticleTranslations = Partial<
 
 export interface NewsArticle {
   id: string;
+  slug?: string;
   title: string;
   summary: string;
   content: string;
@@ -804,6 +805,7 @@ export interface SearchResultItem {
   id: string;
   type: 'game' | 'review' | 'news' | 'community_post' | 'user';
   title: string;
+  slug?: string;
   description?: string;
   content?: string;
   excerpt?: string;

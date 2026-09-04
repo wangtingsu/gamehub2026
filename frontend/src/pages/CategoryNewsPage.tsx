@@ -148,7 +148,7 @@ const CategoryNewsPage = () => {
               {paginatedNews.map((item, index) => (
                 <motion.div key={item.id} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.3, delay: index * 0.05 }}>
                   <Card hoverable className="bg-dark-800 border-dark-700 flex flex-col" style={{ height: '360px' }} cover={<div className="relative h-48 overflow-hidden"><img alt={item.title} src={item.imageUrl} className="w-full h-full object-cover" /><div className="absolute top-4 left-4"><Tag color="blue">{item.category}</Tag></div></div>}
-                    onClick={() => { const fallbackIds = ['101','102','103','104','105','106','107','108','201','202','203','204','205','206','207','208','301','302','303','304','305','306','307','308']; if (!fallbackIds.includes(String(item.id))) navigate(`/${lang}/news/${item.id}`); }}>
+                    onClick={() => { const fallbackIds = ['101','102','103','104','105','106','107','108','201','202','203','204','205','206','207','208','301','302','303','304','305','306','307','308']; if (!fallbackIds.includes(String(item.id))) navigate(`/${lang}/news/${item.slug || item.id}`); }}>
                     <Title level={4} className="mb-3">{item.title}</Title>
                     <Paragraph className="text-gray-400 mb-4" ellipsis={{ rows: 3 }}>{item.summary}</Paragraph>
                     <div className="flex items-center justify-between text-gray-400 text-sm">

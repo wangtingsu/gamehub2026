@@ -93,8 +93,8 @@ const NewsDetailPage = () => {
       <SEO title={article.title} description={article.summary}
         keywords={[article.title, article.category].concat(article.tags || []).concat([t('detail.seoKeywords')]).join(', ')}
         image={article.imageUrl} type="article" publishedTime={article.publishDate} modifiedTime={article.publishDate}
-        author={article.author} section={article.category} tags={article.tags} canonical={`/news/${article.id}`} />
-      <SEOBreadcrumb items={[{ name: t('breadcrumb.home'), url: `/${lang}` }, { name: t('breadcrumb.news'), url: `/${lang}/news` }, { name: article.title, url: `/${lang}/news/${article.id}` }]} />
+        author={article.author} section={article.category} tags={article.tags} canonical={`/news/${article.slug || article.id}`} />
+      <SEOBreadcrumb items={[{ name: t('breadcrumb.home'), url: `/${lang}` }, { name: t('breadcrumb.news'), url: `/${lang}/news` }, { name: article.title, url: `/${lang}/news/${article.slug || article.id}` }]} />
       <article>
         <div className="bg-dark-900">
           <div className="bg-dark-800 border-b border-dark-700">
@@ -140,7 +140,7 @@ const NewsDetailPage = () => {
               <Col xs={24} lg={8}>
                 <Card title={t('detail.relatedNews')} className="bg-dark-800 border-dark-700 mb-8">
                   <List dataSource={relatedNews} renderItem={(item) => (
-                    <List.Item className="!px-3 !py-4 border-b border-dark-700 last:border-b-0 cursor-pointer hover:bg-dark-700 rounded-lg transition-all duration-200" onClick={() => navigate(`/${lang}/news/${item.id}`)}>
+                    <List.Item className="!px-3 !py-4 border-b border-dark-700 last:border-b-0 cursor-pointer hover:bg-dark-700 rounded-lg transition-all duration-200" onClick={() => navigate(`/${lang}/news/${item.slug || item.id}`)}>
                       <div className="w-full">
                         <div className="font-medium mb-1 hover:text-blue-600">{item.title}</div>
                         <div className="flex items-center justify-between text-gray-500 text-sm"><span>{formatDate(item.publishDate)}</span><span><EyeOutlined className="mr-1" />{item.views.toLocaleString()}</span></div>
