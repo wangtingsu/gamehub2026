@@ -231,6 +231,8 @@ export interface AuthResponseData {
 export interface Game {
   /** 游戏 ID */
   id: string;
+  /** 游戏 slug（用于 SEO 友好的 URL，如 /games/elden-ring） */
+  slug?: string;
   /** 游戏标题 */
   title: string;
   /** 游戏描述 */
@@ -439,6 +441,8 @@ export interface Review {
   gameId: string;
   /** 游戏标题（冗余字段） */
   gameTitle: string;
+  /** 关联游戏 slug（用于跳转游戏详情 SEO 友好 URL） */
+  gameSlug?: string;
   /** 评测标题 */
   title: string;
   /** 主标题：用于生成 URL slug 后缀 */
@@ -1280,6 +1284,8 @@ export interface RecommendationItem {
   id: string;
   type: 'game' | 'review' | 'news' | 'community_post';
   title: string;
+  /** 游戏 slug（type='game' 时用于 SEO 友好的 URL） */
+  slug?: string;
   coverImageUrl?: string;
   rating?: number | string;
   reason: string;
@@ -1293,6 +1299,8 @@ export interface LeaderboardEntry {
   rank: number;
   id: string;
   title: string;
+  /** 游戏 slug（用于 SEO 友好的 URL） */
+  slug?: string;
   coverImageUrl?: string;
   score: number;
   reviewCount?: number;

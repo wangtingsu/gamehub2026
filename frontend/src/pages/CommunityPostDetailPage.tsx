@@ -43,7 +43,7 @@ const CommunityPostDetailPage = () => {
             {followed.map((f: any) => {
               const game = allGames.find((g: any) => String(g.id) === f.forum_id);
               return (
-              <div key={f.forum_id} onClick={() => navigate(`/${currentLang}/games/${f.forum_id}/forum`)}
+              <div key={f.forum_id} onClick={() => navigate(`/${currentLang}/games/${game?.slug || f.forum_id}/forum`)}
                 className="cursor-pointer rounded-lg overflow-hidden border border-dark-600 hover:border-blue-500/50 transition-all">
                 <div className="h-14 bg-dark-700 overflow-hidden">
                   {((game as any)?.imageUrl || (game as any)?.coverImageUrl) ? <img src={(game as any).imageUrl || (game as any).coverImageUrl} alt="" className="w-full h-full object-cover" /> :
@@ -57,7 +57,7 @@ const CommunityPostDetailPage = () => {
             <Text className="!text-white !text-xs !font-semibold block mb-2">Related Games</Text>
             <div className="space-y-2">
               {relatedGames.map((g: any) => (
-                <div key={g.id} onClick={() => navigate(`/${currentLang}/games/${g.id}/forum`)}
+                <div key={g.id} onClick={() => navigate(`/${currentLang}/games/${g.slug || g.id}/forum`)}
                   className="cursor-pointer rounded-lg overflow-hidden border border-dark-600 hover:border-blue-500/50 transition-all">
                   <div className="h-14 bg-dark-700 overflow-hidden">
                     {(g.imageUrl || (g as any).coverImageUrl) ? <img src={g.imageUrl || (g as any).coverImageUrl} alt={g.title} className="w-full h-full object-cover" /> :

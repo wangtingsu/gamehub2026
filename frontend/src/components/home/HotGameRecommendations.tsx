@@ -62,7 +62,7 @@ const HotGameRecommendations = () => {
               <Card
                 hoverable
                 className="h-full cursor-pointer border-dark-700 bg-dark-800/80 hover:bg-dark-750 overflow-hidden"
-                onClick={() => navigate(`/${currentLang}/games/${item.id}`)}
+                onClick={() => navigate(`/${currentLang}/games/${item.slug || item.id}`)}
                 cover={
                   <div className="h-36 overflow-hidden relative">
                     {item.coverImageUrl ? (

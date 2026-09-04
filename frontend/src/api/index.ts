@@ -498,6 +498,7 @@ class RealApiService extends BaseApiService {
       id: item.id,
       gameId: item.gameId,
       gameTitle,
+      gameSlug: item.gameSlug || item.game?.slug,
       title: item.title,
       maintitle: item.maintitle || undefined,
       content: item.content,

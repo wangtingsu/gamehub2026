@@ -65,7 +65,7 @@ export default function FreeGamesPage() {
                             {idx < 3 && <div className="absolute top-3 right-3 bg-yellow-500 text-black text-xs font-bold w-8 h-8 rounded-full flex items-center justify-center">TOP{idx+1}</div>}
                           </div>
                         }
-                        onClick={() => navigate(`/${lang}/games/${game.id}`)}
+                        onClick={() => navigate(`/${lang}/games/${game.slug || game.id}`)}
                       >
                         <div className="mb-3">
                           <Title level={4} className="!text-white !mb-1 !text-base truncate">{game.title}</Title>
@@ -92,7 +92,7 @@ export default function FreeGamesPage() {
                   <Col key={game.id} xs={12} sm={8} md={6} lg={4}>
                     <div
                       className="bg-dark-800 border border-dark-700 rounded-xl overflow-hidden cursor-pointer group hover:border-emerald-500/50 transition-all duration-300 hover:-translate-y-1"
-                      onClick={() => navigate(`/${lang}/games/${game.id}`)}
+                      onClick={() => navigate(`/${lang}/games/${game.slug || game.id}`)}
                     >
                       <div className="h-32 overflow-hidden">
                         <img src={game.imageUrl || game.coverImageUrl} alt={game.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" loading="lazy" />

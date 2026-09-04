@@ -41,6 +41,7 @@ const searchGames = async (queryText: string, limit: number = 10): Promise<any[]
   return result.map((row: any) => ({
     id: row.id,
     type: 'game',
+    slug: row.slug,
     title: row.title,
     description: row.description,
     coverImageUrl: row.cover_image_url,

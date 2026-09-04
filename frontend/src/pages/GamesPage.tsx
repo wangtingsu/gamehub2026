@@ -288,7 +288,7 @@ const GamesPage = () => {
         hoverable
         className="h-full"
         cover={
-          <Link to={`/${currentLang}/games/${game.id}`} className="block relative h-32 overflow-hidden">
+          <Link to={`/${currentLang}/games/${game.slug || game.id}`} className="block relative h-32 overflow-hidden">
             <LazyLoadImage
               src={game.imageUrl}
               srcSet={`${game.imageUrl}&w=200 200w, ${game.imageUrl}&w=400 400w`}
@@ -307,7 +307,7 @@ const GamesPage = () => {
         }
       >
         <div className="mb-2">
-          <Link to={`/${currentLang}/games/${game.id}`} className="text-sm font-semibold truncate mb-1 block hover:text-blue-400">{game.title}</Link>
+          <Link to={`/${currentLang}/games/${game.slug || game.id}`} className="text-sm font-semibold truncate mb-1 block hover:text-blue-400">{game.title}</Link>
           <div className="flex items-center gap-1">
             <Rate disabled value={game.rating / 2} allowHalf className="text-xs" />
             <span className="text-xs text-gray-500">{Number(game.rating).toFixed(1)}</span>
@@ -637,7 +637,7 @@ const GamesPage = () => {
                             hoverable
                             className="game-card h-full"
                             cover={
-                              <Link to={`/${currentLang}/games/${game.id}`} className="block relative">
+                              <Link to={`/${currentLang}/games/${game.slug || game.id}`} className="block relative">
                                 <LazyLoadImage
                                   alt={game.title}
                                   src={game.imageUrl}
@@ -668,7 +668,7 @@ const GamesPage = () => {
                           >
                             <div className="flex flex-col h-full">
                               <div className="flex-1">
-                                <Link to={`/${currentLang}/games/${game.id}`}>
+                                <Link to={`/${currentLang}/games/${game.slug || game.id}`}>
                                   <h2 className="text-lg font-bold !text-gray-100 mb-2 line-clamp-1 hover:text-blue-400">
                                     {game.title}
                                   </h2>
@@ -716,7 +716,7 @@ const GamesPage = () => {
                                   <div className="text-lg font-bold">
                                     {calculateDiscountedPrice(game.price, game.discount)}
                                   </div>
-                                  <Link to={`/${currentLang}/games/${game.id}`}>
+                                  <Link to={`/${currentLang}/games/${game.slug || game.id}`}>
                                     <Button type="primary" size="middle">
                                       {t('gameCard.viewDetails')}
                                     </Button>

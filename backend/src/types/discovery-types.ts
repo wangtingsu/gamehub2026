@@ -61,6 +61,8 @@ export interface RecommendationItem {
   id: string;
   type: 'game' | 'review' | 'news' | 'community_post';
   title: string;
+  /** 游戏 slug（type='game' 时用于 SEO 友好的 URL） */
+  slug?: string;
   coverImageUrl?: string;
   rating?: number;
   reason: string;  // 推荐理由，如 "同类型游戏"、"热门推荐"
@@ -75,6 +77,8 @@ export interface LeaderboardEntry {
   rank: number;
   id: string;
   title: string;
+  /** 游戏 slug（用于 SEO 友好的 URL） */
+  slug?: string;
   coverImageUrl?: string;
   score: number;
   reviewCount?: number;

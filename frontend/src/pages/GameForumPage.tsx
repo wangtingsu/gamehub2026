@@ -104,7 +104,7 @@ const GameForumPage = () => {
             {followed.slice(0, 20).map((f: any) => {
               const game = allGames.find((g: any) => String(g.id) === f.forum_id);
               return (
-              <div key={f.forum_id} onClick={() => navigate(`/${currentLang}/games/${f.forum_id}/forum`)}
+              <div key={f.forum_id} onClick={() => navigate(`/${currentLang}/games/${game?.slug || f.forum_id}/forum`)}
                 className={`cursor-pointer rounded-lg overflow-hidden border transition-all ${f.forum_id === id ? 'border-blue-500 bg-blue-500/10' : 'border-dark-600 hover:border-blue-500/50'}`}>
                 <div className="h-14 bg-dark-700 overflow-hidden">
                   {(game?.imageUrl || game?.coverImageUrl) ? <img src={game.imageUrl || game.coverImageUrl} alt="" className="w-full h-full object-cover" /> :
@@ -118,7 +118,7 @@ const GameForumPage = () => {
             <Text className="!text-white !text-xs !font-semibold block mb-2">相关游戏</Text>
             <div className="space-y-2">
               {relatedGames.map((g: any) => (
-                <div key={g.id} onClick={() => navigate(`/${currentLang}/games/${g.id}/forum`)}
+                <div key={g.id} onClick={() => navigate(`/${currentLang}/games/${g.slug || g.id}/forum`)}
                   className="cursor-pointer rounded-lg overflow-hidden border border-dark-600 hover:border-blue-500/50 transition-all">
                   <div className="h-14 bg-dark-700 overflow-hidden">
                     {(g.imageUrl || g.coverImageUrl) ? <img src={g.imageUrl || g.coverImageUrl} alt={g.title} className="w-full h-full object-cover" /> :

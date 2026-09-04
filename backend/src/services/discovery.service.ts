@@ -44,13 +44,13 @@ export const getLeaderboard = async (
       case 'top_rated':
         // 评分排行：需至少有一条评测（HAVING COUNT > 0）
         sql = `
-          SELECT g.id, g.title, g.cover_image_url,
+          SELECT g.id, g.title, g.slug, g.cover_image_url,
                  COALESCE(AVG(r.rating), 0) as score,
                  COUNT(r.id) as review_count,
                  g.views
           FROM games g
           LEFT JOIN reviews r ON g.id = r.game_id
-          GROUP BY g.id
+          GROUP BY g.id, g.slug
           HAVING COUNT(r.id) > 0
           ORDER BY score DESC, review_count DESC
           LIMIT ?
@@ -60,12 +60,12 @@ export const getLeaderboard = async (
       case 'most_reviewed':
         // 评测数排行
         sql = `
-          SELECT g.id, g.title, g.cover_image_url,
+          SELECT g.id, g.title, g.slug, g.cover_image_url,
                  COUNT(r.id) as score,
                  COALESCE(AVG(r.rating), 0) as rating
           FROM games g
           LEFT JOIN reviews r ON g.id = r.game_id
-          GROUP BY g.id
+          GROUP BY g.id, g.slug
           ORDER BY score DESC, rating DESC
           LIMIT ?
         `;
@@ -74,12 +74,12 @@ export const getLeaderboard = async (
       case 'most_favorited':
         // 收藏数排行，使用加权评分子查询计算评分
         sql = `
-          SELECT g.id, g.title, g.cover_image_url,
+          SELECT g.id, g.title, g.slug, g.cover_image_url,
                  COUNT(f.id) as score,
                  COALESCE(${getWeightedRatingSubquery()}, 0) as rating
           FROM games g
           LEFT JOIN favorites f ON f.game_id = g.id
-          GROUP BY g.id
+          GROUP BY g.id, g.slug
           ORDER BY score DESC
           LIMIT ?
         `;
@@ -88,13 +88,13 @@ export const getLeaderboard = async (
       case 'most_discussed':
         // 讨论热度排行：评测数 + 评论数作为热度分值
         sql = `
-          SELECT g.id, g.title, g.cover_image_url,
+          SELECT g.id, g.title, g.slug, g.cover_image_url,
                  (COUNT(DISTINCT r.id) + COUNT(DISTINCT c.id)) as score,
                  COALESCE(AVG(r.rating), 0) as rating
           FROM games g
           LEFT JOIN reviews r ON r.game_id = g.id
           LEFT JOIN comments c ON c.parent_type = 'review' AND c.parent_id = r.id
-          GROUP BY g.id
+          GROUP BY g.id, g.slug
           ORDER BY score DESC
           LIMIT ?
         `;
@@ -110,6 +110,7 @@ export const getLeaderboard = async (
       rank: index + 1,
       id: row.id,
       title: row.title,
+      slug: row.slug,
       coverImageUrl: row.cover_image_url,
       score: Number(row.score) || 0,
       reviewCount: Number(row.review_count) || 0,

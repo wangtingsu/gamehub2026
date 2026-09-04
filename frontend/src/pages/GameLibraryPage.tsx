@@ -111,7 +111,7 @@ const GameLibraryPage = () => {
             )}
           </div>
         }
-        onClick={() => navigate(`/${lang || 'cn'}/games/${game.id}`)}
+        onClick={() => navigate(`/${lang || 'cn'}/games/${game.slug || game.id}`)}
       >
         <div className="mb-2">
           <div className="text-sm font-semibold truncate mb-1">{game.title}</div>

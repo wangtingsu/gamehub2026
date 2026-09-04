@@ -363,7 +363,7 @@ const CategoryGamesPage = () => {
                         )}
                       </div>
                     }
-                    onClick={() => navigate(`/${lang}/games/${game.id}`)}
+                    onClick={() => navigate(`/${lang}/games/${game.slug || game.id}`)}
                   >
                     <div className="flex flex-col h-full">
                       <div className="flex-1">
@@ -387,7 +387,7 @@ const CategoryGamesPage = () => {
                       <div className="mt-auto pt-4 border-t border-dark-700">
                         <div className="flex justify-between items-center">
                           <div className="text-lg font-bold">{calculateDiscountedPrice(game.price, game.discount)}</div>
-                          <Button type="primary" size="middle" onClick={() => navigate(`/${lang}/games/${game.id}`)}>
+                          <Button type="primary" size="middle" onClick={() => navigate(`/${lang}/games/${game.slug || game.id}`)}>
                             查看详情
                           </Button>
                         </div>

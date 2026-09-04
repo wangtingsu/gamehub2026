@@ -10,6 +10,7 @@ import logger from '../utils/logger';
 import { query } from '../db';
 import type { RecommendationItem } from '../types/discovery-types';
 import { getWeightedRatingSubquery } from './level.service';
+import { resolveGameId } from './game.service';
 
 /**
  * 获取个性化推荐（基于用户收藏/游戏库/评测历史）
@@ -109,7 +110,7 @@ export const getPersonalizedRecommendations = async (
 
     // 执行推荐查询（params 重复传入用于 WHERE 和 CASE WHEN 的匹配条件）
     const results = await query(
-      `SELECT g.id, g.title, g.cover_image_url,
+      `SELECT g.id, g.title, g.slug, g.cover_image_url,
               ${getWeightedRatingSubquery()} as avg_rating,
               ${scoreExpr} as score
        FROM games g
@@ -123,6 +124,7 @@ export const getPersonalizedRecommendations = async (
     return results.map((row: any) => ({
       id: row.id,
       type: 'game' as const,
+      slug: row.slug,
       title: row.title,
       coverImageUrl: row.cover_image_url,
       rating: row.avg_rating ? parseFloat(row.avg_rating).toFixed(1) : null,
@@ -154,10 +156,11 @@ export const getRelatedContent = async (
 ): Promise<RecommendationItem[]> => {
   try {
     if (contentType === 'game') {
-      // 基于同类型和同平台的游戏推荐
+      // 基于同类型和同平台的游戏推荐（contentId 可能为数字 ID 或 slug）
+      const gameId = await resolveGameId(contentId);
       const game = await query(
         `SELECT genres, platforms FROM games WHERE id = ?`,
-        [contentId]
+        [gameId]
       );
       if (!game.length) return [];
 
@@ -183,7 +186,7 @@ export const getRelatedContent = async (
         : '0';
 
       const results = await query(
-        `SELECT g.id, g.title, g.cover_image_url,
+        `SELECT g.id, g.title, g.slug, g.cover_image_url,
                 ${getWeightedRatingSubquery()} as avg_rating,
                 (${scoreGenre} + ${scorePlatform}) as score
          FROM games g
@@ -191,12 +194,13 @@ export const getRelatedContent = async (
            AND (${[...genreConds, ...platformConds].join(' OR ')})
          ORDER BY score DESC, g.created_at DESC
          LIMIT ?`,
-        [...genres, ...platforms, contentId, ...genres, ...platforms, limit]
+        [...genres, ...platforms, gameId, ...genres, ...platforms, limit]
       );
 
       return results.map((row: any) => ({
         id: row.id,
         type: 'game' as const,
+        slug: row.slug,
         title: row.title,
         coverImageUrl: row.cover_image_url,
         rating: row.avg_rating ? parseFloat(row.avg_rating).toFixed(1) : null,
@@ -258,7 +262,7 @@ export const getTrendingContent = async (limit: number = 10): Promise<Recommenda
 
   try {
     const results = await query(
-      `SELECT g.id, g.title, g.cover_image_url,
+      `SELECT g.id, g.title, g.slug, g.cover_image_url,
               ${getWeightedRatingSubquery()} as avg_rating,
               g.views,
               (SELECT COUNT(*) FROM reviews WHERE game_id = g.id) as review_count,
@@ -274,6 +278,7 @@ export const getTrendingContent = async (limit: number = 10): Promise<Recommenda
     return results.map((row: any) => ({
       id: row.id,
       type: 'game' as const,
+      slug: row.slug,
       title: row.title,
       coverImageUrl: row.cover_image_url,
       rating: row.avg_rating ? parseFloat(row.avg_rating).toFixed(1) : null,
@@ -303,10 +308,13 @@ export const getUsersAlsoLiked = async (
   limit: number = 8
 ): Promise<RecommendationItem[]> => {
   try {
+    // 解析游戏引用（数字 ID 或 slug）
+    const resolvedGameId = await resolveGameId(gameId);
+
     // 找收藏了该游戏的用户
     const users = await query(
       `SELECT DISTINCT user_id FROM favorites WHERE game_id = ?`,
-      [gameId]
+      [resolvedGameId]
     );
     if (!users.length) return [];
 
@@ -314,22 +322,23 @@ export const getUsersAlsoLiked = async (
 
     // 这些用户还收藏的其他游戏（排除当前游戏，按收藏人数排序）
     const results = await query(
-      `SELECT f.game_id, g.title, g.cover_image_url,
+      `SELECT f.game_id, g.title, g.slug, g.cover_image_url,
               ${getWeightedRatingSubquery()} as avg_rating,
               COUNT(DISTINCT f.user_id) as user_count
        FROM favorites f
        JOIN games g ON f.game_id = g.id
        WHERE f.user_id IN (${userIds.map(() => '?').join(',')})
          AND f.game_id != ?
-       GROUP BY f.game_id, g.title, g.cover_image_url
+       GROUP BY f.game_id, g.title, g.slug, g.cover_image_url
        ORDER BY user_count DESC
        LIMIT ?`,
-      [...userIds, gameId, limit]
+      [...userIds, resolvedGameId, limit]
     );
 
     return results.map((row: any) => ({
       id: row.game_id,
       type: 'game' as const,
+      slug: row.slug,
       title: row.title,
       coverImageUrl: row.cover_image_url,
       rating: row.avg_rating ? parseFloat(row.avg_rating).toFixed(1) : null,

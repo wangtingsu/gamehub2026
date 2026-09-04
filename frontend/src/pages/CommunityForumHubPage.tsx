@@ -131,7 +131,7 @@ const CommunityForumHubPage = () => {
                 <Col key={game.id} xs={24} sm={12} md={8} lg={6}>
                   <Card
                     className="h-full bg-dark-800 border-dark-700 hover:shadow-xl hover:border-blue-500/50 transition-all duration-300 cursor-pointer group"
-                    onClick={() => navigate(`/${currentLang}/games/${game.id}/forum`)}
+                    onClick={() => navigate(`/${currentLang}/games/${game.slug || game.id}/forum`)}
                   >
                     {/* 游戏封面 */}
                     <div className="relative mb-4 overflow-hidden rounded-lg">

@@ -81,7 +81,7 @@ const CommunityPage = () => {
   // Game card in left sidebar
   const renderFollowedGame = (game: any) => (
     <div key={game.id} className="flex items-center gap-2 py-2 px-2 rounded-lg hover:bg-dark-700 cursor-pointer group"
-      onClick={() => navigate(`/${lang}/games/${game.id}/forum`)}>
+      onClick={() => navigate(`/${lang}/games/${game.slug || game.id}/forum`)}>
       <Avatar shape="square" size={32} src={game.imageUrl || game.coverImageUrl} className="flex-shrink-0">{game.title?.[0]}</Avatar>
       <div className="flex-1 min-w-0">
         <div className="text-white text-xs truncate">{game.title}</div>
@@ -151,7 +151,7 @@ const CommunityPage = () => {
                   <div key={game.id} className="flex items-center gap-2 py-1.5 px-2 rounded-lg hover:bg-dark-700 group">
                     <Avatar shape="square" size={28} src={game.imageUrl || game.coverImageUrl} className="flex-shrink-0">{game.title?.[0]}</Avatar>
                     <div className="flex-1 min-w-0">
-                      <div className="text-white text-xs truncate cursor-pointer" onClick={() => navigate(`/${lang}/games/${game.id}/forum`)}>{game.title}</div>
+                      <div className="text-white text-xs truncate cursor-pointer" onClick={() => navigate(`/${lang}/games/${game.slug || game.id}/forum`)}>{game.title}</div>
                     </div>
                     <button className="text-xs cursor-pointer"
                       style={{ color: isFollowed(String(game.id)) ? '#ef4444' : '#6b7280' }}

@@ -125,7 +125,7 @@ const ReviewDetailPage = () => {
     'itemReviewed': {
       '@type': 'VideoGame',
       'name': review.gameTitle,
-      'url': `${window.location.origin}/games/${review.gameId}`
+      'url': `${window.location.origin}/games/${review.gameSlug || review.gameId}`
     },
     'publisher': {
       '@type': 'Organization',

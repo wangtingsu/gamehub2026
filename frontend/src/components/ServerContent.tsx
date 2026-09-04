@@ -65,7 +65,7 @@ export default function ServerContent({
             <ul>
               {gameList.map((g) => (
                 <li key={g.id}>
-                  <a href={`/${lang}/games/${g.id}`}>{g.title}</a>
+                  <a href={`/${lang}/games/${g.slug || g.id}`}>{g.title}</a>
                 </li>
               ))}
             </ul>

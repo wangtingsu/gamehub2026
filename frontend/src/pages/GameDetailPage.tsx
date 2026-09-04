@@ -193,7 +193,7 @@ const GameDetailPage = () => {
     'name': game.title,
     'description': game.description,
     'image': game.imageUrl,
-    'url': `${window.location.origin}/games/${game.id}`,
+    'url': `${window.location.origin}/games/${game.slug || game.id}`,
     'genre': game.genres,
     'gamePlatform': game.platforms,
     'applicationCategory': 'Game',
@@ -234,13 +234,13 @@ const GameDetailPage = () => {
         keywords={[game.title, ...(game.genres || [])].concat(['Game details', 'Game introduction', 'Game info']).join(', ')}
         image={game.imageUrl}
         type="website"
-        canonical={`/games/${game.id}`}
+        canonical={`/games/${game.slug || game.id}`}
         structuredData={structuredData}
       />
       <SEOBreadcrumb items={[
         { name: 'Home', url: `/${lang || 'cn'}` },
         { name: 'Game Library', url: `/${lang || 'cn'}/games` },
-        { name: game.title, url: `/${lang || 'cn'}/games/${game.id}` },
+        { name: game.title, url: `/${lang || 'cn'}/games/${game.slug || game.id}` },
       ]} />
       <article>
       <div className="bg-dark-900">
@@ -478,7 +478,7 @@ const GameDetailPage = () => {
                             icon={<MessageOutlined />}
                             onClick={() => {
                               const langPath = window.location.pathname.split('/')[1];
-                              navigate(`/${langPath}/games/${id}/forum`);
+                              navigate(`/${langPath}/games/${game.slug || id}/forum`);
                             }}
                           >
                             View All
@@ -488,7 +488,7 @@ const GameDetailPage = () => {
                             icon={<PlusOutlined />}
                             onClick={() => {
                               const langPath = window.location.pathname.split('/')[1];
-                              navigate(`/${langPath}/community/posts/new?gameId=${id}`);
+                              navigate(`/${langPath}/community/posts/new?gameId=${game.id}`);
                             }}
                           >
                             New Post

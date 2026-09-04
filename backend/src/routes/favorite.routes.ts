@@ -18,6 +18,7 @@ import { authenticate, authorize, validateRequest } from '../middlewares/auth.mi
 import { asyncHandler } from '../middlewares/error.middleware';
 import favoriteService from '../services/favorite.service';
 import { favoriteModel } from '../models/Favorite';
+import { resolveGameId } from '../services/game.service';
 
 const router = Router();
 
@@ -46,7 +47,8 @@ router.post(
       });
     }
 
-    const favorite = await favoriteService.addFavorite(userId, gameId);
+    const resolvedGameId = await resolveGameId(gameId);
+    const favorite = await favoriteService.addFavorite(userId, resolvedGameId);
 
     return res.status(201).json({
       success: true,
@@ -75,7 +77,8 @@ router.delete(
     const userId = req.user.id;
     const { gameId } = req.params;
 
-    const result = await favoriteService.removeFavorite(userId, gameId);
+    const resolvedGameId = await resolveGameId(gameId);
+    const result = await favoriteService.removeFavorite(userId, resolvedGameId);
 
     if (!result) {
       return res.status(404).json({
@@ -153,7 +156,8 @@ router.get(
     const userId = req.user.id;
     const { gameId } = req.params;
 
-    const isFavorited = await favoriteService.checkFavoriteStatus(userId, gameId);
+    const resolvedGameId = await resolveGameId(gameId);
+    const isFavorited = await favoriteService.checkFavoriteStatus(userId, resolvedGameId);
 
     return res.json({
       success: true,
@@ -242,7 +246,8 @@ router.get(
   asyncHandler(async (req: Request, res: Response) => {
     const { gameId } = req.params;
 
-    const count = await favoriteService.getGameFavoriteCount(gameId);
+    const resolvedGameId = await resolveGameId(gameId);
+    const count = await favoriteService.getGameFavoriteCount(resolvedGameId);
 
     return res.json({
       success: true,

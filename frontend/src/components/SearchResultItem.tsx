@@ -64,7 +64,7 @@ const SearchResultItem: React.FC<SearchResultItemProps> = ({ item, query }) => {
           icon: <VideoCameraOutlined style={{ fontSize: '20px' }} />,
           color: 'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-300',
           label: '游戏',
-          route: `/${langPrefix}/games/${item.id}`,
+          route: `/${langPrefix}/games/${item.slug || item.id}`,
         };
       case 'review':
         return {
