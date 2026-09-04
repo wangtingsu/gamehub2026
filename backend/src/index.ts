@@ -155,6 +155,14 @@ app.use(cors({ ...config.cors, methods: [...config.cors.methods], allowedHeaders
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+// Sitemap 路由（根级别，不在 API 前缀下）
+// 注意：必须挂载在 express.static 之前，否则 /app/frontend-dist 卷里
+// 遗留的旧 sitemap.xml 静态文件会遮蔽本动态路由（P0 #1 修复）。
+app.use(sitemapRoutes);
+
+// llms.txt 路由（根级别，符合 llmstxt.org 规范）
+app.use(llmsRoutes);
+
 // 静态文件服务 - 提供上传文件的访问
 app.use('/uploads', express.static(path.resolve(config.upload.path)));
 
@@ -217,12 +225,6 @@ app.use((req, _, next) => {
   req.io = io;
   next();
 });
-
-// Sitemap路由（根级别，不在API前缀下）
-app.use(sitemapRoutes);
-
-// llms.txt 路由（根级别，符合 llmstxt.org 规范）
-app.use(llmsRoutes);
 
 /**
  * 根路由处理

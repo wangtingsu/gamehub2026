@@ -176,12 +176,17 @@ function buildJsonLdGraph(opts: {
 
   const langPrefix = urlPathname.match(/^\/(en|cn|ja|ko|es|fr)(?=\/|$)/)?.[1] || 'en'
 
+  // WebSite 结构化数据应使用站点级描述，而非页面级描述。
+  // 此前 pageMeta.description 会在游戏/新闻详情页被改写，导致站点描述被污染（P0 #2 修复）。
+  const langCode = LANG_CODE_TO_I18N[langPrefix] || 'en'
+  const siteDescription = i18n.getFixedT(langCode)('seo.defaultDescription')
+
   // 1. WebSite
   graph.push({
     '@type': 'WebSite',
     name: SITE_NAME,
     url: SITE_URL,
-    description: pageMeta.description,
+    description: siteDescription,
     potentialAction: {
       '@type': 'SearchAction',
       target: { '@type': 'EntryPoint', urlTemplate: `${SITE_URL}/search?q={search_term_string}` },
