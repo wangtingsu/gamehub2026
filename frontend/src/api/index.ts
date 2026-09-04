@@ -62,8 +62,8 @@ abstract class BaseApiService {
   abstract createBlogSpace(data: any): Promise<any>;
   abstract updateBlogSpace(id: string, data: any): Promise<any>;
   abstract deleteBlogSpace(id: string): Promise<void>;
-  abstract getReviews(params?: PaginationParams): Promise<Review[]>;
-  abstract getReview(id: string): Promise<Review>;
+  abstract getReviews(params?: PaginationParams & { lang?: string }): Promise<Review[]>;
+  abstract getReview(id: string, lang?: string): Promise<Review>;
   abstract getCommunityPosts(params?: PaginationParams): Promise<CommunityPost[]>;
   abstract getCommunityPost(id: string): Promise<CommunityPost>;
   abstract getGamePosts(gameId: string, params?: PaginationParams): Promise<CommunityPost[]>;
@@ -152,9 +152,9 @@ abstract class BaseApiService {
   abstract likeReview(id: string): Promise<Review>;
 
   // ==================== 攻略指南相关方法 ====================
-  abstract getGuides(params?: PaginationParams): Promise<Guide[]>;
-  abstract getGuide(id: string): Promise<Guide>;
-  abstract getGameGuides(gameId: string, params?: PaginationParams): Promise<Guide[]>;
+  abstract getGuides(params?: PaginationParams & { lang?: string }): Promise<Guide[]>;
+  abstract getGuide(id: string, lang?: string): Promise<Guide>;
+  abstract getGameGuides(gameId: string, params?: PaginationParams, lang?: string): Promise<Guide[]>;
   abstract createGuide(data: GuideCreateInput): Promise<Guide>;
   abstract updateGuide(id: string, data: GuideUpdateInput): Promise<Guide>;
   abstract deleteGuide(id: string): Promise<void>;
@@ -499,6 +499,7 @@ class RealApiService extends BaseApiService {
       gameId: item.gameId,
       gameTitle,
       title: item.title,
+      maintitle: item.maintitle || undefined,
       content: item.content,
       author,
       authorId: item.authorId || item.author?.id?.toString() || item.author_id?.toString(),
@@ -514,6 +515,7 @@ class RealApiService extends BaseApiService {
       createdAt: item.createdAt,
       updatedAt: item.updatedAt,
       reviewStatus: item.reviewStatus || item.review_status,
+      translations: item.translations,
     };
   }
 
@@ -783,13 +785,14 @@ class RealApiService extends BaseApiService {
     };
   }
 
-  async getReviews(params?: PaginationParams) {
-    const response = await this.client.get<{ reviews: Review[]; pagination: any }>('/community/reviews', params);
+  async getReviews(params?: PaginationParams & { lang?: string }) {
+    const lang = params?.lang || i18n.language;
+    const response = await this.client.get<{ reviews: Review[]; pagination: any }>('/community/reviews', { ...params, lang });
     return (response.reviews || []).map(r => this.normalizeReview(r));
   }
 
-  async getReview(id: string) {
-    const response = await this.client.get<any>(`/community/reviews/${id}`);
+  async getReview(id: string, lang?: string) {
+    const response = await this.client.get<any>(`/community/reviews/${id}`, { lang: lang || i18n.language });
     return this.normalizeReview(response);
   }
 
@@ -1130,6 +1133,7 @@ class RealApiService extends BaseApiService {
       gameTitle: item.gameTitle || item.game?.title || '',
       gameSlug: item.gameSlug || item.game?.slug,
       title: item.title,
+      maintitle: item.maintitle || undefined,
       content: item.content,
       summary: item.summary,
       difficulty: item.difficulty || 'medium',
@@ -1149,21 +1153,23 @@ class RealApiService extends BaseApiService {
       updatedAt: item.updatedAt || item.updated_at,
       comments: item.comments || 0,
       reviewStatus: item.reviewStatus || item.review_status,
+      translations: item.translations,
     };
   }
 
-  async getGuides(params?: PaginationParams): Promise<Guide[]> {
-    const response = await this.client.get<{ guides: Guide[]; pagination: any }>('/guides', params);
+  async getGuides(params?: PaginationParams & { lang?: string }): Promise<Guide[]> {
+    const lang = params?.lang || i18n.language;
+    const response = await this.client.get<{ guides: Guide[]; pagination: any }>('/guides', { ...params, lang });
     return (response.guides || []).map(g => this.normalizeGuide(g));
   }
 
-  async getGuide(id: string): Promise<Guide> {
-    const response = await this.client.get<any>(`/guides/${id}`);
+  async getGuide(id: string, lang?: string): Promise<Guide> {
+    const response = await this.client.get<any>(`/guides/${id}`, { lang: lang || i18n.language });
     return this.normalizeGuide(response);
   }
 
-  async getGameGuides(gameId: string, params?: PaginationParams): Promise<Guide[]> {
-    const response = await this.client.get<any[]>(`/guides/game/${gameId}`, params);
+  async getGameGuides(gameId: string, params?: PaginationParams, lang?: string): Promise<Guide[]> {
+    const response = await this.client.get<any[]>(`/guides/game/${gameId}`, { ...params, lang: lang || i18n.language });
     return (Array.isArray(response) ? response : []).map(g => this.normalizeGuide(g));
   }
 
@@ -2032,13 +2038,13 @@ class MockApiService extends BaseApiService {
     return { likes: 1, liked: true };
   }
 
-  async getReviews(params?: PaginationParams) {
+  async getReviews(params?: PaginationParams & { lang?: string }) {
     const response = await this.mockClient.getReviews(params);
     const mockReviews = response.data?.reviews || [];
     return mockReviews.map(review => this.convertMockReview(review));
   }
 
-  async getReview(id: string) {
+  async getReview(id: string, _lang?: string) {
     const response = await this.mockClient.getReview(id);
     if (!response.data?.review) {
       throw new Error('评测不存在');
@@ -2531,7 +2537,7 @@ class MockApiService extends BaseApiService {
     };
   }
 
-  async getGuides(params?: PaginationParams): Promise<Guide[]> {
+  async getGuides(params?: PaginationParams & { lang?: string }): Promise<Guide[]> {
     console.log('Mock: 获取攻略列表', params);
     return [
       {
@@ -2575,7 +2581,7 @@ class MockApiService extends BaseApiService {
     ];
   }
 
-  async getGuide(id: string): Promise<Guide> {
+  async getGuide(id: string, _lang?: string): Promise<Guide> {
     console.log(`Mock: 获取攻略详情 ${id}`);
     return {
       id,
@@ -2601,7 +2607,7 @@ class MockApiService extends BaseApiService {
     };
   }
 
-  async getGameGuides(gameId: string, params?: PaginationParams): Promise<Guide[]> {
+  async getGameGuides(gameId: string, params?: PaginationParams, _lang?: string): Promise<Guide[]> {
     console.log(`Mock: 获取游戏攻略列表 ${gameId}`, params);
     return this.getGuides(params);
   }

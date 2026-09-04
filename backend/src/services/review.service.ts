@@ -17,7 +17,7 @@ import {
   ReviewStatus,
   SearchParams
 } from '../types';
-import { NotFoundError, ConflictError } from '../middlewares/error.middleware';
+import { NotFoundError, ConflictError, ValidationError } from '../middlewares/error.middleware';
 import xpService from './xp.service';
 import achievementService from './achievement.service';
 
@@ -33,6 +33,66 @@ const generateSlug = (title: string): string => {
 };
 
 /**
+ * 评测多语言翻译列后缀（不含中文——中文对应基础列 title/content/excerpt）。
+ * 与 blog_articles 表的 title_xx / content_xx / excerpt_xx 列一一对应。
+ */
+const TRANSLATION_SUFFIXES = ['en', 'ja', 'ko', 'es', 'fr'] as const;
+type TranslationSuffix = typeof TRANSLATION_SUFFIXES[number];
+
+/** 将请求语言代码映射为翻译列后缀（中文返回 null，回退基础列） */
+const langToSuffix = (lang?: string): TranslationSuffix | null => {
+  const l = (lang || 'zh-CN').toLowerCase();
+  if (l === 'zh-cn' || l === 'zh' || l === 'cn') return null;
+  const base = l.split('-')[0];
+  return (TRANSLATION_SUFFIXES as readonly string[]).includes(base)
+    ? (base as TranslationSuffix)
+    : null;
+};
+
+/** 从数据库行读取多语言翻译列，构建 translations 对象（空值省略） */
+const readTranslations = (row: any): any => {
+  const translations: any = {};
+  for (const suffix of TRANSLATION_SUFFIXES) {
+    const title = row[`title_${suffix}`];
+    const content = row[`content_${suffix}`];
+    const excerpt = row[`excerpt_${suffix}`];
+    if (title || content || excerpt) {
+      translations[suffix] = {
+        ...(title ? { title } : {}),
+        ...(content ? { content } : {}),
+        ...(excerpt ? { excerpt } : {}),
+      };
+    }
+  }
+  return translations;
+};
+
+/** 根据语言本地化评测字段（为空则回退基础列） */
+const localizeReview = (review: any, lang?: string): any => {
+  const suffix = langToSuffix(lang);
+  if (!suffix) return review;
+  const tr = review.translations?.[suffix];
+  if (!tr) return review;
+  return {
+    ...review,
+    title: tr.title || review.title,
+    content: tr.content || review.content,
+  };
+};
+
+/** 从翻译对象生成数据库列名与参数（用于 INSERT） */
+const translationColumns = (translations?: any): { cols: string[]; params: any[] } => {
+  const cols: string[] = [];
+  const params: any[] = [];
+  for (const suffix of TRANSLATION_SUFFIXES) {
+    const tr = translations?.[suffix];
+    cols.push(`title_${suffix}`, `content_${suffix}`, `excerpt_${suffix}`);
+    params.push(tr?.title || null, tr?.content || null, tr?.excerpt || null);
+  }
+  return { cols, params };
+};
+
+/**
  * 将数据库行映射为 Review 对象
  *
  * 处理 JSON 字符串字段的解析（如 scores、sections、tags）、
@@ -44,6 +104,7 @@ const generateSlug = (title: string): string => {
 const mapReviewFromDb = (dbReview: any): Review => ({
   id: dbReview.id.toString(),
   title: dbReview.title,
+  maintitle: dbReview.maintitle || undefined,
   content: dbReview.content,
   rating: dbReview.rating ? parseFloat(dbReview.rating) : undefined,
   scores: dbReview.scores ? JSON.parse(dbReview.scores) : undefined,
@@ -62,6 +123,7 @@ const mapReviewFromDb = (dbReview: any): Review => ({
   reviewComment: dbReview.review_comment || undefined,
   reviewedBy: dbReview.reviewed_by ? String(dbReview.reviewed_by) : undefined,
   reviewedAt: dbReview.reviewed_at ? new Date(dbReview.reviewed_at) : undefined,
+  translations: readTranslations(dbReview),
 });
 
 /**
@@ -87,10 +149,11 @@ const camelToSnakeCase = (str: string): string => {
  */
 export const getReviews = async (
   pagination: PaginationParams = {},
-  filters: { gameId?: string; featuredOnly?: boolean; reviewStatus?: string } = {}
+  filters: { gameId?: string; featuredOnly?: boolean; reviewStatus?: string; lang?: string } = {}
 ): Promise<{ reviews: Review[]; total: number; page: number; limit: number }> => {
   const { page = 1, limit = 20, sortBy = 'createdAt', sortOrder = 'desc' } = pagination;
   const offset = (page - 1) * limit;
+  const { lang } = filters;
 
   // 转换排序字段为 snake_case 并校验安全性，防止 SQL 注入
   const sortColumn = camelToSnakeCase(sortBy);
@@ -154,12 +217,12 @@ export const getReviews = async (
   const dataParams = [...queryParams, limit, offset];
   const result = await query(dataSql, dataParams);
 
-  const reviews = result.map((row: any) => ({
+  const reviews = result.map((row: any) => localizeReview({
     ...mapReviewFromDb(row),
     authorName: row.author_name,
     authorDisplayName: row.author_display_name,
     gameTitle: row.game_title,
-  }));
+  }, lang));
 
   logger.debug(`获取评测列表成功，第${page}页，每页${limit}条，共${total}条`);
 
@@ -185,6 +248,7 @@ export const searchReviews = async (
 ): Promise<{ reviews: Review[]; total: number; page: number; limit: number; query?: string }> => {
   const { query: searchQuery = '', page = 1, limit = 20, filters = {} } = searchParams;
   const offset = (page - 1) * limit;
+  const lang = filters.lang;
 
   let whereClause = '';
   const queryParams: any[] = [];
@@ -249,12 +313,12 @@ export const searchReviews = async (
   const dataParams = [...queryParams, limit, offset];
   const result = await query(dataSql, dataParams);
 
-  const reviews = result.map((row: any) => ({
+  const reviews = result.map((row: any) => localizeReview({
     ...mapReviewFromDb(row),
     authorName: row.author_name,
     authorDisplayName: row.author_display_name,
     gameTitle: row.game_title,
-  }));
+  }, lang));
 
   logger.debug(`搜索评测成功，关键词: "${searchQuery}"，找到${total}条结果`);
 
@@ -276,7 +340,7 @@ export const searchReviews = async (
  * @returns 包含作者和游戏信息的增强评测对象
  * @throws 当评测不存在时抛出 NotFoundError
  */
-export const getReviewById = async (id: string): Promise<any> => {
+export const getReviewById = async (id: string, lang?: string): Promise<any> => {
   const result = await query(
     `SELECT r.*, u.username as author_name, u.display_name as author_display_name, u.avatar_url as author_avatar,
             g.title as game_title, g.slug as game_slug, g.cover_image_url as game_cover
@@ -292,7 +356,7 @@ export const getReviewById = async (id: string): Promise<any> => {
   }
 
   const row = result[0];
-  const review = mapReviewFromDb(row);
+  const review = localizeReview(mapReviewFromDb(row), lang);
 
   // 返回增强的对象，包含作者和游戏的详细信息
   const enhancedReview = {
@@ -350,38 +414,52 @@ export const createReview = async (authorId: string, reviewData: ReviewCreateInp
       throw new ConflictError('您已经为这款游戏写过评测');
     }
 
+    // 主标题（maintitle）：作为 URL slug 后缀来源，必填且唯一（缺省回退标题）
+    const maintitle = (reviewData.maintitle || reviewData.title || '').trim();
+    if (!maintitle) throw new ValidationError('主标题（maintitle）不能为空');
+    const existingMain = await query('SELECT id FROM blog_articles WHERE LOWER(maintitle) = LOWER(?)', [maintitle]);
+    if (existingMain.length > 0) throw new ConflictError('主标题已存在，请更换');
+
     // 生成 slug，确保唯一（blog_articles.slug 有唯一约束）
-    let slug = generateSlug(reviewData.title);
+    let slug = generateSlug(maintitle);
     const slugExists = await query('SELECT id FROM blog_articles WHERE slug = ?', [slug]);
     if (slugExists.length > 0) {
       slug = `${slug}-${Date.now()}`;
     }
 
+    const tr = translationColumns((reviewData as any).translations);
+    const cols = [
+      'title', 'maintitle', 'slug', 'content', 'excerpt', 'rating', 'game_id', 'author_id', 'category', 'tags', 'space_id',
+      'is_published', 'is_pinned', 'published_at', 'review_status', 'post_type', 'created_at', 'updated_at',
+      ...tr.cols,
+    ];
+    const placeholders = cols.map(() => '?').join(',');
+    const values = [
+      reviewData.title,
+      maintitle,
+      slug,
+      reviewData.content,
+      '',
+      reviewData.rating,
+      reviewData.gameId,
+      authorId,
+      '评测',
+      JSON.stringify(reviewData.tags || []),
+      (reviewData as any).spaceId || 1,
+      0, // is_published = 0，待审核
+      0, // is_pinned = 0
+      new Date().toISOString(),
+      'pending',
+      'review',
+      new Date().toISOString(),
+      new Date().toISOString(),
+      ...tr.params,
+    ];
+
     // 插入评测记录
     const result = await execute(
-      `INSERT INTO blog_articles (
-        title, slug, content, excerpt, rating, game_id, author_id, category, tags, space_id,
-        is_published, is_pinned, published_at, review_status, post_type, created_at, updated_at
-      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
-      [
-        reviewData.title,
-        slug,
-        reviewData.content,
-        '',
-        reviewData.rating,
-        reviewData.gameId,
-        authorId,
-        '评测',
-        JSON.stringify(reviewData.tags || []),
-        (reviewData as any).spaceId || 1,
-        0, // is_published = 0，待审核
-        0, // is_pinned = 0
-        new Date().toISOString(),
-        'pending',
-        'review',
-        new Date().toISOString(),
-        new Date().toISOString(),
-      ]
+      `INSERT INTO blog_articles (${cols.join(',')}) VALUES (${placeholders})`,
+      values
     );
 
     // 查询刚插入的完整记录
@@ -419,6 +497,20 @@ export const updateReview = async (
   const updates: string[] = [];
   const values: any[] = [];
 
+  // 主标题（maintitle）：若提供则校验唯一性，并据此重新生成 slug
+  if ((updateData as any).maintitle !== undefined) {
+    const maintitle = ((updateData as any).maintitle || '').trim();
+    if (!maintitle) throw new ValidationError('主标题（maintitle）不能为空');
+    const existingMain = await query('SELECT id FROM blog_articles WHERE LOWER(maintitle) = LOWER(?) AND id != ?', [maintitle, id]);
+    if (existingMain.length > 0) throw new ConflictError('主标题已存在，请更换');
+    updates.push('maintitle = ?');
+    values.push(maintitle);
+    const newSlug = generateSlug(maintitle);
+    const existingSlug = await query('SELECT id FROM blog_articles WHERE slug = ? AND id != ?', [newSlug, id]);
+    updates.push('slug = ?');
+    values.push(existingSlug.length > 0 ? `${newSlug}-${Date.now()}` : newSlug);
+  }
+
   // 动态构建更新字段列表
   if (updateData.title !== undefined) {
     updates.push(`title = ?`);
@@ -453,6 +545,17 @@ export const updateReview = async (
   if (updateData.reviewComment !== undefined) {
     updates.push(`review_comment = ?`);
     values.push(updateData.reviewComment);
+  }
+
+  // 多语言翻译列
+  if ((updateData as any).translations !== undefined) {
+    for (const suffix of TRANSLATION_SUFFIXES) {
+      const tr = (updateData as any).translations?.[suffix];
+      if (tr && (tr.title !== undefined || tr.content !== undefined || tr.excerpt !== undefined)) {
+        updates.push(`title_${suffix} = ?`, `content_${suffix} = ?`, `excerpt_${suffix} = ?`);
+        values.push(tr.title ?? null, tr.content ?? null, tr.excerpt ?? null);
+      }
+    }
   }
 
   // 没有需要更新的字段则直接返回当前数据

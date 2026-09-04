@@ -441,6 +441,8 @@ export interface Review {
   gameTitle: string;
   /** 评测标题 */
   title: string;
+  /** 主标题：用于生成 URL slug 后缀 */
+  maintitle?: string;
   /** 评测正文内容 */
   content: string;
   /** 作者用户名 */
@@ -481,28 +483,34 @@ export interface Review {
   reviewStatus?: ReviewStatusType;
   /** 审核意见 */
   reviewComment?: string;
+  /** 多语言翻译内容 */
+  translations?: BlogArticleTranslations;
 }
 
 // 评测相关扩展类型
 export interface ReviewCreateRequest {
   gameId: string;
   title: string;
+  maintitle?: string;
   content: string;
   rating: number;
   tags?: string[];
   scores?: Record<string, number>;
   templateId?: string;
   sections?: Record<string, string[] | string>;
+  translations?: BlogArticleTranslations;
 }
 
 export interface ReviewUpdateRequest {
   title?: string;
+  maintitle?: string;
   content?: string;
   rating?: number;
   tags?: string[];
   scores?: Record<string, number>;
   templateId?: string;
   sections?: Record<string, string[] | string>;
+  translations?: BlogArticleTranslations;
 }
 
 // 评测模板类型
@@ -554,6 +562,8 @@ export interface Guide {
   gameTitle?: string;
   gameSlug?: string;
   title: string;
+  /** 主标题：用于生成 URL slug 后缀 */
+  maintitle?: string;
   content: string;
   summary?: string;
   difficulty: GuideDifficulty;
@@ -574,11 +584,14 @@ export interface Guide {
   comments?: number;
   reviewStatus?: ReviewStatusType;
   reviewComment?: string;
+  /** 多语言翻译内容 */
+  translations?: BlogArticleTranslations;
 }
 
 export interface GuideCreateInput {
   gameId: string;
   title: string;
+  maintitle?: string;
   content: string;
   summary?: string;
   difficulty?: GuideDifficulty;
@@ -586,10 +599,12 @@ export interface GuideCreateInput {
   tags?: string[];
   steps?: GuideStep[];
   estimatedMinutes?: number;
+  translations?: BlogArticleTranslations;
 }
 
 export interface GuideUpdateInput {
   title?: string;
+  maintitle?: string;
   content?: string;
   summary?: string;
   difficulty?: GuideDifficulty;
@@ -599,6 +614,7 @@ export interface GuideUpdateInput {
   isFeatured?: boolean;
   isPublished?: boolean;
   estimatedMinutes?: number;
+  translations?: BlogArticleTranslations;
 }
 
 // ==================== 评论相关类型 ====================

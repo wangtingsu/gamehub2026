@@ -498,6 +498,9 @@ export interface NewsTranslation {
 /** 新闻多语言翻译集合，键为数据库列后缀（en/ja/ko/es/fr；中文「zh」对应基础列，不在此集合内） */
 export type NewsTranslations = Partial<Record<'en' | 'ja' | 'ko' | 'es' | 'fr', NewsTranslation>>;
 
+/** 内容多语言翻译集合（通用，供攻略/评测复用；键为数据库列后缀 en/ja/ko/es/fr） */
+export type ContentTranslations = Partial<Record<'en' | 'ja' | 'ko' | 'es' | 'fr', NewsTranslation>>;
+
 /** 新闻实体 */
 export interface News {
   id: string;
@@ -589,6 +592,8 @@ export interface ReviewScores {
 export interface Review {
   id: string;
   title: string;
+  /** 主标题：用于生成 URL slug 后缀 */
+  maintitle?: string;
   content: string;
   rating: number;
   scores?: ReviewScores;
@@ -615,11 +620,16 @@ export interface Review {
   version?: number;
   createdBy?: string;
   updatedBy?: string;
+
+  // 多语言翻译内容
+  translations?: ContentTranslations;
 }
 
 /** 评测创建输入 */
 export interface ReviewCreateInput {
   title: string;
+  /** 主标题：用于生成 URL slug 后缀 */
+  maintitle?: string;
   content: string;
   rating: number;
   scores?: ReviewScores;
@@ -628,11 +638,13 @@ export interface ReviewCreateInput {
   gameId: string;
   tags?: string[];
   reviewStatus?: ReviewStatus;
+  translations?: ContentTranslations;
 }
 
 /** 评测更新输入 */
 export interface ReviewUpdateInput {
   title?: string;
+  maintitle?: string;
   content?: string;
   rating?: number;
   scores?: ReviewScores;
@@ -641,6 +653,7 @@ export interface ReviewUpdateInput {
   tags?: string[];
   reviewStatus?: ReviewStatus;
   reviewComment?: string;
+  translations?: ContentTranslations;
 }
 
 // 社区帖子相关类型
@@ -1294,6 +1307,8 @@ export type GuideDifficulty = 'easy' | 'medium' | 'hard' | 'expert';
 export interface Guide {
   id: string;
   title: string;
+  /** 主标题：用于生成 URL slug 后缀 */
+  maintitle?: string;
   content: string;
   summary?: string;
   difficulty: GuideDifficulty;
@@ -1318,11 +1333,16 @@ export interface Guide {
 
   deletedAt?: Date;
   version?: number;
+
+  // 多语言翻译内容
+  translations?: ContentTranslations;
 }
 
 /** 攻略指南创建输入 */
 export interface GuideCreateInput {
   title: string;
+  /** 主标题：用于生成 URL slug 后缀 */
+  maintitle?: string;
   content: string;
   summary?: string;
   difficulty?: GuideDifficulty;
@@ -1332,11 +1352,13 @@ export interface GuideCreateInput {
   steps?: GuideStep[];
   estimatedMinutes?: number;
   reviewStatus?: ReviewStatus;
+  translations?: ContentTranslations;
 }
 
 /** 攻略指南更新输入 */
 export interface GuideUpdateInput {
   title?: string;
+  maintitle?: string;
   content?: string;
   summary?: string;
   difficulty?: GuideDifficulty;
@@ -1348,6 +1370,7 @@ export interface GuideUpdateInput {
   estimatedMinutes?: number;
   reviewStatus?: ReviewStatus;
   reviewComment?: string;
+  translations?: ContentTranslations;
 }
 
 // 导出游戏扩展类型

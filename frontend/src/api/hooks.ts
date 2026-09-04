@@ -329,9 +329,10 @@ export const useMyBlogPosts = (params?: PaginationParams) => {
  * @returns 评测列表
  */
 export const useReviews = (params?: PaginationParams) => {
+  const lang = i18n.language;
   return useQuery({
-    queryKey: queryKeys.reviews.list(params),
-    queryFn: () => apiService.getReviews(params),
+    queryKey: queryKeys.reviews.list({ ...params, lang }),
+    queryFn: () => apiService.getReviews({ ...params, lang }),
     select: (response) => response || [],
   });
 };
@@ -343,9 +344,10 @@ export const useReviews = (params?: PaginationParams) => {
  * @returns 评测详情
  */
 export const useReview = (id: string) => {
+  const lang = i18n.language;
   return useQuery({
-    queryKey: queryKeys.reviews.detail(id),
-    queryFn: () => apiService.getReview(id),
+    queryKey: [...queryKeys.reviews.detail(id), lang],
+    queryFn: () => apiService.getReview(id, lang),
     select: (response) => response,
     enabled: !!id,
   });
@@ -523,9 +525,10 @@ export const useLikeReview = () => {
  * @returns 攻略指南列表
  */
 export const useGuides = (params?: PaginationParams) => {
+  const lang = i18n.language;
   return useQuery({
-    queryKey: queryKeys.guides.list(params),
-    queryFn: () => apiService.getGuides(params),
+    queryKey: queryKeys.guides.list({ ...params, lang }),
+    queryFn: () => apiService.getGuides({ ...params, lang }),
     select: (response) => response || [],
   });
 };
@@ -537,9 +540,10 @@ export const useGuides = (params?: PaginationParams) => {
  * @returns 攻略指南详情
  */
 export const useGuide = (id: string) => {
+  const lang = i18n.language;
   return useQuery({
-    queryKey: queryKeys.guides.detail(id),
-    queryFn: () => apiService.getGuide(id),
+    queryKey: [...queryKeys.guides.detail(id), lang],
+    queryFn: () => apiService.getGuide(id, lang),
     select: (response) => response,
     enabled: !!id,
   });
@@ -553,9 +557,10 @@ export const useGuide = (id: string) => {
  * @returns 该游戏的攻略指南列表
  */
 export const useGameGuides = (gameId: string, params?: PaginationParams) => {
+  const lang = i18n.language;
   return useQuery({
-    queryKey: [...queryKeys.guides.lists(), { gameId, ...params }],
-    queryFn: () => apiService.getGameGuides(gameId, params),
+    queryKey: [...queryKeys.guides.lists(), { gameId, ...params, lang }],
+    queryFn: () => apiService.getGameGuides(gameId, params, lang),
     select: (response) => response || [],
     enabled: !!gameId,
   });

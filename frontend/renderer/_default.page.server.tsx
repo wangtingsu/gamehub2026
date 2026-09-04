@@ -321,8 +321,8 @@ async function prefetchData(queryClient: QueryClient, urlPathname: string, lang:
         queryFn: () => apiService.getNews({ page: 1, limit: 6, lang })
       })
       await queryClient.prefetchQuery({
-        queryKey: queryKeys.reviews.list({ page: 1, limit: 4, sort: 'popular' }),
-        queryFn: () => apiService.getReviews({ page: 1, limit: 4, sort: 'popular' })
+        queryKey: queryKeys.reviews.list({ page: 1, limit: 4, sort: 'popular', lang }),
+        queryFn: () => apiService.getReviews({ page: 1, limit: 4, sort: 'popular', lang })
       })
       console.log('首页数据预取完成')
     } catch (apiError) {

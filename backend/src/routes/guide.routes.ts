@@ -45,7 +45,7 @@ router.get(
   optionalAuthenticate,      // 可选身份验证：如果提供了token则解析用户身份，否则为null
   validateRequest(paginationSchema),  // 分页参数验证中间件：校验 page 和 limit 格式
   asyncHandler(async (req: Request, res: Response) => {
-    const { page = 1, limit = 20, gameId, difficulty, featured, authorId } = req.query;
+    const { page = 1, limit = 20, gameId, difficulty, featured, authorId, lang } = req.query;
 
     // 调用服务层获取攻略列表，按创建时间降序排列
     const { guides, total, page: currentPage, limit: currentLimit } = await guideService.getGuides(
@@ -60,6 +60,7 @@ router.get(
         difficulty: difficulty as string,
         featuredOnly: featured === 'true',
         authorId: authorId as string,
+        lang: lang as string,
       }
     );
 
@@ -101,7 +102,7 @@ router.get(
   optionalAuthenticate,      // 可选身份验证：如果提供了token则解析用户身份，否则为null
   validateRequest(searchSchema),      // 搜索参数验证中间件：校验 query 等参数格式
   asyncHandler(async (req: Request, res: Response) => {
-    const { query, gameId, difficulty, page = 1, limit = 20 } = req.query;
+    const { query, gameId, difficulty, page = 1, limit = 20, lang } = req.query;
 
     const { guides, total, page: currentPage, limit: currentLimit, query: searchQuery } = await guideService.searchGuides({
       query: query as string,
@@ -110,6 +111,7 @@ router.get(
       filters: {
         gameId: gameId as string,
         difficulty: difficulty as string,
+        lang: lang as string,
       },
     });
 
@@ -150,12 +152,12 @@ router.get(
   optionalAuthenticate,      // 可选身份验证：如果提供了token则解析用户身份，否则为null
   asyncHandler(async (req: Request, res: Response) => {
     const { gameId } = req.params;
-    const { page = 1, limit = 20 } = req.query;
+    const { page = 1, limit = 20, lang } = req.query;
 
     const { guides, total, page: currentPage, limit: currentLimit } = await guideService.getGameGuides(gameId, {
       page: Number(page),
       limit: Number(limit),
-    });
+    }, lang as string);
 
     const totalPages = Math.ceil(total / currentLimit);
 
@@ -195,8 +197,9 @@ router.get(
   optionalAuthenticate,      // 可选身份验证：如果提供了token则解析用户身份，否则为null
   asyncHandler(async (req: Request, res: Response) => {
     const { id } = req.params;
+    const { lang } = req.query;
 
-    const guide = await guideService.getGuideById(id);
+    const guide = await guideService.getGuideById(id, lang as string);
 
     // 异步递增浏览量，不阻塞响应
     guideService.incrementViewCount(id).catch(() => {});

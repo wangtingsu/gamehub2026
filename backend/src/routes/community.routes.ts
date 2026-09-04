@@ -735,10 +735,10 @@ router.get(
   optionalAuthenticate,
   validateRequest(paginationSchema),
   asyncHandler(async (req: Request, res: Response) => {
-    const { page = 1, limit = 20, gameId, featured } = req.query;
+    const { page = 1, limit = 20, gameId, featured, lang } = req.query;
     const { reviews, total, page: currentPage, limit: currentLimit } = await reviewService.getReviews(
       { page: Number(page), limit: Number(limit), sortBy: 'publishedAt', sortOrder: 'desc' },
-      { gameId: gameId as string, featuredOnly: featured === 'true' }
+      { gameId: gameId as string, featuredOnly: featured === 'true', lang: lang as string }
     );
     const totalPages = Math.ceil(total / currentLimit);
     res.json({ success: true, data: { reviews, pagination: { page: currentPage, limit: currentLimit, total, totalPages, hasNext: currentPage < totalPages, hasPrev: currentPage > 1 } }, message: '评测列表获取成功' });
@@ -764,8 +764,8 @@ router.get(
   optionalAuthenticate,
   validateRequest(searchSchema),
   asyncHandler(async (req: Request, res: Response) => {
-    const { query, gameId, page = 1, limit = 20 } = req.query;
-    const result = await reviewService.searchReviews({ query: query as string, page: Number(page), limit: Number(limit), filters: { gameId: gameId as string } });
+    const { query, gameId, page = 1, limit = 20, lang } = req.query;
+    const result = await reviewService.searchReviews({ query: query as string, page: Number(page), limit: Number(limit), filters: { gameId: gameId as string, lang: lang as string } });
     const totalPages = Math.ceil(result.total / result.limit);
     res.json({ success: true, data: { reviews: result.reviews, query: result.query, pagination: { page: result.page, limit: result.limit, total: result.total, totalPages, hasNext: result.page < totalPages, hasPrev: result.page > 1 } }, message: '评测搜索成功' });
   })
@@ -802,7 +802,7 @@ router.get(
   '/reviews/:id',
   optionalAuthenticate,
   asyncHandler(async (req: Request, res: Response) => {
-    const review = await reviewService.getReviewById(req.params.id);
+    const review = await reviewService.getReviewById(req.params.id, req.query.lang as string);
     res.json({ success: true, data: review, message: '评测详情获取成功' });
   })
 );

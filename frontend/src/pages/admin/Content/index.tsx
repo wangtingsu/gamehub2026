@@ -944,6 +944,15 @@ const Content: React.FC = () => {
           views: 0,
         } as unknown as NewsArticle;
         break;
+      case 'guides':
+        data = {
+          ...defaultContent,
+          gameId: 0,
+          gameTitle: '',
+          difficulty: 'medium',
+          summary: '',
+        } as unknown as Guide;
+        break;
     }
 
     setEditingContent({ type: activeTab, data });
@@ -977,6 +986,9 @@ const Content: React.FC = () => {
           case 'blogs':
             await apiService.updateBlogPost(String(editingContentData.id), contentData);
             break;
+          case 'guides':
+            await apiService.updateGuide(String(editingContentData.id), contentData as any);
+            break;
         }
         message.success('Content updated successfully');
       } else {
@@ -993,6 +1005,9 @@ const Content: React.FC = () => {
             break;
           case 'blogs':
             await apiService.createBlogPost(contentData as any);
+            break;
+          case 'guides':
+            await apiService.createGuide(contentData as any);
             break;
         }
         message.success('Content created successfully');
@@ -1393,12 +1408,42 @@ const Content: React.FC = () => {
 
           {activeTab === 'reviews' && (
             <>
+              <Tabs defaultActiveKey="zh">
+                <TabPane tab="简体中文（默认）" key="zh">
+                  <Form.Item
+                    label="标题"
+                    name="title"
+                    rules={[{ required: true, message: '请输入标题' }]}
+                  >
+                    <Input placeholder="评测标题" />
+                  </Form.Item>
+                  <Form.Item
+                    label="正文"
+                    name="content"
+                    rules={[{ required: true, message: '请输入正文' }]}
+                  >
+                    <BlogEditor />
+                  </Form.Item>
+                </TabPane>
+                {NEWS_TRANSLATION_LANGS.map(({ key, label }) => (
+                  <TabPane tab={label} key={key}>
+                    <Form.Item label="标题" name={['translations', key, 'title']}>
+                      <Input placeholder={`${label} title`} />
+                    </Form.Item>
+                    <Form.Item label="正文" name={['translations', key, 'content']}>
+                      <BlogEditor />
+                    </Form.Item>
+                  </TabPane>
+                ))}
+              </Tabs>
+
               <Form.Item
-                label="Review Title"
-                name="title"
-                rules={[{ required: true, message: 'Please enter review title' }]}
+                label="主标题 / Main Title（URL 后缀）"
+                name="maintitle"
+                rules={[{ required: true, message: '请输入主标题' }]}
+                tooltip="用于生成评测链接的后缀（slug）"
               >
-                <Input placeholder="Enter review title" />
+                <Input placeholder="Enter main title (used for URL slug)" />
               </Form.Item>
 
               <Form.Item
@@ -1469,12 +1514,48 @@ const Content: React.FC = () => {
 
           {activeTab === 'guides' && (
             <>
+              <Tabs defaultActiveKey="zh">
+                <TabPane tab="简体中文（默认）" key="zh">
+                  <Form.Item
+                    label="标题"
+                    name="title"
+                    rules={[{ required: true, message: '请输入标题' }]}
+                  >
+                    <Input placeholder="攻略标题" />
+                  </Form.Item>
+                  <Form.Item label="摘要" name="summary">
+                    <TextArea rows={2} placeholder="攻略摘要（可选）" />
+                  </Form.Item>
+                  <Form.Item
+                    label="正文"
+                    name="content"
+                    rules={[{ required: true, message: '请输入正文' }]}
+                  >
+                    <BlogEditor />
+                  </Form.Item>
+                </TabPane>
+                {NEWS_TRANSLATION_LANGS.map(({ key, label }) => (
+                  <TabPane tab={label} key={key}>
+                    <Form.Item label="标题" name={['translations', key, 'title']}>
+                      <Input placeholder={`${label} title`} />
+                    </Form.Item>
+                    <Form.Item label="摘要" name={['translations', key, 'excerpt']}>
+                      <TextArea rows={2} placeholder={`${label} summary`} />
+                    </Form.Item>
+                    <Form.Item label="正文" name={['translations', key, 'content']}>
+                      <BlogEditor />
+                    </Form.Item>
+                  </TabPane>
+                ))}
+              </Tabs>
+
               <Form.Item
-                label="Guide Title"
-                name="title"
-                rules={[{ required: true, message: 'Please enter guide title' }]}
+                label="主标题 / Main Title（URL 后缀）"
+                name="maintitle"
+                rules={[{ required: true, message: '请输入主标题' }]}
+                tooltip="用于生成攻略链接的后缀（slug）"
               >
-                <Input placeholder="Enter guide title" />
+                <Input placeholder="Enter main title (used for URL slug)" />
               </Form.Item>
 
               <Form.Item
@@ -1586,7 +1667,7 @@ const Content: React.FC = () => {
             </>
           )}
 
-          {activeTab !== 'news' && activeTab !== 'blogs' && (
+          {activeTab !== 'news' && activeTab !== 'blogs' && activeTab !== 'guides' && activeTab !== 'reviews' && (
             <Form.Item
               label="Content"
               name="content"

@@ -16,7 +16,7 @@ import {
   ReviewStatus,
   SearchParams
 } from '../types';
-import { NotFoundError } from '../middlewares/error.middleware';
+import { NotFoundError, ValidationError, ConflictError } from '../middlewares/error.middleware';
 
 /**
  * 生成文章 slug（满足 blog_articles.slug 唯一约束）
@@ -30,6 +30,67 @@ const generateSlug = (title: string): string => {
 };
 
 /**
+ * 攻略多语言翻译列后缀（不含中文——中文对应基础列 title/content/excerpt）。
+ * 与 blog_articles 表的 title_xx / content_xx / excerpt_xx 列一一对应。
+ */
+const TRANSLATION_SUFFIXES = ['en', 'ja', 'ko', 'es', 'fr'] as const;
+type TranslationSuffix = typeof TRANSLATION_SUFFIXES[number];
+
+/** 将请求语言代码映射为翻译列后缀（中文返回 null，回退基础列） */
+const langToSuffix = (lang?: string): TranslationSuffix | null => {
+  const l = (lang || 'zh-CN').toLowerCase();
+  if (l === 'zh-cn' || l === 'zh' || l === 'cn') return null;
+  const base = l.split('-')[0];
+  return (TRANSLATION_SUFFIXES as readonly string[]).includes(base)
+    ? (base as TranslationSuffix)
+    : null;
+};
+
+/** 从数据库行读取多语言翻译列，构建 translations 对象（空值省略） */
+const readTranslations = (row: any): any => {
+  const translations: any = {};
+  for (const suffix of TRANSLATION_SUFFIXES) {
+    const title = row[`title_${suffix}`];
+    const content = row[`content_${suffix}`];
+    const excerpt = row[`excerpt_${suffix}`];
+    if (title || content || excerpt) {
+      translations[suffix] = {
+        ...(title ? { title } : {}),
+        ...(content ? { content } : {}),
+        ...(excerpt ? { excerpt } : {}),
+      };
+    }
+  }
+  return translations;
+};
+
+/** 根据语言本地化攻略字段（为空则回退基础列）；攻略的 summary 对应 excerpt 列 */
+const localizeGuide = (guide: any, lang?: string): any => {
+  const suffix = langToSuffix(lang);
+  if (!suffix) return guide;
+  const tr = guide.translations?.[suffix];
+  if (!tr) return guide;
+  return {
+    ...guide,
+    title: tr.title || guide.title,
+    content: tr.content || guide.content,
+    summary: tr.excerpt || guide.summary,
+  };
+};
+
+/** 从翻译对象生成数据库列名与参数（用于 INSERT） */
+const translationColumns = (translations?: any): { cols: string[]; params: any[] } => {
+  const cols: string[] = [];
+  const params: any[] = [];
+  for (const suffix of TRANSLATION_SUFFIXES) {
+    const tr = translations?.[suffix];
+    cols.push(`title_${suffix}`, `content_${suffix}`, `excerpt_${suffix}`);
+    params.push(tr?.title || null, tr?.content || null, tr?.excerpt || null);
+  }
+  return { cols, params };
+};
+
+/**
  * 从数据库行映射到 Guide 对象
  * 将 snake_case 数据库字段和 JSON 字符串字段转换为 camelCase 的 Guide 类型。
  * @param dbGuide - 数据库查询结果行
@@ -38,6 +99,7 @@ const generateSlug = (title: string): string => {
 const mapGuideFromDb = (dbGuide: any): Guide => ({
   id: dbGuide.id.toString(),
   title: dbGuide.title,
+  maintitle: dbGuide.maintitle || undefined,
   content: dbGuide.content,
   summary: dbGuide.excerpt || dbGuide.summary || undefined,
   difficulty: dbGuide.difficulty || 'medium',
@@ -57,6 +119,7 @@ const mapGuideFromDb = (dbGuide: any): Guide => ({
   reviewComment: dbGuide.review_comment || undefined,
   reviewedBy: dbGuide.reviewed_by ? String(dbGuide.reviewed_by) : undefined,
   reviewedAt: dbGuide.reviewed_at ? new Date(dbGuide.reviewed_at) : undefined,
+  translations: readTranslations(dbGuide),
 });
 
 /**
@@ -79,10 +142,11 @@ const camelToSnakeCase = (str: string): string => {
  */
 export const getGuides = async (
   pagination: PaginationParams = {},
-  filters: { gameId?: string; difficulty?: string; featuredOnly?: boolean; authorId?: string; reviewStatus?: string } = {}
+  filters: { gameId?: string; difficulty?: string; featuredOnly?: boolean; authorId?: string; reviewStatus?: string; lang?: string } = {}
 ): Promise<{ guides: Guide[]; total: number; page: number; limit: number }> => {
   const { page = 1, limit = 20, sortBy = 'createdAt', sortOrder = 'desc' } = pagination;
   const offset = (page - 1) * limit;
+  const { lang } = filters;
 
   const sortColumn = camelToSnakeCase(sortBy);
   const validSortColumns = ['id', 'title', 'difficulty', 'likes', 'views', 'estimated_minutes', 'created_at', 'updated_at'];
@@ -142,7 +206,7 @@ export const getGuides = async (
   const dataParams = [...queryParams, limit, offset];
   const result = await query(dataSql, dataParams);
 
-  const guides = result.map((row: any) => ({
+  const guides = result.map((row: any) => localizeGuide({
     ...mapGuideFromDb(row),
     authorName: row.author_name,
     authorDisplayName: row.author_display_name,
@@ -150,7 +214,7 @@ export const getGuides = async (
     gameTitle: row.game_title,
     gameSlug: row.game_slug,
     gameCover: row.game_cover,
-  }));
+  }, lang));
 
   logger.debug(`获取攻略列表成功，第${page}页，每页${limit}条，共${total}条`);
 
@@ -173,6 +237,7 @@ export const searchGuides = async (
 ): Promise<{ guides: Guide[]; total: number; page: number; limit: number; query?: string }> => {
   const { query: searchQuery = '', page = 1, limit = 20, filters = {} } = searchParams;
   const offset = (page - 1) * limit;
+  const lang = filters.lang;
 
   let whereClause = '';
   const queryParams: any[] = [];
@@ -222,14 +287,14 @@ export const searchGuides = async (
   const dataParams = [...queryParams, limit, offset];
   const result = await query(dataSql, dataParams);
 
-  const guides = result.map((row: any) => ({
+  const guides = result.map((row: any) => localizeGuide({
     ...mapGuideFromDb(row),
     authorName: row.author_name,
     authorDisplayName: row.author_display_name,
     authorAvatar: row.author_avatar,
     gameTitle: row.game_title,
     gameSlug: row.game_slug,
-  }));
+  }, lang));
 
   logger.debug(`搜索攻略成功，关键词: "${searchQuery}"，找到${total}条结果`);
 
@@ -249,7 +314,7 @@ export const searchGuides = async (
  * @returns 包含作者信息和游戏信息的完整攻略对象
  * @throws NotFoundError - 攻略不存在时抛出
  */
-export const getGuideById = async (id: string): Promise<any> => {
+export const getGuideById = async (id: string, lang?: string): Promise<any> => {
   const result = await query(
     `SELECT g.*, u.username as author_name, u.display_name as author_display_name, u.avatar_url as author_avatar,
             game.title as game_title, game.slug as game_slug, game.cover_image_url as game_cover
@@ -265,7 +330,7 @@ export const getGuideById = async (id: string): Promise<any> => {
   }
 
   const row = result[0];
-  const guide = mapGuideFromDb(row);
+  const guide = localizeGuide(mapGuideFromDb(row), lang);
 
   const enhancedGuide = {
     ...guide,
@@ -307,37 +372,51 @@ export const createGuide = async (authorId: string, guideData: GuideCreateInput)
       throw new NotFoundError(`游戏ID ${guideData.gameId} 不存在`);
     }
 
+    // 主标题（maintitle）：作为 URL slug 后缀来源，必填且唯一（缺省回退标题）
+    const maintitle = (guideData.maintitle || guideData.title || '').trim();
+    if (!maintitle) throw new ValidationError('主标题（maintitle）不能为空');
+    const existingMain = await query('SELECT id FROM blog_articles WHERE LOWER(maintitle) = LOWER(?)', [maintitle]);
+    if (existingMain.length > 0) throw new ConflictError('主标题已存在，请更换');
+
     // 生成 slug，确保唯一（blog_articles.slug 有唯一约束）
-    let slug = generateSlug(guideData.title);
+    let slug = generateSlug(maintitle);
     const slugExists = await query('SELECT id FROM blog_articles WHERE slug = ?', [slug]);
     if (slugExists.length > 0) {
       slug = `${slug}-${Date.now()}`;
     }
 
+    const tr = translationColumns((guideData as any).translations);
+    const cols = [
+      'title', 'maintitle', 'slug', 'content', 'excerpt', 'cover_image_url', 'author_id', 'space_id', 'category', 'tags',
+      'is_published', 'is_pinned', 'published_at', 'review_status', 'post_type', 'game_id', 'created_at', 'updated_at',
+      ...tr.cols,
+    ];
+    const placeholders = cols.map(() => '?').join(',');
+    const values = [
+      guideData.title,
+      maintitle,
+      slug,
+      guideData.content,
+      guideData.summary || '',
+      guideData.coverImageUrl || null,
+      authorId,
+      (guideData as any).spaceId || 1,
+      '攻略',
+      JSON.stringify(guideData.tags || []),
+      0, // is_published = 0，待审核
+      0, // is_pinned = 0
+      null, // published_at（未发布）
+      'pending',
+      'guide',
+      guideData.gameId,
+      new Date().toISOString(),
+      new Date().toISOString(),
+      ...tr.params,
+    ];
+
     const result = await execute(
-      `INSERT INTO blog_articles (
-        title, slug, content, excerpt, cover_image_url, author_id, space_id, category, tags,
-        is_published, is_pinned, published_at, review_status, post_type, game_id, created_at, updated_at
-      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
-      [
-        guideData.title,
-        slug,
-        guideData.content,
-        guideData.summary || '',
-        guideData.coverImageUrl || null,
-        authorId,
-        (guideData as any).spaceId || 1,
-        '攻略',
-        JSON.stringify(guideData.tags || []),
-        0, // is_published = 0，待审核
-        0, // is_pinned = 0
-        null, // published_at（未发布）
-        'pending',
-        'guide',
-        guideData.gameId,
-        new Date().toISOString(),
-        new Date().toISOString(),
-      ]
+      `INSERT INTO blog_articles (${cols.join(',')}) VALUES (${placeholders})`,
+      values
     );
 
     const inserted = await query(
@@ -366,6 +445,20 @@ export const updateGuide = async (
 ): Promise<Guide> => {
   const updates: string[] = [];
   const values: any[] = [];
+
+  // 主标题（maintitle）：若提供则校验唯一性，并据此重新生成 slug
+  if ((updateData as any).maintitle !== undefined) {
+    const maintitle = ((updateData as any).maintitle || '').trim();
+    if (!maintitle) throw new ValidationError('主标题（maintitle）不能为空');
+    const existingMain = await query('SELECT id FROM blog_articles WHERE LOWER(maintitle) = LOWER(?) AND id != ?', [maintitle, id]);
+    if (existingMain.length > 0) throw new ConflictError('主标题已存在，请更换');
+    updates.push('maintitle = ?');
+    values.push(maintitle);
+    const newSlug = generateSlug(maintitle);
+    const existingSlug = await query('SELECT id FROM blog_articles WHERE slug = ? AND id != ?', [newSlug, id]);
+    updates.push('slug = ?');
+    values.push(existingSlug.length > 0 ? `${newSlug}-${Date.now()}` : newSlug);
+  }
 
   if (updateData.title !== undefined) {
     updates.push('title = ?');
@@ -415,6 +508,17 @@ export const updateGuide = async (
   if (updateData.reviewComment !== undefined) {
     updates.push('review_comment = ?');
     values.push(updateData.reviewComment);
+  }
+
+  // 多语言翻译列
+  if ((updateData as any).translations !== undefined) {
+    for (const suffix of TRANSLATION_SUFFIXES) {
+      const tr = (updateData as any).translations?.[suffix];
+      if (tr && (tr.title !== undefined || tr.content !== undefined || tr.excerpt !== undefined)) {
+        updates.push(`title_${suffix} = ?`, `content_${suffix} = ?`, `excerpt_${suffix} = ?`);
+        values.push(tr.title ?? null, tr.content ?? null, tr.excerpt ?? null);
+      }
+    }
   }
 
   if (updates.length === 0) {
@@ -590,9 +694,10 @@ export const getGuideComments = async (
  */
 export const getGameGuides = async (
   gameId: string,
-  pagination: PaginationParams = {}
+  pagination: PaginationParams = {},
+  lang?: string
 ): Promise<{ guides: Guide[]; total: number; page: number; limit: number }> => {
-  return getGuides(pagination, { gameId });
+  return getGuides(pagination, { gameId, lang });
 };
 
 export default {
