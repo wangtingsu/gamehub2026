@@ -410,7 +410,9 @@ export const createNews = async (
 
   // 事务内插入文章记录
   await transaction(async () => {
-    const slug = generateSlug(newsData.title);
+    // slug 优先用英文标题（SEO 友好、无中文 URL 编码），无英文标题时回退主语言标题
+    const englishTitle = newsData.translations?.en?.title?.trim();
+    const slug = generateSlug(englishTitle || newsData.title);
 
     // 非草稿模式下检查 slug 唯一性
     if (!isDraft) {
@@ -575,6 +577,20 @@ export const updateNews = async (
         values.push(tr.excerpt || null);
       }
     }
+  }
+
+  // slug 随标题变化而重建（英文优先），保证 URL 始终指向英文 slug
+  if (updateData.title !== undefined || updateData.translations?.en?.title !== undefined) {
+    const cur = await query('SELECT title, title_en FROM news WHERE id = ?', [id]);
+    const curRow = cur[0] || {};
+    const newBaseTitle = updateData.title !== undefined ? updateData.title : curRow.title;
+    const newEnglishTitle =
+      updateData.translations?.en?.title !== undefined
+        ? updateData.translations.en.title
+        : (curRow.title_en || '');
+    const slugSource = (newEnglishTitle || '').trim() || newBaseTitle;
+    updates.push(`slug = ?`);
+    values.push(generateSlug(slugSource));
   }
 
   // 没有需要更新的字段则直接返回当前数据
