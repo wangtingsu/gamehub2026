@@ -17,6 +17,7 @@ import { query } from '../db';
  */
 export interface SitemapGameItem {
   id: number;
+  slug: string;
   updatedAt: string;
 }
 
@@ -51,11 +52,12 @@ export interface SitemapReviewItem {
  */
 export const getAllGamesForSitemap = async (): Promise<SitemapGameItem[]> => {
   const result = await query(
-    'SELECT id, updated_at FROM games ORDER BY updated_at DESC',
+    'SELECT id, slug, updated_at FROM games ORDER BY updated_at DESC',
     []
   );
   return (result.rows || result).map((row: any) => ({
     id: row.id,
+    slug: row.slug,
     updatedAt: row.updated_at,
   }));
 };

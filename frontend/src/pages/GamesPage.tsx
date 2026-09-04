@@ -250,8 +250,8 @@ const GamesPage = () => {
     setSearchText(value);
   };
 
-  const handleViewGame = (id: string | number) => {
-    navigate(`/${currentLang}/games/${id}`);
+  const handleViewGame = (id: string | number, slug?: string) => {
+    navigate(`/${currentLang}/games/${slug || id}`);
   };
 
   const handleResetFilters = () => {

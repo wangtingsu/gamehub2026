@@ -213,7 +213,7 @@ function buildJsonLdGraph(opts: {
         '@type': 'ListItem',
         position: i + 1,
         name: g.title,
-        url: `${SITE_URL}/${langPrefix}/games/${g.id}`,
+        url: `${SITE_URL}/${langPrefix}/games/${g.slug || g.id}`,
       })),
     })
   }
@@ -432,10 +432,10 @@ async function render(pageContext: PageContextServer) {
   // 语言前缀：无前缀时默认 en（把 /games/12 归一到 /en/games/12）
   const langPrefix = validLang || 'en'
   // canonical：语言根页（/、/en、/cn…）统一指向带语言前缀的 /en（而非会 301 跳转的无前缀根 /）
-  const canonicalUrl = pathWithoutLang === '/'
+  let canonicalUrl = pathWithoutLang === '/'
     ? `${SITE_URL}/${langPrefix}`
     : `${SITE_URL}/${langPrefix}${pathWithoutLang}`
-  const alternateLinks = HREFLANG_LANGS.map(
+  let alternateLinks = HREFLANG_LANGS.map(
     (l) => `<link rel="alternate" hreflang="${l.code}" href="${SITE_URL}/${l.prefix}${pathWithoutLang === '/' ? '' : pathWithoutLang}" />`
   ).join('\n    ')
   // og:locale（与 SEO.tsx 的 LOCALE_MAP 保持一致）
@@ -460,6 +460,15 @@ async function render(pageContext: PageContextServer) {
   const gameIdMatch = urlPathname.match(/\/games\/([^/]+)/)
   if (gameIdMatch) {
     gameDetail = serverQueryClient.getQueryData<Game>(queryKeys.games.detail(gameIdMatch[1])) ?? null
+  }
+
+  // 游戏详情页 canonical/hreflang 归一为 slug（旧 /games/<id> 链接也指向 /games/<slug>，避免重复收录）
+  if (gameDetail?.slug) {
+    const gamePath = `/games/${gameDetail.slug}`
+    canonicalUrl = `${SITE_URL}/${langPrefix}${gamePath}`
+    alternateLinks = HREFLANG_LANGS.map(
+      (l) => `<link rel="alternate" hreflang="${l.code}" href="${SITE_URL}/${l.prefix}${gamePath}" />`
+    ).join('\n    ')
   }
 
   let newsDetail: NewsArticle | null = null

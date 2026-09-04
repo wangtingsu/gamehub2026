@@ -146,7 +146,7 @@ function buildAlternateLinks(siteUrl: string, path: string): string {
  */
 function buildSitemapXml(
   siteUrl: string,
-  games: { id: number; updatedAt: string }[],
+  games: { id: number; slug?: string; updatedAt: string }[],
   news: { id: number; publishedAt: string }[],
   reviews: { id: number; publishedAt: string }[],
   guides: { id: number; publishedAt: string }[]
@@ -168,7 +168,7 @@ ${alternates}
 
   // 游戏详情页
   for (const game of games) {
-    const path = `/games/${game.id}`;
+    const path = `/games/${game.slug || game.id}`;
     const canonicalLoc = `${siteUrl}/${URL_PREFIXES[0]}${path}`;
     const alternates = buildAlternateLinks(siteUrl, path);
     urls.push(`  <url>

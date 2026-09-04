@@ -52,7 +52,7 @@ const PostNewPage = () => {
       await createPost.mutateAsync(payload);
       message.success('帖子发布成功！');
       if (gameIdParam) {
-        navigate(`/${lang}/games/${gameIdParam}/forum`);
+        navigate(`/${lang}/games/${game?.slug || gameIdParam}/forum`);
       } else {
         navigate(`/${lang}/community`);
       }

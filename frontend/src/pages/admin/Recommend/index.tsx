@@ -116,7 +116,7 @@ const RecommendPage = () => {
               <Form.Item name="title" label="标题" rules={[{ required: true }]}><Input /></Form.Item>
               <Form.Item name="subtitle" label="副标题"><Input /></Form.Item>
               <Form.Item name="imageUrl" label="图片URL" rules={[{ required: true }]}><Input placeholder="https://..." /></Form.Item>
-              <Form.Item name="linkUrl" label="链接URL"><Input placeholder="/games/1" /></Form.Item>
+              <Form.Item name="linkUrl" label="链接URL"><Input placeholder="/games/elden-ring" /></Form.Item>
               <Form.Item name="position" label="位置" initialValue="home">
                 <Select options={[{ value: 'home', label: '首页' }, { value: 'games', label: '游戏库' }, { value: 'news', label: '新闻' }, { value: 'ai', label: 'AI助手' }]} />
               </Form.Item>

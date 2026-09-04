@@ -126,7 +126,7 @@ router.get('/', async (req: Request, res: Response) => {
 
     // 游戏详情页 URLs
     const gameUrls = games.map(game => ({
-      loc: `${siteUrl}/en/games/${game.id}`, // 默认使用英语语言前缀
+      loc: `${siteUrl}/en/games/${game.slug || game.id}`, // 默认使用英语语言前缀
       lastmod: formatDate(game.updatedAt),
       changefreq: 'daily',
       priority: '0.8',
