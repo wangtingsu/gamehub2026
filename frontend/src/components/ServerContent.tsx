@@ -28,6 +28,8 @@ interface ServerContentProps {
   reviews?: Review[]
   gameDetail?: Game | null
   newsDetail?: NewsArticle | null
+  /** 栏目/列表页预取数据（P0 #3：让列表页 SSR 渲染内容而非空壳） */
+  listPage?: { kind: string; items: Array<{ id: string | number; title: string; url: string }> } | null
 }
 
 /** 从 URL 提取语言前缀，用于生成内部链接（无前缀默认 en） */
@@ -44,6 +46,7 @@ export default function ServerContent({
   reviews,
   gameDetail,
   newsDetail,
+  listPage,
 }: ServerContentProps) {
   const lang = getLangPrefix(urlPathname)
   const isHome = urlPathname === '/' || /^\/(en|cn|ja|ko|es|fr)\/?$/.test(urlPathname)
@@ -89,6 +92,16 @@ export default function ServerContent({
             </ul>
           )}
         </>
+      )}
+
+      {listPage && listPage.items.length > 0 && (
+        <ul>
+          {listPage.items.map((it) => (
+            <li key={it.id}>
+              <a href={it.url}>{it.title}</a>
+            </li>
+          ))}
+        </ul>
       )}
 
       {gameMatch && gameDetail && (

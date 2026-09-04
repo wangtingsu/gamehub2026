@@ -20,7 +20,7 @@ import apiService from '../src/api/index'
 import i18n from '../src/i18n.server'
 import type { PageContextServer } from 'vike/types'
 import { renderToString } from 'react-dom/server'
-import type { Game, NewsArticle, Review } from '../src/api/types'
+import type { Game, NewsArticle, Review, Guide, BlogArticle } from '../src/api/types'
 import ServerContent from '../src/components/ServerContent'
 
 /**
@@ -122,6 +122,12 @@ function getPageMeta(urlPathname: string, lang: string) {
   }
   if (path.startsWith('community')) {
     return build(t('seo.communityTitle'), t('seo.communityDescription'))
+  }
+  if (path.startsWith('guides')) {
+    return build(t('seo.guidesTitle'), t('seo.guidesDescription'))
+  }
+  if (path.startsWith('blog')) {
+    return build(t('seo.blogTitle'), t('seo.blogDescription'))
   }
   if (path.startsWith('about')) {
     return build(t('seo.aboutTitle'), t('seo.aboutDescription'))
@@ -313,6 +319,9 @@ function buildJsonLdGraph(opts: {
  * @param urlPathname - 当前请求的 URL 路径，用于判断需要预取哪些数据
  */
 async function prefetchData(queryClient: QueryClient, urlPathname: string, lang: string) {
+  // 去除语言前缀后的裸路径（用于区分栏目/列表页与详情页）
+  const barePath = urlPathname.replace(/^\/(en|cn|ja|ko|es|fr)(?=\/|$)/, '').replace(/^\/+|\/+$/g, '')
+  const listLimit = 24
   // 仅首页（/、/en、/en/、/cn、/cn/ 等）触发首页预取；避免 /en/blog/89 等子路径误命中
   if (urlPathname === '/' || /^\/(en|cn|ja|ko|es|fr)\/?$/.test(urlPathname)) {
     console.log('预取首页数据:', urlPathname)
@@ -332,6 +341,35 @@ async function prefetchData(queryClient: QueryClient, urlPathname: string, lang:
       console.log('首页数据预取完成')
     } catch (apiError) {
       console.warn('首页API预取失败:', apiError)
+    }
+  } else if (barePath === 'games' || barePath === 'news' || barePath === 'guides' || barePath === 'blog') {
+    // 栏目/列表页预取（P0 #3：让 /games、/news、/guides、/blog 列表页 SSR 渲染内容，而非空壳）
+    console.log('预取栏目页数据:', barePath)
+    try {
+      if (barePath === 'games') {
+        await queryClient.prefetchQuery({
+          queryKey: queryKeys.games.list({ page: 1, limit: listLimit }),
+          queryFn: () => apiService.getGames({ page: 1, limit: listLimit }),
+        })
+      } else if (barePath === 'news') {
+        await queryClient.prefetchQuery({
+          queryKey: queryKeys.news.list({ page: 1, limit: listLimit, lang }),
+          queryFn: () => apiService.getNews({ page: 1, limit: listLimit, lang }),
+        })
+      } else if (barePath === 'guides') {
+        await queryClient.prefetchQuery({
+          queryKey: queryKeys.guides.list({ page: 1, limit: listLimit, lang }),
+          queryFn: () => apiService.getGuides({ page: 1, limit: listLimit, lang }),
+        })
+      } else if (barePath === 'blog') {
+        await queryClient.prefetchQuery({
+          queryKey: queryKeys.blog.list({ page: 1, limit: listLimit, lang }),
+          queryFn: () => apiService.getBlogPosts({ page: 1, limit: listLimit, lang }),
+        })
+      }
+      console.log('栏目页数据预取完成:', barePath)
+    } catch (apiError) {
+      console.warn('栏目页API预取失败:', apiError)
     }
   } else if (urlPathname.includes('/games/')) {
     const match = urlPathname.match(/\/games\/([^\/]+)/)
@@ -482,13 +520,42 @@ async function render(pageContext: PageContextServer) {
     newsDetail = serverQueryClient.getQueryData<NewsArticle>([...queryKeys.news.details(), newsIdMatch[1], i18nLang]) ?? null
   }
 
+  // 栏目/列表页数据（P0 #3）：读取预取数据，构造统一列表项传给 ServerContent 渲染
+  const listBarePath = urlPathname.replace(/^\/(en|cn|ja|ko|es|fr)(?=\/|$)/, '').replace(/^\/+|\/+$/g, '')
+  const LIST_LIMIT = 24
+  let listPage: { kind: string; items: Array<{ id: string | number; title: string; url: string }> } | null = null
+  if (listBarePath === 'games') {
+    const list = serverQueryClient.getQueryData<Game[]>(queryKeys.games.list({ page: 1, limit: LIST_LIMIT }))
+    if (list) listPage = { kind: 'games', items: list.map((g) => ({ id: g.id, title: g.title, url: `/${langPrefix}/games/${g.slug || g.id}` })) }
+  } else if (listBarePath === 'news') {
+    const list = serverQueryClient.getQueryData<NewsArticle[]>(queryKeys.news.list({ page: 1, limit: LIST_LIMIT, lang: i18nLang }))
+    if (list) listPage = { kind: 'news', items: list.map((n) => ({ id: n.id, title: n.title, url: `/${langPrefix}/news/${n.slug || n.id}` })) }
+  } else if (listBarePath === 'guides') {
+    const list = serverQueryClient.getQueryData<Guide[]>(queryKeys.guides.list({ page: 1, limit: LIST_LIMIT, lang: i18nLang }))
+    if (list) listPage = { kind: 'guides', items: list.map((g) => ({ id: g.id, title: g.title, url: `/${langPrefix}/guides/${g.id}` })) }
+  } else if (listBarePath === 'blog') {
+    const list = serverQueryClient.getQueryData<BlogArticle[]>(queryKeys.blog.list({ page: 1, limit: LIST_LIMIT, lang: i18nLang }))
+    if (list) listPage = { kind: 'blog', items: list.map((b) => ({ id: b.id, title: b.title, url: `/${langPrefix}/blog/${b.slug}` })) }
+  }
+
   // 每页独立 title/description：详情页用真实内容标题，而非 slug 占位（SEO 收录基建）
   const truncate = (s: string, max = 160) => (s.length > max ? `${s.slice(0, max - 3)}...` : s)
   if (gameDetail?.title) {
-    pageMeta.title = gameDetail.title
-    pageMeta.ogTitle = gameDetail.title
+    // title 追加品牌后缀（修复「title 无关键词扩展」），并让 H1 与 H2（游戏名）不再完全相同
+    pageMeta.title = `${gameDetail.title} | ${SITE_NAME}`
+    pageMeta.ogTitle = pageMeta.title
     if (gameDetail.description?.trim()) {
-      pageMeta.description = truncate(gameDetail.description.trim())
+      let desc = gameDetail.description.trim()
+      // P1：详情页 desc 过短（实测仅 28 字，应 120-160），追加类型/平台/厂商等关键词扩展
+      if (desc.length < 120) {
+        const extras: string[] = []
+        if (Array.isArray(gameDetail.genres) && gameDetail.genres.length) extras.push(gameDetail.genres.join(', '))
+        if (Array.isArray(gameDetail.platforms) && gameDetail.platforms.length) extras.push(gameDetail.platforms.join(', '))
+        if (gameDetail.developer) extras.push(gameDetail.developer)
+        if (extras.length) desc = `${desc} — ${extras.join(' · ')}`
+        desc = `${desc}. Read reviews and ratings for ${gameDetail.title} on GameHub.`
+      }
+      pageMeta.description = truncate(desc)
       pageMeta.ogDescription = pageMeta.description
     }
   } else if (newsDetail?.title) {
@@ -524,6 +591,7 @@ async function render(pageContext: PageContextServer) {
       reviews={reviews}
       gameDetail={gameDetail}
       newsDetail={newsDetail}
+      listPage={listPage}
     />,
   )
 
