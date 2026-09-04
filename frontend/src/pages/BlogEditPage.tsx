@@ -43,6 +43,8 @@ const BlogEditPage = () => {
 
   const buildData = () => ({
     title: title.trim(),
+    // 主标题用于生成 URL 后缀（slug）：优先保留已有主标题，否则复用标题
+    maintitle: (post?.maintitle || title).trim(),
     content: content.trim(),
     excerpt: excerpt.trim() || title.trim(),
     category,

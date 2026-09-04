@@ -27,16 +27,17 @@ router.get('/space/:spaceId/content', optionalAuthenticate, asyncHandler(async (
 }));
 
 router.get('/', optionalAuthenticate, asyncHandler(async (req: Request, res: Response) => {
-  const { page, limit, spaceId, category, postType } = req.query;
+  const { page, limit, spaceId, category, postType, lang } = req.query;
   const result = await blogService.getBlogs({
     page: Number(page) || 1, limit: Number(limit) || 20,
     spaceId: spaceId as string, category: category as string, postType: postType as string,
+    lang: lang as string,
   });
   res.json({ success: true, data: result, message: '博客列表获取成功' });
 }));
 
 router.get('/:id', optionalAuthenticate, asyncHandler(async (req: Request, res: Response) => {
-  const blog = await blogService.getBlogById(req.params.id, req.query.type as string);
+  const blog = await blogService.getBlogById(req.params.id, req.query.type as string, req.query.lang as string);
   res.json({ success: true, data: blog, message: '博客详情获取成功' });
 }));
 

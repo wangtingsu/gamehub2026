@@ -52,8 +52,8 @@ abstract class BaseApiService {
   abstract likeNewsArticle(id: string): Promise<{ likes: number; liked: boolean }>;
   abstract pinNewsArticle(id: string): Promise<NewsArticle>;
   abstract unpinNewsArticle(id: string): Promise<NewsArticle>;
-  abstract getBlogPosts(params?: PaginationParams): Promise<BlogArticle[]>;
-  abstract getBlogPost(id: string): Promise<BlogArticle>;
+  abstract getBlogPosts(params?: PaginationParams & { lang?: string }): Promise<BlogArticle[]>;
+  abstract getBlogPost(id: string, lang?: string): Promise<BlogArticle>;
   abstract createBlogPost(data: BlogCreateInput): Promise<BlogArticle>;
   abstract updateBlogPost(id: string, data: BlogUpdateInput): Promise<BlogArticle>;
   abstract deleteBlogPost(id: string): Promise<void>;
@@ -650,12 +650,14 @@ class RealApiService extends BaseApiService {
     return r.data || r;
   }
 
-  async getBlogPosts(params?: PaginationParams) {
+  async getBlogPosts(params?: PaginationParams & { lang?: string }) {
     try {
-      const res = await this.client.get<any>('/blogs', params);
+      const lang = params?.lang || i18n.language;
+      const res = await this.client.get<any>('/blogs', { ...params, lang });
       const list = res.articles || res.blogs || [];
       return list.map((item: any) => ({
         id: item.id, title: item.title, slug: item.slug || item.id,
+        maintitle: item.maintitle || '',
         excerpt: item.excerpt || '', content: item.content || '',
         author: item.authorName || item.author || '',
         publishDate: item.publishedAt || item.publishDate || item.createdAt,
@@ -665,6 +667,7 @@ class RealApiService extends BaseApiService {
         views: item.views || 0, likes: item.likes || 0, featured: false,
         spaceId: item.spaceId, spaceName: item.spaceName, spaceSlug: item.spaceSlug,
       postType: item.postType || 'blog', rating: item.rating || null, gameId: item.gameId || null, reviewStatus: item.reviewStatus || item.review_status,
+      translations: item.translations,
       } as any));
     } catch { return []; }
   }
@@ -680,13 +683,14 @@ class RealApiService extends BaseApiService {
   async updateBlogSpace(id: string, data: any) { return this.client.put<any>(`/blog-spaces/${id}`, data); }
   async deleteBlogSpace(id: string) { await this.client.delete(`/blog-spaces/${id}`); }
 
-  async getBlogPost(id: string): Promise<BlogArticle> {
-    const response = await this.client.get<any>(`/blogs/${id}`);
+  async getBlogPost(id: string, lang?: string): Promise<BlogArticle> {
+    const response = await this.client.get<any>(`/blogs/${id}`, { lang: lang || i18n.language });
     const item = response;
     return {
       id: item.id,
       title: item.title,
       slug: item.slug || item.id,
+      maintitle: item.maintitle || '',
       excerpt: item.excerpt || item.summary || '',
       content: item.content || '',
       author: item.authorName || item.author || '',
@@ -704,6 +708,7 @@ class RealApiService extends BaseApiService {
       spaceName: item.spaceName,
       spaceSlug: item.spaceSlug,
       postType: item.postType || 'blog', rating: item.rating || null, gameId: item.gameId || null, reviewStatus: item.reviewStatus || item.review_status,
+      translations: item.translations,
     } as any;
   }
 
@@ -715,6 +720,7 @@ class RealApiService extends BaseApiService {
       id: item.id,
       title: item.title,
       slug: item.slug || item.id,
+      maintitle: item.maintitle || data.maintitle || '',
       excerpt: item.excerpt || '',
       content: item.content || '',
       author: item.authorName || item.author || '',
@@ -728,6 +734,7 @@ class RealApiService extends BaseApiService {
       likes: item.likes || 0,
       featured: false,
       reviewStatus: item.reviewStatus || 'pending',
+      translations: item.translations,
     };
   }
 
@@ -755,6 +762,7 @@ class RealApiService extends BaseApiService {
       id: item.id,
       title: item.title,
       slug: item.slug || item.id,
+      maintitle: item.maintitle || '',
       excerpt: item.excerpt || '',
       content: item.content || '',
       author: item.authorName || item.authorDisplayName || item.author || '',
@@ -771,6 +779,7 @@ class RealApiService extends BaseApiService {
       featured: item.isFeatured || false,
       reviewStatus: item.reviewStatus || 'pending',
       reviewComment: item.reviewComment || '',
+      translations: item.translations,
     };
   }
 
@@ -4107,7 +4116,7 @@ class MockApiService extends BaseApiService {
 
   // ==================== Blog (Mock) ====================
 
-  async getBlogPosts(params?: PaginationParams): Promise<BlogArticle[]> {
+  async getBlogPosts(params?: PaginationParams & { lang?: string }): Promise<BlogArticle[]> {
     await this.delay();
     let posts = this.fallbackBlogPosts;
     if (params?.page && params?.limit) {
@@ -4117,7 +4126,7 @@ class MockApiService extends BaseApiService {
     return posts;
   }
 
-  async getBlogPost(id: string): Promise<BlogArticle> {
+  async getBlogPost(id: string, lang?: string): Promise<BlogArticle> {
     await this.delay();
     const posts = this.fallbackBlogPosts;
     const post = posts.find(p => p.id === id);

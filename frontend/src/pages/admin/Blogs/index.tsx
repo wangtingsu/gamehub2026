@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Table, Button, Space, Input, Modal, Form, Select, Tag, message, Popconfirm, Image, Spin, Upload } from 'antd';
+import { Table, Button, Space, Input, Modal, Form, Select, Tag, message, Popconfirm, Image, Spin, Upload, Tabs } from 'antd';
 import type { ColumnsType } from 'antd/es/table';
 import { PlusOutlined, UploadOutlined } from '@ant-design/icons';
 import { EditOutlined, DeleteOutlined, EyeOutlined, ReloadOutlined } from '@ant-design/icons';
@@ -9,6 +9,14 @@ import SEO from '../../../components/SEO';
 import BlogEditor from '../../../components/blog/BlogEditor';
 
 const { Search } = Input;
+
+const TRANSLATION_LANGS = [
+  { key: 'en', label: 'English' },
+  { key: 'ja', label: '日本語' },
+  { key: 'ko', label: '한국어' },
+  { key: 'es', label: 'Español' },
+  { key: 'fr', label: 'Français' },
+] as const;
 
 /**
  * 封面图片上传组件
@@ -237,6 +245,8 @@ const Blogs: React.FC = () => {
     form.setFieldsValue({
       category: '博客',
       content: '',
+      excerpt: '',
+      maintitle: '',
       coverImageUrl: '',
     });
     setModalVisible(true);
@@ -246,10 +256,13 @@ const Blogs: React.FC = () => {
     setEditing(blog);
     form.setFieldsValue({
       title: blog.title,
+      maintitle: (blog as any).maintitle || '',
       content: blog.content,
+      excerpt: blog.excerpt || '',
       category: blog.category || '博客',
       tags: (blog.tags || []).join(','),
       coverImageUrl: (blog as any).coverImageUrl || (blog as any).coverImage || '',
+      translations: (blog as any).translations,
     });
     setModalVisible(true);
   };
@@ -462,25 +475,53 @@ const Blogs: React.FC = () => {
             <CoverImageField />
           </Form.Item>
 
-          {/* 标题 */}
-          <Form.Item
-            label="标题"
-            name="title"
-            rules={[{ required: true, message: '请输入标题' }]}
-          >
-            <Input placeholder="博客标题" size="large" />
-          </Form.Item>
+          {/* 多语言编辑 */}
+          <Tabs defaultActiveKey="zh">
+            <Tabs.TabPane tab="简体中文（默认）" key="zh">
+              <Form.Item
+                label="标题"
+                name="title"
+                rules={[{ required: true, message: '请输入标题' }]}
+              >
+                <Input placeholder="博客标题" size="large" />
+              </Form.Item>
+              <Form.Item label="摘要" name="excerpt">
+                <Input.TextArea rows={2} placeholder="博客摘要（可选）" />
+              </Form.Item>
+              <Form.Item
+                label="正文"
+                name="content"
+                rules={[{ required: true, message: '请输入内容' }]}
+              >
+                <BlogEditor
+                  height={420}
+                  placeholder="使用 Markdown 编写博客内容..."
+                />
+              </Form.Item>
+            </Tabs.TabPane>
+            {TRANSLATION_LANGS.map(({ key, label }) => (
+              <Tabs.TabPane tab={label} key={key}>
+                <Form.Item label="标题" name={['translations', key, 'title']}>
+                  <Input placeholder={`${label} title`} />
+                </Form.Item>
+                <Form.Item label="摘要" name={['translations', key, 'excerpt']}>
+                  <Input.TextArea rows={2} placeholder={`${label} summary`} />
+                </Form.Item>
+                <Form.Item label="正文" name={['translations', key, 'content']}>
+                  <BlogEditor height={420} placeholder={`${label} content...`} />
+                </Form.Item>
+              </Tabs.TabPane>
+            ))}
+          </Tabs>
 
-          {/* 内容 - 使用增强版 BlogEditor */}
+          {/* 主标题（URL 后缀） */}
           <Form.Item
-            label="内容"
-            name="content"
-            rules={[{ required: true, message: '请输入内容' }]}
+            label="主标题 / Main Title（URL 后缀）"
+            name="maintitle"
+            rules={[{ required: true, message: '请输入主标题' }]}
+            tooltip="用于生成博客链接的后缀（slug），例如 /blog/your-main-title"
           >
-            <BlogEditor
-              height={420}
-              placeholder="使用 Markdown 编写博客内容..."
-            />
+            <Input placeholder="Enter main title (used for URL slug)" />
           </Form.Item>
 
           {/* 分类 & 标签 */}

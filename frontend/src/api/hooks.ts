@@ -236,9 +236,10 @@ export const useUnpinNews = () => {
  * @returns 博客文章列表
  */
 export const useBlogPosts = (params?: PaginationParams) => {
+  const lang = i18n.language;
   return useQuery({
-    queryKey: queryKeys.blog.list(params),
-    queryFn: () => apiService.getBlogPosts(params),
+    queryKey: queryKeys.blog.list({ ...params, lang }),
+    queryFn: () => apiService.getBlogPosts({ ...params, lang }),
     select: (response) => response || [],
   });
 };
@@ -250,9 +251,10 @@ export const useBlogPosts = (params?: PaginationParams) => {
  * @returns 博客文章详情
  */
 export const useBlogPost = (id: string) => {
+  const lang = i18n.language;
   return useQuery({
-    queryKey: queryKeys.blog.detail(id),
-    queryFn: () => apiService.getBlogPost(id),
+    queryKey: [...queryKeys.blog.details(), id, lang],
+    queryFn: () => apiService.getBlogPost(id, lang),
     select: (response) => response,
     enabled: !!id,
   });

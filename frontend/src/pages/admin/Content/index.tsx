@@ -1523,9 +1523,50 @@ const Content: React.FC = () => {
 
           {activeTab === 'blogs' && (
             <>
-              <Form.Item label="标题" name="title" rules={[{ required: true, message: '请输入标题' }]}>
-                <Input placeholder="博客标题" />
+              <Tabs defaultActiveKey="zh">
+                <TabPane tab="简体中文（默认）" key="zh">
+                  <Form.Item
+                    label="标题"
+                    name="title"
+                    rules={[{ required: true, message: '请输入标题' }]}
+                  >
+                    <Input placeholder="博客标题" />
+                  </Form.Item>
+                  <Form.Item label="摘要" name="excerpt">
+                    <TextArea rows={2} placeholder="博客摘要（可选）" />
+                  </Form.Item>
+                  <Form.Item
+                    label="正文"
+                    name="content"
+                    rules={[{ required: true, message: '请输入正文' }]}
+                  >
+                    <BlogEditor />
+                  </Form.Item>
+                </TabPane>
+                {NEWS_TRANSLATION_LANGS.map(({ key, label }) => (
+                  <TabPane tab={label} key={key}>
+                    <Form.Item label="标题" name={['translations', key, 'title']}>
+                      <Input placeholder={`${label} title`} />
+                    </Form.Item>
+                    <Form.Item label="摘要" name={['translations', key, 'excerpt']}>
+                      <TextArea rows={2} placeholder={`${label} summary`} />
+                    </Form.Item>
+                    <Form.Item label="正文" name={['translations', key, 'content']}>
+                      <BlogEditor />
+                    </Form.Item>
+                  </TabPane>
+                ))}
+              </Tabs>
+
+              <Form.Item
+                label="主标题 / Main Title（URL 后缀）"
+                name="maintitle"
+                rules={[{ required: true, message: '请输入主标题' }]}
+                tooltip="用于生成博客链接的后缀（slug），例如 /blog/your-main-title"
+              >
+                <Input placeholder="Enter main title (used for URL slug)" />
               </Form.Item>
+
               <Form.Item label="作者" name="author" rules={[{ required: true, message: '请输入作者' }]}>
                 <Input placeholder="作者名" />
               </Form.Item>
@@ -1545,17 +1586,13 @@ const Content: React.FC = () => {
             </>
           )}
 
-          {activeTab !== 'news' && (
+          {activeTab !== 'news' && activeTab !== 'blogs' && (
             <Form.Item
               label="Content"
               name="content"
               rules={[{ required: true, message: 'Please enter content' }]}
             >
-              {activeTab === 'blogs' ? (
-                <BlogEditor />
-              ) : (
-                <TextArea rows={6} placeholder="Enter content..." />
-              )}
+              <TextArea rows={6} placeholder="Enter content..." />
             </Form.Item>
           )}
 

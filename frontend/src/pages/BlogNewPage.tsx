@@ -33,6 +33,8 @@ const BlogNewPage = () => {
 
   const buildData = () => ({
     title: title.trim(),
+    // 主标题用于生成 URL 后缀（slug），用户侧直接复用标题
+    maintitle: title.trim(),
     content: content.trim(),
     excerpt: excerpt.trim() || title.trim(),
     category,

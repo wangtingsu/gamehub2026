@@ -363,10 +363,22 @@ export interface NewsArticle {
 }
 
 // 博客相关类型
+export interface BlogArticleTranslation {
+  title?: string;
+  content?: string;
+  excerpt?: string;
+}
+
+export type BlogArticleTranslations = Partial<
+  Record<'en' | 'ja' | 'ko' | 'es' | 'fr', BlogArticleTranslation>
+>;
+
 export interface BlogArticle {
   id: string;
   title: string;
   slug: string;
+  /** 主标题：用于生成 URL slug 后缀 */
+  maintitle?: string;
   excerpt: string;
   content: string;
   author: string;
@@ -386,28 +398,33 @@ export interface BlogArticle {
   postType?: 'blog' | 'review' | 'guide';
   rating?: number;
   gameId?: string;
+  translations?: BlogArticleTranslations;
 }
 
 // 博客创建输入
 export interface BlogCreateInput {
   title: string;
+  maintitle: string;
   content: string;
   excerpt?: string;
   coverImageUrl?: string;
   category: string;
   tags?: string[];
   status?: ReviewStatusType;
+  translations?: BlogArticleTranslations;
 }
 
 // 博客更新输入
 export interface BlogUpdateInput {
   title?: string;
+  maintitle?: string;
   content?: string;
   excerpt?: string;
   category?: string;
   tags?: string[];
   coverImageUrl?: string;
   reviewStatus?: ReviewStatusType;
+  translations?: BlogArticleTranslations;
 }
 
 // ==================== 评测相关类型 ====================

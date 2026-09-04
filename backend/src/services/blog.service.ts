@@ -4,7 +4,7 @@
  */
 import { query, execute } from '../db';
 import logger from '../utils/logger';
-import { NotFoundError } from '../middlewares/error.middleware';
+import { NotFoundError, ValidationError, ConflictError } from '../middlewares/error.middleware';
 
 const generateSlug = (title: string): string => {
   let slug = title.toLowerCase().replace(/[^\w\s一-鿿-]/g, '').replace(/\s+/g, '-').replace(/--+/g, '-').trim();
@@ -12,8 +12,51 @@ const generateSlug = (title: string): string => {
   return slug;
 };
 
-export const getBlogs = async (params: { page?: number; limit?: number; spaceId?: string; category?: string; publishedOnly?: boolean; postType?: string; gameId?: string }) => {
-  const { page = 1, limit = 20, spaceId, category, publishedOnly = true, postType, gameId } = params;
+/**
+ * 博客多语言支持的翻译列后缀（不含中文——中文对应基础列 title/content/excerpt）。
+ * 与 blog_articles 表的 title_xx / content_xx / excerpt_xx 列一一对应。
+ */
+const TRANSLATION_SUFFIXES = ['en', 'ja', 'ko', 'es', 'fr'] as const;
+type TranslationSuffix = typeof TRANSLATION_SUFFIXES[number];
+
+/** 将请求语言代码映射为翻译列后缀（中文返回 null，回退基础列） */
+const langToSuffix = (lang?: string): TranslationSuffix | null => {
+  const l = (lang || 'zh-CN').toLowerCase();
+  if (l === 'zh-cn' || l === 'zh' || l === 'cn') return null;
+  const base = l.split('-')[0];
+  return (TRANSLATION_SUFFIXES as readonly string[]).includes(base)
+    ? (base as TranslationSuffix)
+    : null;
+};
+
+/** 根据语言本地化博客字段（为空则回退基础列） */
+const localizeArticle = (article: any, lang?: string): any => {
+  const suffix = langToSuffix(lang);
+  if (!suffix) return article;
+  const tr = article.translations?.[suffix];
+  if (!tr) return article;
+  return {
+    ...article,
+    title: tr.title || article.title,
+    content: tr.content || article.content,
+    excerpt: tr.excerpt || article.excerpt,
+  };
+};
+
+/** 从翻译对象生成数据库列名与参数（用于 INSERT） */
+const translationColumns = (translations?: any): { cols: string[]; params: any[] } => {
+  const cols: string[] = [];
+  const params: any[] = [];
+  for (const suffix of TRANSLATION_SUFFIXES) {
+    const tr = translations?.[suffix];
+    cols.push(`title_${suffix}`, `content_${suffix}`, `excerpt_${suffix}`);
+    params.push(tr?.title || null, tr?.content || null, tr?.excerpt || null);
+  }
+  return { cols, params };
+};
+
+export const getBlogs = async (params: { page?: number; limit?: number; spaceId?: string; category?: string; publishedOnly?: boolean; postType?: string; gameId?: string; lang?: string }) => {
+  const { page = 1, limit = 20, spaceId, category, publishedOnly = true, postType, gameId, lang } = params;
   const offset = (page - 1) * limit;
 
   // Build conditions for blog_articles (no table alias in count query)
@@ -56,10 +99,10 @@ export const getBlogs = async (params: { page?: number; limit?: number; spaceId?
     [...mainVals, limit, offset]
   );
 
-  return { articles: (articles || []).map(mapArticle), total: Number(total), page, limit };
+  return { articles: (articles || []).map(a => localizeArticle(mapArticle(a), lang)), total: Number(total), page, limit };
 };
 
-export const getBlogById = async (id: string, type?: string) => {
+export const getBlogById = async (id: string, type?: string, lang?: string) => {
   let row: any = null;
   let table = '';
 
@@ -93,29 +136,53 @@ export const getBlogById = async (id: string, type?: string) => {
   else if (table === 'reviews') await execute('UPDATE reviews SET likes=likes WHERE id=?', [id]); // reviews no views column
   else if (table === 'guides') await execute('UPDATE guides SET likes=likes WHERE id=?', [id]);
 
-  return mapArticle({ ...row, post_type: row.post_type || (table === 'reviews' ? 'review' : table === 'guides' ? 'guide' : 'blog') });
+  return localizeArticle(mapArticle({ ...row, post_type: row.post_type || (table === 'reviews' ? 'review' : table === 'guides' ? 'guide' : 'blog') }), lang);
 };
 
 export const createBlog = async (authorId: string, data: any) => {
-  let slug = data.slug || generateSlug(data.title);
+  // 主标题（maintitle）作为 URL slug 后缀来源，必填且唯一
+  const maintitle = (data.maintitle || '').trim();
+  if (!maintitle) throw new ValidationError('主标题（maintitle）不能为空');
+  const title = (data.title || '').trim();
+  if (!title) throw new ValidationError('标题（title）不能为空');
+  const existingMain = await query('SELECT id FROM blog_articles WHERE LOWER(maintitle) = LOWER(?)', [maintitle]);
+  if (existingMain.length > 0) throw new ConflictError('主标题已存在，请更换');
+  let slug = data.slug || generateSlug(maintitle);
   // 确保 slug 唯一，避免同名/同 slug 标题触发 blog_articles_slug_key 唯一约束冲突
   const existing = await query('SELECT id FROM blog_articles WHERE slug = ?', [slug]);
   if (existing.length > 0) {
     slug = `${slug}-${Date.now()}`;
   }
   const now = new Date().toISOString();
+  const tr = translationColumns(data.translations);
+  const cols = ['title','maintitle','slug','content','excerpt','cover_image_url','author_id','space_id','category','tags','is_published','is_pinned','published_at','review_status','created_at','updated_at', ...tr.cols];
+  const placeholders = cols.map(() => '?').join(',');
+  const values = [title, maintitle, slug, data.content||'', data.excerpt||'', data.coverImageUrl||'', authorId, data.spaceId, data.category||'博客', JSON.stringify(data.tags||[]), 1, data.isPinned?1:0, now, 'pending', now, now, ...tr.params];
   const r = await execute(
-    `INSERT INTO blog_articles (title,slug,content,excerpt,cover_image_url,author_id,space_id,category,tags,is_published,is_pinned,published_at,review_status,created_at,updated_at)
-     VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`,
-    [data.title, slug, data.content, data.excerpt||'', data.coverImageUrl||'', authorId, data.spaceId, data.category||'博客', JSON.stringify(data.tags||[]), 1, data.isPinned?1:0, now, 'pending', now, now]
+    `INSERT INTO blog_articles (${cols.join(',')}) VALUES (${placeholders})`,
+    values
   );
   return getBlogById(String(r.lastInsertRowid));
 };
 
 export const updateBlog = async (id: string, data: any) => {
   const sets: string[] = []; const vals: any[] = [];
+
+  // 主标题（maintitle）：若提供则校验唯一性，并据此重新生成 slug
+  if (data.maintitle !== undefined) {
+    const maintitle = (data.maintitle || '').trim();
+    if (!maintitle) throw new ValidationError('主标题（maintitle）不能为空');
+    const existingMain = await query('SELECT id FROM blog_articles WHERE LOWER(maintitle) = LOWER(?) AND id != ?', [maintitle, id]);
+    if (existingMain.length > 0) throw new ConflictError('主标题已存在，请更换');
+    sets.push('maintitle=?'); vals.push(maintitle);
+    const newSlug = generateSlug(maintitle);
+    const existingSlug = await query('SELECT id FROM blog_articles WHERE slug = ? AND id != ?', [newSlug, id]);
+    sets.push('slug=?'); vals.push(existingSlug.length > 0 ? `${newSlug}-${Date.now()}` : newSlug);
+  }
+
   for (const [k, v] of Object.entries(data)) {
     if (v === undefined) continue;
+    if (k === 'maintitle' || k === 'translations') continue; // 已在上面处理
     const col = k.replace(/[A-Z]/g, m => '_'+m.toLowerCase());
     if (['coverImageUrl','isPublished','isPinned','spaceId','reviewStatus'].includes(k)) {
       sets.push(`${col}=?`); vals.push(['isPublished','isPinned'].includes(k) ? (v?1:0) : v);
@@ -123,6 +190,18 @@ export const updateBlog = async (id: string, data: any) => {
       sets.push(`${col}=?`); vals.push(k==='tags' ? JSON.stringify(v) : v);
     }
   }
+
+  // 多语言翻译列
+  if (data.translations !== undefined) {
+    for (const suffix of TRANSLATION_SUFFIXES) {
+      const tr = data.translations?.[suffix];
+      if (tr && (tr.title !== undefined || tr.content !== undefined || tr.excerpt !== undefined)) {
+        sets.push(`title_${suffix}=?`, `content_${suffix}=?`, `excerpt_${suffix}=?`);
+        vals.push(tr.title ?? null, tr.content ?? null, tr.excerpt ?? null);
+      }
+    }
+  }
+
   if (!sets.length) return getBlogById(id);
   vals.push(new Date().toISOString()); sets.push('updated_at=?');
   vals.push(id);
@@ -140,18 +219,37 @@ export const deleteBlog = async (id: string) => {
   if (!r.changes) throw new NotFoundError('博客不存在');
 };
 
-const mapArticle = (row: any) => ({
-  id: String(row.id), title: row.title, slug: row.slug, content: row.content, excerpt: row.excerpt||'',
-  coverImageUrl: row.cover_image_url, authorId: String(row.author_id),
-  authorName: row.author_name, authorDisplayName: row.author_display_name,
-  spaceId: String(row.space_id), spaceName: row.space_name, spaceSlug: row.space_slug,
-  category: row.category, tags: typeof row.tags==='string'?JSON.parse(row.tags):row.tags||[],
-  isPublished: !!row.is_published, isPinned: !!row.is_pinned,
-  publishedAt: row.published_at, views: row.views||0, likes: row.likes||0, comments: row.comments||0,
-  reviewStatus: row.review_status, createdAt: row.created_at, updatedAt: row.updated_at,
-  postType: row.post_type || 'blog', rating: row.rating || null, gameId: row.game_id ? String(row.game_id) : null,
-  pros: row.pros || null, cons: row.cons || null,
-});
+const mapArticle = (row: any) => {
+  // 读取多语言翻译列（不含中文，中文对应基础列）
+  const translations: any = {};
+  for (const suffix of TRANSLATION_SUFFIXES) {
+    const title = row[`title_${suffix}`];
+    const content = row[`content_${suffix}`];
+    const excerpt = row[`excerpt_${suffix}`];
+    if (title || content || excerpt) {
+      translations[suffix] = {
+        ...(title ? { title } : {}),
+        ...(content ? { content } : {}),
+        ...(excerpt ? { excerpt } : {}),
+      };
+    }
+  }
+
+  return {
+    id: String(row.id), title: row.title, slug: row.slug, maintitle: row.maintitle || undefined,
+    content: row.content, excerpt: row.excerpt||'',
+    coverImageUrl: row.cover_image_url, authorId: String(row.author_id),
+    authorName: row.author_name, authorDisplayName: row.author_display_name,
+    spaceId: String(row.space_id), spaceName: row.space_name, spaceSlug: row.space_slug,
+    category: row.category, tags: typeof row.tags==='string'?JSON.parse(row.tags):row.tags||[],
+    isPublished: !!row.is_published, isPinned: !!row.is_pinned,
+    publishedAt: row.published_at, views: row.views||0, likes: row.likes||0, comments: row.comments||0,
+    reviewStatus: row.review_status, createdAt: row.created_at, updatedAt: row.updated_at,
+    postType: row.post_type || 'blog', rating: row.rating || null, gameId: row.game_id ? String(row.game_id) : null,
+    pros: row.pros || null, cons: row.cons || null,
+    translations,
+  };
+};
 
 // ====== 联合查询三表（博客空间内容） ======
 export const getSpaceContent = async (params: { spaceId: string; postType?: string; page?: number; limit?: number; search?: string }) => {
