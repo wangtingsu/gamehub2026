@@ -18,7 +18,7 @@ import {
   ReviewStatus,
   SearchParams
 } from '../types';
-import { NotFoundError, ConflictError } from '../middlewares/error.middleware';
+import { NotFoundError, ConflictError, ValidationError } from '../middlewares/error.middleware';
 import { applyAiReview } from './ai-review.service';
 
 /**
@@ -408,11 +408,25 @@ export const createNews = async (
 
   let newsId = '';
 
+  // 英文标题必填
+  const englishTitle = (newsData.translations?.en?.title || '').trim();
+  if (!englishTitle) {
+    throw new ValidationError('英文标题不能为空');
+  }
+
   // 事务内插入文章记录
   await transaction(async () => {
-    // slug 优先用英文标题（SEO 友好、无中文 URL 编码），无英文标题时回退主语言标题
-    const englishTitle = newsData.translations?.en?.title?.trim();
-    const slug = generateSlug(englishTitle || newsData.title);
+    // 英文标题唯一性校验（不区分大小写）
+    const dupTitle = await query(
+      'SELECT id FROM news WHERE LOWER(title_en) = LOWER(?)',
+      [englishTitle]
+    );
+    if (dupTitle.length > 0) {
+      throw new ConflictError(`英文标题 "${englishTitle}" 已被其他新闻使用`);
+    }
+
+    // slug 用英文标题生成（SEO 友好、无中文 URL 编码）
+    const slug = generateSlug(englishTitle);
 
     // 非草稿模式下检查 slug 唯一性
     if (!isDraft) {
@@ -576,6 +590,21 @@ export const updateNews = async (
         updates.push(`excerpt_${suffix} = ?`);
         values.push(tr.excerpt || null);
       }
+    }
+  }
+
+  // 英文标题必填 + 唯一性校验（仅当本次更新提供了英文标题时）
+  if (updateData.translations?.en?.title !== undefined) {
+    const enTitle = (updateData.translations.en.title || '').trim();
+    if (!enTitle) {
+      throw new ValidationError('英文标题不能为空');
+    }
+    const dupTitle = await query(
+      'SELECT id FROM news WHERE LOWER(title_en) = LOWER(?) AND id != ?',
+      [enTitle, id]
+    );
+    if (dupTitle.length > 0) {
+      throw new ConflictError(`英文标题 "${enTitle}" 已被其他新闻使用`);
     }
   }
 

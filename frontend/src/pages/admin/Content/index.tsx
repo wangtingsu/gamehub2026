@@ -1001,7 +1001,7 @@ const Content: React.FC = () => {
       await fetchContent();
     } catch (err) {
       console.error('保存内容失败:', err);
-      message.error('Failed to save content');
+      message.error((err as any)?.message || 'Failed to save content');
     }
   };
 
@@ -1326,7 +1326,11 @@ const Content: React.FC = () => {
                 </TabPane>
                 {NEWS_TRANSLATION_LANGS.map(({ key, label }) => (
                   <TabPane tab={label} key={key}>
-                    <Form.Item label="标题" name={['translations', key, 'title']}>
+                    <Form.Item
+                      label="标题"
+                      name={['translations', key, 'title']}
+                      rules={key === 'en' ? [{ required: true, message: 'Please enter English title' }] : []}
+                    >
                       <Input placeholder={`${label} title`} />
                     </Form.Item>
                     <Form.Item label="摘要" name={['translations', key, 'excerpt']}>
