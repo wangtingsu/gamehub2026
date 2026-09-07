@@ -25,6 +25,8 @@ const NewsDetailPage = () => {
   const { id, lang: paramLang } = useParams<{ id: string; lang?: string }>();
   const navigate = useNavigate();
   const lang = paramLang || 'cn';
+  // URL 短语言码 → API/i18n 语言码（与 SSR、useNews 等 hook 传参保持一致）
+  const apiLang = { en: 'en', cn: 'zh-CN', ja: 'ja', ko: 'ko', es: 'es', fr: 'fr' }[lang] || 'zh-CN';
   const [article, setArticle] = useState<NewsArticle | null>(null);
   const [relatedNews, setRelatedNews] = useState<NewsArticle[]>([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -39,7 +41,7 @@ const NewsDetailPage = () => {
         setIsLoading(true);
         setError(null);
         if (!id) throw new Error(t('detail.idNotFound'));
-        const articleData = await apiService.getNewsArticle(id);
+        const articleData = await apiService.getNewsArticle(id, apiLang);
         setArticle(articleData);
       } catch (err) {
         console.error('获取新闻详情失败:', err);
@@ -49,17 +51,17 @@ const NewsDetailPage = () => {
       }
     };
     fetchArticle();
-  }, [id]);
+  }, [id, apiLang]);
 
   useEffect(() => {
     if (!article) return;
     (async () => {
       try {
-        const news = await apiService.getNews({ limit: 4 });
+        const news = await apiService.getNews({ limit: 4, lang: apiLang });
         setRelatedNews(news.filter(n => n.id !== article.id).slice(0, 3));
       } catch { /* 静默失败 */ }
     })();
-  }, [article]);
+  }, [article, apiLang]);
 
   const formatDate = (dateString: string) => new Date(dateString).toLocaleDateString(i18n.language, {
     year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit',

@@ -1319,87 +1319,92 @@ const Content: React.FC = () => {
         >
           {activeTab === 'news' && (
             <>
+              {/* ===== 通用信息（跨语言共享字段）===== */}
+              <div className="flex items-center gap-3 mb-4 mt-1">
+                <span className="text-sm font-semibold text-gray-500 tracking-wide">通用信息</span>
+                <div className="flex-1 h-px bg-gray-200" />
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-x-6">
+                <Form.Item
+                  label="主标题 / Main Title"
+                  name="maintitle"
+                  rules={[{ required: true, message: '请输入主标题' }]}
+                  tooltip="用于生成新闻链接的后缀（slug），例如 /news/your-main-title"
+                >
+                  <Input placeholder="例如 your-main-title（用于 URL 后缀）" />
+                </Form.Item>
+
+                <Form.Item
+                  label="作者 / Author"
+                  name="author"
+                  rules={[{ required: true, message: '请输入作者' }]}
+                >
+                  <Input placeholder="作者名" />
+                </Form.Item>
+
+                <Form.Item
+                  label="分类 / Category"
+                  name="category"
+                  rules={[{ required: true, message: '请选择分类' }]}
+                >
+                  <Select placeholder="选择分类">
+                    {categories.filter(c => c.isActive).map(cat => (
+                      <Option key={cat.id} value={cat.name}>{cat.name}</Option>
+                    ))}
+                  </Select>
+                </Form.Item>
+
+                <Form.Item
+                  label="置顶 / Pinned"
+                  name="isPinned"
+                  valuePropName="checked"
+                  tooltip="置顶新闻将始终排在列表最前面"
+                >
+                  <Switch checkedChildren="已置顶" unCheckedChildren="未置顶" />
+                </Form.Item>
+              </div>
+
+              <Form.Item
+                label="配图 / Cover Image"
+                name="coverImageUrl"
+                tooltip="详情页显示的配图，可上传或粘贴 URL"
+              >
+                <CoverImageUpload />
+              </Form.Item>
+
+              {/* ===== 多语言内容（标题 / 摘要 / 正文 按语言分别填写）===== */}
+              <div className="flex items-center gap-3 mb-4 mt-6">
+                <span className="text-sm font-semibold text-gray-500 tracking-wide">多语言内容</span>
+                <div className="flex-1 h-px bg-gray-200" />
+              </div>
+
               <Tabs defaultActiveKey="zh">
                 <TabPane tab="简体中文（默认）" key="zh">
-                  <Form.Item
-                    label="标题"
-                    name="title"
-                  >
-                    <Input placeholder="Enter news title" />
+                  <Form.Item label="标题 / Title" name="title">
+                    <Input placeholder="输入中文标题" />
                   </Form.Item>
-                  <Form.Item label="摘要" name="excerpt">
-                    <TextArea rows={2} placeholder="Enter news summary (optional)" />
+                  <Form.Item label="摘要 / Summary" name="excerpt">
+                    <TextArea rows={2} placeholder="输入中文摘要（可选）" />
                   </Form.Item>
-                  <Form.Item
-                    label="正文"
-                    name="content"
-                  >
+                  <Form.Item label="正文 / Content" name="content">
                     <BlogEditor />
                   </Form.Item>
                 </TabPane>
                 {NEWS_TRANSLATION_LANGS.map(({ key, label }) => (
                   <TabPane tab={label} key={key}>
-                    <Form.Item
-                      label="标题"
-                      name={['translations', key, 'title']}
-                    >
-                      <Input placeholder={`${label} title`} />
+                    <Form.Item label="标题 / Title" name={['translations', key, 'title']}>
+                      <Input placeholder={`${label} 标题`} />
                     </Form.Item>
-                    <Form.Item label="摘要" name={['translations', key, 'excerpt']}>
-                      <TextArea rows={2} placeholder={`${label} summary`} />
+                    <Form.Item label="摘要 / Summary" name={['translations', key, 'excerpt']}>
+                      <TextArea rows={2} placeholder={`${label} 摘要（可选）`} />
                     </Form.Item>
-                    <Form.Item label="正文" name={['translations', key, 'content']}>
+                    <Form.Item label="正文 / Content" name={['translations', key, 'content']}>
                       <BlogEditor />
                     </Form.Item>
                   </TabPane>
                 ))}
               </Tabs>
-
-              <Form.Item
-                label="主标题 / Main Title（URL 后缀）"
-                name="maintitle"
-                rules={[{ required: true, message: 'Please enter main title' }]}
-                tooltip="用于生成新闻链接的后缀（slug），例如 /news/your-main-title"
-              >
-                <Input placeholder="Enter main title (used for URL slug)" />
-              </Form.Item>
-
-              <Form.Item
-                label="Author"
-                name="author"
-                rules={[{ required: true, message: 'Please enter author' }]}
-              >
-                <Input placeholder="Enter author name" />
-              </Form.Item>
-
-              <Form.Item
-                label="Category"
-                name="category"
-                rules={[{ required: true, message: 'Please select category' }]}
-              >
-                <Select placeholder="Select category">
-                  {categories.filter(c => c.isActive).map(cat => (
-                    <Option key={cat.id} value={cat.name}>{cat.name}</Option>
-                  ))}
-                </Select>
-              </Form.Item>
-
-              <Form.Item
-                label="配图"
-                name="coverImageUrl"
-                tooltip="详情页显示的配图，可上传或粘贴URL"
-              >
-                <CoverImageUpload />
-              </Form.Item>
-
-              <Form.Item
-                label="置顶"
-                name="isPinned"
-                valuePropName="checked"
-                tooltip="置顶新闻将始终排在列表最前面"
-              >
-                <Switch checkedChildren="已置顶" unCheckedChildren="未置顶" />
-              </Form.Item>
             </>
           )}
 
@@ -1878,4 +1883,4 @@ const Content: React.FC = () => {
   );
 };
 
-export default Content;
+export default Content;
