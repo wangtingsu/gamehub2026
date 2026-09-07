@@ -3,7 +3,7 @@ import { Card, Form, Input, Button, message, Spin, Tabs, Row, Col, Avatar, Uploa
 import { PlusOutlined, UploadOutlined } from '@ant-design/icons';
 import { useAboutData, useUpdateAboutSection, useUpdateAboutValue, useUpdateAboutTeamMember, useUpdateAboutTimeline, useUpdateAboutContact } from '../../../api/hooks';
 import SEO from '../../../components/SEO';
-import { getApiBaseUrl } from '../../../utils/env';
+import { getAdminApiBaseUrl } from '../../../utils/env';
 
 const AboutManagement = () => {
   const { data: aboutData, isLoading } = useAboutData();
@@ -15,7 +15,7 @@ const AboutManagement = () => {
 
   const [saving, setSaving] = useState<string | null>(null);
 
-  const apiBase = getApiBaseUrl();
+  const apiBase = getAdminApiBaseUrl();
   const uploadUrl = `${apiBase}/upload/image`;
 
   const handleImageUpload = async (file: File, onUrl: (url: string) => void) => {

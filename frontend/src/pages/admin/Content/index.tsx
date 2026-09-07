@@ -66,7 +66,7 @@ const CoverImageUpload: React.FC<{ value?: string; onChange?: (url: string) => v
     try {
       const fd = new FormData(); fd.append('file', file);
       const token = localStorage.getItem('adminToken');
-      const res = await fetch('/api/v1/upload/image', {
+      const res = await fetch('/admin-api/v1/upload/image', {
         method: 'POST', headers: token ? { Authorization: `Bearer ${token}` } : {}, body: fd,
       });
       const d = await res.json();

@@ -10,7 +10,10 @@ async function uploadToServer(file: File): Promise<string | null> {
   const formData = new FormData();
   formData.append('file', file);
   const token = localStorage.getItem('adminToken');
-  const res = await fetch('/api/v1/upload/image', {
+  // 管理后台（/admin 路径）走 /admin-api，用户端走 /api
+  const isAdmin = typeof window !== 'undefined' && window.location.pathname.includes('/admin');
+  const uploadUrl = isAdmin ? '/admin-api/v1/upload/image' : '/api/v1/upload/image';
+  const res = await fetch(uploadUrl, {
     method: 'POST',
     headers: token ? { Authorization: `Bearer ${token}` } : {},
     body: formData,
