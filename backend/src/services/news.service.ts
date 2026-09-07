@@ -83,24 +83,6 @@ const translationColumns = (translations?: NewsTranslations): { cols: string[]; 
 };
 
 /**
- * 从翻译对象中取第一个非空的指定字段值。
- *
- * 基础列（title/content/excerpt）现在允许为空：当基础列为空时，回填第一个非空翻译
- * （通常是英文），这样「仅填了某一种语言」的文章也能被所有语言正常读取，
- * 同时满足 title/content 的 NOT NULL 约束（永不插入 NULL）。
- */
-const firstTranslationValue = (
-  translations: NewsTranslations | undefined,
-  field: 'title' | 'content' | 'excerpt'
-): string | undefined => {
-  for (const suffix of TRANSLATION_SUFFIXES) {
-    const value = translations?.[suffix]?.[field];
-    if (value && value.trim()) return value;
-  }
-  return undefined;
-};
-
-/**
  * 将数据库行映射为 News 对象
  *
  * 处理 JSON 字符串字段的解析（如 tags）、日期字段的转换、
@@ -433,11 +415,11 @@ export const createNews = async (
     throw new ValidationError('主标题（maintitle）不能为空');
   }
 
-  // 基础列（title/content/excerpt）允许为空：为空时回填第一个非空翻译，
-  // 保证仅填英文的文章能被所有语言读取，同时满足 title/content 的 NOT NULL 约束。
-  const title = (newsData.title || '').trim() || firstTranslationValue(newsData.translations, 'title') || '';
-  const content = (newsData.content || '').trim() || firstTranslationValue(newsData.translations, 'content') || '';
-  const excerpt = (newsData.excerpt || '').trim() || firstTranslationValue(newsData.translations, 'excerpt') || '';
+  // 基础列（title/content/excerpt）允许为空，各语言独立存储、互不回填。
+  // 空值统一存为空字符串 ''，以满足 title/content 的 NOT NULL 约束。
+  const title = newsData.title || '';
+  const content = newsData.content || '';
+  const excerpt = newsData.excerpt || '';
 
   // 事务内插入文章记录
   await transaction(async () => {
@@ -539,9 +521,8 @@ export const updateNews = async (
 
   // 动态构建更新字段列表（仅包含有值的字段）
   if (updateData.title !== undefined) {
-    const title = (updateData.title || '').trim() || firstTranslationValue(updateData.translations, 'title') || '';
     updates.push(`title = ?`);
-    values.push(title);
+    values.push(updateData.title || '');
   }
 
   if (updateData.maintitle !== undefined) {
@@ -550,15 +531,13 @@ export const updateNews = async (
   }
 
   if (updateData.content !== undefined) {
-    const content = (updateData.content || '').trim() || firstTranslationValue(updateData.translations, 'content') || '';
     updates.push(`content = ?`);
-    values.push(content);
+    values.push(updateData.content || '');
   }
 
   if (updateData.excerpt !== undefined) {
-    const excerpt = (updateData.excerpt || '').trim() || firstTranslationValue(updateData.translations, 'excerpt') || '';
     updates.push(`excerpt = ?`);
-    values.push(excerpt);
+    values.push(updateData.excerpt || '');
   }
 
   if (updateData.gameName !== undefined) {
