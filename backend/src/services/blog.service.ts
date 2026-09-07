@@ -143,8 +143,8 @@ export const createBlog = async (authorId: string, data: any) => {
   // 主标题（maintitle）作为 URL slug 后缀来源，必填且唯一
   const maintitle = (data.maintitle || '').trim();
   if (!maintitle) throw new ValidationError('主标题（maintitle）不能为空');
+  // 基础标题允许为空（支持仅英文等单语言发布，与新闻一致），空值存空串
   const title = (data.title || '').trim();
-  if (!title) throw new ValidationError('标题（title）不能为空');
   const existingMain = await query('SELECT id FROM blog_articles WHERE LOWER(maintitle) = LOWER(?)', [maintitle]);
   if (existingMain.length > 0) throw new ConflictError('主标题已存在，请更换');
   let slug = data.slug || generateSlug(maintitle);

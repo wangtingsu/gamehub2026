@@ -478,24 +478,16 @@ const Blogs: React.FC = () => {
           {/* 多语言编辑 */}
           <Tabs defaultActiveKey="zh">
             <Tabs.TabPane tab="简体中文（默认）" key="zh">
-              <Form.Item
-                label="标题"
-                name="title"
-                rules={[{ required: true, message: '请输入标题' }]}
-              >
-                <Input placeholder="博客标题" size="large" />
+              <Form.Item label="标题" name="title">
+                <Input placeholder="博客标题（可留空，仅填英文等单语言亦可发布）" size="large" />
               </Form.Item>
               <Form.Item label="摘要" name="excerpt">
                 <Input.TextArea rows={2} placeholder="博客摘要（可选）" />
               </Form.Item>
-              <Form.Item
-                label="正文"
-                name="content"
-                rules={[{ required: true, message: '请输入内容' }]}
-              >
+              <Form.Item label="正文" name="content">
                 <BlogEditor
                   height={420}
-                  placeholder="使用 Markdown 编写博客内容..."
+                  placeholder="使用 Markdown 编写博客内容...（可留空，仅填英文等单语言亦可发布）"
                 />
               </Form.Item>
             </Tabs.TabPane>
