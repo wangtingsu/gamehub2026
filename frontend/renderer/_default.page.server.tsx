@@ -20,7 +20,7 @@ import apiService from '../src/api/index'
 import i18n from '../src/i18n.server'
 import type { PageContextServer } from 'vike/types'
 import { renderToString } from 'react-dom/server'
-import type { Game, NewsArticle, Review, Guide, BlogArticle } from '../src/api/types'
+import type { Game, NewsArticle, Guide, BlogArticle } from '../src/api/types'
 import ServerContent from '../src/components/ServerContent'
 
 /**
@@ -325,22 +325,27 @@ async function prefetchData(queryClient: QueryClient, urlPathname: string, lang:
   // 仅首页（/、/en、/en/、/cn、/cn/ 等）触发首页预取；避免 /en/blog/89 等子路径误命中
   if (urlPathname === '/' || /^\/(en|cn|ja|ko|es|fr)\/?$/.test(urlPathname)) {
     console.log('预取首页数据:', urlPathname)
-    try {
-      await queryClient.prefetchQuery({
-        queryKey: queryKeys.games.list({ page: 1, limit: 8 }),
-        queryFn: () => apiService.getGames({ page: 1, limit: 8 })
-      })
-      await queryClient.prefetchQuery({
-        queryKey: queryKeys.news.list({ page: 1, limit: 6, lang }),
-        queryFn: () => apiService.getNews({ page: 1, limit: 6, lang })
-      })
-      await queryClient.prefetchQuery({
-        queryKey: queryKeys.reviews.list({ page: 1, limit: 4, sort: 'popular', lang }),
-        queryFn: () => apiService.getReviews({ page: 1, limit: 4, sort: 'popular', lang })
-      })
+    // 首页实际渲染的板块数据，queryKey 必须与客户端 hook 严格一致，
+    // 这样 SSR 脱水的缓存才能在 hydration 时命中，客户端 0 次冗余请求。
+    // 并行预取，避免串行 await 拖慢首屏 TTFB。
+    const homePrefetches = [
+      { queryKey: queryKeys.games.list({ page: 1, limit: 8 }), queryFn: () => apiService.getGames({ page: 1, limit: 8 }) },
+      { queryKey: queryKeys.news.list({ page: 1, limit: 4, lang }), queryFn: () => apiService.getNews({ page: 1, limit: 4, lang }) },
+      { queryKey: queryKeys.blog.list({ page: 1, limit: 4, lang }), queryFn: () => apiService.getBlogPosts({ page: 1, limit: 4, lang }) },
+      { queryKey: queryKeys.guides.list({ page: 1, limit: 4, lang }), queryFn: () => apiService.getGuides({ page: 1, limit: 4, lang }) },
+      { queryKey: queryKeys.community.list({ page: 1, limit: 6 }), queryFn: () => apiService.getCommunityPosts({ page: 1, limit: 6 }) },
+      { queryKey: ['banners', 'home'], queryFn: () => apiService.getBanners('home') },
+      { queryKey: ['discovery', 'trending', 10], queryFn: () => apiService.getTrendingContent(10) },
+      { queryKey: ['redeem', 'codes'], queryFn: () => apiService.getRedeemCodes() },
+    ]
+    const results = await Promise.allSettled(
+      homePrefetches.map((p) => queryClient.prefetchQuery({ queryKey: p.queryKey, queryFn: p.queryFn }))
+    )
+    const failed = results.filter((r) => r.status === 'rejected').length
+    if (failed > 0) {
+      console.warn('首页数据预取部分失败:', failed, '个')
+    } else {
       console.log('首页数据预取完成')
-    } catch (apiError) {
-      console.warn('首页API预取失败:', apiError)
     }
   } else if (barePath === 'games' || barePath === 'news' || barePath === 'guides' || barePath === 'blog') {
     // 栏目/列表页预取（P0 #3：让 /games、/news、/guides、/blog 列表页 SSR 渲染内容，而非空壳）
@@ -493,10 +498,7 @@ async function render(pageContext: PageContextServer) {
     queryKeys.games.list({ page: 1, limit: 8 }),
   )
   const news = serverQueryClient.getQueryData<NewsArticle[]>(
-    queryKeys.news.list({ page: 1, limit: 6, lang: i18nLang }),
-  )
-  const reviews = serverQueryClient.getQueryData<Review[]>(
-    queryKeys.reviews.list({ page: 1, limit: 4, sort: 'popular' }),
+    queryKeys.news.list({ page: 1, limit: 4, lang: i18nLang }),
   )
 
   let gameDetail: Game | null = null
@@ -588,7 +590,6 @@ async function render(pageContext: PageContextServer) {
       pageMeta={pageMeta}
       games={games}
       news={news}
-      reviews={reviews}
       gameDetail={gameDetail}
       newsDetail={newsDetail}
       listPage={listPage}
@@ -635,6 +636,7 @@ async function render(pageContext: PageContextServer) {
   <body>
     <div id="root">${bodyHtml}</div>
     <script id="vike_pageContext" type="application/json">${pageContextSerialized}<\/script>
+    <script>try{localStorage.setItem('i18nextLng', ${JSON.stringify(i18nLang)});}catch(e){}</script>
     ${clientScript}
     <script>
       window.__DEHYDRATED_STATE__ = ${JSON.stringify(dehydratedState).replace(/</g, "\\u003c")}

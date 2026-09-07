@@ -115,6 +115,15 @@ const HeroBanner = () => {
 
   const currentBanner = banners[currentIndex];
 
+  // 响应式图片：为 Unsplash 生成多档 srcSet，移动端不再下载 1200px 大图（LCP 优化）
+  const buildSrcSet = (url: string): string | undefined => {
+    if (!url || !url.includes('images.unsplash.com')) return undefined;
+    return [480, 800, 1200]
+      .map((w) => `${url.replace(/([?&])w=\d+/, `$1w=${w}`)} ${w}w`)
+      .join(', ');
+  };
+  const bannerSrcSet = buildSrcSet(currentBanner.image_url);
+
   return (
     <section className="relative w-full h-[380px] sm:h-[450px] md:h-[520px] overflow-hidden rounded-2xl mb-10 border-2 border-primary-500/60 shadow-[0_0_30px_rgba(59,130,246,0.3)] ring-2 ring-primary-400/30">
       {/* Banner 图片区域 */}
@@ -134,6 +143,10 @@ const HeroBanner = () => {
             src={currentBanner.image_url}
             alt={currentBanner.title}
             className="w-full h-full object-cover"
+            srcSet={bannerSrcSet}
+            sizes="(max-width: 768px) 480px, (max-width: 1200px) 800px, 1200px"
+            fetchPriority="high"
+            decoding="async"
             onError={(e) => {
               const el = e.target as HTMLImageElement;
               el.onerror = null;

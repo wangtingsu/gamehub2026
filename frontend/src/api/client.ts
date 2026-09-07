@@ -302,14 +302,6 @@ class ApiClient {
           }
         }
 
-        // 添加请求时间戳防止缓存
-        if (config.method === 'get') {
-          config.params = {
-            ...config.params,
-            _t: Date.now(),
-          };
-        }
-
         // 性能监控：记录请求开始时间
         (config as ExtendedAxiosRequestConfig).metadata = {
           ...(config as ExtendedAxiosRequestConfig).metadata,

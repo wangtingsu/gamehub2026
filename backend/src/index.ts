@@ -191,7 +191,13 @@ app.use(staticCacheMiddleware(86400));
 
 // 为API GET请求设置短缓存（5分钟）
 app.use(conditionalCacheMiddleware({
-  include: [/^\/api\/v1\/(games|news|reviews|guides)(\/[^\/]+)?$/],
+  include: [
+    /^\/api\/v1\/(games|news|reviews|guides|blogs)(\/[^\/]+)?$/,
+    /^\/api\/v1\/community\/posts$/,
+    /^\/api\/v1\/discovery\/recommendations\/trending$/,
+    /^\/api\/v1\/recommend\/banners$/,
+    /^\/api\/v1\/redeem\/codes$/,
+  ],
   exclude: [/^\/api\/v1\/(auth|users)/, /\/admin\//],
   duration: 300 // 5分钟
 }));

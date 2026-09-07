@@ -16,7 +16,7 @@
  */
 
 import { Router, Request, Response, NextFunction } from 'express';
-import { singleUpload, multipleUpload, handleUpload, getUploadConfig, deleteUploadedFile, getFileInfo } from '../services/upload.service';
+import { singleUpload, multipleUpload, handleUpload, getUploadConfig, deleteUploadedFile, getFileInfo, optimizeImage } from '../services/upload.service';
 import { asyncHandler } from '../middlewares/error.middleware';
 import { authenticate, rateLimit } from '../middlewares/auth.middleware';
 import config from '../config';
@@ -185,11 +185,11 @@ router.post(
 
         const uploadedFile = await handleUpload(req) as any;
 
-        // 可选：图片优化
-        // if (config.upload.image.maxWidth > 0) {
-        //   const optimized = await optimizeImage(uploadedFile.path);
-        //   uploadedFile.optimized = true;
-        // }
+        // 图片优化：压缩并限制最大尺寸（sharp 未安装时 optimizeImage 内部会安全跳过）
+        if (config.upload.image.maxWidth > 0) {
+          await optimizeImage(uploadedFile.path);
+          uploadedFile.optimized = true;
+        }
 
         res.status(201).json({
           success: true,
