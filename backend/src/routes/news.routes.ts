@@ -339,11 +339,13 @@ router.post(
       });
     }
 
-    // 验证必需字段：标题、内容和分类不能为空
-    if (!newsData.title || !newsData.content || !newsData.category) {
+    // 验证必需字段：仅分类不能为空。
+    // 标题/正文允许为空（service 会用首个非空翻译回填基础列，支持仅英文发布）；
+    // 主标题（maintitle）由 newsService.createNews 校验。
+    if (!newsData.category) {
       return res.status(400).json({
         success: false,
-        error: '标题、内容和分类是必填字段',
+        error: '分类是必填字段',
       });
     }
 
