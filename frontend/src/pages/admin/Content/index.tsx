@@ -1324,7 +1324,6 @@ const Content: React.FC = () => {
                   <Form.Item
                     label="标题"
                     name="title"
-                    rules={[{ required: true, message: 'Please enter title' }]}
                   >
                     <Input placeholder="Enter news title" />
                   </Form.Item>
@@ -1334,7 +1333,6 @@ const Content: React.FC = () => {
                   <Form.Item
                     label="正文"
                     name="content"
-                    rules={[{ required: true, message: 'Please enter content' }]}
                   >
                     <BlogEditor />
                   </Form.Item>
