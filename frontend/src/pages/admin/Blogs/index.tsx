@@ -514,14 +514,14 @@ const Blogs: React.FC = () => {
             ))}
           </Tabs>
 
-          {/* 主标题（URL 后缀） */}
+          {/* URL 后缀 */}
           <Form.Item
-            label="主标题 / Main Title（URL 后缀）"
+            label="URL 后缀 / URL Slug"
             name="maintitle"
-            rules={[{ required: true, message: '请输入主标题' }]}
-            tooltip="用于生成博客链接的后缀（slug），例如 /blog/your-main-title"
+            rules={[{ required: true, message: '请输入 URL 后缀' }]}
+            tooltip="用于生成博客链接的后缀（slug），例如 /blog/your-url-slug"
           >
-            <Input placeholder="Enter main title (used for URL slug)" />
+            <Input placeholder="例如 your-url-slug（用于 URL 后缀）" />
           </Form.Item>
 
           {/* 分类 & 标签 */}

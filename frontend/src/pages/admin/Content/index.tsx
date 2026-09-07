@@ -1327,12 +1327,12 @@ const Content: React.FC = () => {
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-x-6">
                 <Form.Item
-                  label="主标题 / Main Title"
+                  label="URL 后缀 / URL Slug"
                   name="maintitle"
-                  rules={[{ required: true, message: '请输入主标题' }]}
-                  tooltip="用于生成新闻链接的后缀（slug），例如 /news/your-main-title"
+                  rules={[{ required: true, message: '请输入 URL 后缀' }]}
+                  tooltip="用于生成新闻链接的后缀（slug），例如 /news/your-url-slug"
                 >
-                  <Input placeholder="例如 your-main-title（用于 URL 后缀）" />
+                  <Input placeholder="例如 your-url-slug（用于 URL 后缀）" />
                 </Form.Item>
 
                 <Form.Item
@@ -1441,12 +1441,12 @@ const Content: React.FC = () => {
               </Tabs>
 
               <Form.Item
-                label="主标题 / Main Title（URL 后缀）"
+                label="URL 后缀 / URL Slug"
                 name="maintitle"
-                rules={[{ required: true, message: '请输入主标题' }]}
+                rules={[{ required: true, message: '请输入 URL 后缀' }]}
                 tooltip="用于生成评测链接的后缀（slug）"
               >
-                <Input placeholder="Enter main title (used for URL slug)" />
+                <Input placeholder="例如 your-url-slug（用于 URL 后缀）" />
               </Form.Item>
 
               <Form.Item
@@ -1553,12 +1553,12 @@ const Content: React.FC = () => {
               </Tabs>
 
               <Form.Item
-                label="主标题 / Main Title（URL 后缀）"
+                label="URL 后缀 / URL Slug"
                 name="maintitle"
-                rules={[{ required: true, message: '请输入主标题' }]}
+                rules={[{ required: true, message: '请输入 URL 后缀' }]}
                 tooltip="用于生成攻略链接的后缀（slug）"
               >
-                <Input placeholder="Enter main title (used for URL slug)" />
+                <Input placeholder="例如 your-url-slug（用于 URL 后缀）" />
               </Form.Item>
 
               <Form.Item
@@ -1643,12 +1643,12 @@ const Content: React.FC = () => {
               </Tabs>
 
               <Form.Item
-                label="主标题 / Main Title（URL 后缀）"
+                label="URL 后缀 / URL Slug"
                 name="maintitle"
-                rules={[{ required: true, message: '请输入主标题' }]}
-                tooltip="用于生成博客链接的后缀（slug），例如 /blog/your-main-title"
+                rules={[{ required: true, message: '请输入 URL 后缀' }]}
+                tooltip="用于生成博客链接的后缀（slug），例如 /blog/your-url-slug"
               >
-                <Input placeholder="Enter main title (used for URL slug)" />
+                <Input placeholder="例如 your-url-slug（用于 URL 后缀）" />
               </Form.Item>
 
               <Form.Item label="作者" name="author" rules={[{ required: true, message: '请输入作者' }]}>
