@@ -1411,17 +1411,70 @@ const Content: React.FC = () => {
 
           {activeTab === 'reviews' && (
             <>
+              {/* ===== 通用信息（跨语言共享字段）===== */}
+              <div className="flex items-center gap-3 mb-4 mt-1">
+                <span className="text-sm font-semibold text-gray-500 tracking-wide">通用信息</span>
+                <div className="flex-1 h-px bg-gray-200" />
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-x-6">
+                <Form.Item
+                  label="URL 后缀 / URL Slug"
+                  name="maintitle"
+                  rules={[{ required: true, message: '请输入 URL 后缀' }]}
+                  tooltip="用于生成评测链接的后缀（slug）"
+                >
+                  <Input placeholder="例如 your-url-slug（用于 URL 后缀）" />
+                </Form.Item>
+
+                <Form.Item
+                  label="游戏名 / Game Title"
+                  name="gameTitle"
+                  rules={[{ required: true, message: 'Please enter game title' }]}
+                >
+                  <Input placeholder="Enter game title" />
+                </Form.Item>
+
+                <Form.Item
+                  label="作者 / Author"
+                  name="author"
+                  rules={[{ required: true, message: 'Please enter author' }]}
+                >
+                  <Input placeholder="Enter author name" />
+                </Form.Item>
+
+                <Form.Item
+                  label="评分 / Rating"
+                  name="rating"
+                  rules={[{ required: true, message: 'Please enter rating' }]}
+                >
+                  <Input type="number" min={0} max={5} step={0.1} placeholder="0.0 - 5.0" />
+                </Form.Item>
+
+                <Form.Item label="所属空间 / Space" name="spaceId">
+                  <Select placeholder="选择博客空间（可选）" allowClear>
+                    {blogSpaces.filter(s => s.isActive).map(s => <Option key={s.id} value={s.id}>{s.name}</Option>)}
+                  </Select>
+                </Form.Item>
+              </div>
+
+              {/* ===== 多语言内容（标题 / 正文 按语言分别填写）===== */}
+              <div className="flex items-center gap-3 mb-4 mt-6">
+                <span className="text-sm font-semibold text-gray-500 tracking-wide">多语言内容</span>
+                <div className="flex-1 h-px bg-gray-200" />
+              </div>
+
               <Tabs defaultActiveKey="zh">
                 <TabPane tab="简体中文（默认）" key="zh">
                   <Form.Item
-                    label="标题"
+                    label="标题 / Title"
                     name="title"
                     rules={[{ required: true, message: '请输入标题' }]}
                   >
                     <Input placeholder="评测标题" />
                   </Form.Item>
                   <Form.Item
-                    label="正文"
+                    label="正文 / Content"
                     name="content"
                     rules={[{ required: true, message: '请输入正文' }]}
                   >
@@ -1430,54 +1483,15 @@ const Content: React.FC = () => {
                 </TabPane>
                 {NEWS_TRANSLATION_LANGS.map(({ key, label }) => (
                   <TabPane tab={label} key={key}>
-                    <Form.Item label="标题" name={['translations', key, 'title']}>
+                    <Form.Item label="标题 / Title" name={['translations', key, 'title']}>
                       <Input placeholder={`${label} title`} />
                     </Form.Item>
-                    <Form.Item label="正文" name={['translations', key, 'content']}>
+                    <Form.Item label="正文 / Content" name={['translations', key, 'content']}>
                       <BlogEditor />
                     </Form.Item>
                   </TabPane>
                 ))}
               </Tabs>
-
-              <Form.Item
-                label="URL 后缀 / URL Slug"
-                name="maintitle"
-                rules={[{ required: true, message: '请输入 URL 后缀' }]}
-                tooltip="用于生成评测链接的后缀（slug）"
-              >
-                <Input placeholder="例如 your-url-slug（用于 URL 后缀）" />
-              </Form.Item>
-
-              <Form.Item
-                label="Game Title"
-                name="gameTitle"
-                rules={[{ required: true, message: 'Please enter game title' }]}
-              >
-                <Input placeholder="Enter game title" />
-              </Form.Item>
-
-              <Form.Item
-                label="Author"
-                name="author"
-                rules={[{ required: true, message: 'Please enter author' }]}
-              >
-                <Input placeholder="Enter author name" />
-              </Form.Item>
-
-              <Form.Item
-                label="Rating"
-                name="rating"
-                rules={[{ required: true, message: 'Please enter rating' }]}
-              >
-                <Input type="number" min={0} max={5} step={0.1} placeholder="0.0 - 5.0" />
-              </Form.Item>
-
-              <Form.Item label="所属空间" name="spaceId">
-                <Select placeholder="选择博客空间（可选）" allowClear>
-                  {blogSpaces.filter(s => s.isActive).map(s => <Option key={s.id} value={s.id}>{s.name}</Option>)}
-                </Select>
-              </Form.Item>
             </>
           )}
 
@@ -1517,20 +1531,85 @@ const Content: React.FC = () => {
 
           {activeTab === 'guides' && (
             <>
+              {/* ===== 通用信息（跨语言共享字段）===== */}
+              <div className="flex items-center gap-3 mb-4 mt-1">
+                <span className="text-sm font-semibold text-gray-500 tracking-wide">通用信息</span>
+                <div className="flex-1 h-px bg-gray-200" />
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-x-6">
+                <Form.Item
+                  label="URL 后缀 / URL Slug"
+                  name="maintitle"
+                  rules={[{ required: true, message: '请输入 URL 后缀' }]}
+                  tooltip="用于生成攻略链接的后缀（slug）"
+                >
+                  <Input placeholder="例如 your-url-slug（用于 URL 后缀）" />
+                </Form.Item>
+
+                <Form.Item
+                  label="游戏名 / Game Title"
+                  name="gameTitle"
+                  rules={[{ required: true, message: 'Please enter game title' }]}
+                >
+                  <Input placeholder="Enter game title" />
+                </Form.Item>
+
+                <Form.Item
+                  label="作者 / Author"
+                  name="author"
+                  rules={[{ required: true, message: 'Please enter author' }]}
+                >
+                  <Input placeholder="Enter author name" />
+                </Form.Item>
+
+                <Form.Item
+                  label="难度 / Difficulty"
+                  name="difficulty"
+                  rules={[{ required: true, message: 'Please select difficulty' }]}
+                >
+                  <Select placeholder="Select difficulty">
+                    <Option value="easy">简单</Option>
+                    <Option value="medium">中等</Option>
+                    <Option value="hard">困难</Option>
+                    <Option value="expert">专家</Option>
+                  </Select>
+                </Form.Item>
+
+                <Form.Item
+                  label="预计时长（分钟）/ Estimated Minutes"
+                  name="estimatedMinutes"
+                >
+                  <Input type="number" min={0} placeholder="e.g. 30" />
+                </Form.Item>
+
+                <Form.Item label="所属空间 / Space" name="spaceId">
+                  <Select placeholder="选择博客空间（可选）" allowClear>
+                    {blogSpaces.filter(s => s.isActive).map(s => <Option key={s.id} value={s.id}>{s.name}</Option>)}
+                  </Select>
+                </Form.Item>
+              </div>
+
+              {/* ===== 多语言内容（标题 / 摘要 / 正文 按语言分别填写）===== */}
+              <div className="flex items-center gap-3 mb-4 mt-6">
+                <span className="text-sm font-semibold text-gray-500 tracking-wide">多语言内容</span>
+                <div className="flex-1 h-px bg-gray-200" />
+              </div>
+
               <Tabs defaultActiveKey="zh">
                 <TabPane tab="简体中文（默认）" key="zh">
                   <Form.Item
-                    label="标题"
+                    label="标题 / Title"
                     name="title"
                     rules={[{ required: true, message: '请输入标题' }]}
                   >
                     <Input placeholder="攻略标题" />
                   </Form.Item>
-                  <Form.Item label="摘要" name="summary">
+                  <Form.Item label="摘要 / Summary" name="summary">
                     <TextArea rows={2} placeholder="攻略摘要（可选）" />
                   </Form.Item>
                   <Form.Item
-                    label="正文"
+                    label="正文 / Content"
                     name="content"
                     rules={[{ required: true, message: '请输入正文' }]}
                   >
@@ -1539,69 +1618,18 @@ const Content: React.FC = () => {
                 </TabPane>
                 {NEWS_TRANSLATION_LANGS.map(({ key, label }) => (
                   <TabPane tab={label} key={key}>
-                    <Form.Item label="标题" name={['translations', key, 'title']}>
+                    <Form.Item label="标题 / Title" name={['translations', key, 'title']}>
                       <Input placeholder={`${label} title`} />
                     </Form.Item>
-                    <Form.Item label="摘要" name={['translations', key, 'excerpt']}>
+                    <Form.Item label="摘要 / Summary" name={['translations', key, 'excerpt']}>
                       <TextArea rows={2} placeholder={`${label} summary`} />
                     </Form.Item>
-                    <Form.Item label="正文" name={['translations', key, 'content']}>
+                    <Form.Item label="正文 / Content" name={['translations', key, 'content']}>
                       <BlogEditor />
                     </Form.Item>
                   </TabPane>
                 ))}
               </Tabs>
-
-              <Form.Item
-                label="URL 后缀 / URL Slug"
-                name="maintitle"
-                rules={[{ required: true, message: '请输入 URL 后缀' }]}
-                tooltip="用于生成攻略链接的后缀（slug）"
-              >
-                <Input placeholder="例如 your-url-slug（用于 URL 后缀）" />
-              </Form.Item>
-
-              <Form.Item
-                label="Game Title"
-                name="gameTitle"
-                rules={[{ required: true, message: 'Please enter game title' }]}
-              >
-                <Input placeholder="Enter game title" />
-              </Form.Item>
-
-              <Form.Item
-                label="Author"
-                name="author"
-                rules={[{ required: true, message: 'Please enter author' }]}
-              >
-                <Input placeholder="Enter author name" />
-              </Form.Item>
-
-              <Form.Item
-                label="Difficulty"
-                name="difficulty"
-                rules={[{ required: true, message: 'Please select difficulty' }]}
-              >
-                <Select placeholder="Select difficulty">
-                  <Option value="easy">简单</Option>
-                  <Option value="medium">中等</Option>
-                  <Option value="hard">困难</Option>
-                  <Option value="expert">专家</Option>
-                </Select>
-              </Form.Item>
-
-              <Form.Item
-                label="Estimated Minutes"
-                name="estimatedMinutes"
-              >
-                <Input type="number" min={0} placeholder="e.g. 30" />
-              </Form.Item>
-
-              <Form.Item label="所属空间" name="spaceId">
-                <Select placeholder="选择博客空间（可选）" allowClear>
-                  {blogSpaces.filter(s => s.isActive).map(s => <Option key={s.id} value={s.id}>{s.name}</Option>)}
-                </Select>
-              </Form.Item>
             </>
           )}
 
