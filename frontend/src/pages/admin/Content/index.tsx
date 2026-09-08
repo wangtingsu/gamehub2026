@@ -1607,58 +1607,103 @@ const Content: React.FC = () => {
 
           {activeTab === 'blogs' && (
             <>
+              {/* ===== 通用信息（跨语言共享字段）===== */}
+              <div className="flex items-center gap-3 mb-4 mt-1">
+                <span className="text-sm font-semibold text-gray-500 tracking-wide">通用信息</span>
+                <div className="flex-1 h-px bg-gray-200" />
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-x-6">
+                <Form.Item
+                  label="URL 后缀 / URL Slug"
+                  name="maintitle"
+                  rules={[{ required: true, message: '请输入 URL 后缀' }]}
+                  tooltip="用于生成博客链接的后缀（slug），例如 /blog/your-url-slug"
+                >
+                  <Input placeholder="例如 your-url-slug（用于 URL 后缀）" />
+                </Form.Item>
+
+                <Form.Item
+                  label="作者 / Author"
+                  name="author"
+                  rules={[{ required: true, message: '请输入作者' }]}
+                >
+                  <Input placeholder="作者名" />
+                </Form.Item>
+
+                <Form.Item
+                  label="所属空间 / Space"
+                  name="spaceId"
+                  rules={[{ required: true, message: '请选择空间' }]}
+                >
+                  <Select placeholder="选择博客空间">
+                    {blogSpaces.filter(s => s.isActive).map(s => <Option key={s.id} value={s.id}>{s.name}</Option>)}
+                  </Select>
+                </Form.Item>
+
+                <Form.Item
+                  label="分类 / Category"
+                  name="category"
+                  initialValue="博客"
+                >
+                  <Select>
+                    <Option value="博客">博客</Option>
+                    <Option value="博客/技术">博客/技术</Option>
+                    <Option value="博客/游戏">博客/游戏</Option>
+                    <Option value="博客/杂谈">博客/杂谈</Option>
+                  </Select>
+                </Form.Item>
+
+                <Form.Item
+                  label="置顶 / Pinned"
+                  name="isPinned"
+                  valuePropName="checked"
+                  tooltip="置顶博客将始终排在列表最前面"
+                >
+                  <Switch checkedChildren="已置顶" unCheckedChildren="未置顶" />
+                </Form.Item>
+              </div>
+
+              <Form.Item
+                label="配图 / Cover Image"
+                name="coverImageUrl"
+                tooltip="详情页显示的配图，可上传或粘贴 URL"
+              >
+                <CoverImageUpload />
+              </Form.Item>
+
+              {/* ===== 多语言内容（标题 / 摘要 / 正文 按语言分别填写）===== */}
+              <div className="flex items-center gap-3 mb-4 mt-6">
+                <span className="text-sm font-semibold text-gray-500 tracking-wide">多语言内容</span>
+                <div className="flex-1 h-px bg-gray-200" />
+              </div>
+
               <Tabs defaultActiveKey="zh">
                 <TabPane tab="简体中文（默认）" key="zh">
-                  <Form.Item label="标题" name="title">
-                    <Input placeholder="博客标题（可留空，仅填英文等单语言亦可发布）" />
+                  <Form.Item label="标题 / Title" name="title">
+                    <Input placeholder="输入中文标题（可留空，仅填英文等单语言亦可发布）" />
                   </Form.Item>
-                  <Form.Item label="摘要" name="excerpt">
-                    <TextArea rows={2} placeholder="博客摘要（可选）" />
+                  <Form.Item label="摘要 / Summary" name="excerpt">
+                    <TextArea rows={2} placeholder="输入中文摘要（可选）" />
                   </Form.Item>
-                  <Form.Item label="正文" name="content">
+                  <Form.Item label="正文 / Content" name="content">
                     <BlogEditor />
                   </Form.Item>
                 </TabPane>
                 {NEWS_TRANSLATION_LANGS.map(({ key, label }) => (
                   <TabPane tab={label} key={key}>
-                    <Form.Item label="标题" name={['translations', key, 'title']}>
-                      <Input placeholder={`${label} title`} />
+                    <Form.Item label="标题 / Title" name={['translations', key, 'title']}>
+                      <Input placeholder={`${label} 标题`} />
                     </Form.Item>
-                    <Form.Item label="摘要" name={['translations', key, 'excerpt']}>
-                      <TextArea rows={2} placeholder={`${label} summary`} />
+                    <Form.Item label="摘要 / Summary" name={['translations', key, 'excerpt']}>
+                      <TextArea rows={2} placeholder={`${label} 摘要（可选）`} />
                     </Form.Item>
-                    <Form.Item label="正文" name={['translations', key, 'content']}>
+                    <Form.Item label="正文 / Content" name={['translations', key, 'content']}>
                       <BlogEditor />
                     </Form.Item>
                   </TabPane>
                 ))}
               </Tabs>
-
-              <Form.Item
-                label="URL 后缀 / URL Slug"
-                name="maintitle"
-                rules={[{ required: true, message: '请输入 URL 后缀' }]}
-                tooltip="用于生成博客链接的后缀（slug），例如 /blog/your-url-slug"
-              >
-                <Input placeholder="例如 your-url-slug（用于 URL 后缀）" />
-              </Form.Item>
-
-              <Form.Item label="作者" name="author" rules={[{ required: true, message: '请输入作者' }]}>
-                <Input placeholder="作者名" />
-              </Form.Item>
-              <Form.Item label="所属空间" name="spaceId" rules={[{ required: true, message: '请选择空间' }]}>
-                <Select placeholder="选择博客空间">
-                  {blogSpaces.filter(s => s.isActive).map(s => <Option key={s.id} value={s.id}>{s.name}</Option>)}
-                </Select>
-              </Form.Item>
-              <Form.Item label="分类" name="category" initialValue="博客">
-                <Select>
-                  <Option value="博客">博客</Option>
-                  <Option value="博客/技术">博客/技术</Option>
-                  <Option value="博客/游戏">博客/游戏</Option>
-                  <Option value="博客/杂谈">博客/杂谈</Option>
-                </Select>
-              </Form.Item>
             </>
           )}
 
