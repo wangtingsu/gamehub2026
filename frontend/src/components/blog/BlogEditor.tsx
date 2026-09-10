@@ -1,7 +1,7 @@
-import React, { useState, useRef, useCallback, useEffect } from 'react';
-import MDEditor from '@uiw/react-md-editor';
+import React, { useState, useRef, useCallback, useEffect, useMemo } from 'react';
+import MDEditor, { commands as mdCommands, getCommands, type ICommand } from '@uiw/react-md-editor';
 import { Button, Modal, Input, Space, message, Tooltip } from 'antd';
-import { PictureOutlined, LinkOutlined, UploadOutlined, DragOutlined, TableOutlined } from '@ant-design/icons';
+import { PictureOutlined, LinkOutlined, UploadOutlined, DragOutlined } from '@ant-design/icons';
 import { uploadToServer } from './uploadToServer';
 import InsertTableModal from './InsertTableModal';
 
@@ -197,6 +197,25 @@ const BlogEditor: React.FC<BlogEditorProps> = ({ value = '', onChange, height = 
     message.success('表格已插入');
   }, [value, onChange, getCursorPosition, setCursorPosition]);
 
+  /**
+   * 增强 MDEditor 内置的「插入表格」命令：
+   * 默认命令只会插入简单的 Markdown 表格，这里替换为点击后打开 InsertTableModal，
+   * 支持行列数 / 行高 / 列宽 / 背景色 / 单元格插图等丰富配置。
+   */
+  const editorCommands = useMemo<ICommand[]>(() => {
+    const customTableCommand: ICommand = {
+      name: 'table',
+      keyCommand: 'table',
+      buttonProps: {
+        'aria-label': '插入表格',
+        title: '插入表格（行列 / 行高 / 列宽 / 背景色 / 单元格插图）',
+      },
+      icon: mdCommands.table.icon,
+      execute: () => setTableModalVisible(true),
+    };
+    return getCommands().map((cmd) => (cmd && cmd.name === 'table' ? customTableCommand : cmd));
+  }, []);
+
   return (
     <div ref={editorWrapRef} style={{ position: 'relative', border: '2px solid #d9d9d9', borderRadius: 6 }}>
       {/* 图片上传工具栏 */}
@@ -243,16 +262,6 @@ const BlogEditor: React.FC<BlogEditorProps> = ({ value = '', onChange, height = 
           </Button>
         </Tooltip>
 
-        <Tooltip title="插入表格（可设置行列数/行高/列宽/背景色，单元格可插图片）">
-          <Button
-            size="small"
-            icon={<TableOutlined />}
-            onClick={() => setTableModalVisible(true)}
-          >
-            插入表格
-          </Button>
-        </Tooltip>
-
         <span style={{ color: 'var(--c-text2, #9ca3af)', marginLeft: 8, fontSize: 12 }}>
           <DragOutlined style={{ marginRight: 4 }} />
           拖拽图片到编辑器 或 Ctrl+V 粘贴截图
@@ -267,6 +276,7 @@ const BlogEditor: React.FC<BlogEditorProps> = ({ value = '', onChange, height = 
           height={height}
           preview="live"
           visibleDragbar={false}
+          commands={editorCommands}
           textareaProps={{
             placeholder: placeholder || '使用 Markdown 编写，支持拖拽/粘贴上传图片...',
           }}
