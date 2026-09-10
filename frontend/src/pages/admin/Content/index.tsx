@@ -1200,7 +1200,7 @@ const Content: React.FC = () => {
       >
         <TabPane tab="新闻" key="news">
           <Table
-            columns={getCurrentColumns()}
+            columns={newsColumns}
             dataSource={filteredNews}
             rowKey="id"
             loading={loading}
@@ -1222,7 +1222,7 @@ const Content: React.FC = () => {
           />
         </TabPane><TabPane tab="论坛" key="community">
           <Table
-            columns={getCurrentColumns()}
+            columns={communityColumns}
             dataSource={filteredCommunity}
             rowKey="id"
             loading={loading}
