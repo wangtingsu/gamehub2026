@@ -1058,7 +1058,7 @@ const Content: React.FC = () => {
     if (!searchKw) return true;
     const hay = [
       record.title, record.slug, record.maintitle, record.category,
-      record.spaceName, record.authorName, record.authorDisplayName, record.postType,
+      record.spaceName, record.author, record.postType,
     ].filter(Boolean).join(' ').toLowerCase();
     return hay.includes(searchKw);
   };
@@ -1089,13 +1089,12 @@ const Content: React.FC = () => {
         : <span className="text-gray-400">（无标题）</span>,
     },
     { title: '空间', dataIndex: 'spaceName', key: 'spaceName', width: 110, render: (v: string) => v || '-' },
-    { title: '作者', dataIndex: 'authorName', key: 'author', width: 100,
-      render: (v: string, record: any) => record.authorDisplayName || record.authorName || '-' },
+    { title: '作者', dataIndex: 'author', key: 'author', width: 100, render: (v: string) => v || '-' },
     { title: '浏览', dataIndex: 'views', key: 'views', width: 76, sorter: (a: any, b: any) => (a.views || 0) - (b.views || 0) },
     { title: '点赞', dataIndex: 'likes', key: 'likes', width: 76, sorter: (a: any, b: any) => (a.likes || 0) - (b.likes || 0) },
     { title: '收藏', dataIndex: 'favorites', key: 'favorites', width: 76, render: (v: number) => v || 0 },
     {
-      title: '日期', dataIndex: 'publishedAt', key: 'publishedAt', width: 110,
+      title: '日期', dataIndex: 'publishDate', key: 'publishDate', width: 110,
       render: (d: string) => d ? new Date(d).toLocaleDateString('zh-CN') : '-',
     },
     {
