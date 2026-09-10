@@ -34,8 +34,6 @@ export function getAdminMenu(): AdminMenuItem[] {
       children: [
         { key: '/admin/content/news', label: '新闻' },
         { key: '/admin/content/blogs', label: '博客' },
-        { key: '/admin/content/guides', label: '攻略' },
-        { key: '/admin/content/reviews', label: '评测' },
         { key: '/admin/content/community', label: '论坛' },
         { key: '/admin/content/blogspaces', label: '空间' },
       ],

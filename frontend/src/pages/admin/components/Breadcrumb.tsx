@@ -9,7 +9,8 @@ const breadcrumbNameMap: Record<string, string> = {
   '/admin/games': 'Games',
   '/admin/content': 'Content',
   '/admin/content/news': 'News',
-  '/admin/content/reviews': 'Reviews',
+  '/admin/content/blogs': '博客',
+  '/admin/content/reviews': '博客',
   '/admin/content/community': 'Community',
   '/admin/settings': 'Settings',
 };

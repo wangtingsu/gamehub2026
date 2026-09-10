@@ -1,8 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { Tabs, Table, Button, Space, Input, Modal, Form, Select, Tag, message, Popconfirm, Switch, Rate, Spin, Upload, Image } from 'antd';
+import { Tabs, Table, Button, Space, Input, Modal, Form, Select, Tag, message, Popconfirm, Switch, Rate, Spin, Upload, Image, Dropdown } from 'antd';
 import type { ColumnsType } from 'antd/es/table';
-import { UploadOutlined, PlusOutlined } from '@ant-design/icons';
+import { UploadOutlined, PlusOutlined, ReloadOutlined } from '@ant-design/icons';
 import type { UploadFile, RcFile } from 'antd/es/upload/interface';
 import {
   SearchOutlined,
@@ -34,6 +34,25 @@ const NEWS_TRANSLATION_LANGS = [
 ] as const;
 
 type ContentType = 'news' | 'blogs' | 'guides' | 'reviews' | 'community' | 'blogspaces' | 'categories' | 'templates';
+
+// 博客/测评/攻略 三者在后台统一存储于 blog_articles 表，按 post_type 字段区分
+const POST_TYPE_META: Record<string, { label: string; color: string }> = {
+  blog: { label: '博客', color: 'blue' },
+  review: { label: '测评', color: 'purple' },
+  guide: { label: '攻略', color: 'green' },
+};
+
+/** 将文章 post_type 映射为管理后台的表单类型 */
+const postTypeToContentType = (postType?: string): ContentType =>
+  postType === 'review' ? 'reviews' : postType === 'guide' ? 'guides' : 'blogs';
+
+/** 根据 post_type 生成前台详情页跳转地址 */
+const articleViewUrl = (record: any): string => {
+  const pt = record?.postType || 'blog';
+  if (pt === 'review') return `/community/reviews/${record.id}`;
+  if (pt === 'guide') return `/guides/${record.id}`;
+  return `/blog/${record.id}`;
+};
 
 interface ContentStats {
   total: number;
@@ -177,9 +196,8 @@ const Content: React.FC = () => {
   // 从 URL 路径解析当前 tab
   const getActiveTabFromPath = (): ContentType => {
     const path = location.pathname;
-    if (path.endsWith('/blogs')) return 'blogs';
-    if (path.endsWith('/guides')) return 'guides';
-    if (path.endsWith('/reviews')) return 'reviews';
+    // 博客/测评/攻略 已合并为同一张表（blog_articles），统一落到「文章」标签
+    if (path.endsWith('/blogs') || path.endsWith('/guides') || path.endsWith('/reviews')) return 'blogs';
     if (path.endsWith('/community')) return 'community';
     if (path.endsWith('/blogspaces')) return 'blogspaces';
     return 'news';
@@ -265,16 +283,6 @@ const Content: React.FC = () => {
           setBlogs(Array.isArray(data) ? data : []);
           break;
         }
-        case 'guides': {
-          const data = await apiService.getGuides({ limit: 200 });
-          setGuides(data);
-          break;
-        }
-        case 'reviews': {
-          const data = await apiService.getReviews({ limit: 200 });
-          setReviews(data);
-          break;
-        }
         case 'community': {
           const data = await apiService.getCommunityPosts({ limit: 200 });
           setCommunityPosts(data);
@@ -327,12 +335,6 @@ const Content: React.FC = () => {
       pending: news.filter(n => (n as any).reviewStatus === 'pending' || !(n as any).reviewStatus).length,
       today: news.filter(n => new Date(n.publishDate).toDateString() === new Date().toDateString()).length,
     },
-    reviews: {
-      total: reviews.length,
-      published: reviews.filter(r => (r as any).reviewStatus === 'approved').length,
-      pending: reviews.filter(r => (r as any).reviewStatus === 'pending' || !(r as any).reviewStatus).length,
-      today: reviews.filter(r => new Date(r.publishDate).toDateString() === new Date().toDateString()).length,
-    },
     community: {
       total: communityPosts.length,
       published: communityPosts.filter(p => (p as any).reviewStatus === 'approved').length,
@@ -344,12 +346,6 @@ const Content: React.FC = () => {
       published: blogs.filter(b => (b as any).reviewStatus === 'approved').length,
       pending: blogs.filter(b => (b as any).reviewStatus === 'pending' || !(b as any).reviewStatus).length,
       today: blogs.filter(b => new Date(b.publishDate).toDateString() === new Date().toDateString()).length,
-    },
-    guides: {
-      total: guides.length,
-      published: guides.filter(g => g.reviewStatus === 'approved').length,
-      pending: guides.filter(g => g.reviewStatus === 'pending' || !g.reviewStatus).length,
-      today: guides.filter(g => g.createdAt && new Date(g.createdAt).toDateString() === new Date().toDateString()).length,
     },
   };
 
@@ -660,10 +656,9 @@ const Content: React.FC = () => {
     },
   ];
 
-  // 搜索功能
+  // 搜索功能：将关键词写入 searchText，由下方 filteredNews/filteredBlogs/filteredCommunity 实时过滤
   const handleSearch = (value: string) => {
     setSearchText(value);
-    // 实际应用中这里应该过滤数据
   };
 
   // 查看内容
@@ -729,22 +724,35 @@ const Content: React.FC = () => {
   };
 
   // 编辑内容
-  const handleEditContent = (content: NewsArticle | Review | Guide | CommunityPost, type: ContentType) => {
-    setEditingContent({ type, data: content });
+  const handleEditContent = async (content: NewsArticle | Review | Guide | CommunityPost, type: ContentType) => {
+    let full: any = content;
+    // 博客/测评/攻略 同表（blog_articles），但列表接口 /blogs 不返回 gameTitle/difficulty/summary 等字段，
+    // 编辑时按类型拉取完整详情，避免表单回填空值。
+    if (type === 'reviews') {
+      try { full = await apiService.getReview(String(content.id)); } catch { /* 拉取失败回退列表数据 */ }
+    } else if (type === 'guides') {
+      try { full = await apiService.getGuide(String(content.id)); } catch { /* 拉取失败回退列表数据 */ }
+    }
+    setEditingContent({ type, data: full });
     const formValues: any = {
-      ...content,
-      tags: Array.isArray(content.tags) ? content.tags.join(',') : content.tags,
+      ...full,
+      tags: Array.isArray(full.tags) ? full.tags.join(',') : full.tags,
       // 前端类型用 imageUrl，表单字段用 coverImageUrl，做映射
-      coverImageUrl: (content as any).coverImageUrl || (content as any).imageUrl || '',
+      coverImageUrl: (full as any).coverImageUrl || (full as any).imageUrl || '',
     };
-    // 处理 Guide 特有的 difficulty 字段
+    // 处理 Guide 特有的 difficulty / summary / estimatedMinutes 字段
     if (type === 'guides') {
-      formValues.difficulty = (content as Guide).difficulty || 'medium';
-      formValues.estimatedMinutes = (content as Guide).estimatedMinutes;
+      formValues.difficulty = (full as Guide).difficulty || 'medium';
+      formValues.estimatedMinutes = (full as Guide).estimatedMinutes;
+      formValues.summary = (full as Guide).summary || (full as any).excerpt || '';
+    }
+    // 评测：回填 gameTitle
+    if (type === 'reviews') {
+      formValues.gameTitle = (full as Review).gameTitle || '';
     }
     // 新闻：表单字段用 excerpt（对应后端 excerpt 列），回填时从 summary 映射
     if (type === 'news') {
-      formValues.excerpt = (content as NewsArticle).summary || (content as any).excerpt || '';
+      formValues.excerpt = (full as NewsArticle).summary || (full as any).excerpt || '';
     }
     form.setFieldsValue(formValues);
     setIsModalVisible(true);
@@ -894,8 +902,9 @@ const Content: React.FC = () => {
     }
   };
 
-  // 添加新内容
-  const handleAddContent = () => {
+  // 添加新内容（博客/测评/攻略 合并后，通过 typeArg 指定要新增的类型）
+  const handleAddContent = (typeArg?: ContentType) => {
+    const type = typeArg || activeTab;
     // 创建默认内容数据
     const defaultContent = {
       id: 0,
@@ -907,9 +916,9 @@ const Content: React.FC = () => {
       likes: 0,
     };
 
-    let data: NewsArticle | Review | CommunityPost;
+    let data: NewsArticle | Review | CommunityPost | Guide;
 
-    switch (activeTab) {
+    switch (type) {
       case 'news':
         data = {
           ...defaultContent,
@@ -955,7 +964,7 @@ const Content: React.FC = () => {
         break;
     }
 
-    setEditingContent({ type: activeTab, data });
+    setEditingContent({ type, data });
     form.resetFields();
     setIsModalVisible(true);
   };
@@ -1039,6 +1048,80 @@ const Content: React.FC = () => {
     return current.data as any[];
   };
 
+  // 当前表单类型：编辑/新增的目标类型（优先取 editingContent.type，回退 activeTab）
+  const formType: ContentType = editingContent?.type || activeTab;
+  const contentTypeLabel: Record<string, string> = { news: '新闻', blogs: '博客', reviews: '测评', guides: '攻略', community: '帖子' };
+
+  // 搜索过滤：对标题/slug/URL后缀/分类/空间/作者/类型做模糊匹配，兼容空标题
+  const searchKw = searchText.trim().toLowerCase();
+  const matchesSearch = (record: any): boolean => {
+    if (!searchKw) return true;
+    const hay = [
+      record.title, record.slug, record.maintitle, record.category,
+      record.spaceName, record.authorName, record.authorDisplayName, record.postType,
+    ].filter(Boolean).join(' ').toLowerCase();
+    return hay.includes(searchKw);
+  };
+
+  const filteredNews = searchKw
+    ? news.filter((n) => [n.title, n.category, n.author].filter(Boolean).join(' ').toLowerCase().includes(searchKw))
+    : news;
+
+  const filteredCommunity = searchKw
+    ? communityPosts.filter((p) => [p.title, p.category, p.author].filter(Boolean).join(' ').toLowerCase().includes(searchKw))
+    : communityPosts;
+
+  const filteredBlogs = blogs.filter(matchesSearch);
+
+  // 合并后的「文章」列表列（博客/测评/攻略）
+  const articleColumns: ColumnsType<any> = [
+    {
+      title: '类型', dataIndex: 'postType', key: 'postType', width: 76,
+      render: (pt: string) => {
+        const m = POST_TYPE_META[pt] || POST_TYPE_META.blog;
+        return <Tag color={m.color}>{m.label}</Tag>;
+      },
+    },
+    {
+      title: '标题', dataIndex: 'title', key: 'title', width: 220, ellipsis: true,
+      render: (t: string) => t
+        ? <span className="font-medium">{t}</span>
+        : <span className="text-gray-400">（无标题）</span>,
+    },
+    { title: '空间', dataIndex: 'spaceName', key: 'spaceName', width: 110, render: (v: string) => v || '-' },
+    { title: '作者', dataIndex: 'authorName', key: 'author', width: 100,
+      render: (v: string, record: any) => record.authorDisplayName || record.authorName || '-' },
+    { title: '浏览', dataIndex: 'views', key: 'views', width: 76, sorter: (a: any, b: any) => (a.views || 0) - (b.views || 0) },
+    { title: '点赞', dataIndex: 'likes', key: 'likes', width: 76, sorter: (a: any, b: any) => (a.likes || 0) - (b.likes || 0) },
+    { title: '收藏', dataIndex: 'favorites', key: 'favorites', width: 76, render: (v: number) => v || 0 },
+    {
+      title: '日期', dataIndex: 'publishedAt', key: 'publishedAt', width: 110,
+      render: (d: string) => d ? new Date(d).toLocaleDateString('zh-CN') : '-',
+    },
+    {
+      title: '审核', key: 'reviewStatus', width: 96,
+      render: (_: unknown, record: any) => (
+        <Tag color={record.reviewStatus === 'approved' ? 'success' : record.reviewStatus === 'rejected' ? 'error' : 'warning'}>
+          {record.reviewStatus === 'approved' ? '已通过' : record.reviewStatus === 'rejected' ? '已拒绝' : '待审核'}
+        </Tag>
+      ),
+    },
+    {
+      title: '操作', key: 'actions', width: 160,
+      render: (_: unknown, record: any) => (
+        <Space>
+          <Button type="text" icon={<EyeOutlined />} size="small" className="text-blue-500"
+            onClick={() => window.open(articleViewUrl(record), '_blank')} />
+          <Button type="text" icon={<EditOutlined />} size="small" className="text-green-500"
+            onClick={() => handleEditContent(record, postTypeToContentType(record.postType))} />
+          <Popconfirm title="确定删除？" onConfirm={() => handleDeleteContent(record.id, 'blogs')} okText="是" cancelText="否">
+            <Button type="text" icon={<DeleteOutlined />} size="small" danger />
+          </Popconfirm>
+        </Space>
+      ),
+    },
+  ];
+
   return (
     <div className="content-page">
       <SEO title="内容管理 | GameHub" description="管理新闻、评测、社区帖子等内容" keywords="内容管理, 新闻管理, 评测管理, 社区管理, 内容审核" noindex />
@@ -1084,11 +1167,28 @@ const Content: React.FC = () => {
             style={{ maxWidth: 400 }}
           />
         </div>
-        <ActionButtons
-          onAdd={handleAddContent}
-          onRefresh={fetchContent}
-          showAdd={true}
-        />
+        {activeTab === 'blogs' ? (
+          <Space wrap>
+            <Dropdown
+              menu={{
+                items: [
+                  { key: 'blog', label: '新增博客', onClick: () => handleAddContent('blogs') },
+                  { key: 'review', label: '新增测评', onClick: () => handleAddContent('reviews') },
+                  { key: 'guide', label: '新增攻略', onClick: () => handleAddContent('guides') },
+                ],
+              }}
+            >
+              <Button type="primary" icon={<PlusOutlined />}>新增博客</Button>
+            </Dropdown>
+            <Button type="text" icon={<ReloadOutlined />} onClick={fetchContent}>刷新</Button>
+          </Space>
+        ) : (
+          <ActionButtons
+            onAdd={handleAddContent}
+            onRefresh={fetchContent}
+            showAdd={true}
+          />
+        )}
       </div>
       )}
 
@@ -1102,7 +1202,7 @@ const Content: React.FC = () => {
         <TabPane tab="新闻" key="news">
           <Table
             columns={getCurrentColumns()}
-            dataSource={getCurrentTableData()}
+            dataSource={filteredNews}
             rowKey="id"
             loading={loading}
             pagination={{
@@ -1114,156 +1214,17 @@ const Content: React.FC = () => {
             className="shadow-sm border-gray-200"
           />
         </TabPane><TabPane tab="博客" key="blogs">
-          <Table dataSource={blogs} rowKey="id" loading={loading}
-            pagination={{ pageSize: 10, showTotal: t => `共 ${t} 篇` }}
-            columns={[
-              { title: '标题', dataIndex: 'title', key: 'title', width: 200, ellipsis: true,
-                render: (t: string) => <span className="font-medium">{t}</span> },
-              { title: '空间', dataIndex: 'spaceName', key: 'spaceName', width: 120,
-                render: (v: string) => v || '-' },
-              { title: '作者', dataIndex: 'author', key: 'author', width: 100 },
-              { title: '浏览', dataIndex: 'views', key: 'views', width: 70 },
-              { title: '点赞', dataIndex: 'likes', key: 'likes', width: 70 },
-              { title: '收藏', dataIndex: 'favorites', key: 'favorites', width: 70,
-                render: (v: number) => v || 0 },
-              { title: '日期', dataIndex: 'publishDate', key: 'publishDate', width: 120,
-                render: (d: string) => d ? new Date(d).toLocaleDateString('zh-CN') : '-' },
-              { title: '操作', key: 'actions', width: 180,
-                render: (_: any, record: any) => (
-                  <Space>
-                    <Button type="text" icon={<EyeOutlined />} size="small" className="text-blue-500"
-                      onClick={() => window.open(`/blog/${record.id}`, '_blank')} />
-                    <Button type="text" icon={<EditOutlined />} size="small" className="text-green-500"
-                      onClick={() => handleEditContent(record, 'blogs')} />
-                    <Popconfirm title="确定删除？" onConfirm={() => handleDeleteContent(record.id, 'blogs')} okText="是" cancelText="否">
-                      <Button type="text" icon={<DeleteOutlined />} size="small" danger />
-                    </Popconfirm>
-                  </Space>
-                ),
-              },
-            ]} />
-        </TabPane><TabPane tab="攻略" key="guides">
-          <div className="mb-4 flex justify-between items-center">
-            <div>
-              <span className="text-base font-medium">Guides</span>
-              <span className="ml-2 text-sm text-gray-500">({guides.length} guides)</span>
-            </div>
-          </div>
           <Table
-            dataSource={guides}
+            columns={articleColumns}
+            dataSource={filteredBlogs}
             rowKey="id"
             loading={loading}
-            pagination={{ pageSize: 10 }}
-            className="shadow-sm border-gray-200"
-            columns={[
-              {
-                title: 'Title',
-                dataIndex: 'title',
-                key: 'title',
-                render: (text: string) => <span className="font-medium">{text}</span>,
-              },
-              {
-                title: 'Game',
-                dataIndex: 'gameTitle',
-                key: 'gameTitle',
-              },
-              {
-                title: 'Author',
-                dataIndex: 'author',
-                key: 'author',
-              },
-              {
-                title: 'Difficulty',
-                dataIndex: 'difficulty',
-                key: 'difficulty',
-                render: (diff: string) => {
-                  const colors: Record<string, string> = { easy: 'green', medium: 'blue', hard: 'orange', expert: 'red' };
-                  const labels: Record<string, string> = { easy: '简单', medium: '中等', hard: '困难', expert: '专家' };
-                  return <Tag color={colors[diff] || 'blue'}>{labels[diff] || diff}</Tag>;
-                },
-              },
-              {
-                title: 'Likes',
-                dataIndex: 'likes',
-                key: 'likes',
-                sorter: (a: any, b: any) => a.likes - b.likes,
-              },
-              {
-                title: 'Views',
-                dataIndex: 'views',
-                key: 'views',
-                sorter: (a: any, b: any) => a.views - b.views,
-              },
-              {
-                title: '审核',
-                key: 'reviewStatus',
-                width: 150,
-                render: (_: unknown, record: any) => (
-                  <Tag color={record.reviewStatus === 'approved' ? 'success' : record.reviewStatus === 'rejected' ? 'error' : 'warning'}>
-                    {record.reviewStatus === 'approved' ? '已通过' : record.reviewStatus === 'rejected' ? '已拒绝' : '待审核'}
-                  </Tag>
-                ),
-              },
-              {
-                title: 'Actions',
-                key: 'actions',
-                width: 200,
-                render: (_: unknown, record: Guide) => (
-                  <Space size="small">
-                    <Button
-                      type="text"
-                      icon={<EyeOutlined />}
-                      size="small"
-                      onClick={() => handleViewContent(record, 'guides')}
-                      className="text-blue-500 hover:text-blue-700"
-                    />
-                    <Button
-                      type="text"
-                      icon={<EditOutlined />}
-                      size="small"
-                      onClick={() => handleEditContent(record, 'guides')}
-                      className="text-green-500 hover:text-green-700"
-                    />
-                    <Popconfirm
-                      title="Delete Guide"
-                      description={`Are you sure you want to delete "${record.title}"?`}
-                      onConfirm={async () => {
-                        try {
-                          await apiService.deleteBlogPost(record.id);
-                          message.success('攻略删除成功');
-                          setGuides(prev => prev.filter(g => g.id !== record.id));
-                        } catch {
-                          message.error('删除攻略失败');
-                        }
-                      }}
-                      okText="Yes"
-                      cancelText="No"
-                    >
-                      <Button type="text" icon={<DeleteOutlined />} size="small" danger />
-                    </Popconfirm>
-                  </Space>
-                ),
-              },
-            ]}
-          />
-        </TabPane><TabPane tab="评测" key="reviews">
-          <Table
-            columns={getCurrentColumns()}
-            dataSource={getCurrentTableData()}
-            rowKey="id"
-            loading={loading}
-            pagination={{
-              pageSize: 10,
-              showSizeChanger: true,
-              showQuickJumper: true,
-              showTotal: (total) => `Total ${total} reviews`,
-            }}
-            className="shadow-sm border-gray-200"
+            pagination={{ pageSize: 10, showTotal: (t) => `共 ${t} 篇` }}
           />
         </TabPane><TabPane tab="论坛" key="community">
           <Table
             columns={getCurrentColumns()}
-            dataSource={getCurrentTableData()}
+            dataSource={filteredCommunity}
             rowKey="id"
             loading={loading}
             pagination={{
@@ -1300,11 +1261,11 @@ const Content: React.FC = () => {
 
       {/* 添加/编辑内容模态框 */}
       <Modal
-        title={editingContent?.data.id ? `Edit ${activeTab.slice(0, -1)}` : `Add New ${activeTab.slice(0, -1)}`}
+        title={editingContent?.data.id ? `编辑${contentTypeLabel[formType] || '内容'}` : `新增${contentTypeLabel[formType] || '内容'}`}
         open={isModalVisible}
         onCancel={() => setIsModalVisible(false)}
         footer={null}
-        width={activeTab === 'blogs' || activeTab === 'news' ? 1100 : 600}
+        width={formType === 'blogs' || formType === 'news' ? 1100 : 600}
         getContainer={false}
         destroyOnHidden
         styles={{ body: { overflow: 'visible', maxHeight: '70vh', overflowY: 'auto' } }}
@@ -1314,10 +1275,10 @@ const Content: React.FC = () => {
           layout="vertical"
           onFinish={handleSubmit}
           initialValues={{
-            category: activeTab === 'news' ? '游戏新闻' : activeTab === 'community' ? '攻略讨论' : '',
+            category: formType === 'news' ? '游戏新闻' : formType === 'community' ? '攻略讨论' : '',
           }}
         >
-          {activeTab === 'news' && (
+          {formType === 'news' && (
             <>
               {/* ===== 通用信息（跨语言共享字段）===== */}
               <div className="flex items-center gap-3 mb-4 mt-1">
@@ -1409,7 +1370,7 @@ const Content: React.FC = () => {
           )}
 
 
-          {activeTab === 'reviews' && (
+          {formType === 'reviews' && (
             <>
               {/* ===== 通用信息（跨语言共享字段）===== */}
               <div className="flex items-center gap-3 mb-4 mt-1">
@@ -1495,7 +1456,7 @@ const Content: React.FC = () => {
             </>
           )}
 
-          {activeTab === 'community' && (
+          {formType === 'community' && (
             <>
               <Form.Item
                 label="Post Title"
@@ -1529,7 +1490,7 @@ const Content: React.FC = () => {
             </>
           )}
 
-          {activeTab === 'guides' && (
+          {formType === 'guides' && (
             <>
               {/* ===== 通用信息（跨语言共享字段）===== */}
               <div className="flex items-center gap-3 mb-4 mt-1">
@@ -1633,7 +1594,7 @@ const Content: React.FC = () => {
             </>
           )}
 
-          {activeTab === 'blogs' && (
+          {formType === 'blogs' && (
             <>
               {/* ===== 通用信息（跨语言共享字段）===== */}
               <div className="flex items-center gap-3 mb-4 mt-1">
@@ -1735,7 +1696,7 @@ const Content: React.FC = () => {
             </>
           )}
 
-          {activeTab !== 'news' && activeTab !== 'blogs' && activeTab !== 'guides' && activeTab !== 'reviews' && (
+          {formType !== 'news' && formType !== 'blogs' && formType !== 'guides' && formType !== 'reviews' && (
             <Form.Item
               label="Content"
               name="content"
