@@ -1,27 +1,9 @@
 import React, { useState, useRef, useCallback, useEffect } from 'react';
 import MDEditor from '@uiw/react-md-editor';
 import { Button, Modal, Input, Space, message, Tooltip } from 'antd';
-import { PictureOutlined, LinkOutlined, UploadOutlined, DragOutlined } from '@ant-design/icons';
-
-/**
- * 上传图片到服务器，返回 URL
- */
-async function uploadToServer(file: File): Promise<string | null> {
-  const formData = new FormData();
-  formData.append('file', file);
-  const token = localStorage.getItem('adminToken');
-  // 管理后台（/admin 路径）走 /admin-api，用户端走 /api
-  const isAdmin = typeof window !== 'undefined' && window.location.pathname.includes('/admin');
-  const uploadUrl = isAdmin ? '/admin-api/v1/upload/image' : '/api/v1/upload/image';
-  const res = await fetch(uploadUrl, {
-    method: 'POST',
-    headers: token ? { Authorization: `Bearer ${token}` } : {},
-    body: formData,
-  });
-  if (!res.ok) return null;
-  const data = await res.json();
-  return data?.data?.file?.url || null;
-}
+import { PictureOutlined, LinkOutlined, UploadOutlined, DragOutlined, TableOutlined } from '@ant-design/icons';
+import { uploadToServer } from './uploadToServer';
+import InsertTableModal from './InsertTableModal';
 
 /**
  * 在文本中指定位置插入字符串
@@ -49,6 +31,7 @@ interface BlogEditorProps {
 const BlogEditor: React.FC<BlogEditorProps> = ({ value = '', onChange, height = 400, placeholder }) => {
   const [uploading, setUploading] = useState(false);
   const [urlModalVisible, setUrlModalVisible] = useState(false);
+  const [tableModalVisible, setTableModalVisible] = useState(false);
   const [imageUrl, setImageUrl] = useState('');
   const [isDragOver, setIsDragOver] = useState(false);
   const dragCounter = useRef(0);
@@ -202,6 +185,18 @@ const BlogEditor: React.FC<BlogEditorProps> = ({ value = '', onChange, height = 
     setUrlModalVisible(false);
   };
 
+  /**
+   * 插入表格（在光标处插入 InsertTableModal 生成的 HTML 表格）
+   */
+  const handleInsertTable = useCallback((html: string) => {
+    const cursor = getCursorPosition();
+    const { newText, newCursor } = insertAtCursor(value, cursor, `\n${html}\n`);
+    onChange?.(newText);
+    setTimeout(() => setCursorPosition(newCursor), 0);
+    setTableModalVisible(false);
+    message.success('表格已插入');
+  }, [value, onChange, getCursorPosition, setCursorPosition]);
+
   return (
     <div ref={editorWrapRef} style={{ position: 'relative', border: '2px solid #d9d9d9', borderRadius: 6 }}>
       {/* 图片上传工具栏 */}
@@ -245,6 +240,16 @@ const BlogEditor: React.FC<BlogEditorProps> = ({ value = '', onChange, height = 
             onClick={() => setUrlModalVisible(true)}
           >
             图片URL
+          </Button>
+        </Tooltip>
+
+        <Tooltip title="插入表格（可设置行列数/行高/列宽/背景色，单元格可插图片）">
+          <Button
+            size="small"
+            icon={<TableOutlined />}
+            onClick={() => setTableModalVisible(true)}
+          >
+            插入表格
           </Button>
         </Tooltip>
 
@@ -356,6 +361,13 @@ const BlogEditor: React.FC<BlogEditorProps> = ({ value = '', onChange, height = 
           </p>
         </Space>
       </Modal>
+
+      {/* 插入表格模态框 */}
+      <InsertTableModal
+        open={tableModalVisible}
+        onCancel={() => setTableModalVisible(false)}
+        onOk={handleInsertTable}
+      />
     </div>
   );
 };
