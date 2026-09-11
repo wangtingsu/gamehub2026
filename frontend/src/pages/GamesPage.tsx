@@ -313,8 +313,6 @@ const GamesPage = () => {
           <Link to={`/${currentLang}/games/${game.slug || game.id}`} className="block relative h-32 overflow-hidden">
             <LazyLoadImage
               src={game.imageUrl}
-              srcSet={`${game.imageUrl}&w=200 200w, ${game.imageUrl}&w=400 400w`}
-              sizes="(max-width: 640px) 200px, 400px"
               alt={game.title}
               className="w-full h-full object-cover"
               effect="blur"
@@ -663,8 +661,6 @@ const GamesPage = () => {
                                 <LazyLoadImage
                                   alt={game.title}
                                   src={game.imageUrl}
-                                  srcSet={`${game.imageUrl}&w=200 200w, ${game.imageUrl}&w=400 400w, ${game.imageUrl}&w=800 800w`}
-                                  sizes="(max-width: 640px) 200px, (max-width: 1024px) 400px, 800px"
                                   className="w-full h-48 object-cover"
                                   effect="blur"
                                   placeholderSrc="/placeholder.svg"
