@@ -111,7 +111,7 @@ export const getPersonalizedRecommendations = async (
     // 执行推荐查询（params 重复传入用于 WHERE 和 CASE WHEN 的匹配条件）
     const results = await query(
       `SELECT g.id, g.title, g.slug, g.cover_image_url,
-              ${getWeightedRatingSubquery()} as avg_rating,
+              COALESCE(${getWeightedRatingSubquery()}, g.rating) as avg_rating,
               ${scoreExpr} as score
        FROM games g
        WHERE (${allConditions.join(' OR ')})
@@ -187,7 +187,7 @@ export const getRelatedContent = async (
 
       const results = await query(
         `SELECT g.id, g.title, g.slug, g.cover_image_url,
-                ${getWeightedRatingSubquery()} as avg_rating,
+                COALESCE(${getWeightedRatingSubquery()}, g.rating) as avg_rating,
                 (${scoreGenre} + ${scorePlatform}) as score
          FROM games g
          WHERE g.id != ?
@@ -263,7 +263,7 @@ export const getTrendingContent = async (limit: number = 10): Promise<Recommenda
   try {
     const results = await query(
       `SELECT g.id, g.title, g.slug, g.cover_image_url,
-              ${getWeightedRatingSubquery()} as avg_rating,
+              COALESCE(${getWeightedRatingSubquery()}, g.rating) as avg_rating,
               g.views,
               (SELECT COUNT(*) FROM reviews WHERE game_id = g.id) as review_count,
               g.created_at,
@@ -323,7 +323,7 @@ export const getUsersAlsoLiked = async (
     // 这些用户还收藏的其他游戏（排除当前游戏，按收藏人数排序）
     const results = await query(
       `SELECT f.game_id, g.title, g.slug, g.cover_image_url,
-              ${getWeightedRatingSubquery()} as avg_rating,
+              COALESCE(${getWeightedRatingSubquery()}, g.rating) as avg_rating,
               COUNT(DISTINCT f.user_id) as user_count
        FROM favorites f
        JOIN games g ON f.game_id = g.id
