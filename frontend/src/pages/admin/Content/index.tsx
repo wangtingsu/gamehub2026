@@ -1260,7 +1260,7 @@ const Content: React.FC = () => {
 
       {/* 添加/编辑内容模态框 */}
       <Modal
-        title={editingContent?.data.id ? `编辑${contentTypeLabel[formType] || '内容'}` : `新增${contentTypeLabel[formType] || '内容'}`}
+        title={editingContent?.data?.id ? `编辑${contentTypeLabel[formType] || '内容'}` : `新增${contentTypeLabel[formType] || '内容'}`}
         open={isModalVisible}
         onCancel={() => setIsModalVisible(false)}
         footer={null}
@@ -1712,7 +1712,7 @@ const Content: React.FC = () => {
                 Cancel
               </Button>
               <Button type="primary" htmlType="submit">
-                {editingContent?.data.id ? 'Update' : 'Add'}
+                {editingContent?.data?.id ? 'Update' : 'Add'}
               </Button>
             </div>
           </Form.Item>

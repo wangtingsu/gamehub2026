@@ -74,7 +74,7 @@ const ActionButtons: React.FC<ActionButtonsProps> = ({
         <Button
           type="primary"
           icon={<PlusOutlined />}
-          onClick={onAdd}
+          onClick={() => onAdd?.()}
           disabled={disabled}
           className="bg-primary-500 hover:bg-primary-600 border-primary-500"
         >
