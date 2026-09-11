@@ -658,14 +658,11 @@ const GamesPage = () => {
                             className="game-card h-full"
                             cover={
                               <Link to={`/${currentLang}/games/${game.slug || game.id}`} className="block relative">
-                                <LazyLoadImage
+                                <img
                                   alt={game.title}
                                   src={game.imageUrl}
+                                  loading="lazy"
                                   className="w-full h-48 object-cover"
-                                  effect="blur"
-                                  placeholderSrc="/placeholder.svg"
-                                  threshold={100}
-                                  visibleByDefault={false}
                                 />
                                 {(game.rating > 4.5) && (
                                   <div className="absolute top-3 left-3">
