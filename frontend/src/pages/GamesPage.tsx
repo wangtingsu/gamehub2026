@@ -47,6 +47,12 @@ const { Option } = Select;
 const genreOptions = ['All', 'RPG', 'Action', 'Adventure', 'Strategy', 'Simulation', 'FPS', 'Sci-Fi', 'Fantasy', 'Indie'];
 const platformOptions = ['All', 'PC', 'PS4', 'PS5', 'Xbox One', 'Xbox Series X', 'Nintendo Switch'];
 
+// 计算折扣后的实际支付价格（与卡片展示保持一致，过滤时也按此值匹配）
+const finalPrice = (price: number, discount?: number): number => {
+  if (!discount || discount <= 0) return price;
+  return Math.round(price * (1 - discount / 100));
+};
+
 const GamesPage = () => {
   const navigate = useNavigate();
   const { lang } = useParams<{ lang: string }>();
@@ -59,6 +65,19 @@ const GamesPage = () => {
   const [selectedPlatform, setSelectedPlatform] = useState('All');
   const [priceRange, setPriceRange] = useState([0, 500]);
   const [ratingFilter, setRatingFilter] = useState(0);
+
+  // 根据实际游戏数据动态计算价格区间上限（向上取整到 10 的倍数），
+  // 避免硬编码 max=500 导致滑块后半段拖动无效（真实最高价可能远低于 500）。
+  const priceMax = useMemo(() => {
+    if (!games.length) return 500;
+    const rawMax = Math.max(...games.map((g: Game) => finalPrice(g.price, g.discount)));
+    return Math.max(10, Math.ceil(rawMax / 10) * 10);
+  }, [games]);
+
+  // 数据加载后把价格区间同步到真实区间（首帧 priceMax 从 500 收敛到实际值）
+  useEffect(() => {
+    setPriceRange([0, priceMax]);
+  }, [priceMax]);
 
   // 推荐板块 hooks
   const { data: recommendations, isLoading: recLoading, isError: recError } = usePersonalizedRecommendations(8);
@@ -220,8 +239,11 @@ const GamesPage = () => {
       result = result.filter(game => game.platforms.includes(selectedPlatform));
     }
 
-    // 价格筛选
-    result = result.filter(game => game.price >= priceRange[0] && game.price <= priceRange[1]);
+    // 价格筛选（按折扣后的实际支付价格，与卡片展示保持一致）
+    result = result.filter(game => {
+      const p = finalPrice(game.price, game.discount);
+      return p >= priceRange[0] && p <= priceRange[1];
+    });
 
     // 评分筛选
     if (ratingFilter > 0) {
@@ -258,7 +280,7 @@ const GamesPage = () => {
     setSearchText('');
     setSelectedGenre('All');
     setSelectedPlatform('All');
-    setPriceRange([0, 500]);
+    setPriceRange([0, priceMax]);
     setRatingFilter(0);
   };
 
@@ -533,7 +555,7 @@ const GamesPage = () => {
             <Slider
               range
               min={0}
-              max={500}
+              max={priceMax}
               step={10}
               value={priceRange}
               onChange={setPriceRange}
