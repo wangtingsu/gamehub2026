@@ -155,9 +155,9 @@ export const createBlog = async (authorId: string, data: any) => {
   }
   const now = new Date().toISOString();
   const tr = translationColumns(data.translations);
-  const cols = ['title','maintitle','slug','content','excerpt','cover_image_url','author_id','space_id','category','tags','is_published','is_pinned','published_at','review_status','created_at','updated_at', ...tr.cols];
+  const cols = ['title','maintitle','slug','content','excerpt','cover_image_url','author_id','space_id','category','tags','faq','is_published','is_pinned','published_at','review_status','created_at','updated_at', ...tr.cols];
   const placeholders = cols.map(() => '?').join(',');
-  const values = [title, maintitle, slug, data.content||'', data.excerpt||'', data.coverImageUrl||'', authorId, data.spaceId, data.category||'博客', JSON.stringify(data.tags||[]), 1, data.isPinned?1:0, now, 'pending', now, now, ...tr.params];
+  const values = [title, maintitle, slug, data.content||'', data.excerpt||'', data.coverImageUrl||'', authorId, data.spaceId, data.category||'博客', JSON.stringify(data.tags||[]), JSON.stringify(data.faq||[]), 1, data.isPinned?1:0, now, 'pending', now, now, ...tr.params];
   const r = await execute(
     `INSERT INTO blog_articles (${cols.join(',')}) VALUES (${placeholders})`,
     values
@@ -186,8 +186,8 @@ export const updateBlog = async (id: string, data: any) => {
     const col = k.replace(/[A-Z]/g, m => '_'+m.toLowerCase());
     if (['coverImageUrl','isPublished','isPinned','spaceId','reviewStatus'].includes(k)) {
       sets.push(`${col}=?`); vals.push(['isPublished','isPinned'].includes(k) ? (v?1:0) : v);
-    } else if (['title','content','excerpt','category','tags'].includes(k)) {
-      sets.push(`${col}=?`); vals.push(k==='tags' ? JSON.stringify(v) : v);
+    } else if (['title','content','excerpt','category','tags','faq'].includes(k)) {
+      sets.push(`${col}=?`); vals.push((k==='tags' || k==='faq') ? JSON.stringify(v) : v);
     }
   }
 
@@ -242,6 +242,7 @@ const mapArticle = (row: any) => {
     authorName: row.author_name, authorDisplayName: row.author_display_name,
     spaceId: String(row.space_id), spaceName: row.space_name, spaceSlug: row.space_slug,
     category: row.category, tags: typeof row.tags==='string'?JSON.parse(row.tags):row.tags||[],
+    faq: typeof row.faq==='string'?JSON.parse(row.faq):row.faq||[],
     isPublished: !!row.is_published, isPinned: !!row.is_pinned,
     publishedAt: row.published_at, views: row.views||0, likes: row.likes||0, comments: row.comments||0,
     reviewStatus: row.review_status, createdAt: row.created_at, updatedAt: row.updated_at,

@@ -526,6 +526,9 @@ export interface News {
   createdAt: Date;
   updatedAt: Date;
 
+  // 常见问题（FAQ）：用于详情页输出 FAQPage 结构化数据
+  faq?: FaqItem[];
+
   // 多语言翻译内容
   translations?: NewsTranslations;
 
@@ -556,6 +559,7 @@ export interface NewsCreateInput {
   status?: ReviewStatus;
   isPinned?: boolean;
   gameName?: string;
+  faq?: FaqItem[];
   translations?: NewsTranslations;
 }
 
@@ -572,6 +576,7 @@ export interface NewsUpdateInput {
   gameName?: string;
   /** 主标题：用于生成 URL slug 后缀 */
   maintitle?: string;
+  faq?: FaqItem[];
   translations?: NewsTranslations;
   reviewStatus?: ReviewStatus;
   reviewComment?: string;
@@ -621,6 +626,9 @@ export interface Review {
   createdBy?: string;
   updatedBy?: string;
 
+  // 常见问题（FAQ）：用于详情页输出 FAQPage 结构化数据
+  faq?: FaqItem[];
+
   // 多语言翻译内容
   translations?: ContentTranslations;
 }
@@ -638,6 +646,7 @@ export interface ReviewCreateInput {
   gameId: string;
   tags?: string[];
   reviewStatus?: ReviewStatus;
+  faq?: FaqItem[];
   translations?: ContentTranslations;
 }
 
@@ -653,6 +662,7 @@ export interface ReviewUpdateInput {
   tags?: string[];
   reviewStatus?: ReviewStatus;
   reviewComment?: string;
+  faq?: FaqItem[];
   translations?: ContentTranslations;
 }
 
@@ -1292,6 +1302,12 @@ export interface PasswordResetUpdateInput {
 
 // 攻略指南相关类型
 
+/** FAQ 问答条目（用于详情页输出 FAQPage 结构化数据） */
+export interface FaqItem {
+  question: string;
+  answer: string;
+}
+
 /** 攻略步骤 */
 export interface GuideStep {
   title: string;
@@ -1334,6 +1350,9 @@ export interface Guide {
   deletedAt?: Date;
   version?: number;
 
+  // 常见问题（FAQ）：用于详情页输出 FAQPage 结构化数据
+  faq?: FaqItem[];
+
   // 多语言翻译内容
   translations?: ContentTranslations;
 }
@@ -1352,6 +1371,7 @@ export interface GuideCreateInput {
   steps?: GuideStep[];
   estimatedMinutes?: number;
   reviewStatus?: ReviewStatus;
+  faq?: FaqItem[];
   translations?: ContentTranslations;
 }
 
@@ -1370,6 +1390,7 @@ export interface GuideUpdateInput {
   estimatedMinutes?: number;
   reviewStatus?: ReviewStatus;
   reviewComment?: string;
+  faq?: FaqItem[];
   translations?: ContentTranslations;
 }
 

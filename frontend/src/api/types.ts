@@ -361,6 +361,8 @@ export interface NewsArticle {
   isPinned?: boolean;
   reviewStatus?: ReviewStatusType;
   reviewComment?: string;
+  /** 常见问题（FAQ） */
+  faq?: FaqItem[];
   translations?: NewsArticleTranslations;
 }
 
@@ -400,6 +402,8 @@ export interface BlogArticle {
   postType?: 'blog' | 'review' | 'guide';
   rating?: number;
   gameId?: string;
+  /** 常见问题（FAQ） */
+  faq?: FaqItem[];
   translations?: BlogArticleTranslations;
 }
 
@@ -413,6 +417,7 @@ export interface BlogCreateInput {
   category: string;
   tags?: string[];
   status?: ReviewStatusType;
+  faq?: FaqItem[];
   translations?: BlogArticleTranslations;
 }
 
@@ -426,6 +431,7 @@ export interface BlogUpdateInput {
   tags?: string[];
   coverImageUrl?: string;
   reviewStatus?: ReviewStatusType;
+  faq?: FaqItem[];
   translations?: BlogArticleTranslations;
 }
 
@@ -487,6 +493,8 @@ export interface Review {
   reviewStatus?: ReviewStatusType;
   /** 审核意见 */
   reviewComment?: string;
+  /** 常见问题（FAQ） */
+  faq?: FaqItem[];
   /** 多语言翻译内容 */
   translations?: BlogArticleTranslations;
 }
@@ -502,6 +510,7 @@ export interface ReviewCreateRequest {
   scores?: Record<string, number>;
   templateId?: string;
   sections?: Record<string, string[] | string>;
+  faq?: FaqItem[];
   translations?: BlogArticleTranslations;
 }
 
@@ -514,6 +523,7 @@ export interface ReviewUpdateRequest {
   scores?: Record<string, number>;
   templateId?: string;
   sections?: Record<string, string[] | string>;
+  faq?: FaqItem[];
   translations?: BlogArticleTranslations;
 }
 
@@ -553,6 +563,12 @@ export interface ReviewTemplateUpdateInput {
 // 攻略指南相关类型
 export type GuideDifficulty = 'easy' | 'medium' | 'hard' | 'expert';
 
+/** FAQ 问答条目（用于详情页输出 FAQPage 结构化数据） */
+export interface FaqItem {
+  question: string;
+  answer: string;
+}
+
 export interface GuideStep {
   title: string;
   content: string;
@@ -588,6 +604,8 @@ export interface Guide {
   comments?: number;
   reviewStatus?: ReviewStatusType;
   reviewComment?: string;
+  /** 常见问题（FAQ） */
+  faq?: FaqItem[];
   /** 多语言翻译内容 */
   translations?: BlogArticleTranslations;
 }
@@ -603,6 +621,7 @@ export interface GuideCreateInput {
   tags?: string[];
   steps?: GuideStep[];
   estimatedMinutes?: number;
+  faq?: FaqItem[];
   translations?: BlogArticleTranslations;
 }
 
@@ -618,6 +637,7 @@ export interface GuideUpdateInput {
   isFeatured?: boolean;
   isPublished?: boolean;
   estimatedMinutes?: number;
+  faq?: FaqItem[];
   translations?: BlogArticleTranslations;
 }
 

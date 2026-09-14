@@ -105,8 +105,10 @@ const ReviewDetailPage = () => {
 
   const reviewSections = getReviewSections();
 
-  // 结构化数据 for Review
-  const structuredData = {
+  // 结构化数据 for Review（含 FAQPage）
+  const siteUrl = import.meta.env.VITE_SITE_URL || 'https://www.gghubs.com';
+  const faqs = Array.isArray(review.faq) ? review.faq.filter((f: any) => f && f.question && f.answer) : [];
+  const reviewSchema = {
     '@context': 'https://schema.org',
     '@type': 'Review',
     'headline': review.title,
@@ -125,13 +127,26 @@ const ReviewDetailPage = () => {
     'itemReviewed': {
       '@type': 'VideoGame',
       'name': review.gameTitle,
-      'url': `${window.location.origin}/games/${review.gameSlug || review.gameId}`
+      'url': `${siteUrl}/games/${review.gameSlug || review.gameId}`
     },
     'publisher': {
       '@type': 'Organization',
       'name': 'GameHub'
     }
   };
+  const structuredData = faqs.length > 0
+    ? [
+        reviewSchema,
+        {
+          '@type': 'FAQPage',
+          'mainEntity': faqs.map((f: any) => ({
+            '@type': 'Question',
+            'name': f.question,
+            'acceptedAnswer': { '@type': 'Answer', 'text': f.answer },
+          })),
+        },
+      ]
+    : reviewSchema;
 
   return (
     <>

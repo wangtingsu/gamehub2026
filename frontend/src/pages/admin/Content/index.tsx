@@ -1365,6 +1365,33 @@ const Content: React.FC = () => {
                   </TabPane>
                 ))}
               </Tabs>
+
+              {/* ===== 常见问题 FAQ（可选，保存后自动输出 FAQPage 结构化数据）===== */}
+              <Form.List name="faq">
+                {(fields, { add, remove }) => (
+                  <>
+                    <div className="flex items-center gap-3 mb-4 mt-6">
+                      <span className="text-sm font-semibold text-gray-500 tracking-wide">常见问题 FAQ（可选）</span>
+                      <div className="flex-1 h-px bg-gray-200" />
+                      <Button type="dashed" size="small" icon={<PlusOutlined />} onClick={() => add({ question: '', answer: '' })}>添加 FAQ</Button>
+                    </div>
+                    {fields.map(({ key, name, ...restField }) => (
+                      <div key={key} className="border border-gray-200 rounded p-3 mb-3">
+                        <div className="flex items-center justify-between mb-2">
+                          <span className="text-xs text-gray-400">FAQ #{name + 1}</span>
+                          <Button type="text" danger size="small" icon={<DeleteOutlined />} onClick={() => remove(name)}>删除</Button>
+                        </div>
+                        <Form.Item {...restField} name={[name, 'question']} label="问题" rules={[{ required: true, message: '请输入问题' }]}>
+                          <Input placeholder="例如：这款游戏支持手柄吗？" />
+                        </Form.Item>
+                        <Form.Item {...restField} name={[name, 'answer']} label="回答" rules={[{ required: true, message: '请输入回答' }]}>
+                          <TextArea rows={2} placeholder="回答内容" />
+                        </Form.Item>
+                      </div>
+                    ))}
+                  </>
+                )}
+              </Form.List>
             </>
           )}
 
@@ -1452,6 +1479,33 @@ const Content: React.FC = () => {
                   </TabPane>
                 ))}
               </Tabs>
+
+              {/* ===== 常见问题 FAQ（可选，保存后自动输出 FAQPage 结构化数据）===== */}
+              <Form.List name="faq">
+                {(fields, { add, remove }) => (
+                  <>
+                    <div className="flex items-center gap-3 mb-4 mt-6">
+                      <span className="text-sm font-semibold text-gray-500 tracking-wide">常见问题 FAQ（可选）</span>
+                      <div className="flex-1 h-px bg-gray-200" />
+                      <Button type="dashed" size="small" icon={<PlusOutlined />} onClick={() => add({ question: '', answer: '' })}>添加 FAQ</Button>
+                    </div>
+                    {fields.map(({ key, name, ...restField }) => (
+                      <div key={key} className="border border-gray-200 rounded p-3 mb-3">
+                        <div className="flex items-center justify-between mb-2">
+                          <span className="text-xs text-gray-400">FAQ #{name + 1}</span>
+                          <Button type="text" danger size="small" icon={<DeleteOutlined />} onClick={() => remove(name)}>删除</Button>
+                        </div>
+                        <Form.Item {...restField} name={[name, 'question']} label="问题" rules={[{ required: true, message: '请输入问题' }]}>
+                          <Input placeholder="例如：这款游戏支持手柄吗？" />
+                        </Form.Item>
+                        <Form.Item {...restField} name={[name, 'answer']} label="回答" rules={[{ required: true, message: '请输入回答' }]}>
+                          <TextArea rows={2} placeholder="回答内容" />
+                        </Form.Item>
+                      </div>
+                    ))}
+                  </>
+                )}
+              </Form.List>
             </>
           )}
 
@@ -1590,6 +1644,33 @@ const Content: React.FC = () => {
                   </TabPane>
                 ))}
               </Tabs>
+
+              {/* ===== 常见问题 FAQ（可选，保存后自动输出 FAQPage 结构化数据）===== */}
+              <Form.List name="faq">
+                {(fields, { add, remove }) => (
+                  <>
+                    <div className="flex items-center gap-3 mb-4 mt-6">
+                      <span className="text-sm font-semibold text-gray-500 tracking-wide">常见问题 FAQ（可选）</span>
+                      <div className="flex-1 h-px bg-gray-200" />
+                      <Button type="dashed" size="small" icon={<PlusOutlined />} onClick={() => add({ question: '', answer: '' })}>添加 FAQ</Button>
+                    </div>
+                    {fields.map(({ key, name, ...restField }) => (
+                      <div key={key} className="border border-gray-200 rounded p-3 mb-3">
+                        <div className="flex items-center justify-between mb-2">
+                          <span className="text-xs text-gray-400">FAQ #{name + 1}</span>
+                          <Button type="text" danger size="small" icon={<DeleteOutlined />} onClick={() => remove(name)}>删除</Button>
+                        </div>
+                        <Form.Item {...restField} name={[name, 'question']} label="问题" rules={[{ required: true, message: '请输入问题' }]}>
+                          <Input placeholder="例如：这款游戏支持手柄吗？" />
+                        </Form.Item>
+                        <Form.Item {...restField} name={[name, 'answer']} label="回答" rules={[{ required: true, message: '请输入回答' }]}>
+                          <TextArea rows={2} placeholder="回答内容" />
+                        </Form.Item>
+                      </div>
+                    ))}
+                  </>
+                )}
+              </Form.List>
             </>
           )}
 
@@ -1692,6 +1773,33 @@ const Content: React.FC = () => {
                   </TabPane>
                 ))}
               </Tabs>
+
+              {/* ===== 常见问题 FAQ（可选，保存后自动输出 FAQPage 结构化数据）===== */}
+              <Form.List name="faq">
+                {(fields, { add, remove }) => (
+                  <>
+                    <div className="flex items-center gap-3 mb-4 mt-6">
+                      <span className="text-sm font-semibold text-gray-500 tracking-wide">常见问题 FAQ（可选）</span>
+                      <div className="flex-1 h-px bg-gray-200" />
+                      <Button type="dashed" size="small" icon={<PlusOutlined />} onClick={() => add({ question: '', answer: '' })}>添加 FAQ</Button>
+                    </div>
+                    {fields.map(({ key, name, ...restField }) => (
+                      <div key={key} className="border border-gray-200 rounded p-3 mb-3">
+                        <div className="flex items-center justify-between mb-2">
+                          <span className="text-xs text-gray-400">FAQ #{name + 1}</span>
+                          <Button type="text" danger size="small" icon={<DeleteOutlined />} onClick={() => remove(name)}>删除</Button>
+                        </div>
+                        <Form.Item {...restField} name={[name, 'question']} label="问题" rules={[{ required: true, message: '请输入问题' }]}>
+                          <Input placeholder="例如：这款游戏支持手柄吗？" />
+                        </Form.Item>
+                        <Form.Item {...restField} name={[name, 'answer']} label="回答" rules={[{ required: true, message: '请输入回答' }]}>
+                          <TextArea rows={2} placeholder="回答内容" />
+                        </Form.Item>
+                      </div>
+                    ))}
+                  </>
+                )}
+              </Form.List>
             </>
           )}
 
@@ -1712,7 +1820,7 @@ const Content: React.FC = () => {
                 Cancel
               </Button>
               <Button type="primary" htmlType="submit">
-                {editingContent?.data?.id ? 'Update' : 'Add'}
+                {editingContent?.data.id ? 'Update' : 'Add'}
               </Button>
             </div>
           </Form.Item>

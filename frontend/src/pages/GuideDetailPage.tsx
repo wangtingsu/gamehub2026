@@ -64,9 +64,11 @@ const GuideDetailPage = () => {
   const steps = Array.isArray(guide.steps) ? guide.steps : [];
   const currentStepData = steps[currentStep];
 
-  // HowTo 结构化数据
-  const guideStructuredData = steps.length > 0 ? [
-    {
+  const faqs = Array.isArray(guide.faq) ? guide.faq.filter((f: any) => f && f.question && f.answer) : [];
+
+  // HowTo + FAQPage 结构化数据
+  const guideStructuredData = (steps.length > 0 || faqs.length > 0) ? [
+    ...(steps.length > 0 ? [{
       '@type': 'HowTo',
       'name': guide.title,
       'description': guide.summary || guide.content?.substring(0, 160) || '',
@@ -77,7 +79,15 @@ const GuideDetailPage = () => {
         'position': i + 1,
         'text': typeof step === 'string' ? step : step.title || step.content || '',
       })),
-    },
+    }] : []),
+    ...(faqs.length > 0 ? [{
+      '@type': 'FAQPage',
+      'mainEntity': faqs.map((f: any) => ({
+        '@type': 'Question',
+        'name': f.question,
+        'acceptedAnswer': { '@type': 'Answer', 'text': f.answer },
+      })),
+    }] : []),
   ] : undefined;
 
   return (

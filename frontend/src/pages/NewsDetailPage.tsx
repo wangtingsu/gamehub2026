@@ -90,12 +90,22 @@ const NewsDetailPage = () => {
     );
   }
 
+  const newsFaqs = Array.isArray(article.faq) ? article.faq.filter((f: any) => f && f.question && f.answer) : [];
+  const faqStructuredData = newsFaqs.length > 0 ? [{
+    '@type': 'FAQPage',
+    'mainEntity': newsFaqs.map((f: any) => ({
+      '@type': 'Question',
+      'name': f.question,
+      'acceptedAnswer': { '@type': 'Answer', 'text': f.answer },
+    })),
+  }] : undefined;
+
   return (
     <>
       <SEO title={article.title} description={article.summary}
         keywords={[article.title, article.category].concat(article.tags || []).concat([t('detail.seoKeywords')]).join(', ')}
         image={article.imageUrl} type="article" publishedTime={article.publishDate} modifiedTime={article.publishDate}
-        author={article.author} section={article.category} tags={article.tags} canonical={`/news/${article.slug || article.id}`} />
+        author={article.author} section={article.category} tags={article.tags} canonical={`/news/${article.slug || article.id}`} structuredData={faqStructuredData} />
       <SEOBreadcrumb items={[{ name: t('breadcrumb.home'), url: `/${lang}` }, { name: t('breadcrumb.news'), url: `/${lang}/news` }, { name: article.title, url: `/${lang}/news/${article.slug || article.id}` }]} />
       <article>
         <div className="bg-dark-900">

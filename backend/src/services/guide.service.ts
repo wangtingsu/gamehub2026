@@ -108,6 +108,7 @@ const mapGuideFromDb = (dbGuide: any): Guide => ({
   coverImageUrl: dbGuide.cover_image_url || undefined,
   tags: typeof dbGuide.tags === 'string' ? JSON.parse(dbGuide.tags) : dbGuide.tags || [],
   steps: typeof dbGuide.steps === 'string' ? JSON.parse(dbGuide.steps) : dbGuide.steps || [],
+  faq: typeof dbGuide.faq === 'string' ? JSON.parse(dbGuide.faq) : dbGuide.faq || [],
   isFeatured: Boolean(dbGuide.is_pinned ?? dbGuide.is_featured),
   isPublished: Boolean(dbGuide.is_published),
   likes: dbGuide.likes,
@@ -387,7 +388,7 @@ export const createGuide = async (authorId: string, guideData: GuideCreateInput)
 
     const tr = translationColumns((guideData as any).translations);
     const cols = [
-      'title', 'maintitle', 'slug', 'content', 'excerpt', 'cover_image_url', 'author_id', 'space_id', 'category', 'tags',
+      'title', 'maintitle', 'slug', 'content', 'excerpt', 'cover_image_url', 'author_id', 'space_id', 'category', 'tags', 'faq',
       'is_published', 'is_pinned', 'published_at', 'review_status', 'post_type', 'game_id', 'created_at', 'updated_at',
       ...tr.cols,
     ];
@@ -403,6 +404,7 @@ export const createGuide = async (authorId: string, guideData: GuideCreateInput)
       (guideData as any).spaceId || 1,
       '攻略',
       JSON.stringify(guideData.tags || []),
+      JSON.stringify(guideData.faq || []),
       0, // is_published = 0，待审核
       0, // is_pinned = 0
       null, // published_at（未发布）
@@ -519,6 +521,12 @@ export const updateGuide = async (
         values.push(tr.title ?? null, tr.content ?? null, tr.excerpt ?? null);
       }
     }
+  }
+
+  // 常见问题（FAQ）
+  if (updateData.faq !== undefined) {
+    updates.push('faq = ?');
+    values.push(JSON.stringify(updateData.faq));
   }
 
   if (updates.length === 0) {

@@ -510,6 +510,7 @@ class RealApiService extends BaseApiService {
       likes: item.likes || 0,
       comments: item.comments || 0,
       tags: Array.isArray(item.tags) ? item.tags : [],
+      faq: Array.isArray(item.faq) ? item.faq : (typeof item.faq === 'string' ? JSON.parse(item.faq) : []),
       isFeatured: Boolean(item.isFeatured ?? item.is_featured),
       scores: item.scores || undefined,
       templateId: item.templateId || undefined,
@@ -646,6 +647,7 @@ class RealApiService extends BaseApiService {
       views: item.views || 0,
       likes: item.likes || 0,
       isPinned: Boolean(item.isPinned ?? item.is_pinned),
+      faq: Array.isArray(item.faq) ? item.faq : (typeof item.faq === 'string' ? JSON.parse(item.faq) : []),
       translations: item.translations,
     } as NewsArticle;
   }
@@ -735,6 +737,7 @@ class RealApiService extends BaseApiService {
       spaceName: item.spaceName,
       spaceSlug: item.spaceSlug,
       postType: item.postType || 'blog', rating: item.rating || null, gameId: item.gameId || null, reviewStatus: item.reviewStatus || item.review_status,
+      faq: Array.isArray(item.faq) ? item.faq : (typeof item.faq === 'string' ? JSON.parse(item.faq) : []),
       translations: item.translations,
     } as any;
   }
@@ -761,6 +764,7 @@ class RealApiService extends BaseApiService {
       likes: item.likes || 0,
       featured: false,
       reviewStatus: item.reviewStatus || 'pending',
+      faq: Array.isArray(item.faq) ? item.faq : (typeof item.faq === 'string' ? JSON.parse(item.faq) : []),
       translations: item.translations,
     };
   }
@@ -806,6 +810,7 @@ class RealApiService extends BaseApiService {
       featured: item.isFeatured || false,
       reviewStatus: item.reviewStatus || 'pending',
       reviewComment: item.reviewComment || '',
+      faq: Array.isArray(item.faq) ? item.faq : (typeof item.faq === 'string' ? JSON.parse(item.faq) : []),
       translations: item.translations,
     };
   }
@@ -1169,6 +1174,7 @@ class RealApiService extends BaseApiService {
       coverImageUrl: item.coverImageUrl,
       tags: Array.isArray(item.tags) ? item.tags : (typeof item.tags === 'string' ? JSON.parse(item.tags) : []),
       steps: Array.isArray(item.steps) ? item.steps : (typeof item.steps === 'string' ? JSON.parse(item.steps) : []),
+      faq: Array.isArray(item.faq) ? item.faq : (typeof item.faq === 'string' ? JSON.parse(item.faq) : []),
       isFeatured: Boolean(item.isFeatured ?? item.is_featured),
       isPublished: item.isPublished !== false,
       likes: item.likes || 0,

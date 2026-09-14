@@ -120,6 +120,7 @@ const mapNewsFromDb = (dbNews: any): News => {
     authorDisplayName: dbNews.author_display_name || null,
     category: dbNews.category,
     tags: typeof dbNews.tags === 'string' ? JSON.parse(dbNews.tags) : dbNews.tags || [],
+    faq: typeof dbNews.faq === 'string' ? JSON.parse(dbNews.faq) : dbNews.faq || [],
     isPublished: Boolean(dbNews.is_published),
     isPinned: Boolean(dbNews.is_pinned),
     gameName: dbNews.game_name || undefined,
@@ -452,9 +453,9 @@ export const createNews = async (
     const result = await execute(
       `INSERT INTO news (
         title, maintitle, slug, content, excerpt, cover_image_url, author_id,
-        category, tags, is_published, is_pinned, game_name, published_at, review_status
+        category, tags, faq, is_published, is_pinned, game_name, published_at, review_status
         ${trCols.length ? `, ${trCols.join(', ')}` : ''}
-      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?${trCols.length ? `, ${trCols.map(() => '?').join(', ')}` : ''})`,
+      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?${trCols.length ? `, ${trCols.map(() => '?').join(', ')}` : ''})`,
       [
         title,
         maintitle,
@@ -465,6 +466,7 @@ export const createNews = async (
         authorId,
         newsData.category,
         JSON.stringify(newsData.tags || []),
+        JSON.stringify(newsData.faq || []),
         1,
         newsData.isPinned ? 1 : 0,
         newsData.gameName || null,
@@ -563,6 +565,11 @@ export const updateNews = async (
   if (updateData.tags !== undefined) {
     updates.push(`tags = ?`);
     values.push(JSON.stringify(updateData.tags));
+  }
+
+  if (updateData.faq !== undefined) {
+    updates.push(`faq = ?`);
+    values.push(JSON.stringify(updateData.faq));
   }
 
   if (updateData.isPublished !== undefined) {

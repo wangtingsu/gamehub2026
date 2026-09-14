@@ -113,6 +113,7 @@ const mapReviewFromDb = (dbReview: any): Review => ({
   gameId: dbReview.game_id ? String(dbReview.game_id) : undefined,
   authorId: dbReview.author_id ? String(dbReview.author_id) : undefined,
   tags: typeof dbReview.tags === 'string' ? JSON.parse(dbReview.tags) : dbReview.tags || [],
+  faq: typeof dbReview.faq === 'string' ? JSON.parse(dbReview.faq) : dbReview.faq || [],
   likes: dbReview.likes ? parseInt(dbReview.likes, 10) : 0,
   comments: dbReview.comments ? parseInt(dbReview.comments, 10) : 0,
   isFeatured: Boolean(dbReview.is_pinned ?? dbReview.is_featured),
@@ -429,7 +430,7 @@ export const createReview = async (authorId: string, reviewData: ReviewCreateInp
 
     const tr = translationColumns((reviewData as any).translations);
     const cols = [
-      'title', 'maintitle', 'slug', 'content', 'excerpt', 'rating', 'game_id', 'author_id', 'category', 'tags', 'space_id',
+      'title', 'maintitle', 'slug', 'content', 'excerpt', 'rating', 'game_id', 'author_id', 'category', 'tags', 'faq', 'space_id',
       'is_published', 'is_pinned', 'published_at', 'review_status', 'post_type', 'created_at', 'updated_at',
       ...tr.cols,
     ];
@@ -445,6 +446,7 @@ export const createReview = async (authorId: string, reviewData: ReviewCreateInp
       authorId,
       '评测',
       JSON.stringify(reviewData.tags || []),
+      JSON.stringify(reviewData.faq || []),
       (reviewData as any).spaceId || 1,
       0, // is_published = 0，待审核
       0, // is_pinned = 0
@@ -559,6 +561,12 @@ export const updateReview = async (
   }
 
   // 没有需要更新的字段则直接返回当前数据
+  // 常见问题（FAQ）
+  if (updateData.faq !== undefined) {
+    updates.push('faq = ?');
+    values.push(JSON.stringify(updateData.faq));
+  }
+
   if (updates.length === 0) {
     return getReviewById(id);
   }

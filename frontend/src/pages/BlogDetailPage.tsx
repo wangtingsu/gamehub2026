@@ -61,6 +61,18 @@ const BlogDetailPage = () => {
 
   const headings = useMemo(() => post?.content ? extractHeadings(post.content) : [], [post]);
 
+  const faqStructuredData = useMemo(() => {
+    const faqs = Array.isArray(post?.faq) ? post.faq.filter((f: any) => f && f.question && f.answer) : [];
+    return faqs.length > 0 ? [{
+      '@type': 'FAQPage',
+      'mainEntity': faqs.map((f: any) => ({
+        '@type': 'Question',
+        'name': f.question,
+        'acceptedAnswer': { '@type': 'Answer', 'text': f.answer },
+      })),
+    }] : undefined;
+  }, [post]);
+
   // 阅读进度条
   useEffect(() => {
     const onScroll = () => {
@@ -183,7 +195,7 @@ const BlogDetailPage = () => {
         <div className="h-full bg-gradient-to-r from-primary-500 via-sky-400 to-secondary-500 transition-[width] duration-150 ease-out" style={{ width: `${progress}%` }} />
       </div>
 
-      <SEO type="article" title={`${post.title} | GameHub Blog`} description={post.excerpt} image={coverUrl} publishedTime={post.publishDate} author={post.author} section={post.category} canonical={`/blog/${post.id}`} />
+      <SEO type="article" title={`${post.title} | GameHub Blog`} description={post.excerpt} image={coverUrl} publishedTime={post.publishDate} author={post.author} section={post.category} canonical={`/blog/${post.id}`} structuredData={faqStructuredData} />
       <SEOBreadcrumb items={[
         { name: 'Home', url: `/${currentLang}` },
         { name: 'Blog', url: `/${currentLang}/blog` },
