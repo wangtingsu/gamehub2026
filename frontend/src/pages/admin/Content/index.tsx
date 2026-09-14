@@ -1264,7 +1264,7 @@ const Content: React.FC = () => {
         open={isModalVisible}
         onCancel={() => setIsModalVisible(false)}
         footer={null}
-        width={formType === 'blogs' || formType === 'news' ? 1100 : 600}
+        width={formType === 'blogs' || formType === 'news' || formType === 'reviews' || formType === 'guides' ? 1100 : 600}
         getContainer={false}
         destroyOnHidden
         styles={{ body: { overflow: 'visible', maxHeight: '70vh', overflowY: 'auto' } }}
