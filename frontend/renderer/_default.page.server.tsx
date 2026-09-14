@@ -20,7 +20,7 @@ import apiService from '../src/api/index'
 import i18n from '../src/i18n.server'
 import type { PageContextServer } from 'vike/types'
 import { renderToString } from 'react-dom/server'
-import type { Game, NewsArticle, Guide, BlogArticle } from '../src/api/types'
+import type { Game, NewsArticle, Guide, BlogArticle, Review } from '../src/api/types'
 import ServerContent from '../src/components/ServerContent'
 
 /**
@@ -156,6 +156,26 @@ function absUrl(url: string): string {
 }
 
 /**
+ * 根据 FAQ 数组生成 FAQPage 结构化数据节点（Schema.org）
+ *
+ * 与客户端 SEO.tsx 对齐：过滤掉缺 question/answer 的无效项，全部有效才返回节点，
+ * 避免空 FAQ 被序列化成一个空 @graph 条目。FAQs 是「问题+答案」的可复用结构，
+ * 四个内容类型（新闻/博客/评测/攻略）共用此逻辑。
+ */
+function buildFaqNode(faq: Array<{ question: string; answer: string }> | undefined): Record<string, unknown> | null {
+  const items = Array.isArray(faq) ? faq.filter((f) => f && f.question && f.answer) : []
+  if (items.length === 0) return null
+  return {
+    '@type': 'FAQPage',
+    mainEntity: items.map((f) => ({
+      '@type': 'Question',
+      name: f.question,
+      acceptedAnswer: { '@type': 'Answer', text: f.answer },
+    })),
+  }
+}
+
+/**
  * 根据页面类型生成 JSON-LD 结构化数据（Schema.org @graph）
  *
  * 覆盖六类富结果资格（与客户端 SEO.tsx / SEOBreadcrumb.tsx 对齐）：
@@ -176,8 +196,11 @@ function buildJsonLdGraph(opts: {
   news: NewsArticle[] | undefined
   gameDetail: Game | null
   newsDetail: NewsArticle | null
+  blogDetail: BlogArticle | null
+  reviewDetail: Review | null
+  guideDetail: Guide | null
 }): Array<Record<string, unknown>> {
-  const { pageMeta, urlPathname, canonicalUrl, games, news, gameDetail, newsDetail } = opts
+  const { pageMeta, urlPathname, canonicalUrl, games, news, gameDetail, newsDetail, blogDetail, reviewDetail, guideDetail } = opts
   const graph: Array<Record<string, unknown>> = []
 
   const langPrefix = urlPathname.match(/^\/(en|cn|ja|ko|es|fr)(?=\/|$)/)?.[1] || 'en'
@@ -276,10 +299,65 @@ function buildJsonLdGraph(opts: {
     }
     if (newsDetail.imageUrl) node.image = absUrl(newsDetail.imageUrl)
     graph.push(node)
+    // 新闻 FAQPage（用户手填的常见问题，爬虫直接索引）
+    const faqNode = buildFaqNode(newsDetail.faq)
+    if (faqNode) graph.push(faqNode)
+  }
+
+  // 5b. Article —— 博客详情富结果（博客内容类型：blog/review/guide 中 postType=blog）
+  if (blogDetail) {
+    const node: Record<string, unknown> = {
+      '@type': 'Article',
+      headline: blogDetail.title,
+      description: blogDetail.excerpt || blogDetail.content || '',
+      url: canonicalUrl,
+      datePublished: blogDetail.publishDate,
+      author: { '@type': 'Person', name: blogDetail.author || DEFAULT_AUTHOR },
+      publisher: {
+        '@type': 'Organization',
+        name: SITE_NAME,
+        logo: { '@type': 'ImageObject', url: OG_IMAGE },
+      },
+    }
+    if (blogDetail.coverImage) node.image = absUrl(blogDetail.coverImage)
+    graph.push(node)
+    const faqNode = buildFaqNode(blogDetail.faq)
+    if (faqNode) graph.push(faqNode)
+  }
+
+  // 5c. Review —— 评测详情富结果
+  if (reviewDetail) {
+    const node: Record<string, unknown> = {
+      '@type': 'Review',
+      name: reviewDetail.title,
+      reviewBody: reviewDetail.content || '',
+      url: canonicalUrl,
+      datePublished: reviewDetail.publishDate,
+      author: { '@type': 'Person', name: reviewDetail.author || DEFAULT_AUTHOR },
+      itemReviewed: { '@type': 'VideoGame', name: reviewDetail.gameTitle || '' },
+    }
+    if (typeof reviewDetail.rating === 'number') {
+      node.reviewRating = { '@type': 'Rating', ratingValue: reviewDetail.rating, bestRating: 5, worstRating: 1 }
+    }
+    graph.push(node)
+    const faqNode = buildFaqNode(reviewDetail.faq)
+    if (faqNode) graph.push(faqNode)
+  }
+
+  // 5d. HowTo —— 攻略详情富结果
+  if (guideDetail) {
+    graph.push({
+      '@type': 'HowTo',
+      name: guideDetail.title,
+      description: guideDetail.summary || guideDetail.content || '',
+      url: canonicalUrl,
+    })
+    const faqNode = buildFaqNode(guideDetail.faq)
+    if (faqNode) graph.push(faqNode)
   }
 
   // 6. BreadcrumbList —— 详情页面包屑
-  if (gameDetail || newsDetail) {
+  if (gameDetail || newsDetail || blogDetail || reviewDetail || guideDetail) {
     const items: Array<{ name: string; url: string }> = [{ name: 'Home', url: `${SITE_URL}/${langPrefix}` }]
     if (gameDetail) {
       items.push({ name: 'Games', url: `${SITE_URL}/${langPrefix}/games` })
@@ -287,6 +365,15 @@ function buildJsonLdGraph(opts: {
     } else if (newsDetail) {
       items.push({ name: 'News', url: `${SITE_URL}/${langPrefix}/news` })
       items.push({ name: newsDetail.title, url: canonicalUrl })
+    } else if (blogDetail) {
+      items.push({ name: 'Blog', url: `${SITE_URL}/${langPrefix}/blog` })
+      items.push({ name: blogDetail.title, url: canonicalUrl })
+    } else if (reviewDetail) {
+      items.push({ name: 'Reviews', url: `${SITE_URL}/${langPrefix}/community/reviews` })
+      items.push({ name: reviewDetail.title, url: canonicalUrl })
+    } else if (guideDetail) {
+      items.push({ name: 'Guides', url: `${SITE_URL}/${langPrefix}/guides` })
+      items.push({ name: guideDetail.title, url: canonicalUrl })
     }
     graph.push({
       '@type': 'BreadcrumbList',
@@ -403,6 +490,45 @@ async function prefetchData(queryClient: QueryClient, urlPathname: string, lang:
         })
       } catch (apiError) {
         console.warn('新闻详情API预取失败:', apiError)
+      }
+    }
+  } else if (urlPathname.includes('/blog/')) {
+    // 博客详情：排除 space/new/edit/my 等子路由，避免误命中
+    const match = urlPathname.match(/\/blog\/([^\/]+)/)
+    if (match && !['space', 'new', 'edit', 'my'].includes(match[1])) {
+      try {
+        await queryClient.prefetchQuery({
+          queryKey: [...queryKeys.blog.details(), match[1], lang],
+          queryFn: () => apiService.getBlogPost(match[1], lang)
+        })
+      } catch (apiError) {
+        console.warn('博客详情API预取失败:', apiError)
+      }
+    }
+  } else if (urlPathname.includes('/community/reviews/')) {
+    // 评测详情：排除 /community/reviews/new 子路由
+    const match = urlPathname.match(/\/community\/reviews\/([^\/]+)/)
+    if (match && match[1] !== 'new') {
+      try {
+        await queryClient.prefetchQuery({
+          queryKey: [...queryKeys.reviews.detail(match[1]), lang],
+          queryFn: () => apiService.getReview(match[1], lang)
+        })
+      } catch (apiError) {
+        console.warn('评测详情API预取失败:', apiError)
+      }
+    }
+  } else if (urlPathname.includes('/guides/')) {
+    // 攻略详情
+    const match = urlPathname.match(/\/guides\/([^\/]+)/)
+    if (match) {
+      try {
+        await queryClient.prefetchQuery({
+          queryKey: [...queryKeys.guides.detail(match[1]), lang],
+          queryFn: () => apiService.getGuide(match[1], lang)
+        })
+      } catch (apiError) {
+        console.warn('攻略详情API预取失败:', apiError)
       }
     }
   }
@@ -522,6 +648,24 @@ async function render(pageContext: PageContextServer) {
     newsDetail = serverQueryClient.getQueryData<NewsArticle>([...queryKeys.news.details(), newsIdMatch[1], i18nLang]) ?? null
   }
 
+  let blogDetail: BlogArticle | null = null
+  const blogIdMatch = urlPathname.match(/\/blog\/([^/]+)/)
+  if (blogIdMatch && !['space', 'new', 'edit', 'my'].includes(blogIdMatch[1])) {
+    blogDetail = serverQueryClient.getQueryData<BlogArticle>([...queryKeys.blog.details(), blogIdMatch[1], i18nLang]) ?? null
+  }
+
+  let reviewDetail: Review | null = null
+  const reviewIdMatch = urlPathname.match(/\/community\/reviews\/([^/]+)/)
+  if (reviewIdMatch && reviewIdMatch[1] !== 'new') {
+    reviewDetail = serverQueryClient.getQueryData<Review>([...queryKeys.reviews.detail(reviewIdMatch[1]), i18nLang]) ?? null
+  }
+
+  let guideDetail: Guide | null = null
+  const guideIdMatch = urlPathname.match(/\/guides\/([^/]+)/)
+  if (guideIdMatch) {
+    guideDetail = serverQueryClient.getQueryData<Guide>([...queryKeys.guides.detail(guideIdMatch[1]), i18nLang]) ?? null
+  }
+
   // 栏目/列表页数据（P0 #3）：读取预取数据，构造统一列表项传给 ServerContent 渲染
   const listBarePath = urlPathname.replace(/^\/(en|cn|ja|ko|es|fr)(?=\/|$)/, '').replace(/^\/+|\/+$/g, '')
   const LIST_LIMIT = 24
@@ -568,6 +712,30 @@ async function render(pageContext: PageContextServer) {
       pageMeta.description = truncate(desc)
       pageMeta.ogDescription = pageMeta.description
     }
+  } else if (blogDetail?.title) {
+    pageMeta.title = `${blogDetail.title} | ${SITE_NAME}`
+    pageMeta.ogTitle = pageMeta.title
+    const desc = (blogDetail.excerpt || blogDetail.content)?.trim()
+    if (desc) {
+      pageMeta.description = truncate(desc)
+      pageMeta.ogDescription = pageMeta.description
+    }
+  } else if (reviewDetail?.title) {
+    pageMeta.title = `${reviewDetail.title} | ${SITE_NAME}`
+    pageMeta.ogTitle = pageMeta.title
+    const desc = reviewDetail.content?.trim()
+    if (desc) {
+      pageMeta.description = truncate(desc)
+      pageMeta.ogDescription = pageMeta.description
+    }
+  } else if (guideDetail?.title) {
+    pageMeta.title = `${guideDetail.title} | ${SITE_NAME}`
+    pageMeta.ogTitle = pageMeta.title
+    const desc = (guideDetail.summary || guideDetail.content)?.trim()
+    if (desc) {
+      pageMeta.description = truncate(desc)
+      pageMeta.ogDescription = pageMeta.description
+    }
   }
 
   // 生成六类 JSON-LD 结构化数据（服务端直接注入，爬虫无需执行 JS）
@@ -581,6 +749,9 @@ async function render(pageContext: PageContextServer) {
       news,
       gameDetail,
       newsDetail,
+      blogDetail,
+      reviewDetail,
+      guideDetail,
     }),
   }).replace(/</g, '\\u003c')
 
