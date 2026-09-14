@@ -3,16 +3,16 @@
  *
  * 集成 DeepSeek API 对用户提交的博客文章进行自动化内容审核。
  * 审核维度包括内容质量、内容安全、标题相关性和分类合理性。
- * 审核结果分为通过(approved)、拒绝(rejected)和人工审核(error)三种状态。
+ * 审核结果：通过(approved)自动通过；不通过(rejected)与异常(error)均转入人工审核队列。
  */
 
 import deepseekService from './deepseek.service';
-import { approveContent, rejectContent } from './content-review.service';
+import { approveContent, pendContent } from './content-review.service';
 import logger from '../utils/logger';
 
 /**
  * AI 审核结果接口
- * @property decision 审核决策：approved 表示通过，rejected 表示拒绝，error 表示需要人工审核
+ * @property decision 审核决策：approved 表示通过，rejected 表示 AI 判定不通过（转入人工审核），error 表示 AI 异常（转入人工审核）
  * @property score 内容质量评分（0-100）
  * @property reason 审核说明，拒绝时包含具体原因
  */
@@ -104,8 +104,8 @@ ${content.slice(0, 2000)}`;
 /**
  * 执行 AI 审核并根据结果自动更新文章审核状态
  *
- * 根据 AI 审核结果调用 content-review.service 的 approveContent 或 rejectContent
- * 更新文章的审核状态。若 AI 返回 error，则保持 pending 状态等待人工审核。
+ * 根据 AI 审核结果更新文章审核状态：通过则 approveContent 自动通过；
+ * 不通过（rejected）或异常（error）则转入 pending 状态等待人工审核。
  *
  * @param newsId 文章 ID
  * @param title 文章标题
@@ -137,11 +137,11 @@ export const applyAiReview = async (
 
     case 'rejected':
       try {
-        // AI 判定拒绝，自动更新文章状态为已拒绝并附带原因
-        await rejectContent('news', newsId, SYSTEM_REVIEWER_ID, result.reason);
-        logger.info(`AI 自动拒绝审核: newsId=${newsId}, title="${title}", reason="${result.reason}"`);
+        // AI 判定不通过时不直接拒绝，转入人工审核队列并记录建议原因
+        await pendContent('news', newsId, `AI 建议拒绝：${result.reason}`);
+        logger.info(`AI 判定不通过，转入人工审核: newsId=${newsId}, title="${title}", reason="${result.reason}"`);
       } catch (err) {
-        logger.error(`AI 审核拒绝时写入失败: newsId=${newsId}`, err);
+        logger.error(`AI 判定不通过转入人工审核时写入失败: newsId=${newsId}`, err);
       }
       break;
 

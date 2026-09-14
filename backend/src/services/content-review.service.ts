@@ -236,6 +236,41 @@ export const rejectContent = async (
 };
 
 /**
+ * 将内容转入人工审核队列
+ *
+ * 当 AI 审核判定不通过（rejected）时不直接拒绝，而是将内容状态置为 pending，
+ * 并把 AI 的建议原因写入 review_comment，等待人工复核。
+ *
+ * @param type 内容类型（news/review/community/guide）
+ * @param id 内容 ID
+ * @param comment AI 建议原因说明
+ * @throws {Error} 未知内容类型时抛出
+ */
+export const pendContent = async (
+  type: string,
+  id: string,
+  comment: string
+): Promise<void> => {
+  try {
+    const table = CONTENT_TABLES.find(t => t.type === type)?.table;
+    if (!table) {
+      throw new Error(`未知的内容类型: ${type}`);
+    }
+
+    // 状态置为 pending（进入人工审核队列），记录 AI 建议原因，清空审核人与时间
+    await execute(
+      `UPDATE ${table} SET review_status = 'pending', review_comment = ?, reviewed_by = NULL, reviewed_at = NULL WHERE id = ?`,
+      [comment, id]
+    );
+
+    logger.info(`内容转入人工审核队列: type=${type}, id=${id}`);
+  } catch (error) {
+    logger.error(`转入人工审核队列失败: type=${type}, id=${id}`, error);
+    throw error;
+  }
+};
+
+/**
  * 获取各类内容的审核统计
  *
  * 统计每种内容类型（news/review/community/guide）的
