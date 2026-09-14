@@ -62,6 +62,7 @@ const localizeNews = (news: News, lang?: string): News => {
     title: tr.title || news.title,
     content: tr.content || news.content,
     excerpt: tr.excerpt || news.excerpt,
+    faq: tr.faq?.length ? tr.faq : news.faq,
   };
 };
 
@@ -76,8 +77,8 @@ const translationColumns = (translations?: NewsTranslations): { cols: string[]; 
   const params: any[] = [];
   for (const suffix of TRANSLATION_SUFFIXES) {
     const tr = translations?.[suffix];
-    cols.push(`title_${suffix}`, `content_${suffix}`, `excerpt_${suffix}`);
-    params.push(tr?.title || null, tr?.content || null, tr?.excerpt || null);
+    cols.push(`title_${suffix}`, `content_${suffix}`, `excerpt_${suffix}`, `faq_${suffix}`);
+    params.push(tr?.title || null, tr?.content || null, tr?.excerpt || null, tr?.faq ? JSON.stringify(tr.faq) : null);
   }
   return { cols, params };
 };
@@ -98,11 +99,13 @@ const mapNewsFromDb = (dbNews: any): News => {
     const title = dbNews[`title_${suffix}`];
     const content = dbNews[`content_${suffix}`];
     const excerpt = dbNews[`excerpt_${suffix}`];
-    if (title || content || excerpt) {
+    const faq = dbNews[`faq_${suffix}`];
+    if (title || content || excerpt || faq) {
       translations[suffix] = {
         ...(title ? { title } : {}),
         ...(content ? { content } : {}),
         ...(excerpt ? { excerpt } : {}),
+        ...(faq ? { faq: typeof faq === 'string' ? JSON.parse(faq) : faq } : {}),
       };
     }
   }
@@ -609,6 +612,10 @@ export const updateNews = async (
       if (tr.excerpt !== undefined) {
         updates.push(`excerpt_${suffix} = ?`);
         values.push(tr.excerpt || null);
+      }
+      if (tr.faq !== undefined) {
+        updates.push(`faq_${suffix} = ?`);
+        values.push(tr.faq ? JSON.stringify(tr.faq) : null);
       }
     }
   }

@@ -56,11 +56,13 @@ const readTranslations = (row: any): any => {
     const title = row[`title_${suffix}`];
     const content = row[`content_${suffix}`];
     const excerpt = row[`excerpt_${suffix}`];
-    if (title || content || excerpt) {
+    const faq = row[`faq_${suffix}`];
+    if (title || content || excerpt || faq) {
       translations[suffix] = {
         ...(title ? { title } : {}),
         ...(content ? { content } : {}),
         ...(excerpt ? { excerpt } : {}),
+        ...(faq ? { faq: typeof faq === 'string' ? JSON.parse(faq) : faq } : {}),
       };
     }
   }
@@ -77,6 +79,7 @@ const localizeReview = (review: any, lang?: string): any => {
     ...review,
     title: tr.title || review.title,
     content: tr.content || review.content,
+    faq: tr.faq?.length ? tr.faq : review.faq,
   };
 };
 
@@ -86,8 +89,8 @@ const translationColumns = (translations?: any): { cols: string[]; params: any[]
   const params: any[] = [];
   for (const suffix of TRANSLATION_SUFFIXES) {
     const tr = translations?.[suffix];
-    cols.push(`title_${suffix}`, `content_${suffix}`, `excerpt_${suffix}`);
-    params.push(tr?.title || null, tr?.content || null, tr?.excerpt || null);
+    cols.push(`title_${suffix}`, `content_${suffix}`, `excerpt_${suffix}`, `faq_${suffix}`);
+    params.push(tr?.title || null, tr?.content || null, tr?.excerpt || null, tr?.faq ? JSON.stringify(tr.faq) : null);
   }
   return { cols, params };
 };
@@ -553,9 +556,9 @@ export const updateReview = async (
   if ((updateData as any).translations !== undefined) {
     for (const suffix of TRANSLATION_SUFFIXES) {
       const tr = (updateData as any).translations?.[suffix];
-      if (tr && (tr.title !== undefined || tr.content !== undefined || tr.excerpt !== undefined)) {
-        updates.push(`title_${suffix} = ?`, `content_${suffix} = ?`, `excerpt_${suffix} = ?`);
-        values.push(tr.title ?? null, tr.content ?? null, tr.excerpt ?? null);
+      if (tr && (tr.title !== undefined || tr.content !== undefined || tr.excerpt !== undefined || tr.faq !== undefined)) {
+        updates.push(`title_${suffix} = ?`, `content_${suffix} = ?`, `excerpt_${suffix} = ?`, `faq_${suffix} = ?`);
+        values.push(tr.title ?? null, tr.content ?? null, tr.excerpt ?? null, tr.faq ? JSON.stringify(tr.faq) : null);
       }
     }
   }

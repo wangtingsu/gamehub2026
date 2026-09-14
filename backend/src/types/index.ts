@@ -493,6 +493,7 @@ export interface NewsTranslation {
   title?: string;
   content?: string;
   excerpt?: string;
+  faq?: FaqItem[];
 }
 
 /** 新闻多语言翻译集合，键为数据库列后缀（en/ja/ko/es/fr；中文「zh」对应基础列，不在此集合内） */

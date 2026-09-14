@@ -337,6 +337,7 @@ export interface NewsArticleTranslation {
   title?: string;
   content?: string;
   excerpt?: string;
+  faq?: FaqItem[];
 }
 
 export type NewsArticleTranslations = Partial<
@@ -371,6 +372,7 @@ export interface BlogArticleTranslation {
   title?: string;
   content?: string;
   excerpt?: string;
+  faq?: FaqItem[];
 }
 
 export type BlogArticleTranslations = Partial<
