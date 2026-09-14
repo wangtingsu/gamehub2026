@@ -45,6 +45,7 @@ abstract class BaseApiService {
   abstract updateGame(id: string, data: Record<string, unknown>): Promise<Game>;
   abstract deleteGame(id: string): Promise<void>;
   abstract getNews(params?: PaginationParams & { lang?: string }): Promise<NewsArticle[]>;
+  abstract getAllNews(params?: { lang?: string }): Promise<NewsArticle[]>;
   abstract getNewsArticle(id: string, lang?: string): Promise<NewsArticle>;
   abstract createNewsArticle(data: Record<string, unknown>): Promise<NewsArticle>;
   abstract updateNewsArticle(id: string, data: Record<string, unknown>): Promise<NewsArticle>;
@@ -584,7 +585,30 @@ class RealApiService extends BaseApiService {
   async getNews(params?: PaginationParams & { lang?: string }) {
     const lang = params?.lang || i18n.language;
     const response = await this.client.get<{ news: any[]; pagination: any }>('/news', { ...params, lang });
-    return (response.news || []).map((item: any) => ({
+    return (response.news || []).map((item: any) => this.mapNewsItem(item));
+  }
+
+  async getAllNews(params?: { lang?: string }) {
+    const lang = params?.lang || i18n.language;
+    const batchSize = 50;
+    const first = await this.client.get<{ news: any[]; pagination: any }>('/news', { page: 1, limit: batchSize, lang });
+    const pagination = first.pagination || {};
+    const totalPages = Number(pagination.totalPages) || 1;
+    const all: any[] = [...(first.news || [])];
+    // 分批次异步拉取剩余页（并行），避免单次超大请求阻塞首屏
+    if (totalPages > 1) {
+      const rest = await Promise.all(
+        Array.from({ length: totalPages - 1 }, (_, i) =>
+          this.client.get<{ news: any[]; pagination: any }>('/news', { page: i + 2, limit: batchSize, lang })
+        )
+      );
+      for (const r of rest) all.push(...(r.news || []));
+    }
+    return all.map((item: any) => this.mapNewsItem(item));
+  }
+
+  private mapNewsItem(item: any): NewsArticle {
+    return {
       id: item.id,
       slug: item.slug || '',
       maintitle: item.maintitle || '',
@@ -601,7 +625,7 @@ class RealApiService extends BaseApiService {
       isPinned: Boolean(item.isPinned ?? item.is_pinned),
       reviewStatus: item.reviewStatus || item.review_status || 'pending',
       translations: item.translations,
-    }));
+    } as NewsArticle;
   }
 
   async getNewsArticle(id: string, lang?: string) {
@@ -2008,6 +2032,12 @@ class MockApiService extends BaseApiService {
 
   async getNews(params?: PaginationParams & { lang?: string }) {
     const response = await this.mockClient.getNews(params);
+    const mockNews = response.data?.news || [];
+    return mockNews.map(news => this.convertMockNews(news));
+  }
+
+  async getAllNews(params?: { lang?: string }) {
+    const response = await this.mockClient.getNews({ page: 1, limit: 1000 });
     const mockNews = response.data?.news || [];
     return mockNews.map(news => this.convertMockNews(news));
   }

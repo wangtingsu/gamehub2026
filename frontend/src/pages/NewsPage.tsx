@@ -3,7 +3,7 @@ import { useParams, Link } from 'react-router-dom';
 import { Typography, Tag, Button, Input, Select, Pagination, Spin, Alert, Empty } from 'antd';
 import { PushpinOutlined, CalendarOutlined, EyeOutlined, LikeOutlined, RightOutlined, ReloadOutlined } from '@ant-design/icons';
 import { useTranslation } from 'react-i18next';
-import { useNews } from '../api/hooks';
+import { useAllNews } from '../api/hooks';
 import { useDebounce } from '../hooks/useDebounce';
 import SEO from '../components/SEO';
 
@@ -15,7 +15,7 @@ const NewsPage = () => {
   const { lang } = useParams<{ lang: string }>();
   const currentLang = lang || 'cn';
   const { t, i18n } = useTranslation('news');
-  const { data: news = [], isLoading, isError, error: queryError, refetch: refetchNews } = useNews();
+  const { data: news = [], isLoading, isError, error: queryError, refetch: refetchNews } = useAllNews();
   const [searchText, setSearchText] = useState('');
   const debouncedSearchText = useDebounce(searchText, 300);
   const [selectedCategory, setSelectedCategory] = useState('all');

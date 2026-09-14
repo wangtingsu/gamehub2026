@@ -7,7 +7,7 @@ import {
   ArrowLeftOutlined, FileTextOutlined,
 } from '@ant-design/icons';
 import { motion } from 'framer-motion';
-import { useNews } from '../api/hooks';
+import { useAllNews } from '../api/hooks';
 import { useDebounce } from '../hooks/useDebounce';
 import { useTranslation } from 'react-i18next';
 import SEO from '../components/SEO';
@@ -60,7 +60,7 @@ const fallbackTrendData: NewsArticle[] = [
 const CategoryNewsPage = () => {
   const navigate = useNavigate();
   const { lang, category } = useParams<{ lang: string; category: string }>();
-  const { data: news = [], isLoading, isError, error: queryError } = useNews();
+  const { data: news = [], isLoading, isError, error: queryError } = useAllNews();
   const { t, i18n } = useTranslation('news');
   const [searchText, setSearchText] = useState('');
   const debouncedSearchText = useDebounce(searchText, 300);

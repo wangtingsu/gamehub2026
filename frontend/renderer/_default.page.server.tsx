@@ -358,8 +358,8 @@ async function prefetchData(queryClient: QueryClient, urlPathname: string, lang:
         })
       } else if (barePath === 'news') {
         await queryClient.prefetchQuery({
-          queryKey: queryKeys.news.list({ page: 1, limit: listLimit, lang }),
-          queryFn: () => apiService.getNews({ page: 1, limit: listLimit, lang }),
+          queryKey: queryKeys.news.listAll(lang),
+          queryFn: () => apiService.getAllNews({ lang }),
         })
       } else if (barePath === 'guides') {
         await queryClient.prefetchQuery({
@@ -530,7 +530,7 @@ async function render(pageContext: PageContextServer) {
     const list = serverQueryClient.getQueryData<Game[]>(queryKeys.games.list({ page: 1, limit: LIST_LIMIT }))
     if (list) listPage = { kind: 'games', items: list.map((g) => ({ id: g.id, title: g.title, url: `/${langPrefix}/games/${g.slug || g.id}` })) }
   } else if (listBarePath === 'news') {
-    const list = serverQueryClient.getQueryData<NewsArticle[]>(queryKeys.news.list({ page: 1, limit: LIST_LIMIT, lang: i18nLang }))
+    const list = serverQueryClient.getQueryData<NewsArticle[]>(queryKeys.news.listAll(i18nLang))
     if (list) listPage = { kind: 'news', items: list.map((n) => ({ id: n.id, title: n.title, url: `/${langPrefix}/news/${n.slug || n.id}` })) }
   } else if (listBarePath === 'guides') {
     const list = serverQueryClient.getQueryData<Guide[]>(queryKeys.guides.list({ page: 1, limit: LIST_LIMIT, lang: i18nLang }))

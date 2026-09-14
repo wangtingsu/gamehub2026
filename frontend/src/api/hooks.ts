@@ -36,6 +36,7 @@ export const queryKeys = {
     all: ['news'] as const,
     lists: () => [...queryKeys.news.all, 'list'] as const,
     list: (params?: PaginationParams) => [...queryKeys.news.lists(), params] as const,
+    listAll: (lang: string) => [...queryKeys.news.all, 'all', lang] as const,
     details: () => [...queryKeys.news.all, 'detail'] as const,
     detail: (id: string) => [...queryKeys.news.details(), id] as const,
   },
@@ -189,6 +190,25 @@ export const useNews = (params?: PaginationParams) => {
   return useQuery({
     queryKey: queryKeys.news.list({ ...params, lang }),
     queryFn: () => apiService.getNews({ ...params, lang }),
+    select: (response) => response || [],
+    retry: 1,
+    staleTime: 30000,
+  });
+};
+
+/**
+ * 获取全部新闻（分批次异步拉取所有页后合并）
+ *
+ * 用于新闻列表页/分类页，避免后端默认 limit=20 只返回第一页导致分页只覆盖部分数据。
+ * queryKey 与 SSR 预取保持一致（queryKeys.news.listAll），hydration 时零冗余请求。
+ *
+ * @returns 全量新闻文章列表
+ */
+export const useAllNews = () => {
+  const lang = i18n.language;
+  return useQuery({
+    queryKey: queryKeys.news.listAll(lang),
+    queryFn: () => apiService.getAllNews({ lang }),
     select: (response) => response || [],
     retry: 1,
     staleTime: 30000,
