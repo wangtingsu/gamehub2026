@@ -207,6 +207,9 @@ export class UserModel extends BaseModel<User, UserCreateInput, UserUpdateInput>
       notification_settings: JSON.stringify(notificationSettings),
       privacy_settings: JSON.stringify(privacySettings),
 
+      // 主题偏好（默认浅色）
+      theme_preference: data.themePreference || 'light',
+
       // 软删除字段（默认 NULL）
       deleted_at: null,
 

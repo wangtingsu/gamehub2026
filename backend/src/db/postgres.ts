@@ -1654,7 +1654,7 @@ export const runMigrations = async (): Promise<void> => {
       // news 补充列
       `ALTER TABLE news ADD COLUMN IF NOT EXISTS game_name TEXT`,
       // users 补充列
-      `ALTER TABLE users ADD COLUMN IF NOT EXISTS theme_preference TEXT DEFAULT 'dark'`,
+      `ALTER TABLE users ADD COLUMN IF NOT EXISTS theme_preference TEXT DEFAULT 'light'`,
       // reviews 补充列
       `ALTER TABLE reviews ADD COLUMN IF NOT EXISTS space_id INTEGER REFERENCES blog_spaces(id) ON DELETE SET NULL`,
       // guides 补充列

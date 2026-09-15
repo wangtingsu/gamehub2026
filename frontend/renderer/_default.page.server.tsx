@@ -803,7 +803,7 @@ async function render(pageContext: PageContextServer) {
     <meta name="twitter:site" content="${TWITTER_HANDLE}" />
     <meta name="twitter:creator" content="${TWITTER_HANDLE}" />
     <script type="application/ld+json">${jsonLdScript}</script>
-    <script>try{var t=localStorage.getItem('app-theme');document.documentElement.setAttribute('data-theme',t==='dark'||t==='light'?t:'dark')}catch(e){}</script>
+    <script>try{var t=localStorage.getItem('app-theme');document.documentElement.setAttribute('data-theme',t==='dark'||t==='light'?t:'light')}catch(e){}</script>
   </head>
   <body>
     <div id="root">${bodyHtml}</div>

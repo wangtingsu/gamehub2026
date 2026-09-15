@@ -74,7 +74,7 @@ if (import.meta.env.PROD) {
 }
 
 // 启动时加载用户主题
-const savedTheme = localStorage.getItem('app-theme') || 'dark';
+const savedTheme = localStorage.getItem('app-theme') || 'light';
 document.documentElement.setAttribute('data-theme', savedTheme);
 
 createRoot(document.getElementById('root')!).render(

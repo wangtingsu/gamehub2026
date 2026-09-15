@@ -288,14 +288,14 @@ router.put(
 
 // PUT /api/v1/users/me/theme — 保存用户主题偏好
 router.put('/me/theme', authenticate, asyncHandler(async (req: Request, res: Response) => {
-  await execute('UPDATE users SET theme_preference = ? WHERE id = ?', [req.body.theme || 'dark', req.user!.id]);
-  res.json({ success: true, data: { theme: req.body.theme || 'dark' } });
+  await execute('UPDATE users SET theme_preference = ? WHERE id = ?', [req.body.theme || 'light', req.user!.id]);
+  res.json({ success: true, data: { theme: req.body.theme || 'light' } });
 }));
 
 // GET /api/v1/users/me/theme — 获取用户主题偏好
 router.get('/me/theme', authenticate, asyncHandler(async (req: Request, res: Response) => {
   const rows = await query('SELECT theme_preference FROM users WHERE id = ?', [req.user!.id]);
-  res.json({ success: true, data: { theme: rows[0]?.theme_preference || 'dark' } });
+  res.json({ success: true, data: { theme: rows[0]?.theme_preference || 'light' } });
 }));
 
 export default router;

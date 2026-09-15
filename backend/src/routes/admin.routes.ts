@@ -109,8 +109,8 @@ router.post('/login', asyncHandler(async (req: Request, res: Response) => {
     const hashedPassword = await bcrypt.hash(config.admin.password, salt);
 
     const result = await execute(
-      `INSERT INTO users (username, email, display_name, role, password_hash, is_active, created_at, updated_at)
-       VALUES (?, ?, ?, ?, ?, TRUE, ?, ?)`,
+      `INSERT INTO users (username, email, display_name, role, password_hash, is_active, theme_preference, created_at, updated_at)
+       VALUES (?, ?, ?, ?, ?, TRUE, 'light', ?, ?)`,
       [config.admin.username, 'admin@gamehub.local', '超级管理员', 'super_admin', hashedPassword,
        new Date().toISOString(), new Date().toISOString()]
     );

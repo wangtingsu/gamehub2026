@@ -252,13 +252,13 @@ function GameDetailRedirect() {
  */
 function ThemeAwareConfig({ children }: { children: ReactNode }) {
   const [currentTheme, setCurrentTheme] = useState(() =>
-    localStorage.getItem('app-theme') || 'dark'
+    localStorage.getItem('app-theme') || 'light'
   );
 
   useEffect(() => {
     const check = () => {
       const t = document.documentElement.getAttribute('data-theme') ||
-        localStorage.getItem('app-theme') || 'dark';
+        localStorage.getItem('app-theme') || 'light';
       setCurrentTheme(t);
     };
     check();

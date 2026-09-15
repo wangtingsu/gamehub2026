@@ -7,10 +7,10 @@ const themes = [
   { key: 'light', label: '浅色', color: '#f1f5f9' },
 ];
 
-const normalize = (t: string) => (t === 'dark' || t === 'light') ? t : 'dark';
+const normalize = (t: string) => (t === 'dark' || t === 'light') ? t : 'light';
 
 const ThemeSwitcher = () => {
-  const [theme, setTheme] = useState(() => normalize(localStorage.getItem('app-theme') || 'dark'));
+  const [theme, setTheme] = useState(() => normalize(localStorage.getItem('app-theme') || 'light'));
   const mounted = useRef(false);
 
   // 挂载时：仅当本地没有保存过主题时，才从服务端拉取作为初始值。

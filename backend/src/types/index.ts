@@ -285,6 +285,7 @@ export interface UserCreateInput {
   displayName?: string;
   language?: string;
   role?: string; // 用户偏好的语言代码，如 'en', 'zh-CN'
+  themePreference?: string; // 主题偏好 'dark' | 'light'（默认 light）
 
   // 社交登录字段（可选）
   googleId?: string;

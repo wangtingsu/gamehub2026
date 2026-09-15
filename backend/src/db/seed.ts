@@ -124,8 +124,8 @@ const seedUsers = async (): Promise<Record<string, number>> => {
     const result = await execute(
       `INSERT INTO users (
         username, email, password_hash, display_name,
-        role, email_verified, is_active, bio
-      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
+        role, email_verified, is_active, theme_preference, bio
+      ) VALUES (?, ?, ?, ?, ?, ?, ?, 'light', ?)`,
       [
         user.username,
         user.email,
