@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { Tabs, Table, Button, Space, Input, Modal, Form, Select, Tag, message, Popconfirm, Switch, Rate, Spin, Upload, Image, Dropdown } from 'antd';
 import type { ColumnsType } from 'antd/es/table';
-import { UploadOutlined, PlusOutlined, ReloadOutlined } from '@ant-design/icons';
+import { UploadOutlined, PlusOutlined, ReloadOutlined, ImportOutlined } from '@ant-design/icons';
 import type { UploadFile, RcFile } from 'antd/es/upload/interface';
 import {
   SearchOutlined,
@@ -33,34 +33,121 @@ const NEWS_TRANSLATION_LANGS = [
   { key: 'fr', label: 'Français' },
 ] as const;
 
+// 解析 FAQ JSON 输入为 { question, answer }[] 数组。
+// 支持：Schema.org JSON-LD（@graph → FAQPage.mainEntity）、[{name, acceptedAnswer:{text}}]、
+// [{question, answer}] / [{q, a}]，以及 { 问题: 答案 } 键值对。
+const parseFaqFromJson = (input: string): { question: string; answer: string }[] => {
+  let raw = (input || '').trim();
+  if (!raw) return [];
+  // 去掉 markdown 代码围栏（```json ... ```）
+  raw = raw.replace(/^```[a-zA-Z]*\s*\n?/, '').replace(/\n?```\s*$/, '').trim();
+
+  let data: any;
+  try { data = JSON.parse(raw); } catch { return []; }
+
+  const pickAnswer = (e: any): string => {
+    const a = e?.acceptedAnswer;
+    if (typeof a === 'string' && a) return a;
+    if (a && typeof a === 'object') return a.text || a.answer || a.a || '';
+    if (typeof e?.answer === 'string') return e.answer;
+    if (typeof e?.a === 'string') return e.a;
+    return '';
+  };
+
+  let entities: any[] | null = null;
+
+  if (Array.isArray(data)) {
+    const faqPage = data.find((x: any) => x && x['@type'] === 'FAQPage');
+    entities = faqPage?.mainEntity || data;
+  } else if (data && typeof data === 'object') {
+    const graph = Array.isArray(data['@graph']) ? data['@graph'] : null;
+    if (graph) {
+      const faqPage = graph.find((x: any) => x && x['@type'] === 'FAQPage');
+      entities = faqPage?.mainEntity || graph;
+    } else if (data['@type'] === 'FAQPage' && Array.isArray(data.mainEntity)) {
+      entities = data.mainEntity;
+    } else {
+      // 键值对对象 { 问题: 答案 }
+      return Object.entries(data)
+        .map(([q, a]) => ({
+          question: String(q),
+          answer: typeof a === 'string' ? a : (a && typeof a === 'object' ? (a.text || '') : ''),
+        }))
+        .filter((p) => p.question && p.answer);
+    }
+  }
+
+  if (!entities) return [];
+
+  const items: { question: string; answer: string }[] = [];
+  for (const e of entities) {
+    if (!e || typeof e !== 'object') continue;
+    const question = e.name || e.question || e.q || e.title || '';
+    const answer = pickAnswer(e);
+    if (question && answer) items.push({ question: String(question), answer: String(answer) });
+  }
+  return items;
+};
+
 // FAQ 多语言字段（在每个语言 Tab 内复用；name 指向基础 faq 或 translations[key].faq）
-const FaqListFields: React.FC<{ name: string | (string | number)[] }> = ({ name }) => (
-  <Form.List name={name}>
-    {(fields, { add, remove }) => (
-      <>
-        <div className="flex items-center gap-3 mb-4 mt-6">
-          <span className="text-sm font-semibold text-gray-500 tracking-wide">常见问题 FAQ（可选）</span>
-          <div className="flex-1 h-px bg-gray-200" />
-          <Button type="dashed" size="small" icon={<PlusOutlined />} onClick={() => add({ question: '', answer: '' })}>添加 FAQ</Button>
-        </div>
-        {fields.map(({ key, name, ...restField }) => (
-          <div key={key} className="border border-gray-200 rounded p-3 mb-3">
-            <div className="flex items-center justify-between mb-2">
-              <span className="text-xs text-gray-400">FAQ #{name + 1}</span>
-              <Button type="text" danger size="small" icon={<DeleteOutlined />} onClick={() => remove(name)}>删除</Button>
-            </div>
-            <Form.Item {...restField} name={[name, 'question']} label="问题" rules={[{ required: true, message: '请输入问题' }]}>
-              <Input placeholder="例如：这款游戏支持手柄吗？" />
-            </Form.Item>
-            <Form.Item {...restField} name={[name, 'answer']} label="回答" rules={[{ required: true, message: '请输入回答' }]}>
-              <TextArea rows={2} placeholder="回答内容" />
-            </Form.Item>
+const FaqListFields: React.FC<{ name: string | (string | number)[] }> = ({ name }) => {
+  const [importOpen, setImportOpen] = useState(false);
+  const [jsonText, setJsonText] = useState('');
+
+  return (
+    <Form.List name={name}>
+      {(fields, { add, remove }) => (
+        <>
+          <div className="flex items-center gap-3 mb-4 mt-6">
+            <span className="text-sm font-semibold text-gray-500 tracking-wide">常见问题 FAQ（可选）</span>
+            <div className="flex-1 h-px bg-gray-200" />
+            <Button type="dashed" size="small" icon={<ImportOutlined />} onClick={() => { setJsonText(''); setImportOpen(true); }}>从 JSON 导入</Button>
+            <Button type="dashed" size="small" icon={<PlusOutlined />} onClick={() => add({ question: '', answer: '' })}>添加 FAQ</Button>
           </div>
-        ))}
-      </>
-    )}
-  </Form.List>
-);
+          {fields.map(({ key, name, ...restField }) => (
+            <div key={key} className="border border-gray-200 rounded p-3 mb-3">
+              <div className="flex items-center justify-between mb-2">
+                <span className="text-xs text-gray-400">FAQ #{name + 1}</span>
+                <Button type="text" danger size="small" icon={<DeleteOutlined />} onClick={() => remove(name)}>删除</Button>
+              </div>
+              <Form.Item {...restField} name={[name, 'question']} label="问题" rules={[{ required: true, message: '请输入问题' }]}>
+                <Input placeholder="例如：这款游戏支持手柄吗？" />
+              </Form.Item>
+              <Form.Item {...restField} name={[name, 'answer']} label="回答" rules={[{ required: true, message: '请输入回答' }]}>
+                <TextArea rows={2} placeholder="回答内容" />
+              </Form.Item>
+            </div>
+          ))}
+          <Modal
+            title="从 JSON 导入 FAQ"
+            open={importOpen}
+            onCancel={() => setImportOpen(false)}
+            onOk={() => {
+              const items = parseFaqFromJson(jsonText);
+              if (!items.length) {
+                message.error('未解析到有效 FAQ，请粘贴 Schema.org JSON-LD（含 FAQPage）或 [{question, answer}] 数组');
+                return;
+              }
+              items.forEach((it) => add({ question: it.question, answer: it.answer }));
+              message.success(`成功导入 ${items.length} 条 FAQ`);
+              setImportOpen(false);
+            }}
+            okText="导入"
+            cancelText="取消"
+            width={640}
+          >
+            <TextArea
+              rows={12}
+              value={jsonText}
+              onChange={(e) => setJsonText(e.target.value)}
+              placeholder='粘贴 Schema.org JSON-LD（含 FAQPage），或 [{"question":"...","answer":"..."}] 数组'
+            />
+          </Modal>
+        </>
+      )}
+    </Form.List>
+  );
+};
 
 type ContentType = 'news' | 'blogs' | 'guides' | 'reviews' | 'community' | 'blogspaces' | 'categories' | 'templates';
 
@@ -1945,4 +2032,4 @@ const Content: React.FC = () => {
   );
 };
 
-export default Content;
+export default Content;
