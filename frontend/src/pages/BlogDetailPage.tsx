@@ -1,13 +1,14 @@
 import { useState, useEffect, useMemo, useRef } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
-import { Typography, Tag, Button, Avatar, Skeleton, Alert, Tooltip } from 'antd';
-import { CalendarOutlined, EyeOutlined, LikeOutlined, LikeFilled, StarOutlined, StarFilled, ArrowLeftOutlined, ClockCircleOutlined, UserOutlined, MessageOutlined, TwitterOutlined, FacebookFilled, LinkedinFilled, RedditOutlined, LinkOutlined, CheckOutlined, ThunderboltOutlined, TagOutlined } from '@ant-design/icons';
+import { Typography, Tag, Button, Avatar, Skeleton, Alert, Tooltip, message } from 'antd';
+import { CalendarOutlined, EyeOutlined, LikeOutlined, LikeFilled, StarOutlined, StarFilled, ArrowLeftOutlined, ClockCircleOutlined, UserOutlined, MessageOutlined, TwitterOutlined, FacebookFilled, LinkedinFilled, RedditOutlined, ShareAltOutlined, CheckOutlined, ThunderboltOutlined, TagOutlined } from '@ant-design/icons';
 import { useBlogPost } from '../api/hooks';
 import CommentList from '../components/comments/CommentList';
 import SEO from '../components/SEO';
 import SEOBreadcrumb from '../components/SEOBreadcrumb';
 import BlogRenderContent from '../components/blog/BlogRenderContent';
 import apiService from '../api';
+import { isMobile, isWeChat } from '../utils/platform';
 
 const { Text } = Typography;
 
@@ -152,8 +153,47 @@ const BlogDetailPage = () => {
 
   const shareUrl = typeof window !== 'undefined' ? window.location.href : '';
   const shareText = post.title || '';
-  const copyLink = async () => {
-    try { await navigator.clipboard.writeText(shareUrl); setCopied(true); setTimeout(() => setCopied(false), 1500); } catch { /* ignore */ }
+
+  // 分享：PC 端复制链接并提示；移动端唤起系统分享（含微信），微信内置浏览器则复制后引导右上角分享
+  const handleShare = async () => {
+    // 移动端
+    if (isMobile()) {
+      // 微信内置浏览器：无 JS-SDK 时无法直接调起分享，复制链接并引导
+      if (isWeChat()) {
+        try {
+          await navigator.clipboard.writeText(shareUrl);
+          setCopied(true);
+          setTimeout(() => setCopied(false), 2000);
+          message.success('链接已复制，请点击右上角「···」分享给微信');
+        } catch { /* ignore */ }
+        return;
+      }
+      // 系统原生分享面板（iOS / Android 分享面板均包含微信）
+      if (typeof navigator.share === 'function') {
+        try {
+          await navigator.share({ title: shareText, text: shareText, url: shareUrl });
+          return;
+        } catch (err) {
+          if ((err as any)?.name === 'AbortError') return; // 用户取消分享
+        }
+      }
+      // 降级：复制链接，引导去微信粘贴
+      try {
+        await navigator.clipboard.writeText(shareUrl);
+        setCopied(true);
+        setTimeout(() => setCopied(false), 2000);
+        message.success('链接已复制，请打开微信粘贴分享');
+      } catch { /* ignore */ }
+      return;
+    }
+
+    // PC 端：复制链接并提示
+    try {
+      await navigator.clipboard.writeText(shareUrl);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 1500);
+      message.success('已复制链接');
+    } catch { /* ignore */ }
   };
 
   const shareButtons = (
@@ -172,10 +212,10 @@ const BlogDetailPage = () => {
           </a>
         </Tooltip>
       ))}
-      <Tooltip title={copied ? 'Copied!' : 'Copy link'}>
-        <button onClick={copyLink} aria-label="Copy link"
+      <Tooltip title={copied ? '已复制链接' : '分享'}>
+        <button onClick={handleShare} aria-label="分享"
           className={`w-8 h-8 rounded-full flex items-center justify-center text-sm shadow-sm transition-all duration-200 hover:scale-110 hover:shadow-lg ${copied ? 'bg-green-500 text-white' : 'bg-white/10 text-white'}`}>
-          {copied ? <CheckOutlined /> : <LinkOutlined />}
+          {copied ? <CheckOutlined /> : <ShareAltOutlined />}
         </button>
       </Tooltip>
     </div>

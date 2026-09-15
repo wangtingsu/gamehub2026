@@ -76,6 +76,9 @@
   "detail": {
     "backToList": "Volver a Noticias",
     "share": "Compartir",
+    "copiedLink": "Enlace copiado",
+    "wechatShareHint": "Enlace copiado, toca el menú superior derecho para compartir en WeChat",
+    "wechatPasteHint": "Enlace copiado, abre WeChat y pégalo para compartir",
     "relatedNews": "Noticias Relacionadas",
     "hotTags": "Etiquetas Populares",
     "loadFailed": "Error al cargar",

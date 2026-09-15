@@ -76,6 +76,9 @@
   "detail": {
     "backToList": "뉴스 목록으로 돌아가기",
     "share": "공유",
+    "copiedLink": "링크가 복사되었습니다",
+    "wechatShareHint": "링크가 복사되었습니다. 오른쪽 상단 메뉴에서 WeChat으로 공유하세요",
+    "wechatPasteHint": "링크가 복사되었습니다. WeChat을 열어 붙여넣어 공유하세요",
     "relatedNews": "관련 뉴스",
     "hotTags": "인기 태그",
     "loadFailed": "불러오기 실패",

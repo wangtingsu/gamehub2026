@@ -76,6 +76,9 @@
   "detail": {
     "backToList": "ニュース一覧に戻る",
     "share": "共有",
+    "copiedLink": "リンクをコピーしました",
+    "wechatShareHint": "リンクをコピーしました。右上のメニューから WeChat で共有してください",
+    "wechatPasteHint": "リンクをコピーしました。WeChat を開いて貼り付けて共有してください",
     "relatedNews": "関連ニュース",
     "hotTags": "人気タグ",
     "loadFailed": "読み込みに失敗しました",

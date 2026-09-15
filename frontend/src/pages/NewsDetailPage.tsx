@@ -7,7 +7,7 @@ import {
 import {
   CalendarOutlined, EyeOutlined, LikeOutlined, LikeFilled,
   ShareAltOutlined, MessageOutlined,
-  SendOutlined, ArrowLeftOutlined,
+  SendOutlined, ArrowLeftOutlined, CheckOutlined,
 } from '@ant-design/icons';
 import { apiService } from '../api';
 import { useAuth } from '../contexts/AuthContext';
@@ -17,6 +17,7 @@ import SEO from '../components/SEO';
 import SEOBreadcrumb from '../components/SEOBreadcrumb';
 import BlogRenderContent from '../components/blog/BlogRenderContent';
 import { useTranslation } from 'react-i18next';
+import { isMobile, isWeChat } from '../utils/platform';
 
 const { Title, Paragraph, Text } = Typography;
 const { TextArea } = Input;
@@ -32,6 +33,7 @@ const NewsDetailPage = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [liked, setLiked] = useState(false);
+  const [copied, setCopied] = useState(false);
   const { isAuthenticated } = useAuth();
   const { t, i18n } = useTranslation('news');
 
@@ -77,6 +79,49 @@ const NewsDetailPage = () => {
     } catch {
       message.error(t('detail.likeFailed'));
     }
+  };
+
+  // 分享：PC 端复制链接并提示；移动端唤起系统分享（含微信），微信内置浏览器则复制后引导右上角分享
+  const handleShare = async () => {
+    const shareUrl = typeof window !== 'undefined' ? window.location.href : '';
+    const shareText = article?.title || '';
+    // 移动端
+    if (isMobile()) {
+      // 微信内置浏览器：无 JS-SDK 时无法直接调起分享，复制链接并引导
+      if (isWeChat()) {
+        try {
+          await navigator.clipboard.writeText(shareUrl);
+          setCopied(true);
+          setTimeout(() => setCopied(false), 2000);
+          message.success(t('detail.wechatShareHint'));
+        } catch { /* ignore */ }
+        return;
+      }
+      // 系统原生分享面板（iOS / Android 分享面板均包含微信）
+      if (typeof navigator.share === 'function') {
+        try {
+          await navigator.share({ title: shareText, text: shareText, url: shareUrl });
+          return;
+        } catch (err) {
+          if ((err as any)?.name === 'AbortError') return; // 用户取消分享
+        }
+      }
+      // 降级：复制链接，引导去微信粘贴
+      try {
+        await navigator.clipboard.writeText(shareUrl);
+        setCopied(true);
+        setTimeout(() => setCopied(false), 2000);
+        message.success(t('detail.wechatPasteHint'));
+      } catch { /* ignore */ }
+      return;
+    }
+    // PC 端：复制链接并提示
+    try {
+      await navigator.clipboard.writeText(shareUrl);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 1500);
+      message.success(t('detail.copiedLink'));
+    } catch { /* ignore */ }
   };
 
   if (isLoading) return <NewsDetailSkeleton />;
@@ -128,7 +173,7 @@ const NewsDetailPage = () => {
                       <Space>
                         <Button type="text" icon={<EyeOutlined />} className="text-gray-500">{article.views.toLocaleString()}</Button>
                         <Button type="text" icon={liked ? <LikeFilled /> : <LikeOutlined />} className={liked ? 'text-blue-500' : 'text-gray-500'} onClick={handleLike}>{article.likes.toLocaleString()}</Button>
-                        <Button type="text" icon={<ShareAltOutlined />} className="text-gray-500">{t('detail.share')}</Button>
+                        <Button type="text" icon={copied ? <CheckOutlined /> : <ShareAltOutlined />} className={copied ? 'text-green-500' : 'text-gray-500'} onClick={handleShare}>{copied ? t('detail.copiedLink') : t('detail.share')}</Button>
                       </Space>
                     </div>
                     <Title level={1} className="mb-6">{article.title}</Title>
