@@ -30,6 +30,15 @@
       })();
     </script>
 
+    <!-- ========== 主题检测（避免刷新时深色闪回）========== -->
+    <!-- 渲染前根据 localStorage 设置 data-theme，避免 SSR 默认深色先显示再切浅色 -->
+    <script>
+      try {
+        var t = localStorage.getItem('app-theme');
+        document.documentElement.setAttribute('data-theme', (t === 'dark' || t === 'light') ? t : 'dark');
+      } catch (e) {}
+    </script>
+
     <!-- ========== 预连接优化 ========== -->
     <!-- Preconnect to important origins -->
     <link rel="preconnect" href="https://www.gghubs.com">
