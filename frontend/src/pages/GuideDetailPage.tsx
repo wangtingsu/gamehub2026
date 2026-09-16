@@ -6,6 +6,7 @@ import { useGuide } from '../api/hooks';
 import CommentList from '../components/comments/CommentList';
 import SEO from '../components/SEO';
 import SEOBreadcrumb from '../components/SEOBreadcrumb';
+import BlogRenderContent from '../components/blog/BlogRenderContent';
 import type { GuideDifficulty } from '../api/types';
 
 const { Title, Paragraph, Text } = Typography;
@@ -243,13 +244,11 @@ const GuideDetailPage = () => {
                   </>
                 )}
 
-                {/* 全文内容（当没有步骤时显示） */}
+                {/* 全文内容（当没有步骤时显示）：Markdown 渲染，标题自动识别为 h1/h2/h3 */}
                 {steps.length === 0 && (
                   <>
                     <Divider />
-                    <Paragraph className="text-base leading-relaxed whitespace-pre-line">
-                      {guide.content}
-                    </Paragraph>
+                    <BlogRenderContent content={guide.content} />
                   </>
                 )}
 
