@@ -827,13 +827,9 @@ const Content: React.FC = () => {
       content: (
         <div className="space-y-4">
           {extra}
-          {type === 'news' ? (
-            <div className="bg-slate-900 rounded-lg p-4 max-h-[60vh] overflow-y-auto">
-              <BlogRenderContent content={contentText} />
-            </div>
-          ) : (
-            <div className="text-gray-700 whitespace-pre-line">{contentText}</div>
-          )}
+          <div className="bg-slate-900 rounded-lg p-4 max-h-[60vh] overflow-y-auto">
+            <BlogRenderContent content={contentText} />
+          </div>
         </div>
       ),
     });

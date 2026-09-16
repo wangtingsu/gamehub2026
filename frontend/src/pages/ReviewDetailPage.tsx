@@ -6,6 +6,7 @@ import CommentList from '../components/comments/CommentList';
 import SEO from '../components/SEO';
 import SEOBreadcrumb from '../components/SEOBreadcrumb';
 import { useTranslation } from 'react-i18next';
+import BlogRenderContent from '../components/blog/BlogRenderContent';
 
 const { Title, Paragraph, Text } = Typography;
 
@@ -232,9 +233,7 @@ const ReviewDetailPage = () => {
                 </div>
 
                 <div className="prose max-w-none">
-                  <Paragraph className="text-lg leading-relaxed mb-6">
-                    {review.content}
-                  </Paragraph>
+                  <BlogRenderContent content={review.content} />
 
                   <Divider />
 
