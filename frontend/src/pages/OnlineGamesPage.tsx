@@ -111,7 +111,7 @@ const OnlineGamesPage = () => {
       />
 
       {/* Header */}
-      <div className="bg-gradient-to-r from-indigo-400 to-purple-400 text-white py-2">
+      <div className="bg-gradient-to-r from-indigo-400 to-purple-400 text-white py-16">
         <div className="">
           <div className="text-center">
             <Title level={1} className="!text-indigo-900 mb-4">{t('onlineGames.title')}</Title>
