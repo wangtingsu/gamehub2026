@@ -5,7 +5,7 @@ import { SearchOutlined, PlayCircleOutlined, UserOutlined } from '@ant-design/ic
 import { useTranslation } from 'react-i18next';
 import SEO from '../components/SEO';
 
-const { Title, Paragraph } = Typography;
+const { Title, Paragraph, Text } = Typography;
 
 /** 游戏分类过滤键（显示文案见 games.json 的 onlineGames.categories.*） */
 const categories = ['all', 'casual', 'puzzle', 'action', 'strategy'];
@@ -111,22 +111,17 @@ const OnlineGamesPage = () => {
       />
 
       {/* Header */}
-      <div className="bg-gradient-to-r from-indigo-400 to-purple-400 text-white py-16">
-        <div className="">
-          <div className="text-center">
-            <Title level={1} className="!text-indigo-900 mb-4">{t('onlineGames.title')}</Title>
-            <Paragraph className="!text-indigo-900 !text-lg mb-8">{t('onlineGames.subtitle')}</Paragraph>
-            <div className="max-w-xl mx-auto">
-              <Input
-                size="large"
-                placeholder={t('onlineGames.searchPlaceholder')}
-                prefix={<SearchOutlined />}
-                value={searchText}
-                onChange={e => { setSearchText(e.target.value); setCurrentPage(1); }}
-                className="rounded-lg"
-              />
-            </div>
-          </div>
+      <div className="bg-gradient-to-r from-indigo-400 to-purple-400 py-16">
+        <div className="max-w-7xl mx-auto px-4 text-center">
+          <PlayCircleOutlined className="text-6xl text-indigo-800 mb-4" />
+          <Title level={1} className="!text-indigo-900 !mb-3 !text-4xl">{t('onlineGames.title')}</Title>
+          <Paragraph className="!text-indigo-800 !text-lg !mb-6 max-w-2xl mx-auto">
+            {t('onlineGames.subtitle')}
+          </Paragraph>
+          <Input size="large" placeholder={t('onlineGames.searchPlaceholder')} prefix={<SearchOutlined />}
+            value={searchText} onChange={e => { setSearchText(e.target.value); setCurrentPage(1); }} allowClear
+            className="max-w-md mx-auto !bg-white/70 !border-indigo-700/40 !text-indigo-900 placeholder:!text-indigo-700" />
+          <Text className="!text-indigo-800 block mt-3">{t('onlineGames.count', { count: onlineGames.length })}</Text>
         </div>
       </div>
 

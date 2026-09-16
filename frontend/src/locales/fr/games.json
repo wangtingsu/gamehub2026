@@ -84,6 +84,7 @@
     "title": "Jeux en Ligne",
     "subtitle": "Sans téléchargement, jouez instantanément",
     "searchPlaceholder": "Rechercher des jeux...",
+    "count": "{{count}} mini-jeux en ligne à jouer",
     "noResults": "Aucun jeu correspondant trouvé",
     "noResultsHint": "Essayez un autre mot-clé ou une autre catégorie",
     "seoTitle": "Mini-jeux gratuits en ligne - Jeu instantané, sans téléchargement | GameHub",

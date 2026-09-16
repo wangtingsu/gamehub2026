@@ -84,6 +84,7 @@
     "title": "在线小游戏",
     "subtitle": "无需下载，即点即玩",
     "searchPlaceholder": "搜索游戏...",
+    "count": "{{count}} 款在线小游戏等你来玩",
     "noResults": "未找到匹配的游戏",
     "noResultsHint": "试试其他关键词或分类",
     "seoTitle": "免费在线小游戏 - 即点即玩，无需下载 | GameHub",
