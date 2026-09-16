@@ -763,6 +763,9 @@ async function render(pageContext: PageContextServer) {
       news={news}
       gameDetail={gameDetail}
       newsDetail={newsDetail}
+      blogDetail={blogDetail}
+      reviewDetail={reviewDetail}
+      guideDetail={guideDetail}
       listPage={listPage}
     />,
   )

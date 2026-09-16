@@ -13,7 +13,8 @@
  * - 根节点带 hidden 属性：对真实用户视觉隐藏（避免无样式正文在 JS 加载前闪屏，
  *   表现为「先显示一段新闻稿」），但文本仍在 HTML 源码中，爬虫照常读取。
  */
-import type { Game, NewsArticle, Review } from '../api/types'
+import type { Game, NewsArticle, Review, Guide, BlogArticle } from '../api/types'
+import ReactMarkdown from 'react-markdown'
 
 interface PageMeta {
   title: string
@@ -28,6 +29,9 @@ interface ServerContentProps {
   reviews?: Review[]
   gameDetail?: Game | null
   newsDetail?: NewsArticle | null
+  blogDetail?: BlogArticle | null
+  reviewDetail?: Review | null
+  guideDetail?: Guide | null
   /** 栏目/列表页预取数据（P0 #3：让列表页 SSR 渲染内容而非空壳） */
   listPage?: { kind: string; items: Array<{ id: string | number; title: string; url: string }> } | null
 }
@@ -46,12 +50,18 @@ export default function ServerContent({
   reviews,
   gameDetail,
   newsDetail,
+  blogDetail,
+  reviewDetail,
+  guideDetail,
   listPage,
 }: ServerContentProps) {
   const lang = getLangPrefix(urlPathname)
   const isHome = urlPathname === '/' || /^\/(en|cn|ja|ko|es|fr)\/?$/.test(urlPathname)
   const gameMatch = urlPathname.match(/\/games\/([^/]+)/)
   const newsMatch = urlPathname.match(/\/news\/([^/]+)/)
+  const blogMatch = urlPathname.match(/\/blog\/([^/]+)/)
+  const reviewMatch = urlPathname.match(/\/community\/reviews\/([^/]+)/)
+  const guideMatch = urlPathname.match(/\/guides\/([^/]+)/)
 
   const gameList = Array.isArray(games) ? games : []
   const newsList = Array.isArray(news) ? news : []
@@ -119,6 +129,27 @@ export default function ServerContent({
           <h2>{newsDetail.title}</h2>
           {newsDetail.summary && <p>{newsDetail.summary}</p>}
           {newsDetail.content && <p>{newsDetail.content}</p>}
+        </article>
+      )}
+
+      {blogMatch && blogDetail && (
+        <article>
+          <h2>{blogDetail.title}</h2>
+          {blogDetail.content && <ReactMarkdown>{blogDetail.content}</ReactMarkdown>}
+        </article>
+      )}
+
+      {reviewMatch && reviewDetail && (
+        <article>
+          <h2>{reviewDetail.title}</h2>
+          {reviewDetail.content && <ReactMarkdown>{reviewDetail.content}</ReactMarkdown>}
+        </article>
+      )}
+
+      {guideMatch && guideDetail && (
+        <article>
+          <h2>{guideDetail.title}</h2>
+          {guideDetail.content && <ReactMarkdown>{guideDetail.content}</ReactMarkdown>}
         </article>
       )}
     </div>
