@@ -25,17 +25,17 @@ export default function CozyGamesPage() {
       <SEO title={t('cozyGames.seoTitle')} description={t('cozyGames.seoDescription')} />
 
       {/* Hero Banner */}
-      <div className="bg-gradient-to-br from-pink-800 via-rose-900 to-purple-900 py-16">
+      <div className="bg-gradient-to-br from-pink-400 via-rose-400 to-purple-400 py-16">
         <div className="max-w-7xl mx-auto px-4 text-center">
-          <HeartOutlined className="text-6xl text-pink-400 mb-4" />
-          <Title level={1} className="!text-white !mb-3 !text-4xl">{t('cozyGames.title')}</Title>
-          <Paragraph className="!text-pink-200 !text-lg !mb-6 max-w-2xl mx-auto">
+          <HeartOutlined className="text-6xl text-pink-800 mb-4" />
+          <Title level={1} className="!text-pink-900 !mb-3 !text-4xl">{t('cozyGames.title')}</Title>
+          <Paragraph className="!text-pink-800 !text-lg !mb-6 max-w-2xl mx-auto">
             {t('cozyGames.subtitle')}
           </Paragraph>
           <Input size="large" placeholder={t('cozyGames.searchPlaceholder')} prefix={<SearchOutlined />}
             value={search} onChange={e => setSearch(e.target.value)} allowClear
-            className="max-w-md mx-auto !bg-white/10 !border-pink-400/30 !text-white placeholder:!text-pink-300" />
-          <Text className="!text-pink-300 block mt-3">{t('cozyGames.count', { count: cozyGames.length })}</Text>
+            className="max-w-md mx-auto !bg-white/70 !border-pink-700/40 !text-pink-900 placeholder:!text-pink-700" />
+          <Text className="!text-pink-800 block mt-3">{t('cozyGames.count', { count: cozyGames.length })}</Text>
         </div>
       </div>
 

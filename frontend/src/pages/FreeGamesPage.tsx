@@ -25,17 +25,17 @@ export default function FreeGamesPage() {
       <SEO title={t('freeGames.seoTitle')} description={t('freeGames.seoDescription')} />
 
       {/* Hero Banner */}
-      <div className="bg-gradient-to-br from-emerald-800 via-teal-900 to-cyan-900 py-16">
+      <div className="bg-gradient-to-br from-emerald-400 via-teal-400 to-cyan-400 py-16">
         <div className="max-w-7xl mx-auto px-4 text-center">
-          <ThunderboltOutlined className="text-6xl text-emerald-400 mb-4" />
-          <Title level={1} className="!text-white !mb-3 !text-4xl">{t('freeGames.title')}</Title>
-          <Paragraph className="!text-emerald-200 !text-lg !mb-6 max-w-2xl mx-auto">
+          <ThunderboltOutlined className="text-6xl text-emerald-800 mb-4" />
+          <Title level={1} className="!text-emerald-900 !mb-3 !text-4xl">{t('freeGames.title')}</Title>
+          <Paragraph className="!text-emerald-800 !text-lg !mb-6 max-w-2xl mx-auto">
             {t('freeGames.subtitle')}
           </Paragraph>
           <Input size="large" placeholder={t('freeGames.searchPlaceholder')} prefix={<SearchOutlined />}
             value={search} onChange={e => setSearch(e.target.value)} allowClear
-            className="max-w-md mx-auto !bg-white/10 !border-emerald-400/30 !text-white placeholder:!text-emerald-300" />
-          <Text className="!text-emerald-300 block mt-3">{t('freeGames.count', { count: freeGames.length })}</Text>
+            className="max-w-md mx-auto !bg-white/70 !border-emerald-700/40 !text-emerald-900 placeholder:!text-emerald-700" />
+          <Text className="!text-emerald-800 block mt-3">{t('freeGames.count', { count: freeGames.length })}</Text>
         </div>
       </div>
 

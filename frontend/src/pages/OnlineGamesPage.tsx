@@ -111,11 +111,11 @@ const OnlineGamesPage = () => {
       />
 
       {/* Header */}
-      <div className="bg-gradient-to-r from-indigo-600 to-purple-600 text-white py-2">
+      <div className="bg-gradient-to-r from-indigo-400 to-purple-400 text-white py-2">
         <div className="">
           <div className="text-center">
-            <Title level={1} className="!text-white mb-4">{t('onlineGames.title')}</Title>
-            <Paragraph className="!text-indigo-100 !text-lg mb-8">{t('onlineGames.subtitle')}</Paragraph>
+            <Title level={1} className="!text-indigo-900 mb-4">{t('onlineGames.title')}</Title>
+            <Paragraph className="!text-indigo-900 !text-lg mb-8">{t('onlineGames.subtitle')}</Paragraph>
             <div className="max-w-xl mx-auto">
               <Input
                 size="large"
