@@ -17,7 +17,7 @@ import { createAuditLog } from './audit-log.service';
  */
 export interface ReviewQueueItem {
   id: string;
-  type: 'news' | 'review' | 'community' | 'guide';
+  type: 'news' | 'blog' | 'review' | 'community' | 'guide';
   title: string;
   content: string;
   authorId: string;
@@ -45,11 +45,11 @@ export interface ReviewStats {
  * 用于构建 UNION ALL 查询，统一处理多种内容类型的审核队列
  */
 const CONTENT_TABLES = [
-  { type: 'news', table: 'news' },
-  { type: 'blog', table: 'blog_articles' },
-  { type: 'guide', table: 'guides' },
-  { type: 'review', table: 'reviews' },
-  { type: 'community', table: 'community_posts' },
+  { type: 'news', table: 'news', postType: null },
+  { type: 'blog', table: 'blog_articles', postType: 'blog' },
+  { type: 'guide', table: 'blog_articles', postType: 'guide' },
+  { type: 'review', table: 'blog_articles', postType: 'review' },
+  { type: 'community', table: 'community_posts', postType: null },
 ] as const;
 
 /**
@@ -78,19 +78,17 @@ export const getPendingContentQueue = async (options: {
     const unions = CONTENT_TABLES
       .filter(t => !options.type || t.type === options.type)
       .map(t => {
-        // guides 表使用别名 g，其他表使用首字母作为别名
-        const withAuthor = t.table === 'guides'
-          ? `LEFT JOIN users u ON g.author_id = u.id`
-          : `LEFT JOIN users u ON ${t.table[0]}.author_id = u.id`;
-        const alias = t.table === 'guides' ? 'g' : t.table[0];
+        const alias = t.table[0];
+        // blog/guide/review 同存于 blog_articles，用 post_type 区分
+        const postTypeFilter = t.postType ? ` AND ${alias}.post_type = '${t.postType}'` : '';
         return `SELECT '${t.type}' AS type, ${alias}.id, ${alias}.title,
                 substr(${alias}.content, 1, 200) AS content,
                 ${alias}.author_id AS authorId, COALESCE(u.display_name, u.username) AS authorName,
                 ${alias}.review_status AS reviewStatus, ${alias}.review_comment AS reviewComment,
                 ${alias}.created_at AS createdAt, ${alias}.created_at AS submittedAt
                 FROM ${t.table} ${alias}
-                ${withAuthor}
-                WHERE ${alias}.review_status = ?`;
+                LEFT JOIN users u ON ${alias}.author_id = u.id
+                WHERE ${alias}.review_status = ?${postTypeFilter}`;
       })
       .join(' UNION ALL ');
 
@@ -163,8 +161,8 @@ export const approveContent = async (
       [reviewerId, now, id]
     );
 
-    // 新闻、博客、指南通过后同时发布（设为可见状态）
-    if (table === 'news' || table === 'blog_articles' || table === 'guides') {
+    // 新闻、博客、攻略、测评通过后同时发布（设为可见状态）
+    if (table === 'news' || table === 'blog_articles') {
       await execute(
         `UPDATE ${table} SET is_published = true WHERE id = ? AND review_status = 'approved'`,
         [id]
@@ -284,9 +282,10 @@ export const getReviewStats = async (): Promise<ReviewStats[]> => {
     // 构建 UNION ALL 查询获取所有内容的审核状态
     const unions = CONTENT_TABLES
       .map(t => {
-        const alias = t.table === 'guides' ? 'g' : t.table[0];
+        const alias = t.table[0];
+        const where = t.postType ? ` WHERE ${alias}.post_type = '${t.postType}'` : '';
         return `SELECT '${t.type}' AS type, ${alias}.review_status AS review_status
-                FROM ${t.table} ${alias}`;
+                FROM ${t.table} ${alias}${where}`;
       })
       .join(' UNION ALL ');
 
