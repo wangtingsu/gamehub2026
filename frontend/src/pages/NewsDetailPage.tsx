@@ -183,7 +183,7 @@ const NewsDetailPage = () => {
                     <div className="prose max-w-none">
                       <Paragraph className="text-lg leading-relaxed mb-6 text-gray-300">{article.summary}</Paragraph>
                       <Divider />
-                      <BlogRenderContent content={article.content} />
+                      <BlogRenderContent content={article.content} contentHtml={article.contentHtml} />
                     </div>
                     <div className="mt-8 pt-8 border-t border-dark-700">
                       <div className="flex flex-wrap gap-2 mb-4">

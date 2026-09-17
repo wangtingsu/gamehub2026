@@ -18,6 +18,7 @@ import {
   SearchParams
 } from '../types';
 import { NotFoundError, ConflictError, ValidationError } from '../middlewares/error.middleware';
+import { markdownToHtml } from './markdown.service';
 import xpService from './xp.service';
 import achievementService from './achievement.service';
 
@@ -55,12 +56,14 @@ const readTranslations = (row: any): any => {
   for (const suffix of TRANSLATION_SUFFIXES) {
     const title = row[`title_${suffix}`];
     const content = row[`content_${suffix}`];
+    const contentHtml = row[`content_html_${suffix}`];
     const excerpt = row[`excerpt_${suffix}`];
     const faq = row[`faq_${suffix}`];
-    if (title || content || excerpt || faq) {
+    if (title || content || contentHtml || excerpt || faq) {
       translations[suffix] = {
         ...(title ? { title } : {}),
         ...(content ? { content } : {}),
+        ...(contentHtml ? { contentHtml } : {}),
         ...(excerpt ? { excerpt } : {}),
         ...(faq ? { faq: typeof faq === 'string' ? JSON.parse(faq) : faq } : {}),
       };
@@ -79,6 +82,7 @@ const localizeReview = (review: any, lang?: string): any => {
     ...review,
     title: tr.title || review.title,
     content: tr.content || review.content,
+    contentHtml: tr.contentHtml || review.contentHtml,
     faq: tr.faq?.length ? tr.faq : review.faq,
   };
 };
@@ -89,8 +93,8 @@ const translationColumns = (translations?: any): { cols: string[]; params: any[]
   const params: any[] = [];
   for (const suffix of TRANSLATION_SUFFIXES) {
     const tr = translations?.[suffix];
-    cols.push(`title_${suffix}`, `content_${suffix}`, `excerpt_${suffix}`, `faq_${suffix}`);
-    params.push(tr?.title || null, tr?.content || null, tr?.excerpt || null, tr?.faq ? JSON.stringify(tr.faq) : null);
+    cols.push(`title_${suffix}`, `content_${suffix}`, `content_html_${suffix}`, `excerpt_${suffix}`, `faq_${suffix}`);
+    params.push(tr?.title || null, tr?.content || null, markdownToHtml(tr?.content || ''), tr?.excerpt || null, tr?.faq ? JSON.stringify(tr.faq) : null);
   }
   return { cols, params };
 };
@@ -109,6 +113,7 @@ const mapReviewFromDb = (dbReview: any): Review => ({
   title: dbReview.title,
   maintitle: dbReview.maintitle || undefined,
   content: dbReview.content,
+  contentHtml: dbReview.content_html,
   rating: dbReview.rating ? parseFloat(dbReview.rating) : undefined,
   scores: dbReview.scores ? JSON.parse(dbReview.scores) : undefined,
   templateId: dbReview.template_id ? String(dbReview.template_id) : undefined,
@@ -440,7 +445,7 @@ export const createReview = async (authorId: string, reviewData: ReviewCreateInp
 
     const tr = translationColumns((reviewData as any).translations);
     const cols = [
-      'title', 'maintitle', 'slug', 'content', 'excerpt', 'rating', 'game_id', 'author_id', 'category', 'tags', 'faq', 'space_id',
+      'title', 'maintitle', 'slug', 'content', 'content_html', 'excerpt', 'rating', 'game_id', 'author_id', 'category', 'tags', 'faq', 'space_id',
       'is_published', 'is_pinned', 'published_at', 'review_status', 'post_type', 'created_at', 'updated_at',
       ...tr.cols,
     ];
@@ -450,6 +455,7 @@ export const createReview = async (authorId: string, reviewData: ReviewCreateInp
       maintitle,
       slug,
       reviewData.content,
+      markdownToHtml(reviewData.content),
       '',
       reviewData.rating,
       gameId,
@@ -530,8 +536,8 @@ export const updateReview = async (
   }
 
   if (updateData.content !== undefined) {
-    updates.push(`content = ?`);
-    values.push(updateData.content);
+    updates.push(`content = ?`, `content_html = ?`);
+    values.push(updateData.content, markdownToHtml(updateData.content));
   }
 
   if (updateData.rating !== undefined) {
@@ -569,8 +575,8 @@ export const updateReview = async (
     for (const suffix of TRANSLATION_SUFFIXES) {
       const tr = (updateData as any).translations?.[suffix];
       if (tr && (tr.title !== undefined || tr.content !== undefined || tr.excerpt !== undefined || tr.faq !== undefined)) {
-        updates.push(`title_${suffix} = ?`, `content_${suffix} = ?`, `excerpt_${suffix} = ?`, `faq_${suffix} = ?`);
-        values.push(tr.title ?? null, tr.content ?? null, tr.excerpt ?? null, tr.faq ? JSON.stringify(tr.faq) : null);
+        updates.push(`title_${suffix} = ?`, `content_${suffix} = ?`, `content_html_${suffix} = ?`, `excerpt_${suffix} = ?`, `faq_${suffix} = ?`);
+        values.push(tr.title ?? null, tr.content ?? null, tr.content ? markdownToHtml(tr.content) : null, tr.excerpt ?? null, tr.faq ? JSON.stringify(tr.faq) : null);
       }
     }
   }

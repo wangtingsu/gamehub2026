@@ -5,6 +5,7 @@
 import { query, execute } from '../db';
 import logger from '../utils/logger';
 import { NotFoundError, ValidationError, ConflictError } from '../middlewares/error.middleware';
+import { markdownToHtml } from './markdown.service';
 
 const generateSlug = (title: string): string => {
   let slug = title.toLowerCase().replace(/[^\w\s一-鿿-]/g, '').replace(/\s+/g, '-').replace(/--+/g, '-').trim();
@@ -39,6 +40,7 @@ const localizeArticle = (article: any, lang?: string): any => {
     ...article,
     title: tr.title || article.title,
     content: tr.content || article.content,
+    contentHtml: tr.contentHtml || article.contentHtml,
     excerpt: tr.excerpt || article.excerpt,
     faq: tr.faq?.length ? tr.faq : article.faq,
   };
@@ -50,8 +52,8 @@ const translationColumns = (translations?: any): { cols: string[]; params: any[]
   const params: any[] = [];
   for (const suffix of TRANSLATION_SUFFIXES) {
     const tr = translations?.[suffix];
-    cols.push(`title_${suffix}`, `content_${suffix}`, `excerpt_${suffix}`, `faq_${suffix}`);
-    params.push(tr?.title || null, tr?.content || null, tr?.excerpt || null, tr?.faq ? JSON.stringify(tr.faq) : null);
+    cols.push(`title_${suffix}`, `content_${suffix}`, `content_html_${suffix}`, `excerpt_${suffix}`, `faq_${suffix}`);
+    params.push(tr?.title || null, tr?.content || null, markdownToHtml(tr?.content || ''), tr?.excerpt || null, tr?.faq ? JSON.stringify(tr.faq) : null);
   }
   return { cols, params };
 };
@@ -156,9 +158,9 @@ export const createBlog = async (authorId: string, data: any) => {
   }
   const now = new Date().toISOString();
   const tr = translationColumns(data.translations);
-  const cols = ['title','maintitle','slug','content','excerpt','cover_image_url','author_id','space_id','category','tags','faq','is_published','is_pinned','published_at','review_status','created_at','updated_at', ...tr.cols];
+  const cols = ['title','maintitle','slug','content','content_html','excerpt','cover_image_url','author_id','space_id','category','tags','faq','is_published','is_pinned','published_at','review_status','created_at','updated_at', ...tr.cols];
   const placeholders = cols.map(() => '?').join(',');
-  const values = [title, maintitle, slug, data.content||'', data.excerpt||'', data.coverImageUrl||'', authorId, data.spaceId, data.category||'博客', JSON.stringify(data.tags||[]), JSON.stringify(data.faq||[]), 1, data.isPinned?1:0, now, 'pending', now, now, ...tr.params];
+  const values = [title, maintitle, slug, data.content||'', markdownToHtml(data.content||''), data.excerpt||'', data.coverImageUrl||'', authorId, data.spaceId, data.category||'博客', JSON.stringify(data.tags||[]), JSON.stringify(data.faq||[]), 1, data.isPinned?1:0, now, 'pending', now, now, ...tr.params];
   const r = await execute(
     `INSERT INTO blog_articles (${cols.join(',')}) VALUES (${placeholders})`,
     values
@@ -189,6 +191,7 @@ export const updateBlog = async (id: string, data: any) => {
       sets.push(`${col}=?`); vals.push(['isPublished','isPinned'].includes(k) ? (v?1:0) : v);
     } else if (['title','content','excerpt','category','tags','faq'].includes(k)) {
       sets.push(`${col}=?`); vals.push((k==='tags' || k==='faq') ? JSON.stringify(v) : v);
+      if (k === 'content') { sets.push('content_html=?'); vals.push(markdownToHtml((v as string) || '')); }
     }
   }
 
@@ -197,8 +200,8 @@ export const updateBlog = async (id: string, data: any) => {
     for (const suffix of TRANSLATION_SUFFIXES) {
       const tr = data.translations?.[suffix];
       if (tr && (tr.title !== undefined || tr.content !== undefined || tr.excerpt !== undefined || tr.faq !== undefined)) {
-        sets.push(`title_${suffix}=?`, `content_${suffix}=?`, `excerpt_${suffix}=?`, `faq_${suffix}=?`);
-        vals.push(tr.title ?? null, tr.content ?? null, tr.excerpt ?? null, tr.faq ? JSON.stringify(tr.faq) : null);
+        sets.push(`title_${suffix}=?`, `content_${suffix}=?`, `content_html_${suffix}=?`, `excerpt_${suffix}=?`, `faq_${suffix}=?`);
+        vals.push(tr.title ?? null, tr.content ?? null, tr.content ? markdownToHtml(tr.content) : null, tr.excerpt ?? null, tr.faq ? JSON.stringify(tr.faq) : null);
       }
     }
   }
@@ -226,12 +229,14 @@ const mapArticle = (row: any) => {
   for (const suffix of TRANSLATION_SUFFIXES) {
     const title = row[`title_${suffix}`];
     const content = row[`content_${suffix}`];
+    const contentHtml = row[`content_html_${suffix}`];
     const excerpt = row[`excerpt_${suffix}`];
     const faq = row[`faq_${suffix}`];
-    if (title || content || excerpt || faq) {
+    if (title || content || contentHtml || excerpt || faq) {
       translations[suffix] = {
         ...(title ? { title } : {}),
         ...(content ? { content } : {}),
+        ...(contentHtml ? { contentHtml } : {}),
         ...(excerpt ? { excerpt } : {}),
         ...(faq ? { faq: typeof faq === 'string' ? JSON.parse(faq) : faq } : {}),
       };
@@ -240,7 +245,7 @@ const mapArticle = (row: any) => {
 
   return {
     id: String(row.id), title: row.title, slug: row.slug, maintitle: row.maintitle || undefined,
-    content: row.content, excerpt: row.excerpt||'',
+    content: row.content, contentHtml: row.content_html, excerpt: row.excerpt||'',
     coverImageUrl: row.cover_image_url, authorId: String(row.author_id),
     authorName: row.author_name, authorDisplayName: row.author_display_name,
     spaceId: String(row.space_id), spaceName: row.space_name, spaceSlug: row.space_slug,

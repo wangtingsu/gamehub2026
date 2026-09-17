@@ -493,6 +493,8 @@ export interface GameUpdateInput {
 export interface NewsTranslation {
   title?: string;
   content?: string;
+  /** markdown 转换后的规范 HTML（content_html_xx 列） */
+  contentHtml?: string;
   excerpt?: string;
   faq?: FaqItem[];
 }
@@ -511,6 +513,8 @@ export interface News {
   /** 主标题：用于生成 URL slug 后缀（替代原先的英文标题作为 slug 来源） */
   maintitle?: string;
   content: string;
+  /** markdown 转换后的规范 HTML（content_html 列） */
+  contentHtml?: string;
   excerpt?: string;
   coverImageUrl?: string;
   authorId: string;
@@ -623,6 +627,8 @@ export interface Review {
   /** 主标题：用于生成 URL slug 后缀 */
   maintitle?: string;
   content: string;
+  /** markdown 转换后的规范 HTML（content_html 列） */
+  contentHtml?: string;
   rating: number;
   scores?: ReviewScores;
   templateId?: string;
@@ -1356,6 +1362,8 @@ export interface Guide {
   /** 主标题：用于生成 URL slug 后缀 */
   maintitle?: string;
   content: string;
+  /** markdown 转换后的规范 HTML（content_html 列） */
+  contentHtml?: string;
   summary?: string;
   difficulty: GuideDifficulty;
   gameId: string;

@@ -336,6 +336,7 @@ export interface FavoriteStats {
 export interface NewsArticleTranslation {
   title?: string;
   content?: string;
+  contentHtml?: string;
   excerpt?: string;
   faq?: FaqItem[];
 }
@@ -352,6 +353,7 @@ export interface NewsArticle {
   title: string;
   summary: string;
   content: string;
+  contentHtml?: string;
   author: string;
   publishDate: string;
   category: string;
@@ -371,6 +373,7 @@ export interface NewsArticle {
 export interface BlogArticleTranslation {
   title?: string;
   content?: string;
+  contentHtml?: string;
   excerpt?: string;
   faq?: FaqItem[];
 }
@@ -407,6 +410,7 @@ export interface BlogArticle {
   maintitle?: string;
   excerpt: string;
   content: string;
+  contentHtml?: string;
   author: string;
   authorId?: string;
   authorAvatar?: string;
@@ -479,6 +483,8 @@ export interface Review {
   maintitle?: string;
   /** 评测正文内容 */
   content: string;
+  /** markdown 转换后的规范 HTML */
+  contentHtml?: string;
   /** 作者用户名 */
   author: string;
   /** 作者 ID */
@@ -614,6 +620,7 @@ export interface Guide {
   /** 主标题：用于生成 URL slug 后缀 */
   maintitle?: string;
   content: string;
+  contentHtml?: string;
   summary?: string;
   difficulty: GuideDifficulty;
   author: string;

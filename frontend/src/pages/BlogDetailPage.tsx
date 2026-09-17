@@ -341,7 +341,7 @@ const BlogDetailPage = () => {
             </div>
 
             <article ref={articleRef} className="mb-10">
-              <BlogRenderContent content={post.content} />
+              <BlogRenderContent content={post.content} contentHtml={post.contentHtml} />
             </article>
 
             {/* 作者卡片 */}

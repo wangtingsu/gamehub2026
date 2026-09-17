@@ -248,7 +248,7 @@ const GuideDetailPage = () => {
                 {steps.length === 0 && (
                   <>
                     <Divider />
-                    <BlogRenderContent content={guide.content} />
+                    <BlogRenderContent content={guide.content} contentHtml={guide.contentHtml} />
                   </>
                 )}
 

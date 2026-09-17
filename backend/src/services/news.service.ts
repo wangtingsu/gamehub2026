@@ -19,6 +19,7 @@ import {
   SearchParams
 } from '../types';
 import { NotFoundError, ConflictError, ValidationError } from '../middlewares/error.middleware';
+import { markdownToHtml } from './markdown.service';
 import { applyAiReview } from './ai-review.service';
 
 /**
@@ -61,6 +62,7 @@ const localizeNews = (news: News, lang?: string): News => {
     ...news,
     title: tr.title || news.title,
     content: tr.content || news.content,
+    contentHtml: tr.contentHtml || news.contentHtml,
     excerpt: tr.excerpt || news.excerpt,
     faq: tr.faq?.length ? tr.faq : news.faq,
   };
@@ -77,8 +79,8 @@ const translationColumns = (translations?: NewsTranslations): { cols: string[]; 
   const params: any[] = [];
   for (const suffix of TRANSLATION_SUFFIXES) {
     const tr = translations?.[suffix];
-    cols.push(`title_${suffix}`, `content_${suffix}`, `excerpt_${suffix}`, `faq_${suffix}`);
-    params.push(tr?.title || null, tr?.content || null, tr?.excerpt || null, tr?.faq ? JSON.stringify(tr.faq) : null);
+    cols.push(`title_${suffix}`, `content_${suffix}`, `content_html_${suffix}`, `excerpt_${suffix}`, `faq_${suffix}`);
+    params.push(tr?.title || null, tr?.content || null, markdownToHtml(tr?.content || ''), tr?.excerpt || null, tr?.faq ? JSON.stringify(tr.faq) : null);
   }
   return { cols, params };
 };
@@ -98,12 +100,14 @@ const mapNewsFromDb = (dbNews: any): News => {
   for (const suffix of TRANSLATION_SUFFIXES) {
     const title = dbNews[`title_${suffix}`];
     const content = dbNews[`content_${suffix}`];
+    const contentHtml = dbNews[`content_html_${suffix}`];
     const excerpt = dbNews[`excerpt_${suffix}`];
     const faq = dbNews[`faq_${suffix}`];
-    if (title || content || excerpt || faq) {
+    if (title || content || contentHtml || excerpt || faq) {
       translations[suffix] = {
         ...(title ? { title } : {}),
         ...(content ? { content } : {}),
+        ...(contentHtml ? { contentHtml } : {}),
         ...(excerpt ? { excerpt } : {}),
         ...(faq ? { faq: typeof faq === 'string' ? JSON.parse(faq) : faq } : {}),
       };
@@ -116,6 +120,7 @@ const mapNewsFromDb = (dbNews: any): News => {
     slug: dbNews.slug,
     maintitle: dbNews.maintitle || undefined,
     content: dbNews.content,
+    contentHtml: dbNews.content_html,
     excerpt: dbNews.excerpt || '',
     coverImageUrl: dbNews.cover_image_url,
     authorId: dbNews.author_id.toString(),
@@ -455,15 +460,16 @@ export const createNews = async (
 
     const result = await execute(
       `INSERT INTO news (
-        title, maintitle, slug, content, excerpt, cover_image_url, author_id,
+        title, maintitle, slug, content, content_html, excerpt, cover_image_url, author_id,
         category, tags, faq, is_published, is_pinned, game_name, published_at, review_status
         ${trCols.length ? `, ${trCols.join(', ')}` : ''}
-      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?${trCols.length ? `, ${trCols.map(() => '?').join(', ')}` : ''})`,
+      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?${trCols.length ? `, ${trCols.map(() => '?').join(', ')}` : ''})`,
       [
         title,
         maintitle,
         slug,
         content,
+        markdownToHtml(content),
         excerpt,
         newsData.coverImageUrl || '',
         authorId,
@@ -536,8 +542,8 @@ export const updateNews = async (
   }
 
   if (updateData.content !== undefined) {
-    updates.push(`content = ?`);
-    values.push(updateData.content || '');
+    updates.push(`content = ?`, `content_html = ?`);
+    values.push(updateData.content || '', markdownToHtml(updateData.content || ''));
   }
 
   if (updateData.excerpt !== undefined) {
@@ -606,8 +612,8 @@ export const updateNews = async (
         values.push(tr.title || null);
       }
       if (tr.content !== undefined) {
-        updates.push(`content_${suffix} = ?`);
-        values.push(tr.content || null);
+        updates.push(`content_${suffix} = ?`, `content_html_${suffix} = ?`);
+        values.push(tr.content || null, markdownToHtml(tr.content || ''));
       }
       if (tr.excerpt !== undefined) {
         updates.push(`excerpt_${suffix} = ?`);

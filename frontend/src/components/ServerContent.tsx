@@ -128,28 +128,36 @@ export default function ServerContent({
         <article>
           <h2>{newsDetail.title}</h2>
           {newsDetail.summary && <p>{newsDetail.summary}</p>}
-          {newsDetail.content && <p>{newsDetail.content}</p>}
+          {newsDetail.contentHtml
+            ? <div dangerouslySetInnerHTML={{ __html: newsDetail.contentHtml }} />
+            : newsDetail.content && <p>{newsDetail.content}</p>}
         </article>
       )}
 
       {blogMatch && blogDetail && (
         <article>
           <h2>{blogDetail.title}</h2>
-          {blogDetail.content && <ReactMarkdown>{blogDetail.content}</ReactMarkdown>}
+          {blogDetail.contentHtml
+            ? <div dangerouslySetInnerHTML={{ __html: blogDetail.contentHtml }} />
+            : blogDetail.content && <ReactMarkdown>{blogDetail.content}</ReactMarkdown>}
         </article>
       )}
 
       {reviewMatch && reviewDetail && (
         <article>
           <h2>{reviewDetail.title}</h2>
-          {reviewDetail.content && <ReactMarkdown>{reviewDetail.content}</ReactMarkdown>}
+          {reviewDetail.contentHtml
+            ? <div dangerouslySetInnerHTML={{ __html: reviewDetail.contentHtml }} />
+            : reviewDetail.content && <ReactMarkdown>{reviewDetail.content}</ReactMarkdown>}
         </article>
       )}
 
       {guideMatch && guideDetail && (
         <article>
           <h2>{guideDetail.title}</h2>
-          {guideDetail.content && <ReactMarkdown>{guideDetail.content}</ReactMarkdown>}
+          {guideDetail.contentHtml
+            ? <div dangerouslySetInnerHTML={{ __html: guideDetail.contentHtml }} />
+            : guideDetail.content && <ReactMarkdown>{guideDetail.content}</ReactMarkdown>}
         </article>
       )}
     </div>

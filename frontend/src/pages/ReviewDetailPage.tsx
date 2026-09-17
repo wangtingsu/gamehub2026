@@ -5,8 +5,8 @@ import { useReview, useGame, useGameReviews, useReviews } from '../api/hooks';
 import CommentList from '../components/comments/CommentList';
 import SEO from '../components/SEO';
 import SEOBreadcrumb from '../components/SEOBreadcrumb';
-import { useTranslation } from 'react-i18next';
 import BlogRenderContent from '../components/blog/BlogRenderContent';
+import { useTranslation } from 'react-i18next';
 
 const { Title, Paragraph, Text } = Typography;
 
@@ -233,7 +233,7 @@ const ReviewDetailPage = () => {
                 </div>
 
                 <div className="prose max-w-none">
-                  <BlogRenderContent content={review.content} />
+                  <BlogRenderContent content={review.content} contentHtml={review.contentHtml} />
 
                   <Divider />
 
