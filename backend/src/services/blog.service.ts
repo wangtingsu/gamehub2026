@@ -142,6 +142,17 @@ export const getBlogById = async (id: string, type?: string, lang?: string) => {
   return localizeArticle(mapArticle({ ...row, post_type: row.post_type || (table === 'reviews' ? 'review' : table === 'guides' ? 'guide' : 'blog') }), lang);
 };
 
+export const getBlogBySlug = async (slug: string, lang?: string) => {
+  const rows = await query(
+    `SELECT a.*, u.username as author_name, u.display_name as author_display_name, s.name as space_name, s.slug as space_slug
+     FROM blog_articles a LEFT JOIN users u ON a.author_id=u.id LEFT JOIN blog_spaces s ON a.space_id=s.id WHERE a.slug=?`, [slug]
+  );
+  if (!rows.length) throw new NotFoundError('文章不存在');
+  const row = rows[0];
+  await execute('UPDATE blog_articles SET views=views+1 WHERE id=?', [row.id]);
+  return localizeArticle(mapArticle({ ...row, post_type: row.post_type || 'blog' }), lang);
+};
+
 export const createBlog = async (authorId: string, data: any) => {
   // 主标题（maintitle）作为 URL slug 后缀来源，必填且唯一
   const maintitle = (data.maintitle || '').trim();
@@ -358,4 +369,4 @@ export const getSpaceDetail = async (slug: string) => {
   };
 };
 
-export default { getBlogs, getBlogById, createBlog, updateBlog, deleteBlog, getSpaceContent, getPopularArticle, getArticlesByPostType, getSpaceDetail };
+export default { getBlogs, getBlogById, getBlogBySlug, createBlog, updateBlog, deleteBlog, getSpaceContent, getPopularArticle, getArticlesByPostType, getSpaceDetail };

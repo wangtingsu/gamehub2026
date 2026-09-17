@@ -74,7 +74,7 @@ const BlogPage = () => {
             <Title level={2} className="!text-white !text-xl !mb-6">{t('blog.editorsPicks')}</Title>
             <div className="flex flex-col lg:flex-row gap-4">
               {/* 主推荐文章（大卡） */}
-              <Link to={`/${lang}/blog/${mainPick.id}`} className="lg:w-1/2 no-underline group block">
+              <Link to={`/${lang}/blog/${mainPick.slug || mainPick.id}`} className="lg:w-1/2 no-underline group block">
                 <div className="bg-dark-800 border border-dark-700 rounded-xl overflow-hidden hover:border-blue-500/50 transition-all h-full">
                   <div className="h-64 overflow-hidden relative">
                     {mainPick.coverImageUrl ? (
@@ -103,7 +103,7 @@ const BlogPage = () => {
               {/* 侧边推荐文章（小卡 x6） */}
               <div className="lg:w-1/2 grid grid-cols-1 sm:grid-cols-2 gap-3">
                 {sidePicks.map(a => (
-                  <Link key={a.id} to={`/${lang}/blog/${a.id}`} className="no-underline group block">
+                  <Link key={a.id} to={`/${lang}/blog/${a.slug || a.id}`} className="no-underline group block">
                     <div className="bg-dark-800 border border-dark-700 rounded-lg overflow-hidden hover:border-blue-500/50 transition-all hover:-translate-y-0.5 h-full flex">
                       <div className="w-20 h-full flex-shrink-0 bg-dark-700 overflow-hidden">
                         {a.coverImageUrl ? <img src={a.coverImageUrl} alt="" className="w-full h-full object-cover" loading="lazy" /> : <div className="w-full h-full flex items-center justify-center text-xl">📄</div>}
@@ -135,7 +135,7 @@ const BlogPage = () => {
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
               {spaceArticles[s.id].map((a: any) => (
-                <Link key={a.id} to={`/${lang}/blog/${a.id}`} className="no-underline group block">
+                <Link key={a.id} to={`/${lang}/blog/${a.slug || a.id}`} className="no-underline group block">
                   <div className="bg-dark-800 border border-dark-700 rounded-lg overflow-hidden hover:border-blue-500/50 transition-all h-full">
                     <div className="h-32 bg-dark-700 overflow-hidden">
                       {a.coverImageUrl ? <img src={a.coverImageUrl} alt="" className="w-full h-full object-cover group-hover:scale-105 transition-transform" loading="lazy" /> : <div className="w-full h-full flex items-center justify-center text-3xl">📄</div>}
@@ -161,7 +161,7 @@ const BlogPage = () => {
             <Title level={2} className="!text-white !text-xl !mb-6">{t('blog.latestUpdates')}</Title>
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-3">
               {latest.slice((latestPage-1)*PAGE_SIZE, latestPage*PAGE_SIZE).map(a => (
-                <Link key={a.id} to={`/${lang}/blog/${a.id}`} className="no-underline group block">
+                <Link key={a.id} to={`/${lang}/blog/${a.slug || a.id}`} className="no-underline group block">
                   <div className="bg-dark-800 border border-dark-700 rounded-lg p-4 hover:border-blue-500/50 transition-all flex gap-4">
                     <div className="w-28 h-20 flex-shrink-0 rounded-lg overflow-hidden bg-dark-700">
                       {a.coverImageUrl ? (

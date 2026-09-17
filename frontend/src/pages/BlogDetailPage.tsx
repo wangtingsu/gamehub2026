@@ -28,12 +28,12 @@ const BlogDetailPage = () => {
   const [copied, setCopied] = useState(false);
 
   useEffect(() => {
-    if (!id || !getToken()) return;
-    fetch(`/api/v1/blogs/${id}/status`, { headers: { Authorization: `Bearer ${getToken()}` } })
+    if (!post?.id || !getToken()) return;
+    fetch(`/api/v1/blogs/${post.id}/status`, { headers: { Authorization: `Bearer ${getToken()}` } })
       .then(r => r.json()).then(d => {
         if (d.success) { setLiked(d.data.liked); setFavorited(d.data.favorited); setStats({ likes: d.data.likes, favorites: d.data.favorites }); }
       });
-  }, [id]);
+  }, [post?.id]);
 
   // 获取相关文章
   useEffect(() => {
@@ -69,7 +69,7 @@ const BlogDetailPage = () => {
   }, []);
 
   const toggle = async (type: 'like'|'favorite') => {
-    if (!id || !getToken()) { navigate(`/${currentLang}/login`); return; }
+    if (!post?.id || !getToken()) { navigate(`/${currentLang}/login`); return; }
     if (toggling) return;
     setToggling(type);
     // 乐观更新：先改UI
@@ -81,7 +81,7 @@ const BlogDetailPage = () => {
       setStats(s => ({ ...s, favorites: Math.max(0, s.favorites + (favorited ? -1 : 1)) }));
     }
     try {
-      await fetch(`/api/v1/blogs/${id}/${type}`, { method: 'POST', headers: { Authorization: `Bearer ${getToken()}` } });
+      await fetch(`/api/v1/blogs/${post.id}/${type}`, { method: 'POST', headers: { Authorization: `Bearer ${getToken()}` } });
     } catch {
       // 失败回滚
       if (type === 'like') {
@@ -195,12 +195,12 @@ const BlogDetailPage = () => {
         <div className="h-full bg-gradient-to-r from-primary-500 via-sky-400 to-secondary-500 transition-[width] duration-150 ease-out" style={{ width: `${progress}%` }} />
       </div>
 
-      <SEO type="article" title={`${post.title} | GameHub Blog`} description={post.excerpt} image={coverUrl} publishedTime={post.publishDate} author={post.author} section={post.category} canonical={`/blog/${post.id}`} structuredData={faqStructuredData} />
+      <SEO type="article" title={`${post.title} | GameHub Blog`} description={post.excerpt} image={coverUrl} publishedTime={post.publishDate} author={post.author} section={post.category} canonical={`/blog/${post.slug || post.id}`} structuredData={faqStructuredData} />
       <SEOBreadcrumb items={[
         { name: 'Home', url: `/${currentLang}` },
         { name: 'Blog', url: `/${currentLang}/blog` },
         ...(spaceName ? [{ name: spaceName, url: `/${currentLang}/blog/space/${spaceSlug}` }] : []),
-        { name: post.title, url: `/${currentLang}/blog/${post.id}` },
+        { name: post.title, url: `/${currentLang}/blog/${post.slug || post.id}` },
       ]} />
 
       {/* ====== 全宽杂志式头图 ====== */}
@@ -308,7 +308,7 @@ const BlogDetailPage = () => {
               ) : (
                 <div className="space-y-4">
                   {related.map((a: any) => (
-                    <Link key={a.id} to={`/${currentLang}/blog/${a.id}`} className="block no-underline group">
+                    <Link key={a.id} to={`/${currentLang}/blog/${a.slug || a.id}`} className="block no-underline group">
                       <div className="rounded-xl overflow-hidden border border-dark-700/50 hover:border-blue-500/50 transition-all hover:-translate-y-0.5">
                         <div className="h-32 bg-dark-800 overflow-hidden">
                           {(a.coverImageUrl || a.coverImage) ? (

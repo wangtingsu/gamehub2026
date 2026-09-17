@@ -167,7 +167,7 @@ const articleViewUrl = (record: any): string => {
   const pt = record?.postType || 'blog';
   if (pt === 'review') return `/community/reviews/${record.id}`;
   if (pt === 'guide') return `/guides/${record.id}`;
-  return `/blog/${record.id}`;
+  return `/blog/${record.slug || record.id}`;
 };
 
 interface ContentStats {

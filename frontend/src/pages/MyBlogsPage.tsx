@@ -141,7 +141,7 @@ const MyBlogsPage = () => {
               size="small"
               icon={<EyeOutlined />}
               className="!text-gray-400 hover:!text-blue-400"
-              onClick={() => navigate(`/${lang || 'cn'}/blog/${record.id}`)}
+              onClick={() => navigate(`/${lang || 'cn'}/blog/${record.slug || record.id}`)}
             />
           </Tooltip>
           <Tooltip title="编辑">

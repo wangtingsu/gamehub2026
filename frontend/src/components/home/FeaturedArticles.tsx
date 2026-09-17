@@ -58,7 +58,7 @@ const FeaturedArticles = () => {
           views: item.views || 0,
           likes: item.likes || 0,
           date: item.publishDate || item.createdAt || '',
-          link: `/${currentLang}/blog/${item.id}`,
+          link: `/${currentLang}/blog/${item.slug || item.id}`,
         });
       });
     }

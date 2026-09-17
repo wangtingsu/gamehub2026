@@ -87,7 +87,7 @@ const BlogCategoryPage = () => {
         ) : (
           <div className="bg-dark-800 rounded-lg border border-dark-700 divide-y divide-dark-700">
             {articles.map((article: any) => (
-              <Link to={`/${currentLang}/blog/${article.id}`} key={article.id} className="block no-underline">
+              <Link to={`/${currentLang}/blog/${article.slug || article.id}`} key={article.id} className="block no-underline">
                 <div className="flex items-start gap-4 px-5 py-4 hover:bg-dark-750 transition-colors group">
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-2 mb-1.5">

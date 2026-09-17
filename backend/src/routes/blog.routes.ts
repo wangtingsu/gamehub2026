@@ -37,7 +37,11 @@ router.get('/', optionalAuthenticate, asyncHandler(async (req: Request, res: Res
 }));
 
 router.get('/:id', optionalAuthenticate, asyncHandler(async (req: Request, res: Response) => {
-  const blog = await blogService.getBlogById(req.params.id, req.query.type as string, req.query.lang as string);
+  // 自动识别：纯数字按主键 ID 查询，否则按 slug 查询（SEO 友好 URL，与新闻一致）
+  const id = req.params.id;
+  const blog = /^\d+$/.test(id)
+    ? await blogService.getBlogById(id, req.query.type as string, req.query.lang as string)
+    : await blogService.getBlogBySlug(id, req.query.lang as string);
   res.json({ success: true, data: blog, message: '博客详情获取成功' });
 }));
 
