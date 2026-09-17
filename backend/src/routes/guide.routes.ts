@@ -243,11 +243,11 @@ router.post(
       });
     }
 
-    // 验证必填字段
-    if (!guideData.title || !guideData.content || !guideData.gameId) {
+    // 验证必填字段（游戏 ID 或所属空间二选一：后台创建时游戏从空间继承）
+    if (!guideData.title || !guideData.content || (!guideData.gameId && !guideData.spaceId)) {
       return res.status(400).json({
         success: false,
-        error: '标题、内容和游戏ID是必填字段',
+        error: '标题、内容、游戏ID或所属空间是必填字段',
       });
     }
 

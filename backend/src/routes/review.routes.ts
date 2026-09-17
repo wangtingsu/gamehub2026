@@ -220,11 +220,11 @@ router.post(
       });
     }
 
-    // 验证必需字段
-    if (!reviewData.title || !reviewData.content || !reviewData.rating || !reviewData.gameId) {
+    // 验证必需字段（游戏 ID 或所属空间二选一：后台创建时游戏从空间继承）
+    if (!reviewData.title || !reviewData.content || !reviewData.rating || (!reviewData.gameId && !reviewData.spaceId)) {
       return res.status(400).json({
         success: false,
-        error: '标题、内容、评分和游戏ID是必填字段',
+        error: '标题、内容、评分、游戏ID或所属空间是必填字段',
       });
     }
 

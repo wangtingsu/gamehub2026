@@ -379,6 +379,26 @@ export type BlogArticleTranslations = Partial<
   Record<'en' | 'ja' | 'ko' | 'es' | 'fr', BlogArticleTranslation>
 >;
 
+// ==================== 博客空间相关类型 ====================
+
+export interface BlogSpace {
+  id: string;
+  name: string;
+  slug: string;
+  coverImageUrl?: string;
+  description?: string;
+  sortOrder: number;
+  isActive: boolean;
+  /** 关联游戏 ID（攻略/评测通过空间继承游戏） */
+  gameId?: string;
+  /** 关联游戏标题（反查字段） */
+  gameTitle?: string;
+  /** 关联游戏 slug */
+  gameSlug?: string;
+  createdAt?: string;
+  updatedAt?: string;
+}
+
 export interface BlogArticle {
   id: string;
   title: string;
@@ -451,6 +471,8 @@ export interface Review {
   gameTitle: string;
   /** 关联游戏 slug（用于跳转游戏详情 SEO 友好 URL） */
   gameSlug?: string;
+  /** 所属博客空间 ID */
+  spaceId?: string;
   /** 评测标题 */
   title: string;
   /** 主标题：用于生成 URL slug 后缀 */
@@ -503,7 +525,10 @@ export interface Review {
 
 // 评测相关扩展类型
 export interface ReviewCreateRequest {
-  gameId: string;
+  /** 关联游戏 ID（用户端写评测直接传；后台从空间继承） */
+  gameId?: string;
+  /** 所属博客空间 ID（后台创建时用于继承游戏） */
+  spaceId?: string;
   title: string;
   maintitle?: string;
   content: string;
@@ -583,6 +608,8 @@ export interface Guide {
   gameId: string;
   gameTitle?: string;
   gameSlug?: string;
+  /** 所属博客空间 ID */
+  spaceId?: string;
   title: string;
   /** 主标题：用于生成 URL slug 后缀 */
   maintitle?: string;
@@ -613,7 +640,10 @@ export interface Guide {
 }
 
 export interface GuideCreateInput {
-  gameId: string;
+  /** 关联游戏 ID（可选：从空间继承） */
+  gameId?: string;
+  /** 所属博客空间 ID（可选：后台创建时用于继承游戏） */
+  spaceId?: string;
   title: string;
   maintitle?: string;
   content: string;

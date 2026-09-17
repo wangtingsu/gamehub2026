@@ -357,9 +357,13 @@ const Content: React.FC = () => {
   const [communityPosts, setCommunityPosts] = useState<CommunityPost[]>([]);
   const [blogs, setBlogs] = useState<any[]>([]);
   const [blogSpaces, setBlogSpaces] = useState<any[]>([]);
+  const [games, setGames] = useState<any[]>([]);
 
   // 加载博客空间列表
   useEffect(() => { apiService.getBlogSpaces().then(d => setBlogSpaces(d||[])).catch(()=>{}); }, []);
+
+  // 加载游戏列表（供空间/攻略/评测选择游戏）
+  useEffect(() => { apiService.getGames({ limit: 200 }).then(d => setGames(d||[])).catch(()=>{}); }, []);
 
   // 加载数据
   useEffect(() => {
@@ -858,9 +862,9 @@ const Content: React.FC = () => {
       formValues.estimatedMinutes = (full as Guide).estimatedMinutes;
       formValues.summary = (full as Guide).summary || (full as any).excerpt || '';
     }
-    // 评测：回填 gameTitle
-    if (type === 'reviews') {
-      formValues.gameTitle = (full as Review).gameTitle || '';
+    // 评测/攻略：回填 spaceId（游戏由空间继承，不再单独回填 gameTitle）
+    if (type === 'reviews' || type === 'guides') {
+      formValues.spaceId = (full as any).spaceId;
     }
     // 新闻：表单字段用 excerpt（对应后端 excerpt 列），回填时从 summary 映射
     if (type === 'news') {
@@ -1043,8 +1047,6 @@ const Content: React.FC = () => {
       case 'reviews':
         data = {
           ...defaultContent,
-          gameId: 0,
-          gameTitle: '',
           rating: 0,
           comments: 0,
         } as unknown as Review;
@@ -1068,8 +1070,6 @@ const Content: React.FC = () => {
       case 'guides':
         data = {
           ...defaultContent,
-          gameId: 0,
-          gameTitle: '',
           difficulty: 'medium',
           summary: '',
         } as unknown as Guide;
@@ -1354,6 +1354,7 @@ const Content: React.FC = () => {
           <Table dataSource={blogSpaces} rowKey="id" pagination={false}
             columns={[
               { title: '名称', dataIndex: 'name', key: 'name' },
+              { title: '关联游戏', dataIndex: 'gameTitle', key: 'gameTitle', width: 140, render: (v: string) => v ? <Tag color="blue">{v}</Tag> : '-' },
               { title: 'Slug', dataIndex: 'slug', key: 'slug' },
               { title: '描述', dataIndex: 'description', key: 'description', ellipsis: true },
               { title: '排序', dataIndex: 'sortOrder', key: 'sortOrder', width: 80 },
@@ -1501,13 +1502,6 @@ const Content: React.FC = () => {
                   <Input placeholder="例如 your-url-slug（用于 URL 后缀）" />
                 </Form.Item>
 
-                <Form.Item
-                  label="游戏名 / Game Title"
-                  name="gameTitle"
-                  rules={[{ required: true, message: 'Please enter game title' }]}
-                >
-                  <Input placeholder="Enter game title" />
-                </Form.Item>
 
                 <Form.Item
                   label="作者 / Author"
@@ -1525,8 +1519,8 @@ const Content: React.FC = () => {
                   <Input type="number" min={0} max={5} step={0.1} placeholder="0.0 - 5.0" />
                 </Form.Item>
 
-                <Form.Item label="所属空间 / Space" name="spaceId">
-                  <Select placeholder="选择博客空间（可选）" allowClear>
+                <Form.Item label="所属空间 / Space" name="spaceId" rules={[{ required: true, message: '请选择所属空间' }]}>
+                  <Select placeholder="选择博客空间">
                     {blogSpaces.filter(s => s.isActive).map(s => <Option key={s.id} value={s.id}>{s.name}</Option>)}
                   </Select>
                 </Form.Item>
@@ -1623,13 +1617,6 @@ const Content: React.FC = () => {
                   <Input placeholder="例如 your-url-slug（用于 URL 后缀）" />
                 </Form.Item>
 
-                <Form.Item
-                  label="游戏名 / Game Title"
-                  name="gameTitle"
-                  rules={[{ required: true, message: 'Please enter game title' }]}
-                >
-                  <Input placeholder="Enter game title" />
-                </Form.Item>
 
                 <Form.Item
                   label="作者 / Author"
@@ -1659,8 +1646,8 @@ const Content: React.FC = () => {
                   <Input type="number" min={0} placeholder="e.g. 30" />
                 </Form.Item>
 
-                <Form.Item label="所属空间 / Space" name="spaceId">
-                  <Select placeholder="选择博客空间（可选）" allowClear>
+                <Form.Item label="所属空间 / Space" name="spaceId" rules={[{ required: true, message: '请选择所属空间' }]}>
+                  <Select placeholder="选择博客空间">
                     {blogSpaces.filter(s => s.isActive).map(s => <Option key={s.id} value={s.id}>{s.name}</Option>)}
                   </Select>
                 </Form.Item>
@@ -1909,6 +1896,11 @@ const Content: React.FC = () => {
           } catch { message.error('保存失败'); }
         }}>
           <Form.Item label="名称" name="name" rules={[{ required: true }]}><Input /></Form.Item>
+          <Form.Item label="关联游戏 / Game" name="gameId">
+            <Select showSearch allowClear placeholder="选择游戏（可选）"
+              filterOption={(input, option) => (option?.label ?? '').toLowerCase().includes(input.toLowerCase())}
+              options={(games || []).map((g: any) => ({ value: g.id, label: g.title }))} />
+          </Form.Item>
           <Form.Item label="封面图片" name="coverImageUrl"><CoverImageUpload /></Form.Item>
           <Form.Item label="简介" name="description"><Input.TextArea rows={2} /></Form.Item>
           <Form.Item label="排序" name="sortOrder"><Input type="number" /></Form.Item>

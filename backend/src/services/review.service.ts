@@ -114,6 +114,7 @@ const mapReviewFromDb = (dbReview: any): Review => ({
   templateId: dbReview.template_id ? String(dbReview.template_id) : undefined,
   sections: dbReview.sections ? JSON.parse(dbReview.sections) : undefined,
   gameId: dbReview.game_id ? String(dbReview.game_id) : undefined,
+  spaceId: dbReview.space_id ? String(dbReview.space_id) : undefined,
   authorId: dbReview.author_id ? String(dbReview.author_id) : undefined,
   tags: typeof dbReview.tags === 'string' ? JSON.parse(dbReview.tags) : dbReview.tags || [],
   faq: typeof dbReview.faq === 'string' ? JSON.parse(dbReview.faq) : dbReview.faq || [],
@@ -398,24 +399,30 @@ export const getReviewById = async (id: string, lang?: string): Promise<any> => 
  */
 export const createReview = async (authorId: string, reviewData: ReviewCreateInput): Promise<Review> => {
   return await transaction(async () => {
-    // 验证游戏是否存在
-    const gameExists = await query(
-      'SELECT id FROM games WHERE id = ?',
-      [reviewData.gameId]
-    );
+    // 空间 ID：后台创建时用于继承游戏；缺省回退 1（默认空间）
+    const spaceId = (reviewData as any).spaceId || 1;
 
-    if (gameExists.length === 0) {
-      throw new NotFoundError(`游戏ID ${reviewData.gameId} 不存在`);
+    // 解析关联游戏：显式传入 gameId 优先，否则从所选空间继承
+    let gameId: number | null = reviewData.gameId ? Number(reviewData.gameId) : null;
+    if (gameId === null) {
+      const space = await query('SELECT game_id FROM blog_spaces WHERE id = ?', [spaceId]);
+      gameId = space[0]?.game_id ? Number(space[0].game_id) : null;
+    }
+    if (gameId !== null) {
+      const gameExists = await query('SELECT id FROM games WHERE id = ?', [gameId]);
+      if (gameExists.length === 0) throw new NotFoundError(`游戏ID ${gameId} 不存在`);
     }
 
-    // 检查用户是否已为同一游戏写过评测（每人仅限一篇）
-    const existingReview = await query(
-      "SELECT id FROM blog_articles WHERE author_id = ? AND game_id = ? AND post_type = 'review'",
-      [authorId, reviewData.gameId]
-    );
+    // 检查用户是否已为同一游戏写过评测（每人仅限一篇；无游戏关联则跳过）
+    if (gameId !== null) {
+      const existingReview = await query(
+        "SELECT id FROM blog_articles WHERE author_id = ? AND game_id = ? AND post_type = 'review'",
+        [authorId, gameId]
+      );
 
-    if (existingReview.length > 0) {
-      throw new ConflictError('您已经为这款游戏写过评测');
+      if (existingReview.length > 0) {
+        throw new ConflictError('您已经为这款游戏写过评测');
+      }
     }
 
     // 主标题（maintitle）：作为 URL slug 后缀来源，必填且唯一（缺省回退标题）
@@ -445,12 +452,12 @@ export const createReview = async (authorId: string, reviewData: ReviewCreateInp
       reviewData.content,
       '',
       reviewData.rating,
-      reviewData.gameId,
+      gameId,
       authorId,
       '评测',
       JSON.stringify(reviewData.tags || []),
       JSON.stringify(reviewData.faq || []),
-      (reviewData as any).spaceId || 1,
+      spaceId,
       0, // is_published = 0，待审核
       0, // is_pinned = 0
       new Date().toISOString(),
@@ -538,8 +545,13 @@ export const updateReview = async (
   }
 
   if ((updateData as any).spaceId !== undefined) {
+    const spaceId = (updateData as any).spaceId;
     updates.push(`space_id = ?`);
-    values.push((updateData as any).spaceId);
+    values.push(spaceId);
+    // 空间变化时重算关联游戏（从空间继承）
+    const space = await query('SELECT game_id FROM blog_spaces WHERE id = ?', [spaceId]);
+    updates.push(`game_id = ?`);
+    values.push(space[0]?.game_id ? Number(space[0].game_id) : null);
   }
 
   if (updateData.reviewStatus !== undefined) {

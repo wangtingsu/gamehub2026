@@ -107,6 +107,7 @@ const mapGuideFromDb = (dbGuide: any): Guide => ({
   summary: dbGuide.excerpt || dbGuide.summary || undefined,
   difficulty: dbGuide.difficulty || 'medium',
   gameId: dbGuide.game_id ? dbGuide.game_id.toString() : undefined,
+  spaceId: dbGuide.space_id ? dbGuide.space_id.toString() : undefined,
   authorId: dbGuide.author_id ? dbGuide.author_id.toString() : undefined,
   coverImageUrl: dbGuide.cover_image_url || undefined,
   tags: typeof dbGuide.tags === 'string' ? JSON.parse(dbGuide.tags) : dbGuide.tags || [],
@@ -367,13 +368,18 @@ export const getGuideById = async (id: string, lang?: string): Promise<any> => {
  */
 export const createGuide = async (authorId: string, guideData: GuideCreateInput): Promise<Guide> => {
   return await transaction(async () => {
-    const gameExists = await query(
-      'SELECT id FROM games WHERE id = ?',
-      [guideData.gameId]
-    );
+    // 空间 ID：后台创建时用于继承游戏；缺省回退 1（默认空间）
+    const spaceId = (guideData as any).spaceId || 1;
 
-    if (gameExists.length === 0) {
-      throw new NotFoundError(`游戏ID ${guideData.gameId} 不存在`);
+    // 解析关联游戏：显式传入 gameId 优先，否则从所选空间继承
+    let gameId: number | null = guideData.gameId ? Number(guideData.gameId) : null;
+    if (gameId === null) {
+      const space = await query('SELECT game_id FROM blog_spaces WHERE id = ?', [spaceId]);
+      gameId = space[0]?.game_id ? Number(space[0].game_id) : null;
+    }
+    if (gameId !== null) {
+      const gameExists = await query('SELECT id FROM games WHERE id = ?', [gameId]);
+      if (gameExists.length === 0) throw new NotFoundError(`游戏ID ${gameId} 不存在`);
     }
 
     // 主标题（maintitle）：作为 URL slug 后缀来源，必填且唯一（缺省回退标题）
@@ -404,7 +410,7 @@ export const createGuide = async (authorId: string, guideData: GuideCreateInput)
       guideData.summary || '',
       guideData.coverImageUrl || null,
       authorId,
-      (guideData as any).spaceId || 1,
+      spaceId,
       '攻略',
       JSON.stringify(guideData.tags || []),
       JSON.stringify(guideData.faq || []),
@@ -413,7 +419,7 @@ export const createGuide = async (authorId: string, guideData: GuideCreateInput)
       null, // published_at（未发布）
       'pending',
       'guide',
-      guideData.gameId,
+      gameId,
       new Date().toISOString(),
       new Date().toISOString(),
       ...tr.params,
@@ -491,8 +497,13 @@ export const updateGuide = async (
   }
 
   if ((updateData as any).spaceId !== undefined) {
+    const spaceId = (updateData as any).spaceId;
     updates.push('space_id = ?');
-    values.push((updateData as any).spaceId);
+    values.push(spaceId);
+    // 空间变化时重算关联游戏（从空间继承）
+    const space = await query('SELECT game_id FROM blog_spaces WHERE id = ?', [spaceId]);
+    updates.push('game_id = ?');
+    values.push(space[0]?.game_id ? Number(space[0].game_id) : null);
   }
 
   if (updateData.isFeatured !== undefined) {

@@ -833,8 +833,8 @@ router.post(
     const reviewData: ReviewCreateInput = req.body;
     const userId = req.user?.id;
     if (!userId) return res.status(401).json({ success: false, error: '用户未认证' });
-    if (!reviewData.title || !reviewData.content || !reviewData.rating || !reviewData.gameId)
-      return res.status(400).json({ success: false, error: '标题、内容、评分和游戏ID是必填字段' });
+    if (!reviewData.title || !reviewData.content || !reviewData.rating || (!reviewData.gameId && !reviewData.spaceId))
+      return res.status(400).json({ success: false, error: '标题、内容、评分、游戏ID或所属空间是必填字段' });
     if (reviewData.rating < 0 || reviewData.rating > 5)
       return res.status(400).json({ success: false, error: '评分必须在0到5之间' });
     const review = await reviewService.createReview(userId, reviewData);
