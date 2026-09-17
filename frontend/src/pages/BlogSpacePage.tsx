@@ -258,7 +258,7 @@ const BlogSpacePage = () => {
                 )}
                 {/* 完整文章内容 */}
                 <article className="blog-content">
-                  <BlogRenderContent content={activeArticle.content} />
+                  <BlogRenderContent content={activeArticle.content} contentHtml={activeArticle.contentHtml} />
                 </article>
                 {/* 标签 */}
                 {activeArticle.tags && activeArticle.tags.length > 0 && (
