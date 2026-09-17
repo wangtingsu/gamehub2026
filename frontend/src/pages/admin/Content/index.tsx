@@ -807,8 +807,6 @@ const Content: React.FC = () => {
         extra = (
           <div className="space-y-2">
             <p><strong>游戏：</strong>{guide.gameTitle || '-'}</p>
-            <p><strong>难度：</strong>{guide.difficulty}</p>
-            <p><strong>预计时间：</strong>{guide.estimatedMinutes || '-'} 分钟</p>
             {guide.steps?.length > 0 && (
               <div>
                 <strong>步骤数：</strong>{guide.steps.length}
@@ -842,7 +840,7 @@ const Content: React.FC = () => {
   // 编辑内容
   const handleEditContent = async (content: NewsArticle | Review | Guide | CommunityPost, type: ContentType) => {
     let full: any = content;
-    // 博客/测评/攻略 同表（blog_articles），但列表接口 /blogs 不返回 gameTitle/difficulty/summary 等字段，
+    // 博客/测评/攻略 同表（blog_articles），但列表接口 /blogs 不返回 gameTitle/summary 等字段，
     // 编辑时按类型拉取完整详情，避免表单回填空值。
     if (type === 'reviews') {
       try { full = await apiService.getReview(String(content.id)); } catch { /* 拉取失败回退列表数据 */ }
@@ -856,10 +854,8 @@ const Content: React.FC = () => {
       // 前端类型用 imageUrl，表单字段用 coverImageUrl，做映射
       coverImageUrl: (full as any).coverImageUrl || (full as any).imageUrl || '',
     };
-    // 处理 Guide 特有的 difficulty / summary / estimatedMinutes 字段
+    // 处理 Guide 特有的 summary 字段
     if (type === 'guides') {
-      formValues.difficulty = (full as Guide).difficulty || 'medium';
-      formValues.estimatedMinutes = (full as Guide).estimatedMinutes;
       formValues.summary = (full as Guide).summary || (full as any).excerpt || '';
     }
     // 评测/攻略：回填 spaceId（游戏由空间继承，不再单独回填 gameTitle）
@@ -1070,7 +1066,6 @@ const Content: React.FC = () => {
       case 'guides':
         data = {
           ...defaultContent,
-          difficulty: 'medium',
           summary: '',
         } as unknown as Guide;
         break;
@@ -1624,26 +1619,6 @@ const Content: React.FC = () => {
                   rules={[{ required: true, message: 'Please enter author' }]}
                 >
                   <Input placeholder="Enter author name" />
-                </Form.Item>
-
-                <Form.Item
-                  label="难度 / Difficulty"
-                  name="difficulty"
-                  rules={[{ required: true, message: 'Please select difficulty' }]}
-                >
-                  <Select placeholder="Select difficulty">
-                    <Option value="easy">简单</Option>
-                    <Option value="medium">中等</Option>
-                    <Option value="hard">困难</Option>
-                    <Option value="expert">专家</Option>
-                  </Select>
-                </Form.Item>
-
-                <Form.Item
-                  label="预计时长（分钟）/ Estimated Minutes"
-                  name="estimatedMinutes"
-                >
-                  <Input type="number" min={0} placeholder="e.g. 30" />
                 </Form.Item>
 
                 <Form.Item label="所属空间 / Space" name="spaceId" rules={[{ required: true, message: '请选择所属空间' }]}>
