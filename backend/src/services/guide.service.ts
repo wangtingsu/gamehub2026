@@ -402,7 +402,7 @@ export const createGuide = async (authorId: string, guideData: GuideCreateInput)
 
     const tr = translationColumns((guideData as any).translations);
     const cols = [
-      'title', 'maintitle', 'slug', 'content', 'content_html', 'excerpt', 'cover_image_url', 'author_id', 'space_id', 'category', 'tags', 'faq', 'difficulty', 'estimated_minutes',
+      'title', 'maintitle', 'slug', 'content', 'content_html', 'excerpt', 'cover_image_url', 'author_id', 'space_id', 'category', 'tags', 'faq',
       'is_published', 'is_pinned', 'published_at', 'review_status', 'post_type', 'game_id', 'created_at', 'updated_at',
       ...tr.cols,
     ];
@@ -420,8 +420,6 @@ export const createGuide = async (authorId: string, guideData: GuideCreateInput)
       '攻略',
       JSON.stringify(guideData.tags || []),
       JSON.stringify(guideData.faq || []),
-      guideData.difficulty || 'medium',
-      guideData.estimatedMinutes ?? null,
       0, // is_published = 0，待审核
       0, // is_pinned = 0
       null, // published_at（未发布）
@@ -549,18 +547,6 @@ export const updateGuide = async (
   if (updateData.faq !== undefined) {
     updates.push('faq = ?');
     values.push(JSON.stringify(updateData.faq));
-  }
-
-  // 难度
-  if (updateData.difficulty !== undefined) {
-    updates.push('difficulty = ?');
-    values.push(updateData.difficulty);
-  }
-
-  // 预计时长（分钟）
-  if (updateData.estimatedMinutes !== undefined) {
-    updates.push('estimated_minutes = ?');
-    values.push(updateData.estimatedMinutes);
   }
 
   if (updates.length === 0) {
