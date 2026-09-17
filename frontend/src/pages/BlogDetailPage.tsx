@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo, useRef } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import { Typography, Tag, Button, Avatar, Skeleton, Alert, Tooltip, message } from 'antd';
 import { CalendarOutlined, EyeOutlined, LikeOutlined, LikeFilled, StarOutlined, StarFilled, ArrowLeftOutlined, ClockCircleOutlined, UserOutlined, MessageOutlined, TwitterOutlined, FacebookFilled, LinkedinFilled, RedditOutlined, ShareAltOutlined, CheckOutlined, ThunderboltOutlined, TagOutlined } from '@ant-design/icons';
@@ -14,20 +14,6 @@ const { Text } = Typography;
 
 const getToken = () => localStorage.getItem('accessToken') || '';
 
-/** 从 Markdown 内容中提取标题作为目录 */
-const extractHeadings = (content: string) => {
-  const headings: { level: number; text: string; id: string }[] = [];
-  const regex = /^(#{1,3})\s+(.+)$/gm;
-  let match;
-  while ((match = regex.exec(content)) !== null) {
-    const level = match[1].length;
-    const text = match[2].trim();
-    const id = text.toLowerCase().replace(/[^a-z0-9一-龥]+/g, '-').replace(/(^-|-$)/g, '');
-    headings.push({ level, text, id });
-  }
-  return headings;
-};
-
 const BlogDetailPage = () => {
   const { id, lang } = useParams<{ id: string; lang: string }>();
   const navigate = useNavigate();
@@ -39,9 +25,7 @@ const BlogDetailPage = () => {
   const [toggling, setToggling] = useState<'like'|'favorite'|null>(null);
   const [related, setRelated] = useState<any[]>([]);
   const [progress, setProgress] = useState(0);
-  const [activeId, setActiveId] = useState('');
   const [copied, setCopied] = useState(false);
-  const articleRef = useRef<HTMLElement | null>(null);
 
   useEffect(() => {
     if (!id || !getToken()) return;
@@ -59,8 +43,6 @@ const BlogDetailPage = () => {
       setRelated(list);
     }).catch(() => {});
   }, [post]);
-
-  const headings = useMemo(() => post?.content ? extractHeadings(post.content) : [], [post]);
 
   const faqStructuredData = useMemo(() => {
     const faqs = Array.isArray(post?.faq) ? post.faq.filter((f: any) => f && f.question && f.answer) : [];
@@ -85,28 +67,6 @@ const BlogDetailPage = () => {
     onScroll();
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
-
-  // 给正文标题补 id（与目录一致），并实现目录滚动高亮
-  useEffect(() => {
-    if (headings.length === 0) return;
-    const container = articleRef.current;
-    if (container) {
-      const hs = container.querySelectorAll('h1,h2,h3');
-      headings.forEach((h, i) => { if (hs[i]) hs[i].id = h.id; });
-    }
-    const ids = headings.map(h => h.id);
-    const onScroll = () => {
-      let current = '';
-      for (const hid of ids) {
-        const el = document.getElementById(hid);
-        if (el && el.getBoundingClientRect().top <= 120) current = hid;
-      }
-      setActiveId(current);
-    };
-    window.addEventListener('scroll', onScroll, { passive: true });
-    onScroll();
-    return () => window.removeEventListener('scroll', onScroll);
-  }, [headings]);
 
   const toggle = async (type: 'like'|'favorite') => {
     if (!id || !getToken()) { navigate(`/${currentLang}/login`); return; }
@@ -284,35 +244,6 @@ const BlogDetailPage = () => {
 
       <div className="py-6 max-w-[1600px] mx-auto px-1 sm:px-2">
         <div className="flex gap-6">
-          {/* ====== 左侧：目录 (TOC) ====== */}
-          <aside className="w-52 flex-shrink-0 hidden xl:block">
-            <div className="sticky top-4 max-h-[calc(100vh-40px)] overflow-y-auto space-scroll pt-2">
-              <Text className="!text-gray-500 !text-xs !font-bold !uppercase !tracking-widest block mb-4 pl-2">On this page</Text>
-              {headings.length === 0 ? (
-                <Text className="!text-gray-600 !text-xs pl-2">No headings</Text>
-              ) : (
-                <nav className="space-y-0 border-l border-dark-700/30">
-                  {headings.map((h, i) => {
-                    const active = activeId === h.id;
-                    return (
-                      <a key={i} href={`#${h.id}`}
-                        className={`block text-base py-1.5 transition-all duration-200 border-l-2 -ml-px ${
-                          h.level === 2 ? 'pl-3' : 'pl-6'
-                        } ${
-                          active
-                            ? 'text-blue-400 border-blue-400 bg-blue-400/5'
-                            : 'text-gray-400 border-transparent hover:text-blue-400 hover:border-blue-400'
-                        }`}
-                        onClick={(e) => { e.preventDefault(); const el = document.getElementById(h.id); if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' }); }}>
-                        <span className="line-clamp-1">{h.text}</span>
-                      </a>
-                    );
-                  })}
-                </nav>
-              )}
-            </div>
-          </aside>
-
           {/* ====== 中间：文章内容 ====== */}
           <div className="flex-1 min-w-0">
             <Button type="text" className="!text-gray-400 hover:!text-white !pl-0 mb-4" icon={<ArrowLeftOutlined />}
@@ -340,7 +271,7 @@ const BlogDetailPage = () => {
               </div>
             </div>
 
-            <article ref={articleRef} className="mb-10">
+            <article className="mb-10">
               <BlogRenderContent content={post.content} contentHtml={post.contentHtml} />
             </article>
 
