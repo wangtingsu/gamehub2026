@@ -30,6 +30,13 @@ export const cacheMiddleware = (duration: number = 3600) => {
       return next();
     }
 
+    // 已登录请求（带 Authorization）不缓存：管理后台和登录用户的列表接口
+    // 若被浏览器缓存，编辑内容后后台会读到旧数据（最长 max-age 秒内不生效）
+    if (req.headers.authorization) {
+      res.set('Cache-Control', 'no-store');
+      return next();
+    }
+
     // 设置Cache-Control头部
     res.set('Cache-Control', `public, max-age=${duration}`);
 
