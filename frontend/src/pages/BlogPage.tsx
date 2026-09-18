@@ -68,6 +68,42 @@ const BlogPage = () => {
         <Title level={1} className="!text-white !text-2xl md:!text-3xl !mb-2">{t('blog.title', 'GameHub Blog – News, Guides & More')}</Title>
         <Paragraph className="!text-gray-400 !mb-6">{t('blog.tagline')}</Paragraph>
 
+        {/* ====== Latest Updates ====== */}
+        {latest.length > 0 && (
+          <section>
+            <Title level={2} className="!text-white !text-xl !mb-6">{t('blog.latestUpdates')}</Title>
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-3">
+              {latest.slice((latestPage-1)*PAGE_SIZE, latestPage*PAGE_SIZE).map(a => (
+                <Link key={a.id} to={`/${lang}/blog/${a.slug || a.id}`} className="no-underline group block">
+                  <div className="bg-dark-800 border border-dark-700 rounded-lg p-4 hover:border-blue-500/50 transition-all flex gap-4">
+                    <div className="w-28 h-20 flex-shrink-0 rounded-lg overflow-hidden bg-dark-700">
+                      {a.coverImageUrl ? (
+                        <img src={a.coverImageUrl} alt="" className="w-full h-full object-cover group-hover:scale-105 transition-transform" loading="lazy" />
+                      ) : (
+                        <div className="w-full h-full flex items-center justify-center text-2xl">📄</div>
+                      )}
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <Tag color="blue" className="text-[10px] mb-1">{a.category || t('blog.categoryBlog')}</Tag>
+                      <h4 className="text-white text-sm font-medium line-clamp-2 group-hover:text-blue-400 mb-1">{a.title}</h4>
+                      <div className="flex items-center gap-2 text-xs text-gray-600">
+                        <span>{a.authorName || a.author || t('blog.anonymous')}</span>
+                        <span className="ml-auto">{fmt(a.publishedAt||a.publishDate)}</span>
+                      </div>
+                    </div>
+                  </div>
+                </Link>
+              ))}
+            </div>
+            {latestTotal > PAGE_SIZE && (
+              <div className="flex justify-center mt-8">
+                <Pagination current={latestPage} pageSize={PAGE_SIZE} total={latestTotal}
+                  onChange={setLatestPage} showSizeChanger={false} />
+              </div>
+            )}
+          </section>
+        )}
+
         {/* ====== Editor's Picks ====== */}
         {mainPick && (
           <section className="mb-6">
@@ -154,42 +190,6 @@ const BlogPage = () => {
             </div>
           </section>
         ))}
-
-        {/* ====== Latest Updates ====== */}
-        {latest.length > 0 && (
-          <section>
-            <Title level={2} className="!text-white !text-xl !mb-6">{t('blog.latestUpdates')}</Title>
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-3">
-              {latest.slice((latestPage-1)*PAGE_SIZE, latestPage*PAGE_SIZE).map(a => (
-                <Link key={a.id} to={`/${lang}/blog/${a.slug || a.id}`} className="no-underline group block">
-                  <div className="bg-dark-800 border border-dark-700 rounded-lg p-4 hover:border-blue-500/50 transition-all flex gap-4">
-                    <div className="w-28 h-20 flex-shrink-0 rounded-lg overflow-hidden bg-dark-700">
-                      {a.coverImageUrl ? (
-                        <img src={a.coverImageUrl} alt="" className="w-full h-full object-cover group-hover:scale-105 transition-transform" loading="lazy" />
-                      ) : (
-                        <div className="w-full h-full flex items-center justify-center text-2xl">📄</div>
-                      )}
-                    </div>
-                    <div className="flex-1 min-w-0">
-                      <Tag color="blue" className="text-[10px] mb-1">{a.category || t('blog.categoryBlog')}</Tag>
-                      <h4 className="text-white text-sm font-medium line-clamp-2 group-hover:text-blue-400 mb-1">{a.title}</h4>
-                      <div className="flex items-center gap-2 text-xs text-gray-600">
-                        <span>{a.authorName || a.author || t('blog.anonymous')}</span>
-                        <span className="ml-auto">{fmt(a.publishedAt||a.publishDate)}</span>
-                      </div>
-                    </div>
-                  </div>
-                </Link>
-              ))}
-            </div>
-            {latestTotal > PAGE_SIZE && (
-              <div className="flex justify-center mt-8">
-                <Pagination current={latestPage} pageSize={PAGE_SIZE} total={latestTotal}
-                  onChange={setLatestPage} showSizeChanger={false} />
-              </div>
-            )}
-          </section>
-        )}
       </div>
     </div>
   );
