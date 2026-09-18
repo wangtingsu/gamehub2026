@@ -424,7 +424,7 @@ export async function getUserBehaviorProfile(userId: string): Promise<BehaviorPr
 
   // 并行获取内容产出统计
   const contentCounts = await Promise.all([
-    query('SELECT COUNT(*) as count FROM reviews WHERE author_id = ?', [userId]),
+    query("SELECT COUNT(*) as count FROM blog_articles WHERE blog_article_type = 'review' AND author_id = ?", [userId]),
     query('SELECT COUNT(*) as count FROM comments WHERE author_id = ?', [userId]),
     query('SELECT COUNT(*) as count FROM community_posts WHERE author_id = ?', [userId]),
   ]);

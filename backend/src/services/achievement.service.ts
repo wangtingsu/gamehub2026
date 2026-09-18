@@ -61,7 +61,7 @@ const mapUserAchievement = (row: any): UserPlatformAchievement => ({
 const getUserStats = async (userId: string): Promise<Record<string, number>> => {
   // 查询用户发布的评测总数
   const reviewResult = await query(
-    'SELECT COUNT(*) as count FROM reviews WHERE author_id = ? AND deleted_at IS NULL',
+    "SELECT COUNT(*) as count FROM blog_articles WHERE blog_article_type = 'review' AND author_id = ? AND deleted_at IS NULL",
     [userId],
   );
   // 查询用户发布的社区帖子总数

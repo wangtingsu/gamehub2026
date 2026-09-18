@@ -258,7 +258,7 @@ const BlogSpacePage = () => {
             ) : (
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
                 {searchResults.map((article: any) => (
-                  <div key={`${article.postType}-${article.id}`} onClick={() => openSearchResult(article)}
+                  <div key={`${article.blogArticleType}-${article.id}`} onClick={() => openSearchResult(article)}
                     className="rounded-xl p-4 cursor-pointer transition-all hover:-translate-y-1 border-2 border-dark-700 bg-dark-800 hover:border-blue-500/50">
                     {article.coverImageUrl && (
                       <div className="w-full h-28 rounded-lg overflow-hidden mb-2">
@@ -266,8 +266,8 @@ const BlogSpacePage = () => {
                       </div>
                     )}
                     <div className="flex items-center gap-2 mb-2">
-                      <Tag color={article.postType === 'review' ? 'green' : article.postType === 'guide' ? 'purple' : 'blue'}>
-                        {article.postType === 'review' ? t('blog.space.tabLabels.review', '评测') : article.postType === 'guide' ? t('blog.space.tabLabels.guide', '攻略') : t('blog.space.tabLabels.blog', '博客')}
+                      <Tag color={article.blogArticleType === 'review' ? 'green' : article.blogArticleType === 'guide' ? 'purple' : 'blue'}>
+                        {article.blogArticleType === 'review' ? t('blog.space.tabLabels.review', '评测') : article.blogArticleType === 'guide' ? t('blog.space.tabLabels.guide', '攻略') : t('blog.space.tabLabels.blog', '博客')}
                       </Tag>
                     </div>
                     <h4 className="text-white font-semibold text-sm line-clamp-2 mb-2 hover:text-blue-400">{article.title}</h4>
@@ -300,7 +300,7 @@ const BlogSpacePage = () => {
               <>
                 {/* 文章元信息 */}
                 <div className="flex flex-wrap gap-2 mb-4">
-                  <Tag color="blue">{activeArticle.postType === 'review' ? t('blog.space.tabLabels.review', '评测') : activeArticle.postType === 'guide' ? t('blog.space.tabLabels.guide', '攻略') : t('blog.space.tabLabels.blog', '博客')}</Tag>
+                  <Tag color="blue">{activeArticle.blogArticleType === 'review' ? t('blog.space.tabLabels.review', '评测') : activeArticle.blogArticleType === 'guide' ? t('blog.space.tabLabels.guide', '攻略') : t('blog.space.tabLabels.blog', '博客')}</Tag>
                   {activeArticle.category && <Tag>{activeArticle.category}</Tag>}
                   {activeArticle.rating != null && <Tag color="gold">⭐ {activeArticle.rating}</Tag>}
                 </div>

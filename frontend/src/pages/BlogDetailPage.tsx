@@ -217,8 +217,8 @@ const BlogDetailPage = () => {
           <div className="max-w-[1600px] mx-auto px-4 sm:px-6 pb-8 md:pb-12">
             <div className="flex flex-wrap gap-2 mb-4">
               <Tag color="blue" className="!text-xs !m-0">{post.category || 'Blog'}</Tag>
-              {(post as any).postType === 'review' && <Tag color="green" className="!text-xs !m-0">Review</Tag>}
-              {(post as any).postType === 'guide' && <Tag color="purple" className="!text-xs !m-0">Guide</Tag>}
+              {(post as any).blogArticleType === 'review' && <Tag color="green" className="!text-xs !m-0">Review</Tag>}
+              {(post as any).blogArticleType === 'guide' && <Tag color="purple" className="!text-xs !m-0">Guide</Tag>}
               {spaceName && <Link to={`/${currentLang}/blog/space/${spaceSlug}`}><Tag color="cyan" className="!text-xs !m-0">🎮 {spaceName}</Tag></Link>}
             </div>
 

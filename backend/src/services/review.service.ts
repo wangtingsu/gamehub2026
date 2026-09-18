@@ -201,8 +201,8 @@ export const getReviews = async (
     whereClause = `WHERE ${conditions.join(' AND ')}`;
   }
 
-  // 添加 post_type 筛选（从 blog_articles 统一表读）
-  conditions.push("r.post_type = 'review'");
+  // 添加 blog_article_type 筛选（从 blog_articles 统一表读）
+  conditions.push("r.blog_article_type = 'review'");
 
   if (conditions.length > 0) {
     whereClause = `WHERE ${conditions.join(' AND ')}`;
@@ -296,8 +296,8 @@ export const searchReviews = async (
     whereClause = `WHERE ${conditions.join(' AND ')}`;
   }
 
-  // 添加 post_type 筛选（从 blog_articles 统一表读）
-  conditions.push("r.post_type = 'review'");
+  // 添加 blog_article_type 筛选（从 blog_articles 统一表读）
+  conditions.push("r.blog_article_type = 'review'");
   whereClause = `WHERE ${conditions.join(' AND ')}`;
 
   // 获取总数
@@ -357,7 +357,7 @@ export const getReviewById = async (id: string, lang?: string): Promise<any> => 
      FROM blog_articles r
      LEFT JOIN users u ON r.author_id = u.id
      LEFT JOIN games g ON r.game_id = g.id
-     WHERE r.id = ? AND r.post_type = 'review'`,
+     WHERE r.id = ? AND r.blog_article_type = 'review'`,
     [id]
   );
 
@@ -421,7 +421,7 @@ export const createReview = async (authorId: string, reviewData: ReviewCreateInp
     // 检查用户是否已为同一游戏写过评测（每人仅限一篇；无游戏关联则跳过）
     if (gameId !== null) {
       const existingReview = await query(
-        "SELECT id FROM blog_articles WHERE author_id = ? AND game_id = ? AND post_type = 'review'",
+        "SELECT id FROM blog_articles WHERE author_id = ? AND game_id = ? AND blog_article_type = 'review'",
         [authorId, gameId]
       );
 
@@ -446,7 +446,7 @@ export const createReview = async (authorId: string, reviewData: ReviewCreateInp
     const tr = translationColumns((reviewData as any).translations);
     const cols = [
       'title', 'maintitle', 'slug', 'content', 'content_html', 'excerpt', 'rating', 'game_id', 'author_id', 'category', 'tags', 'faq', 'space_id',
-      'is_published', 'is_pinned', 'published_at', 'review_status', 'post_type', 'created_at', 'updated_at',
+      'is_published', 'is_pinned', 'published_at', 'review_status', 'blog_article_type', 'created_at', 'updated_at',
       ...tr.cols,
     ];
     const placeholders = cols.map(() => '?').join(',');
@@ -601,7 +601,7 @@ export const updateReview = async (
   const result = await execute(
     `UPDATE blog_articles
      SET ${updates.join(', ')}
-     WHERE id = ? AND post_type = 'review'`,
+     WHERE id = ? AND blog_article_type = 'review'`,
     values
   );
 
@@ -624,13 +624,13 @@ export const updateReview = async (
  * @throws 当评测不存在时抛出 NotFoundError
  */
 export const deleteReview = async (id: string): Promise<void> => {
-  const rows = await query("SELECT content FROM blog_articles WHERE id = ? AND post_type = 'review'", [id]) as any[];
+  const rows = await query("SELECT content FROM blog_articles WHERE id = ? AND blog_article_type = 'review'", [id]) as any[];
   if (rows.length > 0 && rows[0].content) {
     const { cleanupContentImages } = require('./image-cleanup.service');
     cleanupContentImages(rows[0].content);
   }
   const result = await execute(
-    "DELETE FROM blog_articles WHERE id = ? AND post_type = 'review'",
+    "DELETE FROM blog_articles WHERE id = ? AND blog_article_type = 'review'",
     [id]
   );
 
@@ -652,12 +652,12 @@ export const deleteReview = async (id: string): Promise<void> => {
  */
 export const likeReview = async (id: string): Promise<{ likes: number }> => {
   await execute(
-    "UPDATE blog_articles SET likes = likes + 1 WHERE id = ? AND post_type = 'review'",
+    "UPDATE blog_articles SET likes = likes + 1 WHERE id = ? AND blog_article_type = 'review'",
     [id]
   );
 
   const result = await query(
-    "SELECT likes FROM blog_articles WHERE id = ? AND post_type = 'review'",
+    "SELECT likes FROM blog_articles WHERE id = ? AND blog_article_type = 'review'",
     [id]
   );
 
@@ -681,7 +681,7 @@ export const likeReview = async (id: string): Promise<{ likes: number }> => {
  */
 export const featureReview = async (id: string, isFeatured: boolean): Promise<Review> => {
   const result = await execute(
-    "UPDATE blog_articles SET is_pinned = ? WHERE id = ? AND post_type = 'review'",
+    "UPDATE blog_articles SET is_pinned = ? WHERE id = ? AND blog_article_type = 'review'",
     [isFeatured ? 1 : 0, id]
   );
 

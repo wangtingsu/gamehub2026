@@ -383,7 +383,7 @@ export class UserModel extends BaseModel<User, UserCreateInput, UserUpdateInput>
   }> {
     try {
       const reviewResult = await query(
-        'SELECT COUNT(*) as count FROM reviews WHERE author_id = ?', [userId]
+        "SELECT COUNT(*) as count FROM blog_articles WHERE blog_article_type = 'review' AND author_id = ?", [userId]
       );
       const reviewCount = reviewResult[0]?.count || 0;
 
@@ -399,7 +399,7 @@ export class UserModel extends BaseModel<User, UserCreateInput, UserUpdateInput>
 
       const activityResult = await query(`
         SELECT MAX(created_at) as last_activity FROM (
-          SELECT created_at FROM reviews WHERE author_id = ?
+          SELECT created_at FROM blog_articles WHERE blog_article_type = 'review' AND author_id = ?
           UNION ALL
           SELECT created_at FROM comments WHERE author_id = ?
         )

@@ -49,7 +49,7 @@ export const getLeaderboard = async (
                  COUNT(r.id) as review_count,
                  g.views
           FROM games g
-          LEFT JOIN reviews r ON g.id = r.game_id
+          LEFT JOIN blog_articles r ON g.id = r.game_id AND r.blog_article_type = 'review'
           GROUP BY g.id, g.slug
           HAVING COUNT(r.id) > 0
           ORDER BY score DESC, review_count DESC
@@ -64,7 +64,7 @@ export const getLeaderboard = async (
                  COUNT(r.id) as score,
                  COALESCE(AVG(r.rating), 0) as rating
           FROM games g
-          LEFT JOIN reviews r ON g.id = r.game_id
+          LEFT JOIN blog_articles r ON g.id = r.game_id AND r.blog_article_type = 'review'
           GROUP BY g.id, g.slug
           ORDER BY score DESC, rating DESC
           LIMIT ?
@@ -92,7 +92,7 @@ export const getLeaderboard = async (
                  (COUNT(DISTINCT r.id) + COUNT(DISTINCT c.id)) as score,
                  COALESCE(AVG(r.rating), 0) as rating
           FROM games g
-          LEFT JOIN reviews r ON r.game_id = g.id
+          LEFT JOIN blog_articles r ON r.game_id = g.id AND r.blog_article_type = 'review'
           LEFT JOIN comments c ON c.parent_type = 'review' AND c.parent_id = r.id
           GROUP BY g.id, g.slug
           ORDER BY score DESC
@@ -165,8 +165,8 @@ export const getGameTrends = async (
       // 查询该游戏每日评测数
       const trendData = await query(
         `SELECT date(published_at) as date, COUNT(*) as value
-         FROM reviews
-         WHERE game_id = ? AND published_at >= datetime('now', ?)
+         FROM blog_articles
+         WHERE blog_article_type = 'review' AND game_id = ? AND published_at >= datetime('now', ?)
          GROUP BY date(published_at)
          ORDER BY date ASC`,
         [game.id, `-${days} days`]
@@ -366,7 +366,7 @@ export const getCommunitySummary = async (): Promise<CommunitySummary> => {
     // 各实体总数查询
     const [userCount] = await query(`SELECT COUNT(*) as total FROM users`, []);
     const [gameCount] = await query(`SELECT COUNT(*) as total FROM games`, []);
-    const [reviewCount] = await query(`SELECT COUNT(*) as total FROM reviews`, []);
+    const [reviewCount] = await query(`SELECT COUNT(*) as total FROM blog_articles WHERE blog_article_type = 'review'`, []);
     const [postCount] = await query(`SELECT COUNT(*) as total FROM community_posts`, []);
     const [commentCount] = await query(`SELECT COUNT(*) as total FROM comments`, []);
 
@@ -375,7 +375,7 @@ export const getCommunitySummary = async (): Promise<CommunitySummary> => {
       `SELECT COUNT(*) as total FROM users WHERE created_at >= datetime('now', '-1 day')`, []
     );
     const [newReviews] = await query(
-      `SELECT COUNT(*) as total FROM reviews WHERE published_at >= datetime('now', '-1 day')`, []
+      `SELECT COUNT(*) as total FROM blog_articles WHERE blog_article_type = 'review' AND published_at >= datetime('now', '-1 day')`, []
     );
     const [newPosts] = await query(
       `SELECT COUNT(*) as total FROM community_posts WHERE published_at >= datetime('now', '-1 day')`, []

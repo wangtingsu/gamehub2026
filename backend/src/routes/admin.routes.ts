@@ -234,13 +234,13 @@ router.use(adminAuthenticate);
 router.get('/dashboard/stats', asyncHandler(async (req: Request, res: Response) => {
   const userCount = await query('SELECT COUNT(*) as total, SUM(CASE WHEN is_active THEN 1 ELSE 0 END) as active FROM users');
   const gameCount = await query('SELECT COUNT(*) as total FROM games');
-  const reviewCount = await query('SELECT COUNT(*) as total FROM reviews');
+  const reviewCount = await query("SELECT COUNT(*) as total FROM blog_articles WHERE blog_article_type = 'review'");
   const newsCount = await query('SELECT COUNT(*) as total FROM news');
 
   // 今日新增
   const today = new Date().toISOString().split('T')[0];
   const newUsersToday = await query("SELECT COUNT(*) as count FROM users WHERE DATE(created_at) = ?", [today]);
-  const newReviewsToday = await query("SELECT COUNT(*) as count FROM reviews WHERE DATE(created_at) = ?", [today]);
+  const newReviewsToday = await query("SELECT COUNT(*) as count FROM blog_articles WHERE blog_article_type = 'review' AND DATE(created_at) = ?", [today]);
 
   // 社区统计
   const postCount = await query('SELECT COUNT(*) as total FROM community_posts');

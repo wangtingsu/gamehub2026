@@ -1002,7 +1002,7 @@ router.get(
   asyncHandler(async (_req: Request, res: Response) => {
     const [postCount, reviewCount, commentCount, userCount] = await Promise.all([
       query('SELECT COUNT(*) as count FROM community_posts WHERE deleted_at IS NULL'),
-      query('SELECT COUNT(*) as count FROM reviews WHERE deleted_at IS NULL'),
+      query("SELECT COUNT(*) as count FROM blog_articles WHERE blog_article_type = 'review' AND deleted_at IS NULL"),
       query('SELECT COUNT(*) as count FROM comments WHERE deleted_at IS NULL'),
       query('SELECT COUNT(*) as count FROM users WHERE is_active = true'),
     ]);

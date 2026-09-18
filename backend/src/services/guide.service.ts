@@ -166,7 +166,7 @@ export const getGuides = async (
   let whereClause = '';
   const queryParams: any[] = [];
 
-  const conditions: string[] = ["g.post_type = 'guide'"];
+  const conditions: string[] = ["g.blog_article_type = 'guide'"];
 
   if (filters.gameId) {
     conditions.push('g.game_id = ?');
@@ -252,7 +252,7 @@ export const searchGuides = async (
   let whereClause = '';
   const queryParams: any[] = [];
 
-  const conditions: string[] = ['g.is_published = 1', "g.post_type = 'guide'"];
+  const conditions: string[] = ['g.is_published = 1', "g.blog_article_type = 'guide'"];
 
   if (searchQuery) {
     conditions.push('(g.title LIKE ? OR g.content LIKE ? OR g.excerpt LIKE ?)');
@@ -331,7 +331,7 @@ export const getGuideById = async (id: string, lang?: string): Promise<any> => {
      FROM blog_articles g
      LEFT JOIN users u ON g.author_id = u.id
      LEFT JOIN games game ON g.game_id = game.id
-     WHERE g.id = ? AND g.post_type = 'guide'`,
+     WHERE g.id = ? AND g.blog_article_type = 'guide'`,
     [id]
   );
 
@@ -403,7 +403,7 @@ export const createGuide = async (authorId: string, guideData: GuideCreateInput)
     const tr = translationColumns((guideData as any).translations);
     const cols = [
       'title', 'maintitle', 'slug', 'content', 'content_html', 'excerpt', 'cover_image_url', 'author_id', 'space_id', 'category', 'tags', 'faq',
-      'is_published', 'is_pinned', 'published_at', 'review_status', 'post_type', 'game_id', 'created_at', 'updated_at',
+      'is_published', 'is_pinned', 'published_at', 'review_status', 'blog_article_type', 'game_id', 'created_at', 'updated_at',
       ...tr.cols,
     ];
     const placeholders = cols.map(() => '?').join(',');
@@ -559,7 +559,7 @@ export const updateGuide = async (
   values.push(id);
 
   const result = await execute(
-    `UPDATE blog_articles SET ${updates.join(', ')} WHERE id = ? AND post_type = 'guide'`,
+    `UPDATE blog_articles SET ${updates.join(', ')} WHERE id = ? AND blog_article_type = 'guide'`,
     values
   );
 
@@ -579,13 +579,13 @@ export const updateGuide = async (
  * @throws NotFoundError - 攻略不存在时抛出
  */
 export const deleteGuide = async (id: string): Promise<void> => {
-  const rows = await query("SELECT content FROM blog_articles WHERE id = ? AND post_type = 'guide'", [id]) as any[];
+  const rows = await query("SELECT content FROM blog_articles WHERE id = ? AND blog_article_type = 'guide'", [id]) as any[];
   if (rows.length > 0 && rows[0].content) {
     const { cleanupContentImages } = require('./image-cleanup.service');
     cleanupContentImages(rows[0].content);
   }
   const result = await execute(
-    "DELETE FROM blog_articles WHERE id = ? AND post_type = 'guide'",
+    "DELETE FROM blog_articles WHERE id = ? AND blog_article_type = 'guide'",
     [id]
   );
 
@@ -605,12 +605,12 @@ export const deleteGuide = async (id: string): Promise<void> => {
  */
 export const likeGuide = async (id: string): Promise<{ likes: number }> => {
   await execute(
-    "UPDATE blog_articles SET likes = likes + 1 WHERE id = ? AND post_type = 'guide'",
+    "UPDATE blog_articles SET likes = likes + 1 WHERE id = ? AND blog_article_type = 'guide'",
     [id]
   );
 
   const result = await query(
-    "SELECT likes FROM blog_articles WHERE id = ? AND post_type = 'guide'",
+    "SELECT likes FROM blog_articles WHERE id = ? AND blog_article_type = 'guide'",
     [id]
   );
 
@@ -633,7 +633,7 @@ export const likeGuide = async (id: string): Promise<{ likes: number }> => {
  */
 export const featureGuide = async (id: string, isFeatured: boolean): Promise<Guide> => {
   const result = await execute(
-    "UPDATE blog_articles SET is_pinned = ? WHERE id = ? AND post_type = 'guide'",
+    "UPDATE blog_articles SET is_pinned = ? WHERE id = ? AND blog_article_type = 'guide'",
     [isFeatured ? 1 : 0, id]
   );
 
@@ -655,7 +655,7 @@ export const featureGuide = async (id: string, isFeatured: boolean): Promise<Gui
  */
 export const incrementViewCount = async (id: string): Promise<void> => {
   await execute(
-    "UPDATE blog_articles SET views = views + 1 WHERE id = ? AND post_type = 'guide'",
+    "UPDATE blog_articles SET views = views + 1 WHERE id = ? AND blog_article_type = 'guide'",
     [id]
   );
 };

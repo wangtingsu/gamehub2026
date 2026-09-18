@@ -425,7 +425,7 @@ export interface BlogArticle {
   featured: boolean;
   reviewStatus?: ReviewStatusType;
   reviewComment?: string;
-  postType?: 'blog' | 'review' | 'guide';
+  blogArticleType?: 'blog' | 'review' | 'guide';
   rating?: number;
   gameId?: string;
   /** 常见问题（FAQ） */

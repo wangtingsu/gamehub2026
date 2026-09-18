@@ -90,7 +90,7 @@ export const getAllPublishedNewsForSitemap = async (): Promise<SitemapNewsItem[]
  */
 export const getAllPublishedGuidesForSitemap = async (): Promise<SitemapNewsItem[]> => {
   const result = await query(
-    `SELECT id, created_at as published_at FROM guides WHERE is_published = 1 AND review_status = 'approved' ORDER BY created_at DESC`,
+    `SELECT id, created_at as published_at FROM blog_articles WHERE blog_article_type = 'guide' AND is_published = 1 AND review_status = 'approved' ORDER BY created_at DESC`,
     []
   );
   return (result.rows || result).map((row: any) => ({
@@ -108,7 +108,7 @@ export const getAllPublishedGuidesForSitemap = async (): Promise<SitemapNewsItem
  */
 export const getAllReviewsForSitemap = async (): Promise<SitemapReviewItem[]> => {
   const result = await query(
-    'SELECT id, published_at FROM reviews ORDER BY published_at DESC',
+    "SELECT id, published_at FROM blog_articles WHERE blog_article_type = 'review' ORDER BY published_at DESC",
     []
   );
   return (result.rows || result).map((row: any) => ({

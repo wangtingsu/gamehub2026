@@ -281,9 +281,9 @@ export class GameModel extends BaseModel<Game, GameCreateInput, GameUpdateInput>
         SELECT COUNT(*) as count,
                SUM(r.rating * (1 + (COALESCE(u.level, 1) - 1) * 0.5)) /
                NULLIF(SUM(1 + (COALESCE(u.level, 1) - 1) * 0.5), 0) as avg_rating
-        FROM reviews r
+        FROM blog_articles r
         LEFT JOIN users u ON r.author_id = u.id
-        WHERE r.game_id = ?
+        WHERE r.game_id = ? AND r.blog_article_type = 'review'
       `, [gameId]);
       const reviewCount = reviewResult[0]?.count || 0;
       const averageRating = reviewResult[0]?.avg_rating ? Number(reviewResult[0].avg_rating) : 0;

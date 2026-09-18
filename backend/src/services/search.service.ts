@@ -29,7 +29,7 @@ const searchGames = async (queryText: string, limit: number = 10): Promise<any[]
 
   const result = await query(
     `SELECT g.*,
-            (SELECT COUNT(*) FROM reviews WHERE game_id = g.id) as review_count,
+            (SELECT COUNT(*) FROM blog_articles WHERE blog_article_type = 'review' AND game_id = g.id) as review_count,
             ${getWeightedRatingSubquery()} as avg_rating
      FROM games g
      WHERE g.title LIKE ? OR g.description LIKE ?
@@ -66,10 +66,10 @@ const searchReviews = async (queryText: string, limit: number = 10): Promise<any
 
   const result = await query(
     `SELECT r.*, u.username, u.display_name, u.avatar_url, g.title as game_title
-     FROM reviews r
+     FROM blog_articles r
      LEFT JOIN users u ON r.author_id = u.id
      LEFT JOIN games g ON r.game_id = g.id
-     WHERE r.title LIKE ? OR r.content LIKE ?
+     WHERE (r.title LIKE ? OR r.content LIKE ?) AND r.blog_article_type = 'review'
      ORDER BY r.published_at DESC
      LIMIT ?`,
     [searchPattern, searchPattern, limit]
@@ -354,9 +354,9 @@ export const searchSuggestions = async (searchText: string, limit: number = 5): 
   // 查询评测建议：按评测标题模糊匹配，关联游戏标题作为副标题
   const reviewSuggestions = await query(
     `SELECT r.id, r.title, g.title as game_title
-     FROM reviews r
+     FROM blog_articles r
      LEFT JOIN games g ON r.game_id = g.id
-     WHERE r.title LIKE ?
+     WHERE r.title LIKE ? AND r.blog_article_type = 'review'
      ORDER BY r.published_at DESC
      LIMIT ?`,
     [searchPattern, limit]

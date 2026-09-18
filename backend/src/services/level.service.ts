@@ -224,9 +224,9 @@ export const getWeightedRatingSubquery = (): string => {
   return `(
     SELECT SUM(r_sub.rating * (1 + (COALESCE(u_sub.level, 1) - 1) * ${WEIGHT_COEFFICIENT})) /
            NULLIF(SUM(1 + (COALESCE(u_sub.level, 1) - 1) * ${WEIGHT_COEFFICIENT}), 0)
-    FROM reviews r_sub
+    FROM blog_articles r_sub
     LEFT JOIN users u_sub ON r_sub.author_id = u_sub.id
-    WHERE r_sub.game_id = g.id
+    WHERE r_sub.blog_article_type = 'review' AND r_sub.game_id = g.id
   )`;
 };
 
@@ -240,8 +240,9 @@ export const getWeightedRatingGroupQuery = (): string => {
            COUNT(*) as reviewCount,
            SUM(r_sub.rating * (1 + (COALESCE(u_sub.level, 1) - 1) * ${WEIGHT_COEFFICIENT})) /
            NULLIF(SUM(1 + (COALESCE(u_sub.level, 1) - 1) * ${WEIGHT_COEFFICIENT}), 0) as avgScore
-    FROM reviews r_sub
+    FROM blog_articles r_sub
     LEFT JOIN users u_sub ON r_sub.author_id = u_sub.id
+    WHERE r_sub.blog_article_type = 'review'
     GROUP BY r_sub.game_id
   `;
 };

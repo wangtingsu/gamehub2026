@@ -144,8 +144,8 @@ export async function getContentEngagement(
 
   // 统计评测总数
   const reviewResult = await query(`
-    SELECT COUNT(*) as total FROM reviews
-    WHERE created_at >= datetime('now', '-${days} days')
+    SELECT COUNT(*) as total FROM blog_articles
+    WHERE blog_article_type = 'review' AND created_at >= datetime('now', '-${days} days')
   `);
 
   // 统计帖子总数
@@ -163,7 +163,7 @@ export async function getContentEngagement(
   // 使用 UNION ALL 获取每日各类内容的生成数量
   const dailyRows = await query(`
     SELECT strftime('%Y-%m-%d', created_at) as date, 'reviews' as type, COUNT(*) as count
-    FROM reviews WHERE created_at >= datetime('now', '-${days} days')
+    FROM blog_articles WHERE blog_article_type = 'review' AND created_at >= datetime('now', '-${days} days')
     GROUP BY strftime('%Y-%m-%d', created_at)
     UNION ALL
     SELECT strftime('%Y-%m-%d', created_at) as date, 'posts' as type, COUNT(*) as count
@@ -323,19 +323,19 @@ export async function getDashboardStats(): Promise<any> {
   // 当前各实体总量统计
   const userCount = await query('SELECT COUNT(*) as total, SUM(CASE WHEN is_active THEN 1 ELSE 0 END) as active FROM users');
   const gameCount = await query('SELECT COUNT(*) as total FROM games');
-  const reviewCount = await query('SELECT COUNT(*) as total FROM reviews');
+  const reviewCount = await query("SELECT COUNT(*) as total FROM blog_articles WHERE blog_article_type = 'review'");
   const newsCount = await query('SELECT COUNT(*) as total FROM news');
   const postCount = await query('SELECT COUNT(*) as total FROM community_posts');
   const commentCount = await query('SELECT COUNT(*) as total FROM comments');
 
   // 今日新增数据
   const newUsersToday = await query("SELECT COUNT(*) as count FROM users WHERE date(created_at) = date(?)", [today]);
-  const newReviewsToday = await query("SELECT COUNT(*) as count FROM reviews WHERE date(created_at) = date(?)", [today]);
+  const newReviewsToday = await query("SELECT COUNT(*) as count FROM blog_articles WHERE blog_article_type = 'review' AND date(created_at) = date(?)", [today]);
 
   // 上月同期总量数据（用于计算环比增长率）
   const prevUserCount = await query("SELECT COUNT(*) as total FROM users WHERE date(created_at) < date(?)", [lastMonthDate]);
   const prevGameCount = await query("SELECT COUNT(*) as total FROM games WHERE date(created_at) < date(?)", [lastMonthDate]);
-  const prevReviewCount = await query("SELECT COUNT(*) as total FROM reviews WHERE date(created_at) < date(?)", [lastMonthDate]);
+  const prevReviewCount = await query("SELECT COUNT(*) as total FROM blog_articles WHERE blog_article_type = 'review' AND date(created_at) < date(?)", [lastMonthDate]);
 
   // 最近 7 天用户增长趋势
   const weeklyUserTrend = await query(`

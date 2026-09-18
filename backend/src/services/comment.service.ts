@@ -320,7 +320,7 @@ export const createComment = async (authorId: string, commentData: CommentCreate
 
     switch (commentData.parentType) {
       case 'review':
-        parentExistsSql = 'SELECT id FROM reviews WHERE id = ?';
+        parentExistsSql = "SELECT id FROM blog_articles WHERE id = ? AND blog_article_type = 'review'";
         break;
       case 'news':
         parentExistsSql = 'SELECT id FROM news WHERE id = ?';

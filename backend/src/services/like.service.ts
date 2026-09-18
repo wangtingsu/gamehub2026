@@ -50,7 +50,7 @@ export const like = async (userId: string, targetType: string, targetId: string)
 
     switch (targetType) {
       case 'review':
-        targetExistsSql = 'SELECT id FROM reviews WHERE id = ?';
+        targetExistsSql = "SELECT id FROM blog_articles WHERE id = ? AND blog_article_type = 'review'";
         break;
       case 'news':
         targetExistsSql = 'SELECT id FROM news WHERE id = ?';
@@ -113,7 +113,7 @@ export const like = async (userId: string, targetType: string, targetId: string)
       try {
         const authorField = targetType === 'comment' ? 'author_id' : 'author_id';
         const tableMap: Record<string, string> = {
-          review: 'reviews',
+          review: 'blog_articles',
           news: 'news',
           community_post: 'community_posts',
           comment: 'comments',
@@ -181,7 +181,7 @@ const updateTargetLikeCount = async (targetType: string, targetId: string, delta
 
   switch (targetType) {
     case 'review':
-      updateSql = 'UPDATE reviews SET likes = likes + ? WHERE id = ?';
+      updateSql = "UPDATE blog_articles SET likes = likes + ? WHERE id = ? AND blog_article_type = 'review'";
       break;
     case 'news':
       updateSql = 'UPDATE news SET likes = likes + ? WHERE id = ?';
@@ -314,7 +314,7 @@ export const getUserLikes = async (
              WHEN l.target_type = 'game' THEN g.title
            END as target_title
     FROM likes l
-    LEFT JOIN reviews r ON l.target_type = 'review' AND l.target_id = r.id
+    LEFT JOIN blog_articles r ON l.target_type = 'review' AND l.target_id = r.id AND r.blog_article_type = 'review'
     LEFT JOIN news n ON l.target_type = 'news' AND l.target_id = n.id
     LEFT JOIN community_posts cp ON l.target_type = 'community_post' AND l.target_id = cp.id
     LEFT JOIN comments c ON l.target_type = 'comment' AND l.target_id = c.id

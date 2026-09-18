@@ -433,7 +433,7 @@ export const getGameReviews = async (
 
   // 首先获取总数
   const countResult = await query(
-    'SELECT COUNT(*) as total FROM reviews WHERE game_id = ?',
+    "SELECT COUNT(*) as total FROM blog_articles WHERE blog_article_type = 'review' AND game_id = ?",
     [gameId]
   );
   const total = parseInt(countResult[0]?.total || 0);
@@ -441,10 +441,10 @@ export const getGameReviews = async (
   // 然后获取分页数据
   const result = await query(
     `SELECT r.*, u.username, u.display_name, u.avatar_url, g.title as game_title
-     FROM reviews r
+     FROM blog_articles r
      JOIN users u ON r.author_id = u.id
      LEFT JOIN games g ON r.game_id = g.id
-     WHERE r.game_id = ?
+     WHERE r.game_id = ? AND r.blog_article_type = 'review'
      ORDER BY r.created_at DESC
      LIMIT ? OFFSET ?`,
     [gameId, limit, offset]
@@ -531,8 +531,8 @@ export const getGamesWithForumPosts = async (
            (SELECT cp2.title FROM community_posts cp2 WHERE cp2.game_id = g.id AND cp2.deleted_at IS NULL AND cp2.review_status = 'approved' ORDER BY cp2.published_at DESC LIMIT 1) as latest_post_title
     FROM games g
     LEFT JOIN community_posts cp ON cp.game_id = g.id AND cp.deleted_at IS NULL AND cp.review_status = 'approved'
-    LEFT JOIN reviews r ON r.game_id = g.id
-    LEFT JOIN guides gu ON gu.game_id = g.id AND gu.review_status = 'approved'
+    LEFT JOIN blog_articles r ON r.game_id = g.id AND r.blog_article_type = 'review'
+    LEFT JOIN blog_articles gu ON gu.game_id = g.id AND gu.blog_article_type = 'guide' AND gu.review_status = 'approved'
     ${whereClause}
     GROUP BY g.id
     ${havingClause}

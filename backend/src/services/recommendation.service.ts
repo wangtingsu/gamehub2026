@@ -51,7 +51,7 @@ export const getPersonalizedRecommendations = async (
 
     // 2. 获取用户已评测的游戏（需要在推荐中排除）
     const reviewedGames = await query(
-      `SELECT DISTINCT game_id FROM reviews WHERE author_id = ?`,
+      `SELECT DISTINCT game_id FROM blog_articles WHERE blog_article_type = 'review' AND author_id = ?`,
       [userId]
     );
 
@@ -212,7 +212,7 @@ export const getRelatedContent = async (
     if (contentType === 'review') {
       // 同游戏的其他评测推荐（按点赞数排序）
       const review = await query(
-        `SELECT game_id FROM reviews WHERE id = ?`,
+        `SELECT game_id FROM blog_articles WHERE blog_article_type = 'review' AND id = ?`,
         [contentId]
       );
       if (!review.length) return [];
@@ -220,9 +220,9 @@ export const getRelatedContent = async (
 
       const results = await query(
         `SELECT r.id, r.title, g.title as game_title, g.cover_image_url, r.rating, r.likes
-         FROM reviews r
+         FROM blog_articles r
          JOIN games g ON r.game_id = g.id
-         WHERE r.game_id = ? AND r.id != ?
+         WHERE r.game_id = ? AND r.id != ? AND r.blog_article_type = 'review'
          ORDER BY r.likes DESC
          LIMIT ?`,
         [gameId, contentId, limit]
@@ -265,9 +265,9 @@ export const getTrendingContent = async (limit: number = 10): Promise<Recommenda
       `SELECT g.id, g.title, g.slug, g.cover_image_url,
               COALESCE(${getWeightedRatingSubquery()}, g.rating) as avg_rating,
               g.views,
-              (SELECT COUNT(*) FROM reviews WHERE game_id = g.id) as review_count,
+              (SELECT COUNT(*) FROM blog_articles WHERE blog_article_type = 'review' AND game_id = g.id) as review_count,
               g.created_at,
-              (g.views * 0.3 + (SELECT COUNT(*) FROM reviews WHERE game_id = g.id) * 10 * 0.4 +
+              (g.views * 0.3 + (SELECT COUNT(*) FROM blog_articles WHERE blog_article_type = 'review' AND game_id = g.id) * 10 * 0.4 +
                ${newGameBonus} * 0.3) as hot_score
        FROM games g
        ORDER BY hot_score DESC

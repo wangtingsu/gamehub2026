@@ -170,7 +170,7 @@ async function searchGamesV2(
   // 获取分页数据（含评测数和加权评分）
   const result = await query(
     `SELECT g.*,
-            (SELECT COUNT(*) FROM reviews WHERE game_id = g.id) as review_count,
+            (SELECT COUNT(*) FROM blog_articles WHERE blog_article_type = 'review' AND game_id = g.id) as review_count,
             ${getWeightedRatingSubquery()} as avg_rating
      FROM games g
      WHERE ${whereClause}
@@ -238,8 +238,8 @@ async function searchReviewsV2(
 
   // 获取总数
   const totalResult = await query(
-    `SELECT COUNT(*) as total FROM reviews r
-     WHERE (r.title LIKE ? OR r.content LIKE ?)${dateFilter}`,
+    `SELECT COUNT(*) as total FROM blog_articles r
+     WHERE (r.title LIKE ? OR r.content LIKE ?) AND r.blog_article_type = 'review'${dateFilter}`,
     [searchPattern, searchPattern, ...dateParams]
   );
   const total = Number(totalResult[0]?.total || 0);
@@ -247,10 +247,10 @@ async function searchReviewsV2(
   // 获取分页数据，关联作者和游戏信息
   const result = await query(
     `SELECT r.*, u.username, u.display_name, u.avatar_url, g.title as game_title
-     FROM reviews r
+     FROM blog_articles r
      LEFT JOIN users u ON r.author_id = u.id
      LEFT JOIN games g ON r.game_id = g.id
-     WHERE (r.title LIKE ? OR r.content LIKE ?)${dateFilter}
+     WHERE (r.title LIKE ? OR r.content LIKE ?) AND r.blog_article_type = 'review'${dateFilter}
      ORDER BY ${sortClause}
      LIMIT ? OFFSET ?`,
     [searchPattern, searchPattern, ...dateParams, limit, offset]
@@ -710,9 +710,9 @@ export const getSearchSuggestionsV2 = async (
 
   // 评测建议
   const reviewResults = await query(
-    `SELECT r.id, r.title, g.title as game_title FROM reviews r
+    `SELECT r.id, r.title, g.title as game_title FROM blog_articles r
      LEFT JOIN games g ON r.game_id = g.id
-     WHERE r.title LIKE ?
+     WHERE r.title LIKE ? AND r.blog_article_type = 'review'
      ORDER BY r.published_at DESC
      LIMIT ?`,
     [pattern, limit]

@@ -151,20 +151,20 @@ const FaqListFields: React.FC<{ name: string | (string | number)[] }> = ({ name 
 
 type ContentType = 'news' | 'blogs' | 'guides' | 'reviews' | 'community' | 'blogspaces' | 'categories' | 'templates';
 
-// 博客/测评/攻略 三者在后台统一存储于 blog_articles 表，按 post_type 字段区分
+// 博客/测评/攻略 三者在后台统一存储于 blog_articles 表，按 blog_article_type 字段区分
 const POST_TYPE_META: Record<string, { label: string; color: string }> = {
   blog: { label: '博客', color: 'blue' },
   review: { label: '测评', color: 'purple' },
   guide: { label: '攻略', color: 'green' },
 };
 
-/** 将文章 post_type 映射为管理后台的表单类型 */
-const postTypeToContentType = (postType?: string): ContentType =>
-  postType === 'review' ? 'reviews' : postType === 'guide' ? 'guides' : 'blogs';
+/** 将文章 blog_article_type 映射为管理后台的表单类型 */
+const blogArticleTypeToContentType = (blogArticleType?: string): ContentType =>
+  blogArticleType === 'review' ? 'reviews' : blogArticleType === 'guide' ? 'guides' : 'blogs';
 
-/** 根据 post_type 生成前台详情页跳转地址 */
+/** 根据 blog_article_type 生成前台详情页跳转地址 */
 const articleViewUrl = (record: any): string => {
-  const pt = record?.postType || 'blog';
+  const pt = record?.blogArticleType || 'blog';
   if (pt === 'review') return `/community/reviews/${record.id}`;
   if (pt === 'guide') return `/guides/${record.id}`;
   return `/blog/${record.slug || record.id}`;
@@ -1165,7 +1165,7 @@ const Content: React.FC = () => {
     if (!searchKw) return true;
     const hay = [
       record.title, record.slug, record.maintitle, record.category,
-      record.spaceName, record.author, record.postType,
+      record.spaceName, record.author, record.blogArticleType,
     ].filter(Boolean).join(' ').toLowerCase();
     return hay.includes(searchKw);
   };
@@ -1183,7 +1183,7 @@ const Content: React.FC = () => {
   // 合并后的「文章」列表列（博客/测评/攻略）
   const articleColumns: ColumnsType<any> = [
     {
-      title: '类型', dataIndex: 'postType', key: 'postType', width: 76,
+      title: '类型', dataIndex: 'blogArticleType', key: 'blogArticleType', width: 76,
       render: (pt: string) => {
         const m = POST_TYPE_META[pt] || POST_TYPE_META.blog;
         return <Tag color={m.color}>{m.label}</Tag>;
@@ -1219,7 +1219,7 @@ const Content: React.FC = () => {
           <Button type="text" icon={<EyeOutlined />} size="small" className="text-blue-500"
             onClick={() => window.open(articleViewUrl(record), '_blank')} />
           <Button type="text" icon={<EditOutlined />} size="small" className="text-green-500"
-            onClick={() => handleEditContent(record, postTypeToContentType(record.postType))} />
+            onClick={() => handleEditContent(record, blogArticleTypeToContentType(record.blogArticleType))} />
           <Popconfirm title="确定删除？" onConfirm={() => handleDeleteContent(record.id, 'blogs')} okText="是" cancelText="否">
             <Button type="text" icon={<DeleteOutlined />} size="small" danger />
           </Popconfirm>

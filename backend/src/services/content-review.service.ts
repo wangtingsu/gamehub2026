@@ -79,8 +79,8 @@ export const getPendingContentQueue = async (options: {
       .filter(t => !options.type || t.type === options.type)
       .map(t => {
         const alias = t.table[0];
-        // blog/guide/review 同存于 blog_articles，用 post_type 区分
-        const postTypeFilter = t.postType ? ` AND ${alias}.post_type = '${t.postType}'` : '';
+        // blog/guide/review 同存于 blog_articles，用 blog_article_type 区分
+        const postTypeFilter = t.postType ? ` AND ${alias}.blog_article_type = '${t.postType}'` : '';
         return `SELECT '${t.type}' AS type, ${alias}.id, ${alias}.title,
                 substr(${alias}.content, 1, 200) AS content,
                 ${alias}.author_id AS authorId, COALESCE(u.display_name, u.username) AS authorName,
@@ -283,7 +283,7 @@ export const getReviewStats = async (): Promise<ReviewStats[]> => {
     const unions = CONTENT_TABLES
       .map(t => {
         const alias = t.table[0];
-        const where = t.postType ? ` WHERE ${alias}.post_type = '${t.postType}'` : '';
+        const where = t.postType ? ` WHERE ${alias}.blog_article_type = '${t.postType}'` : '';
         return `SELECT '${t.type}' AS type, ${alias}.review_status AS review_status
                 FROM ${t.table} ${alias}${where}`;
       })

@@ -1648,7 +1648,7 @@ export const runMigrations = async (): Promise<void> => {
       `ALTER TABLE blog_articles ADD COLUMN IF NOT EXISTS pros TEXT`,
       `ALTER TABLE blog_articles ADD COLUMN IF NOT EXISTS rating REAL`,
       `ALTER TABLE blog_articles ADD COLUMN IF NOT EXISTS game_id INTEGER REFERENCES games(id) ON DELETE SET NULL`,
-      `ALTER TABLE blog_articles ADD COLUMN IF NOT EXISTS post_type TEXT NOT NULL DEFAULT 'blog'`,
+      `ALTER TABLE blog_articles ADD COLUMN IF NOT EXISTS blog_article_type TEXT NOT NULL DEFAULT 'blog'`,
       // blog_spaces 补充列
       `ALTER TABLE blog_spaces ADD COLUMN IF NOT EXISTS game_id INTEGER REFERENCES games(id) ON DELETE SET NULL`,
       // news 补充列

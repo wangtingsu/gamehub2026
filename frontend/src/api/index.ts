@@ -699,7 +699,7 @@ class RealApiService extends BaseApiService {
         readingTime: Math.max(1, Math.ceil((item.content?.length || 0) / 500)),
         views: item.views || 0, likes: item.likes || 0, featured: false,
         spaceId: item.spaceId, spaceName: item.spaceName, spaceSlug: item.spaceSlug,
-      postType: item.postType || 'blog', rating: item.rating || null, gameId: item.gameId || null, reviewStatus: item.reviewStatus || item.review_status,
+      blogArticleType: item.blogArticleType || 'blog', rating: item.rating || null, gameId: item.gameId || null, reviewStatus: item.reviewStatus || item.review_status,
       translations: item.translations,
       } as any));
     } catch { return []; }
@@ -741,7 +741,7 @@ class RealApiService extends BaseApiService {
       spaceId: item.spaceId,
       spaceName: item.spaceName,
       spaceSlug: item.spaceSlug,
-      postType: item.postType || 'blog', rating: item.rating || null, gameId: item.gameId || null, reviewStatus: item.reviewStatus || item.review_status,
+      blogArticleType: item.blogArticleType || 'blog', rating: item.rating || null, gameId: item.gameId || null, reviewStatus: item.reviewStatus || item.review_status,
       faq: Array.isArray(item.faq) ? item.faq : (typeof item.faq === 'string' ? JSON.parse(item.faq) : []),
       translations: item.translations,
     } as any;
