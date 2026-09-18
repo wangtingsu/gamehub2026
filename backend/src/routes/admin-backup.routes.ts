@@ -115,7 +115,7 @@ router.post('/backups', asyncHandler(async (req: Request, res: Response) => {
 
     // SQLite: 使用 better-sqlite3 backup API
     const db = getConnection();
-    db.backup(filepath, {
+    await db.backup(filepath, {
       progress({ totalPages, remainingPages }: { totalPages: number; remainingPages: number }) {
         logger.debug(`备份进度: ${totalPages - remainingPages}/${totalPages} 页`);
       },
@@ -204,7 +204,7 @@ router.post('/backups/:id/restore', asyncHandler(async (req: Request, res: Respo
 
     // SQLite: 使用 better-sqlite3 backup API
     const db = getConnection();
-    db.backup(preRestoreFilepath);
+    await db.backup(preRestoreFilepath);
 
     const dbPath = config.database.path || './data/gamehub.db';
     const absDbPath = path.resolve(process.cwd(), dbPath);
