@@ -1278,6 +1278,8 @@
       "loadFailed": "Échec",
       "retry": "Réessayer",
       "searchPlaceholder": "Rechercher...",
+      "searchResults": "Résultats de recherche",
+      "searchEmpty": "Aucun article trouvé",
       "exploreMore": "Explorer plus",
       "noOtherSpaces": "Aucun autre espace",
       "tabLabels": {

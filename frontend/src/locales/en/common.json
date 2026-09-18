@@ -1274,6 +1274,8 @@
       "loadFailed": "Load failed",
       "retry": "Retry",
       "searchPlaceholder": "Search articles...",
+      "searchResults": "Search Results",
+      "searchEmpty": "No matching articles",
       "exploreMore": "Explore More Spaces",
       "noOtherSpaces": "No other spaces",
       "tabLabels": {

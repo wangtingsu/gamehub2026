@@ -1274,6 +1274,8 @@
       "loadFailed": "加载失败",
       "retry": "重试",
       "searchPlaceholder": "搜索文章标题...",
+      "searchResults": "搜索结果",
+      "searchEmpty": "未找到相关文章",
       "exploreMore": "探索更多空间",
       "noOtherSpaces": "暂无其他空间",
       "tabLabels": {

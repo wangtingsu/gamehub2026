@@ -8,6 +8,7 @@ import {
   RightOutlined, CalendarOutlined, UserOutlined, ClockCircleOutlined,
 } from '@ant-design/icons';
 import apiService from '../api';
+import { useDebounce } from '../hooks/useDebounce';
 import SEO from '../components/SEO';
 import BlogRenderContent from '../components/blog/BlogRenderContent';
 import BlogSidebar from '../components/blog/BlogSidebar';
@@ -34,6 +35,10 @@ const BlogSpacePage = () => {
   const [error, setError] = useState<string | null>(null);
   const [rightHeight, setRightHeight] = useState<number>(0);
   const [searchText, setSearchText] = useState('');
+  const [searchResults, setSearchResults] = useState<any[]>([]);
+  const [searchLoading, setSearchLoading] = useState(false);
+  const [searchedKw, setSearchedKw] = useState('');
+  const debouncedSearchText = useDebounce(searchText, 300);
   const leftRef = useRef<HTMLDivElement>(null);
 
   // 加载文章完整内容
@@ -113,6 +118,27 @@ const BlogSpacePage = () => {
     }
     document.getElementById('article-content')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
   };
+
+  // 打开搜索结果中的文章
+  const openSearchResult = (article: any) => {
+    setSearchText('');
+    setActiveArticle(article);
+    loadArticle(article.id);
+    document.getElementById('article-content')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  };
+
+  // 搜索：输入关键词后从后端全量搜索空间内文章（标题/正文）
+  useEffect(() => {
+    const kw = debouncedSearchText.trim();
+    if (!kw || !space?.id) { setSearchResults([]); setSearchLoading(false); setSearchedKw(''); return; }
+    let cancelled = false;
+    setSearchLoading(true);
+    apiService.getSpaceContent(space.id, { search: kw, limit: 50 })
+      .then((res: any) => { if (!cancelled) { setSearchResults(res?.articles || []); setSearchedKw(kw); } })
+      .catch(() => { if (!cancelled) { setSearchResults([]); setSearchedKw(kw); } })
+      .finally(() => { if (!cancelled) setSearchLoading(false); });
+    return () => { cancelled = true; };
+  }, [debouncedSearchText, space?.id]);
 
   const formatDate = (d: string) => {
     try { return new Date(d).toLocaleDateString('zh-CN', { year: 'numeric', month: 'long', day: 'numeric' }); }
@@ -214,12 +240,55 @@ const BlogSpacePage = () => {
           />
         </div>
 
+        {/* 搜索结果 */}
+        {debouncedSearchText.trim() ? (
+          <div className="mb-6">
+            <Title level={2} className="!text-white !text-lg !mb-4">
+              {t('blog.space.searchResults', '搜索结果')}
+              {!searchLoading && searchedKw === debouncedSearchText.trim() && (
+                <Text className="!text-gray-500 !text-sm !ml-2">（{searchResults.length} 篇）</Text>
+              )}
+            </Title>
+            {searchLoading || searchedKw !== debouncedSearchText.trim() ? (
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                {[1, 2, 3, 4].map(i => <div key={i}><Skeleton active paragraph={{ rows: 3 }} /></div>)}
+              </div>
+            ) : searchResults.length === 0 ? (
+              <Empty description={t('blog.space.searchEmpty', '未找到相关文章')} />
+            ) : (
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+                {searchResults.map((article: any) => (
+                  <div key={`${article.postType}-${article.id}`} onClick={() => openSearchResult(article)}
+                    className="rounded-xl p-4 cursor-pointer transition-all hover:-translate-y-1 border-2 border-dark-700 bg-dark-800 hover:border-blue-500/50">
+                    {article.coverImageUrl && (
+                      <div className="w-full h-28 rounded-lg overflow-hidden mb-2">
+                        <img src={article.coverImageUrl} alt={article.title} className="w-full h-full object-cover" loading="lazy" />
+                      </div>
+                    )}
+                    <div className="flex items-center gap-2 mb-2">
+                      <Tag color={article.postType === 'review' ? 'green' : article.postType === 'guide' ? 'purple' : 'blue'}>
+                        {article.postType === 'review' ? t('blog.space.tabLabels.review', '评测') : article.postType === 'guide' ? t('blog.space.tabLabels.guide', '攻略') : t('blog.space.tabLabels.blog', '博客')}
+                      </Tag>
+                    </div>
+                    <h4 className="text-white font-semibold text-sm line-clamp-2 mb-2 hover:text-blue-400">{article.title}</h4>
+                    <div className="flex items-center gap-3 text-xs text-gray-500">
+                      <span><EyeOutlined className="mr-1" />{article.views || 0}</span>
+                      <span><LikeOutlined className="mr-1" />{article.likes || 0}</span>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+        ) : null}
+
         {error && (
           <Alert type="error" message={t('blog.space.loadFailed', '加载失败')} description={error} showIcon className="mb-6"
             action={<Button onClick={() => window.location.reload()}>{t('blog.space.retry', '重试')}</Button>} />
         )}
 
         {/* 文章内容 + 相关空间（等高） */}
+        {!debouncedSearchText.trim() && (
         <div className="flex flex-col lg:flex-row gap-6 mb-4 lg:items-start">
           {/* 左：完整文章内容 */}
           <div ref={leftRef} className="lg:w-5/6 bg-dark-800 border border-dark-700 rounded-xl p-6" id="article-content">
@@ -272,6 +341,7 @@ const BlogSpacePage = () => {
           {/* 右：相关空间 */}
           <BlogSidebar spaces={relatedSpaces} currentSlug={slug} lang={currentLang} />
         </div>
+        )}
 
       </div>
     </div>

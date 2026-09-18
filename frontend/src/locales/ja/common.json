@@ -1278,6 +1278,8 @@
       "loadFailed": "読込失敗",
       "retry": "再試行",
       "searchPlaceholder": "記事検索...",
+      "searchResults": "検索結果",
+      "searchEmpty": "該当する記事がありません",
       "exploreMore": "もっと見る",
       "noOtherSpaces": "他にスペースなし",
       "tabLabels": {

@@ -276,29 +276,29 @@ export const getSpaceContent = async (params: { spaceId: string; postType?: stri
   const { spaceId, postType, page = 1, limit = 20, search } = params;
   const offset = (page - 1) * limit;
 
-  let searchFilter = '';
-  const vals: any[] = [];
-  if (search) { searchFilter = 'AND (title LIKE ? OR content LIKE ?)'; vals.push(`%${search}%`, `%${search}%`); }
+  const searchFilter = search ? 'AND (title LIKE ? OR content LIKE ?)' : '';
+  const searchVals = search ? [`%${search}%`, `%${search}%`] : [];
 
   let unionSQL = '';
+  const vals: any[] = [];
   const typeFilter = !postType || postType === 'all';
+  const pushSegment = (sql: string) => {
+    if (unionSQL) unionSQL += ' UNION ALL ';
+    unionSQL += sql;
+    vals.push(spaceId, ...searchVals);
+  };
 
   // blog_articles
   if (typeFilter || postType === 'blog') {
-    unionSQL += `SELECT id, title, content, '' as excerpt, '' as cover_image_url, author_id, space_id, 'blog' as post_type, NULL as rating, likes, 0 as comments, created_at, published_at as publish_date, 0 as views, 0 as difficulty_val FROM blog_articles WHERE space_id=? ${searchFilter}`;
-    vals.push(spaceId, ...vals.slice(-(search ? 2 : 0)));
+    pushSegment(`SELECT id, title, content, '' as excerpt, '' as cover_image_url, author_id, space_id, 'blog' as post_type, NULL as rating, likes, 0 as comments, created_at, published_at as publish_date, 0 as views, 0 as difficulty_val FROM blog_articles WHERE space_id=? ${searchFilter}`);
   }
   // reviews
   if (typeFilter || postType === 'review') {
-    if (unionSQL) unionSQL += ' UNION ALL ';
-    unionSQL += `SELECT id, title, content, '' as excerpt, '' as cover_image_url, author_id, space_id, 'review' as post_type, rating, likes, 0 as comments, created_at, published_at as publish_date, 0 as views, 0 as difficulty_val FROM reviews WHERE space_id=? ${searchFilter}`;
-    vals.push(spaceId, ...(search ? [`%${search}%`, `%${search}%`] : []));
+    pushSegment(`SELECT id, title, content, '' as excerpt, '' as cover_image_url, author_id, space_id, 'review' as post_type, rating, likes, 0 as comments, created_at, published_at as publish_date, 0 as views, 0 as difficulty_val FROM reviews WHERE space_id=? ${searchFilter}`);
   }
   // guides
   if (typeFilter || postType === 'guide') {
-    if (unionSQL) unionSQL += ' UNION ALL ';
-    unionSQL += `SELECT id, title, content, '' as excerpt, cover_image_url, author_id, space_id, 'guide' as post_type, NULL as rating, likes, 0 as comments, created_at, created_at as publish_date, 0 as views, CASE WHEN difficulty='hard' THEN 3 WHEN difficulty='medium' THEN 2 ELSE 1 END as difficulty_val FROM guides WHERE space_id=? ${searchFilter}`;
-    vals.push(spaceId, ...(search ? [`%${search}%`, `%${search}%`] : []));
+    pushSegment(`SELECT id, title, content, '' as excerpt, cover_image_url, author_id, space_id, 'guide' as post_type, NULL as rating, likes, 0 as comments, created_at, created_at as publish_date, 0 as views, CASE WHEN difficulty='hard' THEN 3 WHEN difficulty='medium' THEN 2 ELSE 1 END as difficulty_val FROM guides WHERE space_id=? ${searchFilter}`);
   }
 
   // Count
