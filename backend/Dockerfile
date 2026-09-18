@@ -1,6 +1,6 @@
 FROM node:20-alpine
 
-RUN apk add --no-cache tzdata su-exec postgresql-client
+RUN apk add --no-cache tzdata su-exec
 
 WORKDIR /app
 

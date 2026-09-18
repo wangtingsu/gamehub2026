@@ -2,7 +2,7 @@
  * 数据库自动备份调度服务
  *
  * 基于 node-cron 实现数据库定时备份功能。
- * 默认每天凌晨 2:00 执行 pg_dump / SQLite backup。
+ * 默认每天凌晨 2:00 执行 SQLite backup。
  *
  * 调度周期通过环境变量 BACKUP_CRON_SCHEDULE 配置，默认 "0 2 * * *"。
  */
@@ -61,47 +61,8 @@ class BackupScheduler {
       const filename = `auto-backup-${timestamp}`;
       const filepath = path.join(BACKUP_DIR, filename);
 
-      if (config.database.type === 'sqlite') {
-        // SQLite: 无法在运行中的 Express 进程里直接调用，跳过自动备份
-        logger.info('SQLite 模式跳过自动备份（请使用管理后台手动备份）');
-      } else {
-        // PostgreSQL: pg_dump
-        const host = config.database.host || 'postgres';
-        const port = String(config.database.port || 5432);
-        const user = config.database.user || 'gamehub';
-        const dbName = config.database.name || 'gamehub';
-        const password = config.database.password || '';
-        const env = { ...process.env, PGPASSWORD: password };
-
-        const sqlFile = filepath + '.sql';
-        execSync(
-          `pg_dump -h ${host} -p ${port} -U ${user} -d ${dbName} -F c -f "${sqlFile}"`,
-          { env, timeout: 300000, stdio: 'pipe' }
-        );
-
-        let fileSize = 0;
-        if (fs.existsSync(sqlFile)) {
-          fileSize = fs.statSync(sqlFile).size;
-        }
-
-        // 写入备份记录
-        await execute(
-          `INSERT INTO backups (filename, filepath, file_size, type, status, description, operator_id, operator_name, db_version, created_at)
-           VALUES ($1, $2, $3, 'scheduled', 'completed', $4, 0, 'System', '', $5)`,
-          [
-            filename + '.sql',
-            sqlFile,
-            fileSize,
-            `自动备份 ${new Date().toLocaleString('zh-CN')}`,
-            new Date().toISOString(),
-          ]
-        );
-
-        logger.info(`自动备份完成: ${filename}.sql (${(fileSize / 1024).toFixed(1)}KB)`);
-
-        // 清理旧备份：保留最近 7 天的备份
-        this.cleanOldBackups(7);
-      }
+      // SQLite 模式：无法在运行中的 Express 进程里直接调用 backup API，跳过自动备份
+      logger.info('SQLite 模式跳过自动备份（请使用管理后台手动备份）');
     } catch (err: any) {
       logger.error('自动备份失败:', err.message);
     } finally {

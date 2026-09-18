@@ -113,52 +113,23 @@ router.post('/backups', asyncHandler(async (req: Request, res: Response) => {
   try {
     const { execSync } = require('child_process');
 
-    if (config.database.type === 'sqlite') {
-      // SQLite: 使用 better-sqlite3 backup API
-      const db = getConnection();
-      db.backup(filepath, {
-        progress({ totalPages, remainingPages }: { totalPages: number; remainingPages: number }) {
-          logger.debug(`备份进度: ${totalPages - remainingPages}/${totalPages} 页`);
-        },
-      });
-    } else {
-      // PostgreSQL: 使用 pg_dump 连接 Docker 网络中的 postgres 容器
-      const host = config.database.host || 'postgres';
-      const port = String(config.database.port || 5432);
-      const user = config.database.user || 'gamehub';
-      const dbName = config.database.name || 'gamehub';
-      const password = config.database.password || '';
-
-      const env = { ...process.env, PGPASSWORD: password };
-
-      // pg_dump 输出自定义格式
-      const sqlFile = filepath.replace('.db', '.sql');
-      execSync(
-        `pg_dump -h ${host} -p ${port} -U ${user} -d ${dbName} -F c -f "${sqlFile}"`,
-        { env, timeout: 300000, stdio: 'pipe' }
-      );
-      logger.info(`pg_dump 完成: ${sqlFile}`);
-
-      // 如果成功，文件应该存在
-      if (!fs.existsSync(sqlFile)) {
-        throw new Error('pg_dump 输出文件未找到');
-      }
-    }
+    // SQLite: 使用 better-sqlite3 backup API
+    const db = getConnection();
+    db.backup(filepath, {
+      progress({ totalPages, remainingPages }: { totalPages: number; remainingPages: number }) {
+        logger.debug(`备份进度: ${totalPages - remainingPages}/${totalPages} 页`);
+      },
+    });
 
     // 使用实际的文件路径
-    const actualFile = config.database.type === 'sqlite' ? filepath : filepath.replace('.db', '.sql');
+    const actualFile = filepath;
     const fileSize = fs.existsSync(actualFile) ? fs.statSync(actualFile).size : 0;
 
     // 获取数据库版本
     let dbVersion = 'unknown';
     try {
-      if (config.database.type === 'sqlite') {
-        const verResult = await query('SELECT sqlite_version() as ver');
-        dbVersion = (verResult[0] as any)?.ver || 'unknown';
-      } else {
-        const verResult = await query('SELECT current_setting(\'server_version\') as ver');
-        dbVersion = (verResult[0] as any)?.ver || 'unknown';
-      }
+      const verResult = await query('SELECT sqlite_version() as ver');
+      dbVersion = (verResult[0] as any)?.ver || 'unknown';
     } catch {
       dbVersion = 'unknown';
     }
@@ -224,66 +195,31 @@ router.post('/backups/:id/restore', asyncHandler(async (req: Request, res: Respo
 
   // 恢复前先创建当前数据库的备份（安全快照，用于回退）
   const preRestoreTimestamp = new Date().toISOString().replace(/[:.]/g, '-');
-  const preRestoreSuffix = config.database.type === 'sqlite' ? '.db' : '.sql';
+  const preRestoreSuffix = '.db';
   const preRestoreFilename = `pre-restore-snapshot-${preRestoreTimestamp}${preRestoreSuffix}`;
   const preRestoreFilepath = path.join(BACKUP_DIR, preRestoreFilename);
 
   try {
     const { execSync } = require('child_process');
 
-    if (config.database.type === 'sqlite') {
-      // SQLite: 使用 better-sqlite3 backup API
-      const db = getConnection();
-      db.backup(preRestoreFilepath);
+    // SQLite: 使用 better-sqlite3 backup API
+    const db = getConnection();
+    db.backup(preRestoreFilepath);
 
-      const dbPath = config.database.path || './data/gamehub.db';
-      const absDbPath = path.resolve(process.cwd(), dbPath);
+    const dbPath = config.database.path || './data/gamehub.db';
+    const absDbPath = path.resolve(process.cwd(), dbPath);
 
-      const { closeDatabase } = require('../db');
-      await closeDatabase();
+    const { closeDatabase } = require('../db');
+    await closeDatabase();
 
-      fs.copyFileSync(backup.filepath, absDbPath);
-      ['-wal', '-shm'].forEach(suffix => {
-        const p = absDbPath + suffix;
-        if (fs.existsSync(p)) fs.unlinkSync(p);
-      });
+    fs.copyFileSync(backup.filepath, absDbPath);
+    ['-wal', '-shm'].forEach(suffix => {
+      const p = absDbPath + suffix;
+      if (fs.existsSync(p)) fs.unlinkSync(p);
+    });
 
-      const { connectDatabase } = require('../db');
-      await connectDatabase();
-    } else {
-      // PostgreSQL: 先创建安全快照，再用 pg_restore 恢复
-      const host = config.database.host || 'postgres';
-      const port = String(config.database.port || 5432);
-      const user = config.database.user || 'gamehub';
-      const dbName = config.database.name || 'gamehub';
-      const password = config.database.password || '';
-      const env = { ...process.env, PGPASSWORD: password };
-
-      // 1. 创建恢复前快照
-      execSync(
-        `pg_dump -h ${host} -p ${port} -U ${user} -d ${dbName} -F c -f "${preRestoreFilepath}"`,
-        { env, timeout: 300000, stdio: 'pipe' }
-      );
-      logger.info(`恢复前快照已创建: ${preRestoreFilename}`);
-
-      // 2. 使用 pg_restore 恢复（-c 清理现有对象，--if-exists 避免不存在对象报错）
-      // pg_restore 在遇到版本差异 warning 时可能返回非零退出码，实际恢复已成功
-      try {
-        execSync(
-          `pg_restore -h ${host} -p ${port} -U ${user} -d ${dbName} -c --if-exists "${backup.filepath}"`,
-          { env, timeout: 300000, stdio: 'pipe' }
-        );
-        logger.info(`pg_restore 完成: ${backup.filename}`);
-      } catch (restoreErr: any) {
-        const stderr = restoreErr.stderr?.toString() || restoreErr.message || '';
-        // 仅包含 warnings 且 errors 已被忽略 = 恢复成功
-        if (stderr.includes('errors ignored on restore')) {
-          logger.warn(`pg_restore 完成 (非致命警告): ${backup.filename}`);
-        } else {
-          throw new Error(`pg_restore 失败: ${stderr.substring(0, 300)}`);
-        }
-      }
-    }
+    const { connectDatabase } = require('../db');
+    await connectDatabase();
 
     // 记录恢复操作到备份表
     const preRestoreSize = fs.existsSync(preRestoreFilepath) ? fs.statSync(preRestoreFilepath).size : 0;

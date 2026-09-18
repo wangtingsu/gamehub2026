@@ -58,38 +58,8 @@ const config = {
   // ======================================================================
 
   database: {
-    /** 数据库类型：sqlite（默认，本地与生产统一）/ postgres（可选，未维护） */
-    type: process.env.DB_TYPE || 'sqlite',
-
-    /** 数据库连接 URL（优先使用，支持 SQLite 和 PostgreSQL） */
-    url: process.env.DATABASE_URL || 'sqlite://./data/gamehub.db',
-
-    /** SQLite 数据库文件路径（仅 SQLite 适用） */
+    /** SQLite 数据库文件路径 */
     path: process.env.DB_PATH || './data/gamehub.db',
-
-    /** 数据库主机地址 */
-    host: process.env.DB_HOST || 'localhost',
-
-    /** 数据库端口号 */
-    port: parseInt(process.env.DB_PORT || '5432', 10),
-
-    /** 数据库名称 */
-    name: process.env.DB_NAME || 'gamehub',
-
-    /** 数据库用户名 */
-    user: process.env.DB_USER || 'postgres',
-
-    /** 数据库密码 */
-    password: process.env.DB_PASSWORD || 'password',
-
-    /** 数据库连接池最大连接数 */
-    maxConnections: parseInt(process.env.DB_MAX_CONNECTIONS || '20', 10),
-
-    /** 连接空闲超时时间（毫秒） */
-    idleTimeout: parseInt(process.env.DB_IDLE_TIMEOUT || '30000', 10),
-
-    /** 连接超时时间（毫秒） */
-    connectionTimeout: parseInt(process.env.DB_CONNECTION_TIMEOUT || '2000', 10),
   },
 
   // ======================================================================
@@ -667,7 +637,7 @@ const requiredEnvVars = [
 
 // 生产环境下额外要求数据库和缓存配置
 if (config.nodeEnv === 'production') {
-  requiredEnvVars.push('DATABASE_URL', 'REDIS_URL');
+  requiredEnvVars.push('REDIS_URL');
 }
 
 // 检查必需的环境变量并输出警告

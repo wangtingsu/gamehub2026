@@ -2,41 +2,20 @@
  * 数据库模块统一入口
  *
  * 本文件作为 GameHub 后端数据库访问层的统一导出入口。
- * 根据配置（config.database.type）动态选择具体的数据库实现（SQLite 或 PostgreSQL），
- * 并将选中的数据库实例的统一接口方法重新导出，使上层调用方无需关心底层数据库类型。
- *
- * 支持的数据库类型：
- * - sqlite（默认）：使用 better-sqlite3，适合开发和轻量部署
- * - postgresql：使用 pg（node-postgres），适合生产环境
+ * 统一使用 SQLite（better-sqlite3），并将数据库实例的统一接口方法重新导出，
+ * 使上层调用方无需关心底层实现细节。
  *
  * @module db/index
  */
 
-import config from '../config';
-
 /**
- * 根据配置选择数据库实现模块
+ * 加载 SQLite 数据库模块
  *
- * 读取 config.database.type 配置项，动态加载对应的数据库驱动模块。
  * 所有被加载的模块均暴露同一套接口方法，包括：
  * connectDatabase, getConnection, query, execute, transaction,
  * checkHealth, closeDatabase, runMigrations。
- *
- * @remarks
- * 此处使用 require() 而非 import 实现条件动态加载，
- * 确保仅加载所选数据库类型的代码，避免引入不必要的依赖。
  */
-let dbModule: any;
-
-const dbType = config.database?.type || 'sqlite';
-
-if (dbType === 'sqlite') {
-  /** 加载 SQLite 数据库模块（基于 better-sqlite3） */
-  dbModule = require('./sqlite').default;
-} else {
-  /** 加载 PostgreSQL 数据库模块（基于 pg 连接池） */
-  dbModule = require('./postgres').default;
-}
+let dbModule: any = require('./sqlite').default;
 
 /**
  * 连接数据库
