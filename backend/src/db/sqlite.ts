@@ -673,31 +673,6 @@ async function runLegacyMigrations(): Promise<void> {
   `).run();
 
   /**
-   * 创建评测表
-   * 存储用户对游戏的评分和评论文本
-   */
-  db.prepare(`
-    CREATE TABLE IF NOT EXISTS reviews (
-      id INTEGER PRIMARY KEY AUTOINCREMENT,
-      title TEXT NOT NULL,
-      content TEXT NOT NULL,
-      game_id INTEGER NOT NULL,
-      author_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
-      rating REAL NOT NULL,
-      summary TEXT,
-      pros TEXT,
-      cons TEXT,
-      is_featured INTEGER DEFAULT 0,
-      likes INTEGER DEFAULT 0,
-      comments INTEGER DEFAULT 0,
-      review_status TEXT NOT NULL DEFAULT 'approved',
-      review_comment TEXT,
-      created_at TEXT DEFAULT CURRENT_TIMESTAMP,
-      updated_at TEXT DEFAULT CURRENT_TIMESTAMP
-    )
-  `).run();
-
-  /**
    * 创建评测模板表
    * 存储评测的分类模板和评分字段配置
    */
@@ -711,29 +686,6 @@ async function runLegacyMigrations(): Promise<void> {
       pros_field TEXT DEFAULT '{}',
       cons_field TEXT DEFAULT '{}',
       is_active INTEGER DEFAULT 1,
-      created_at TEXT DEFAULT CURRENT_TIMESTAMP,
-      updated_at TEXT DEFAULT CURRENT_TIMESTAMP
-    )
-  `).run();
-
-  /**
-   * 创建攻略指南表
-   * 存储玩家分享的游戏攻略、指南和技巧文章
-   */
-  db.prepare(`
-    CREATE TABLE IF NOT EXISTS guides (
-      id INTEGER PRIMARY KEY AUTOINCREMENT,
-      title TEXT NOT NULL,
-      content TEXT NOT NULL,
-      game_id INTEGER NOT NULL,
-      author_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
-      difficulty TEXT,
-      category TEXT,
-      cover_image_url TEXT,
-      likes INTEGER DEFAULT 0,
-      comments INTEGER DEFAULT 0,
-      review_status TEXT NOT NULL DEFAULT 'approved',
-      review_comment TEXT,
       created_at TEXT DEFAULT CURRENT_TIMESTAMP,
       updated_at TEXT DEFAULT CURRENT_TIMESTAMP
     )

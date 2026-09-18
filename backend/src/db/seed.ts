@@ -19,7 +19,7 @@
  */
 
 import bcrypt from 'bcryptjs';
-import { connectDatabase, execute, runMigrations } from './index';
+import { connectDatabase, execute, query, runMigrations } from './index';
 import config from '../config';
 import logger from '../utils/logger';
 
@@ -42,7 +42,7 @@ const hashPassword = async (password: string): Promise<string> => {
  *
  * 按外键约束的顺序删除所有种子数据表中的记录，
  * 并重置 SQLite 自增 ID 计数器。
- * 删除顺序：favorites -> reviews -> games -> users
+ * 删除顺序：favorites -> blog_articles -> blog_spaces -> games -> users
  *
  * @returns {Promise<void>} 清空完成后 resolve
  */
@@ -51,12 +51,13 @@ const clearExistingData = async (): Promise<void> => {
 
   // 注意：外键约束需要按顺序删除
   await execute('DELETE FROM favorites');
-  await execute('DELETE FROM reviews');
+  await execute('DELETE FROM blog_articles');
+  await execute('DELETE FROM blog_spaces');
   await execute('DELETE FROM games');
   await execute('DELETE FROM users');
 
   // 重置自增ID（SQLite特定）
-  await execute("DELETE FROM sqlite_sequence WHERE name IN ('users', 'games', 'reviews', 'favorites')");
+  await execute("DELETE FROM sqlite_sequence WHERE name IN ('users', 'games', 'blog_articles', 'blog_spaces', 'favorites')");
 
   logger.info('现有数据已清空');
 };
@@ -387,18 +388,37 @@ const seedReviews = async (userIds: Record<string, number>, gameIds: Record<stri
   ];
 
   for (const review of reviews) {
+    const gameId = gameIds[review.gameSlug];
+    // 每个游戏归到一个博客空间（评测/攻略/博客统一挂 space_id），不存在则创建
+    let spaceId: number;
+    const existingSpace = await query('SELECT id FROM blog_spaces WHERE game_id = ?', [gameId]);
+    if (existingSpace.length) {
+      spaceId = existingSpace[0].id;
+    } else {
+      const spaceSlug = `${review.gameSlug}-space`;
+      const spaceResult = await execute(
+        `INSERT INTO blog_spaces (name, slug, game_id, is_active, created_at, updated_at) VALUES (?, ?, ?, 1, datetime('now'), datetime('now'))`,
+        [review.gameSlug, spaceSlug, gameId]
+      );
+      spaceId = spaceResult.lastInsertRowid;
+    }
+
     // Derive a short title from the review content
     const title = review.content.substring(0, 50) + (review.content.length > 50 ? '...' : '');
+    const slug = `review-${review.gameSlug}-${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 6)}`;
     await execute(
-      `INSERT INTO reviews (
-        author_id, game_id, title, rating, content, likes
-      ) VALUES (?, ?, ?, ?, ?, ?)`,
+      `INSERT INTO blog_articles (
+        title, slug, content, author_id, space_id, game_id, rating, likes,
+        blog_article_type, review_status, created_at, updated_at
+      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, 'review', 'approved', datetime('now'), datetime('now'))`,
       [
-        userIds[review.userId],
-        gameIds[review.gameSlug],
         title,
-        review.rating,
+        slug,
         review.content,
+        userIds[review.userId],
+        spaceId,
+        gameId,
+        review.rating,
         review.likes
       ]
     );
