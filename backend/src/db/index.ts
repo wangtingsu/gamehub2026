@@ -20,8 +20,7 @@ let dbModule: any = require('./sqlite').default;
 /**
  * 连接数据库
  *
- * 建立与数据库的连接。对于 SQLite，初始化数据库文件并运行迁移；
- * 对于 PostgreSQL，测试连接池可用性并运行迁移。
+ * 建立与数据库的连接，初始化数据库文件并运行迁移。
  *
  * @returns {Promise<void>} 连接完成后 resolve
  * @throws 数据库连接失败时抛出错误
@@ -31,9 +30,8 @@ export const connectDatabase = dbModule.connectDatabase;
 /**
  * 获取数据库连接实例
  *
- * 返回底层数据库的连接实例或连接池对象。
+ * 返回底层数据库的连接实例。
  * - SQLite：返回 better-sqlite3 的 Database 实例
- * - PostgreSQL：返回 pg Pool 实例
  *
  * @returns {any} 数据库连接实例
  */
@@ -46,7 +44,7 @@ export const getConnection = dbModule.getConnection;
  * 支持参数化查询以防止 SQL 注入。
  *
  * @typeparam T - 结果行的类型，默认为 any
- * @param {string} sql - SQL 查询语句，支持 ? 占位符（SQLite 风格）或 $1 格式（PostgreSQL 自动转换）
+ * @param {string} sql - SQL 查询语句，支持 ? 占位符（SQLite 风格）或 $1 格式（自动转换）
  * @param {any[]} [params=[]] - 查询参数数组
  * @returns {Promise<T[]>} 查询结果行数组
  */
