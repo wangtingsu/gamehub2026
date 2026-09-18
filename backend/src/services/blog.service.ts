@@ -98,7 +98,7 @@ export const getBlogs = async (params: { page?: number; limit?: number; spaceId?
   const articles = await query(
     `SELECT a.*, u.username as author_name, u.display_name as author_display_name, s.name as space_name, s.slug as space_slug
      FROM blog_articles a LEFT JOIN users u ON a.author_id=u.id LEFT JOIN blog_spaces s ON a.space_id=s.id
-     ${mainWhere} ORDER BY a.is_pinned DESC, a.created_at DESC LIMIT ? OFFSET ?`,
+     ${mainWhere} ORDER BY a.is_pinned DESC, COALESCE(a.published_at, a.created_at) DESC LIMIT ? OFFSET ?`,
     [...mainVals, limit, offset]
   );
 

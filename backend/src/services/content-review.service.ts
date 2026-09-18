@@ -161,11 +161,11 @@ export const approveContent = async (
       [reviewerId, now, id]
     );
 
-    // 新闻、博客、攻略、测评通过后同时发布（设为可见状态）
+    // 新闻、博客、攻略、测评通过后同时发布（设为可见状态，并记录首次发布时间）
     if (table === 'news' || table === 'blog_articles') {
       await execute(
-        `UPDATE ${table} SET is_published = true WHERE id = ? AND review_status = 'approved'`,
-        [id]
+        `UPDATE ${table} SET is_published = true, published_at = COALESCE(published_at, ?) WHERE id = ? AND review_status = 'approved'`,
+        [now, id]
       );
     }
 
