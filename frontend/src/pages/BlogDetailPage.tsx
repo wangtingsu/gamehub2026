@@ -107,6 +107,9 @@ const BlogDetailPage = () => {
 
   const fmt = (d: string) => { try { return new Date(d).toLocaleDateString('en-US',{year:'numeric',month:'long',day:'numeric'}); } catch { return d||''; } };
   const coverUrl = (post as any).coverImageUrl || post.coverImage;
+  // 头图宽高比：后台可配置（system_configs.blog.cover_aspect_ratio），非法值回退 21/9
+  const rawCoverRatio = (post as any).coverAspectRatio;
+  const coverRatio = /^\d+(\.\d+)?\s*\/\s*\d+(\.\d+)?$/.test(rawCoverRatio) ? rawCoverRatio.replace(/\s+/g, '') : '21/9';
   const spaceName = (post as any).spaceName;
   const spaceSlug = (post as any).spaceSlug;
   const readingTime = post.readingTime || Math.max(1, Math.ceil((post.content?.length||0)/500));
@@ -203,8 +206,8 @@ const BlogDetailPage = () => {
         { name: post.title, url: `/${currentLang}/blog/${post.slug || post.id}` },
       ]} />
 
-      {/* ====== 全宽杂志式头图 ====== */}
-      <div className="relative w-full h-[360px] sm:h-[440px] md:h-[540px] overflow-hidden">
+      {/* ====== 全宽杂志式头图（宽高比后台可配置） ====== */}
+      <div className="relative w-full overflow-hidden min-h-[300px]" style={{ aspectRatio: coverRatio }}>
         {coverUrl ? (
           <img src={coverUrl} alt={post.title} className="absolute inset-0 w-full h-full object-cover" />
         ) : (

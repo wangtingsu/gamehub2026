@@ -111,21 +111,24 @@ export default defineConfig(({ mode }) => ({
       output: {
         // 代码分割策略：将不同模块分离为独立 chunk，优化加载性能
         manualChunks(id) {
-          // node_modules 按模块分组
-          if (id.includes('node_modules')) {
-            if (id.includes('react') || id.includes('react-dom') || id.includes('react-router-dom')) return 'vendor';
-            if (id.includes('antd') || id.includes('@ant-design/icons')) return 'ui';
-            if (id.includes('axios') || id.includes('date-fns') || id.includes('i18next') || id.includes('framer-motion')) return 'utils';
-            if (id.includes('@tanstack/react-query')) return 'auth';
-            if (id.includes('@sentry')) return 'sentry';
-            return 'vendor';
-          }
           // src/ 代码按功能模块分割
-          if (id.includes('/src/api/')) return 'api';
-          if (id.includes('/src/contexts/')) return 'contexts';
-          if (id.includes('/src/components/Layout') || id.includes('/src/components/Navbar') || id.includes('/src/components/Footer')) return 'layout';
-          if (id.includes('/src/components/SearchBar')) return 'search';
-          if (id.includes('/src/components/NotificationBell')) return 'notifications';
+          if (!id.includes('node_modules')) {
+            if (id.includes('/src/api/')) return 'api';
+            if (id.includes('/src/contexts/')) return 'contexts';
+            if (id.includes('/src/components/Layout') || id.includes('/src/components/Navbar') || id.includes('/src/components/Footer')) return 'layout';
+            if (id.includes('/src/components/SearchBar')) return 'search';
+            if (id.includes('/src/components/NotificationBell')) return 'notifications';
+            return undefined;
+          }
+          // node_modules 精确包名分组（避免 id.includes('react') 贪婪命中 md-editor/three 等重依赖）
+          const nm = id.split('node_modules/')[1] || '';
+          const pkg = nm.startsWith('@') ? nm.split('/').slice(0, 2).join('/') : nm.split('/')[0];
+          if (pkg === 'react' || pkg === 'react-dom' || pkg === 'react-router' || pkg === 'react-router-dom') return 'vendor';
+          if (pkg === 'antd' || pkg === '@ant-design/icons') return 'ui';
+          if (pkg === 'axios' || pkg === 'date-fns' || pkg === 'i18next' || pkg === 'react-i18next' || pkg === 'framer-motion') return 'utils';
+          if (pkg === '@tanstack/react-query') return 'auth';
+          if (pkg.startsWith('@sentry/')) return 'sentry';
+          return undefined; // three/recharts/md-editor/react-markdown 等交给 Rollup 按 import 图自动分包
         },
       },
     },

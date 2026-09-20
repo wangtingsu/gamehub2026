@@ -1,5 +1,6 @@
 import React, { useState, useRef, useCallback, useEffect } from 'react';
 import MDEditor from '@uiw/react-md-editor';
+import '@uiw/react-md-editor/markdown-editor.css';
 import { Button, Modal, Input, Space, message, Tooltip } from 'antd';
 import { PictureOutlined, LinkOutlined, UploadOutlined, DragOutlined } from '@ant-design/icons';
 

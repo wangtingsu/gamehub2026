@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import MDEditor from '@uiw/react-md-editor';
+import Markdown from 'react-markdown';
 
 interface BlogRenderContentProps {
   content: string;
@@ -11,7 +11,7 @@ interface BlogRenderContentProps {
 /**
  * 博客/新闻正文渲染组件
  * - 优先：后端下发的 contentHtml（规范 HTML，含目录/标题锚点/配图），用 dangerouslySetInnerHTML 渲染；
- * - 回退：@uiw/react-md-editor 的 Markdown 渲染（兼容存量未回填的旧数据）。
+ * - 回退：react-markdown 渲染（兼容存量未回填的旧数据）。
  * 配色通过 CSS 变量跟随全局主题（[data-theme] 上的 --c-text / --c-text2 / --c-card / --c-bg / --c-border 等），
  * 保证正文在深色与浅色背景下都有良好的对比度与可读性。
  */
@@ -117,10 +117,7 @@ const BlogRenderContent: React.FC<BlogRenderContentProps> = ({ content, contentH
       {hasHtml ? (
         <div className="blog-html-body" dangerouslySetInnerHTML={{ __html: contentHtml! }} />
       ) : (
-        <MDEditor.Markdown
-          source={content}
-          style={{ backgroundColor: 'transparent', color: 'var(--c-text)', fontSize: 17, lineHeight: 1.9 }}
-        />
+        <Markdown>{content}</Markdown>
       )}
     </div>
   );

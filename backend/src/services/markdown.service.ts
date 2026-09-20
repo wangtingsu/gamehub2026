@@ -33,5 +33,15 @@ export function markdownToHtml(content: string): string {
     .use(markdownItAnchor, { slugify: (s: string) => slugger.slug(s), tabIndex: false })
     .use(markdownItImplicitFigures, { figcaption: true });
 
+  // 正文图片统一加 loading=lazy + decoding=async：
+  // 长文十几张图不再首屏全加载（滚动到视口才加载），异步解码不阻塞主线程，显著降低首屏耗时。
+  const defaultImageRenderer = md.renderer.rules.image!;
+  md.renderer.rules.image = (tokens, idx, options, env, self) => {
+    const token = tokens[idx];
+    token.attrSet('loading', 'lazy');
+    token.attrSet('decoding', 'async');
+    return defaultImageRenderer(tokens, idx, options, env, self);
+  };
+
   return md.render(content).trim();
 }

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Card, Form, Switch, Button, message, Typography, Spin } from 'antd';
+import { Card, Form, Switch, Button, message, Typography, Spin, Select } from 'antd';
 import { SettingOutlined, SaveOutlined } from '@ant-design/icons';
 import apiService from '../../../api';
 import SEO from '../../../components/SEO';
@@ -65,6 +65,24 @@ const SystemSettings: React.FC = () => {
               <Switch />
             </Form.Item>
           </div>
+        </Card>
+
+        <Card title="内容显示" className="mb-4">
+          <Form.Item
+            label="博客详情头图宽高比"
+            name="blog.cover_aspect_ratio"
+            extra="宽 / 高，作用于博客/攻略/评测详情页顶部头图，保存后生效"
+          >
+            <Select
+              options={[
+                { value: '16/9', label: '16:9（标准视频画幅）' },
+                { value: '21/9', label: '21:9（电影画幅，推荐）' },
+                { value: '2/1', label: '2:1' },
+                { value: '3/1', label: '3:1（横向横幅）' },
+                { value: '4/3', label: '4:3（方幅）' },
+              ]}
+            />
+          </Form.Item>
         </Card>
 
         <div className="flex justify-end">

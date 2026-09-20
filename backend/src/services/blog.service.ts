@@ -46,6 +46,23 @@ const localizeArticle = (article: any, lang?: string): any => {
   };
 };
 
+/** 博客详情页头图宽高比配置键（后台「系统配置」可调整） */
+const BLOG_COVER_RATIO_KEY = 'blog.cover_aspect_ratio';
+const DEFAULT_BLOG_COVER_RATIO = '21/9';
+
+/** 读取博客详情页头图宽高比（后台可配置，缺省回退 21/9） */
+const getBlogCoverAspectRatio = async (): Promise<string> => {
+  try {
+    const rows = (await query(
+      'SELECT config_value FROM system_configs WHERE config_key = ?',
+      [BLOG_COVER_RATIO_KEY]
+    )) as any[];
+    return rows[0]?.config_value || DEFAULT_BLOG_COVER_RATIO;
+  } catch {
+    return DEFAULT_BLOG_COVER_RATIO;
+  }
+};
+
 /** 从翻译对象生成数据库列名与参数（用于 INSERT） */
 const translationColumns = (translations?: any): { cols: string[]; params: any[] } => {
   const cols: string[] = [];
@@ -120,7 +137,7 @@ export const getBlogById = async (id: string, type?: string, lang?: string) => {
   // 增加浏览量
   await execute('UPDATE blog_articles SET views=views+1 WHERE id=?', [id]);
 
-  return localizeArticle(mapArticle({ ...row, blog_article_type: row.blog_article_type || 'blog' }), lang);
+  return { ...localizeArticle(mapArticle({ ...row, blog_article_type: row.blog_article_type || 'blog' }), lang), coverAspectRatio: await getBlogCoverAspectRatio() };
 };
 
 export const getBlogBySlug = async (slug: string, lang?: string) => {
@@ -131,7 +148,7 @@ export const getBlogBySlug = async (slug: string, lang?: string) => {
   if (!rows.length) throw new NotFoundError('文章不存在');
   const row = rows[0];
   await execute('UPDATE blog_articles SET views=views+1 WHERE id=?', [row.id]);
-  return localizeArticle(mapArticle({ ...row, blog_article_type: row.blog_article_type || 'blog' }), lang);
+  return { ...localizeArticle(mapArticle({ ...row, blog_article_type: row.blog_article_type || 'blog' }), lang), coverAspectRatio: await getBlogCoverAspectRatio() };
 };
 
 export const createBlog = async (authorId: string, data: any) => {

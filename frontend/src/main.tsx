@@ -1,16 +1,19 @@
-import { StrictMode } from 'react'
+import { StrictMode, lazy } from 'react'
 import { createRoot } from 'react-dom/client'
 import { BrowserRouter } from 'react-router-dom'
 import { QueryClientProvider } from '@tanstack/react-query'
-import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 import { HelmetProvider } from 'react-helmet-async'
 import { persistQueryClient } from '@tanstack/react-query-persist-client'
 import { queryClient } from './lib/queryClient'
 import { createIDBPersister } from './lib/queryPersister'
 import './i18n' // 国际化配置
 import './index.css'
-import '@uiw/react-md-editor/markdown-editor.css'
 import App from './App.tsx'
+
+// React Query DevTools：仅 DEV 按需加载，避免生产包静态引入整个 devtools
+const ReactQueryDevtools = import.meta.env.DEV
+  ? lazy(() => import('@tanstack/react-query-devtools').then(m => ({ default: m.ReactQueryDevtools })))
+  : () => null;
 
 // Sentry 监控初始化
 // 扩展Window接口以包含Sentry
@@ -83,8 +86,8 @@ createRoot(document.getElementById('root')!).render(
       <QueryClientProvider client={queryClient}>
         <HelmetProvider>
           <App />
-          {/* 开发环境下显示React Query开发工具 */}
-          {import.meta.env.DEV && <ReactQueryDevtools initialIsOpen={false} />}
+          {/* 开发环境下显示React Query开发工具（生产环境渲染为空组件） */}
+          <ReactQueryDevtools initialIsOpen={false} />
         </HelmetProvider>
       </QueryClientProvider>
     </BrowserRouter>
