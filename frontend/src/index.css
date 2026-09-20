@@ -876,6 +876,11 @@ button, a, input, select, textarea,
 [data-theme="light"] [class*="from-"] .text-white\/80,
 [data-theme="light"] [class*="from-"] .text-white\/90 { color: rgb(255 255 255) !important; }
 
+/* 博客详情头图：头图为深色照片+深色渐变，标题/作者文字在浅色主题下也保持白色 */
+[data-theme="light"] .blog-hero .text-white,
+[data-theme="light"] .blog-hero .\!text-white { color: rgb(255 255 255) !important; }
+[data-theme="light"] .blog-hero .text-gray-300 { color: #d1d5db !important; }
+
 /* bg-dark-600 → 主题变量 */
 [data-theme] .bg-dark-600,
 [data-theme] [class*="bg-dark-600"] { background-color: var(--c-border) !important; }

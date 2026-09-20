@@ -207,7 +207,7 @@ const BlogDetailPage = () => {
       ]} />
 
       {/* ====== 全宽杂志式头图（宽高比后台可配置） ====== */}
-      <div className="relative w-full overflow-hidden min-h-[300px]" style={{ aspectRatio: coverRatio }}>
+      <div className="blog-hero relative w-full overflow-hidden min-h-[300px]" style={{ aspectRatio: coverRatio }}>
         {coverUrl ? (
           <img src={coverUrl} alt={post.title} className="absolute inset-0 w-full h-full object-cover" />
         ) : (
