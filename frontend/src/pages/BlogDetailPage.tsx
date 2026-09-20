@@ -218,14 +218,14 @@ const BlogDetailPage = () => {
 
         <div className="absolute bottom-0 left-0 right-0">
           <div className="max-w-[1600px] mx-auto px-4 sm:px-6 pb-8 md:pb-12">
-            <div className="flex flex-wrap items-center gap-2 mb-4">
+            <h1 className="text-white text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold leading-tight mb-4 max-w-4xl" style={{ textShadow: '0 1px 2px rgba(0,0,0,0.8), 0 3px 10px rgba(0,0,0,0.7), 0 10px 28px rgba(0,0,0,0.75)' }}>{post.title}</h1>
+
+            <div className="flex flex-wrap items-center gap-2 mb-5">
               <Tag color="blue" className="!text-xs !m-0">{post.category || 'Blog'}</Tag>
               {(post as any).blogArticleType === 'review' && <Tag color="green" className="!text-xs !m-0">Review</Tag>}
               {(post as any).blogArticleType === 'guide' && <Tag color="purple" className="!text-xs !m-0">Guide</Tag>}
               {spaceName && <Link to={`/${currentLang}/blog/space/${spaceSlug}`} className="inline-flex items-center"><Tag color="cyan" className="!text-xs !m-0">🎮 {spaceName}</Tag></Link>}
             </div>
-
-            <h1 className="text-white text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold leading-tight mb-5 max-w-4xl" style={{ textShadow: '0 1px 2px rgba(0,0,0,0.8), 0 3px 10px rgba(0,0,0,0.7), 0 10px 28px rgba(0,0,0,0.75)' }}>{post.title}</h1>
 
             <div className="flex items-center gap-3 flex-wrap">
               <Avatar size={44} src={post.authorAvatar || undefined} icon={<UserOutlined />} className="bg-blue-600 flex-shrink-0 ring-2 ring-white/20" />
