@@ -122,7 +122,7 @@ export const getBlogs = async (params: { page?: number; limit?: number; spaceId?
   return { articles: (articles || []).map(a => localizeArticle(mapArticle(a), lang)), total: Number(total), page, limit };
 };
 
-export const getBlogById = async (id: string, type?: string, lang?: string) => {
+export const getBlogById = async (id: string, type?: string, lang?: string, opts: { incrementView?: boolean } = {}) => {
   // 三表已合并到 blog_articles，按主键 id 查询；type 仅作为可选的 blog_article_type 过滤
   const typeFilter = type && type !== 'blog' ? ' AND a.blog_article_type=?' : '';
   const params: any[] = type && type !== 'blog' ? [id, type] : [id];
@@ -134,21 +134,29 @@ export const getBlogById = async (id: string, type?: string, lang?: string) => {
   if (!rows.length) throw new NotFoundError('文章不存在');
   const row = rows[0];
 
-  // 增加浏览量
-  await execute('UPDATE blog_articles SET views=views+1 WHERE id=?', [id]);
+  // 增加浏览量（仅在用户访问详情时；内部调用如创建/更新传 incrementView:false 避免误增）
+  let views = Number(row.views) || 0;
+  if (opts.incrementView !== false) {
+    await execute('UPDATE blog_articles SET views=views+1 WHERE id=?', [id]);
+    views += 1;
+  }
 
-  return { ...localizeArticle(mapArticle({ ...row, blog_article_type: row.blog_article_type || 'blog' }), lang), coverAspectRatio: await getBlogCoverAspectRatio() };
+  return { ...localizeArticle(mapArticle({ ...row, views, blog_article_type: row.blog_article_type || 'blog' }), lang), coverAspectRatio: await getBlogCoverAspectRatio() };
 };
 
-export const getBlogBySlug = async (slug: string, lang?: string) => {
+export const getBlogBySlug = async (slug: string, lang?: string, opts: { incrementView?: boolean } = {}) => {
   const rows = await query(
     `SELECT a.*, u.username as author_name, u.display_name as author_display_name, s.name as space_name, s.slug as space_slug
      FROM blog_articles a LEFT JOIN users u ON a.author_id=u.id LEFT JOIN blog_spaces s ON a.space_id=s.id WHERE a.slug=?`, [slug]
   );
   if (!rows.length) throw new NotFoundError('文章不存在');
   const row = rows[0];
-  await execute('UPDATE blog_articles SET views=views+1 WHERE id=?', [row.id]);
-  return { ...localizeArticle(mapArticle({ ...row, blog_article_type: row.blog_article_type || 'blog' }), lang), coverAspectRatio: await getBlogCoverAspectRatio() };
+  let views = Number(row.views) || 0;
+  if (opts.incrementView !== false) {
+    await execute('UPDATE blog_articles SET views=views+1 WHERE id=?', [row.id]);
+    views += 1;
+  }
+  return { ...localizeArticle(mapArticle({ ...row, views, blog_article_type: row.blog_article_type || 'blog' }), lang), coverAspectRatio: await getBlogCoverAspectRatio() };
 };
 
 export const createBlog = async (authorId: string, data: any) => {
@@ -174,7 +182,7 @@ export const createBlog = async (authorId: string, data: any) => {
     `INSERT INTO blog_articles (${cols.join(',')}) VALUES (${placeholders})`,
     values
   );
-  return getBlogById(String(r.lastInsertRowid));
+  return getBlogById(String(r.lastInsertRowid), undefined, undefined, { incrementView: false });
 };
 
 export const updateBlog = async (id: string, data: any) => {
@@ -215,11 +223,11 @@ export const updateBlog = async (id: string, data: any) => {
     }
   }
 
-  if (!sets.length) return getBlogById(id);
+  if (!sets.length) return getBlogById(id, undefined, undefined, { incrementView: false });
   vals.push(new Date().toISOString()); sets.push('updated_at=?');
   vals.push(id);
   await execute(`UPDATE blog_articles SET ${sets.join(',')} WHERE id=?`, vals);
-  return getBlogById(id);
+  return getBlogById(id, undefined, undefined, { incrementView: false });
 };
 
 export const deleteBlog = async (id: string) => {
