@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import { Typography, Tag, Skeleton, Avatar, Pagination } from 'antd';
-import { EyeOutlined, LikeOutlined, CalendarOutlined, UserOutlined, RightOutlined } from '@ant-design/icons';
+import { Typography, Tag, Skeleton, Pagination } from 'antd';
+import { EyeOutlined, LikeOutlined, CalendarOutlined, RightOutlined } from '@ant-design/icons';
 import { useTranslation } from 'react-i18next';
 import apiService from '../api';
 import SEO from '../components/SEO';
@@ -91,10 +91,10 @@ const BlogPage = () => {
                       {mainPick.title}
                     </Title>
                     <Paragraph className="!text-gray-400 !text-sm line-clamp-2 !mb-3">{mainPick.excerpt || ''}</Paragraph>
-                    <div className="flex items-center gap-3">
-                      <Avatar size={24} icon={<UserOutlined />} className="bg-blue-600" />
-                      <span className="text-gray-400 text-xs">{mainPick.authorName || mainPick.author || t('blog.anonymous')}</span>
-                      <span className="text-gray-600 text-xs"><CalendarOutlined className="mr-1" />{fmt(mainPick.publishedAt||mainPick.publishDate)}</span>
+                    <div className="flex items-center gap-3 text-xs text-gray-400">
+                      <span className="flex items-center gap-1"><EyeOutlined />{mainPick.views||0}</span>
+                      <span className="flex items-center gap-1"><LikeOutlined />{mainPick.likes||0}</span>
+                      <span className="ml-auto flex items-center gap-1"><CalendarOutlined />{fmt(mainPick.publishedAt||mainPick.publishDate)}</span>
                     </div>
                   </div>
                 </div>
@@ -112,7 +112,8 @@ const BlogPage = () => {
                         <Tag color="blue" className="text-[10px] mb-1">{a.category || t('blog.categoryBlog')}</Tag>
                         <h4 className="text-white text-sm font-medium line-clamp-2 group-hover:text-blue-400 mb-1">{a.title}</h4>
                         <div className="flex items-center gap-2 text-xs text-gray-600">
-                          <span className="truncate">{a.authorName || a.author || t('blog.anonymous')}</span>
+                          <span className="flex items-center gap-1 flex-shrink-0"><EyeOutlined />{a.views||0}</span>
+                          <span className="flex items-center gap-1 flex-shrink-0"><LikeOutlined />{a.likes||0}</span>
                           <span className="ml-auto flex-shrink-0">{fmt(a.publishedAt||a.publishDate)}</span>
                         </div>
                       </div>
@@ -174,7 +175,8 @@ const BlogPage = () => {
                       <Tag color="blue" className="text-[10px] mb-1">{a.category || t('blog.categoryBlog')}</Tag>
                       <h4 className="text-white text-sm font-medium line-clamp-2 group-hover:text-blue-400 mb-1">{a.title}</h4>
                       <div className="flex items-center gap-2 text-xs text-gray-600">
-                        <span>{a.authorName || a.author || t('blog.anonymous')}</span>
+                        <span className="flex items-center gap-1"><EyeOutlined />{a.views||0}</span>
+                        <span className="flex items-center gap-1"><LikeOutlined />{a.likes||0}</span>
                         <span className="ml-auto">{fmt(a.publishedAt||a.publishDate)}</span>
                       </div>
                     </div>
