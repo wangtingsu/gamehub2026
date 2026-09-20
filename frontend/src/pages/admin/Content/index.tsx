@@ -846,6 +846,14 @@ const Content: React.FC = () => {
       try { full = await apiService.getReview(String(content.id)); } catch { /* 拉取失败回退列表数据 */ }
     } else if (type === 'guides') {
       try { full = await apiService.getGuide(String(content.id)); } catch { /* 拉取失败回退列表数据 */ }
+    } else if (type === 'news') {
+      // 新闻列表接口已改为只返回轻量字段（不含 content/contentHtml），
+      // 编辑时按详情接口拉取完整正文，避免编辑器被回填为空；
+      // 用列表项打底，再覆盖详情字段，保留 reviewStatus 等列表专属字段。
+      try {
+        const detail = await apiService.getNewsArticle(String(content.id), 'zh-CN');
+        full = { ...content, ...detail };
+      } catch { /* 拉取失败回退列表数据 */ }
     }
     setEditingContent({ type, data: full });
     const formValues: any = {

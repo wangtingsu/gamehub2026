@@ -30,6 +30,36 @@ const TRANSLATION_SUFFIXES = ['en', 'ja', 'ko', 'es', 'fr'] as const;
 type TranslationSuffix = typeof TRANSLATION_SUFFIXES[number];
 
 /**
+ * 列表查询的轻量字段（带 n. 前缀，供 JOIN users 的列表 SQL 使用）。
+ *
+ * 故意排除 content / content_html / faq 及所有语言的 content_* / content_html_* / faq_* 列：
+ * 这些大文本列在列表场景（管理后台列表、公开新闻列表）完全用不到，SELECT n.* 会把
+ * 每篇文章全部语言的正文+HTML 一次性拉出（实测 58 篇文章约 1.5MB），导致后台新闻列表变慢。
+ * 列表只保留标题/摘要等轻量列 + title_xx / excerpt_xx 翻译列（本地化标题/摘要需要）。
+ */
+const NEWS_LIST_SELECT = `
+  n.id, n.title, n.slug, n.maintitle, n.excerpt, n.cover_image_url, n.author_id,
+  n.category, n.tags, n.is_published, n.is_pinned, n.game_name, n.published_at,
+  n.views, n.likes, n.comments, n.created_at, n.updated_at,
+  n.review_status, n.review_comment, n.reviewed_by, n.reviewed_at,
+  n.title_en, n.excerpt_en, n.title_ja, n.excerpt_ja, n.title_ko, n.excerpt_ko,
+  n.title_es, n.excerpt_es, n.title_fr, n.excerpt_fr,
+  u.username as author_name, u.display_name as author_display_name
+`;
+
+/**
+ * 同 NEWS_LIST_SELECT，但不带表前缀、不 JOIN users（供 searchNews 的纯单表查询使用）。
+ */
+const NEWS_LIST_SELECT_SIMPLE = `
+  id, title, slug, maintitle, excerpt, cover_image_url, author_id,
+  category, tags, is_published, is_pinned, game_name, published_at,
+  views, likes, comments, created_at, updated_at,
+  review_status, review_comment, reviewed_by, reviewed_at,
+  title_en, excerpt_en, title_ja, excerpt_ja, title_ko, excerpt_ko,
+  title_es, excerpt_es, title_fr, excerpt_fr
+`;
+
+/**
  * 将请求语言代码映射为翻译列后缀。
  * 中文（zh-CN / zh / cn）映射为基础列（返回 null），其余取小写前两段并校验。
  *
@@ -219,9 +249,9 @@ export const getNews = async (
   const countResult = await query(countSql, queryParams);
   const total = parseInt(countResult[0]?.total || 0);
 
-  // 获取分页数据，关联作者信息
+  // 获取分页数据，关联作者信息（仅轻量字段，避免拉取正文/HTML 大文本）
   const dataSql = `
-    SELECT n.*, u.username as author_name, u.display_name as author_display_name
+    SELECT ${NEWS_LIST_SELECT}
     FROM news n
     LEFT JOIN users u ON n.author_id = u.id
     ${whereClause}
@@ -302,9 +332,10 @@ export const searchNews = async (
   const countResult = await query(countSql, queryParams);
   const total = parseInt(countResult[0]?.total || 0);
 
-  // 获取分页数据
+  // 获取分页数据（仅轻量字段，避免拉取正文/HTML 大文本）
   const dataSql = `
-    SELECT * FROM news
+    SELECT ${NEWS_LIST_SELECT_SIMPLE}
+    FROM news
     ${whereClause}
     ORDER BY published_at DESC, created_at DESC
     LIMIT ? OFFSET ?
@@ -720,7 +751,7 @@ export const getMyNews = async (
 
   dataParams.push(limit, offset);
   const result = await query(
-    `SELECT n.*, u.username as author_name, u.display_name as author_display_name
+    `SELECT ${NEWS_LIST_SELECT}
      FROM news n
      LEFT JOIN users u ON n.author_id = u.id
      WHERE n.author_id = ?${statusFilter}
