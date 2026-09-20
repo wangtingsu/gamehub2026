@@ -213,8 +213,8 @@ const BlogDetailPage = () => {
         ) : (
           <div className="absolute inset-0 bg-gradient-to-br from-dark-800 via-dark-900 to-primary-900/40" />
         )}
-        <div className="absolute inset-0 bg-gradient-to-t from-dark-900 via-dark-900/55 to-dark-900/5" />
-        <div className="absolute inset-x-0 bottom-0 h-44 bg-gradient-to-t from-dark-900/95 to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-t from-dark-900 via-dark-900/70 to-dark-900/5" />
+        <div className="absolute inset-x-0 bottom-0 h-56 bg-gradient-to-t from-dark-900 to-transparent" />
 
         <div className="absolute bottom-0 left-0 right-0">
           <div className="max-w-[1600px] mx-auto px-4 sm:px-6 pb-8 md:pb-12">
@@ -225,7 +225,7 @@ const BlogDetailPage = () => {
               {spaceName && <Link to={`/${currentLang}/blog/space/${spaceSlug}`}><Tag color="cyan" className="!text-xs !m-0">🎮 {spaceName}</Tag></Link>}
             </div>
 
-            <h1 className="text-white text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold leading-tight mb-5 max-w-4xl drop-shadow-lg">{post.title}</h1>
+            <h1 className="text-white text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold leading-tight mb-5 max-w-4xl" style={{ textShadow: '0 1px 2px rgba(0,0,0,0.8), 0 3px 10px rgba(0,0,0,0.7), 0 10px 28px rgba(0,0,0,0.75)' }}>{post.title}</h1>
 
             <div className="flex items-center gap-3 flex-wrap">
               <Avatar size={44} src={post.authorAvatar || undefined} icon={<UserOutlined />} className="bg-blue-600 flex-shrink-0 ring-2 ring-white/20" />
