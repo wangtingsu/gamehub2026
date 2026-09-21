@@ -621,6 +621,7 @@ class RealApiService extends BaseApiService {
       contentHtml: item.contentHtml || item.content_html || '',
       author: item.authorName || item.authorDisplayName || item.author || String(item.authorId || ''),
       publishDate: item.publishedAt ? String(item.publishedAt) : item.publishDate ? String(item.publishDate) : '',
+      updatedAt: item.updatedAt ? String(item.updatedAt) : '',
       category: item.category || '',
       tags: Array.isArray(item.tags) ? item.tags : [],
       imageUrl: item.coverImageUrl || item.imageUrl || '',
@@ -645,6 +646,7 @@ class RealApiService extends BaseApiService {
       contentHtml: item.contentHtml || item.content_html || '',
       author: item.authorName || item.authorDisplayName || item.author || String(item.authorId || ''),
       publishDate: item.publishedAt ? String(item.publishedAt) : item.publishDate ? String(item.publishDate) : '',
+      updatedAt: item.updatedAt ? String(item.updatedAt) : '',
       category: item.category || '',
       tags: Array.isArray(item.tags) ? item.tags : [],
       imageUrl: item.coverImageUrl || item.imageUrl || '',
@@ -887,6 +889,19 @@ class RealApiService extends BaseApiService {
 
   async createCommunityPost(data: Record<string, unknown>): Promise<CommunityPost> {
     return this.client.post<CommunityPost>('/community/posts', data);
+  }
+
+  async followForum(forumType: string, forumId: string, forumName: string): Promise<void> {
+    await this.client.post('/community/follow', { forumType, forumId, forumName });
+  }
+
+  async unfollowForum(forumId: string): Promise<void> {
+    await this.client.delete(`/community/follow/${forumId}`);
+  }
+
+  async getFollowedForums(): Promise<any[]> {
+    const response = await this.client.get<any>('/community/followed');
+    return response?.data || response || [];
   }
 
   async updateCommunityPost(id: string, data: Record<string, unknown>): Promise<CommunityPost> {
@@ -2133,6 +2148,21 @@ class MockApiService extends BaseApiService {
       page: params?.page || 1,
       limit: params?.limit || 20,
     };
+  }
+
+  async followForum(forumType: string, forumId: string, forumName: string): Promise<void> {
+    await this.delay();
+    console.log('Mock: 关注论坛', forumType, forumId, forumName);
+  }
+
+  async unfollowForum(forumId: string): Promise<void> {
+    await this.delay();
+    console.log('Mock: 取消关注论坛', forumId);
+  }
+
+  async getFollowedForums(): Promise<any[]> {
+    await this.delay();
+    return [];
   }
 
   async getCommunityPost(id: string): Promise<CommunityPost> {

@@ -408,14 +408,14 @@ export async function initSSRRenderer(): Promise<void> {
 /**
  * 渲染页面
  */
-export async function renderPageToHtml(url: string, req?: Request): Promise<string> {
+export async function renderPageToHtml(url: string, req?: Request): Promise<{ html: string; statusCode: number }> {
   try {
     if (!renderPage && !ssrInitAttempted) {
       await initSSRRenderer()
     }
 
     if (!renderPage) {
-      return getFallbackHtml(url)
+      return { html: getFallbackHtml(url), statusCode: 200 }
     }
 
     // 构建页面上下文
@@ -433,8 +433,10 @@ export async function renderPageToHtml(url: string, req?: Request): Promise<stri
     const renderResult = await renderPage(pageContext)
 
     let html: string
+    let statusCode = 200
     if (renderResult?.documentHtml) {
       html = renderResult.documentHtml
+      statusCode = renderResult.statusCode || 200
     } else if (typeof renderResult === 'string') {
       html = renderResult
     } else {
@@ -465,7 +467,7 @@ export async function renderPageToHtml(url: string, req?: Request): Promise<stri
       }
     }
 
-    return html
+    return { html, statusCode }
   } catch (error) {
     logger.error('页面渲染失败:', { url, error })
 
@@ -473,7 +475,7 @@ export async function renderPageToHtml(url: string, req?: Request): Promise<stri
     if (error instanceof Error) {
       logger.error('页面渲染失败详情:', { url, message: error.message, stack: error.stack?.substring(0, 500) })
     }
-    return getFallbackHtml(url)
+    return { html: getFallbackHtml(url), statusCode: 200 }
   }
 }
 
@@ -603,8 +605,8 @@ function getFallbackHtml(url: string): string {
  */
 export async function handleSSRRequest(req: Request, res: Response): Promise<void> {
   try {
-    const html = await renderPageToHtml(req.url, req)
-    res.status(200).set({ 'Content-Type': 'text/html' }).send(html)
+    const { html, statusCode } = await renderPageToHtml(req.url, req)
+    res.status(statusCode).set({ 'Content-Type': 'text/html' }).send(html)
   } catch (error) {
     logger.error('SSR请求处理失败:', error)
     const fallbackHtml = getFallbackHtml(req.url)

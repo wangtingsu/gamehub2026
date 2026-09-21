@@ -41,7 +41,7 @@ const BlogPage = () => {
         const articles = Array.isArray(all) ? all : [];
         const sorted = [...articles].sort((a, b) => (b.views + b.likes*2) - (a.views + a.likes*2));
         setPicks(sorted.slice(0, 7));
-        const byDate = [...articles].sort((a, b) => new Date(b.publishedAt||b.publishDate||0).getTime() - new Date(a.publishedAt||a.publishDate||0).getTime());
+        const byDate = [...articles].sort((a, b) => new Date((b as any).publishedAt||b.publishDate||0).getTime() - new Date((a as any).publishedAt||a.publishDate||0).getTime());
         setLatest(byDate);
         setLatestTotal(byDate.length);
       } catch { }
@@ -106,7 +106,7 @@ const BlogPage = () => {
                   <Link key={a.id} to={`/${lang}/blog/${a.slug || a.id}`} className="no-underline group block">
                     <div className="bg-dark-800 border border-dark-700 rounded-lg overflow-hidden hover:border-blue-500/50 transition-all hover:-translate-y-0.5 h-full flex">
                       <div className="w-20 h-full flex-shrink-0 bg-dark-700 overflow-hidden">
-                        {a.coverImageUrl ? <img src={a.coverImageUrl} alt="" className="w-full h-full object-cover" loading="lazy" /> : <div className="w-full h-full flex items-center justify-center text-xl">📄</div>}
+                        {a.coverImageUrl ? <img src={a.coverImageUrl} alt={a.title || 'Blog article'} className="w-full h-full object-cover" loading="lazy" /> : <div className="w-full h-full flex items-center justify-center text-xl">📄</div>}
                       </div>
                       <div className="flex-1 p-3 min-w-0">
                         <Tag color="blue" className="text-[10px] mb-1">{a.category || t('blog.categoryBlog')}</Tag>
@@ -139,7 +139,7 @@ const BlogPage = () => {
                 <Link key={a.id} to={`/${lang}/blog/${a.slug || a.id}`} className="no-underline group block">
                   <div className="bg-dark-800 border border-dark-700 rounded-lg overflow-hidden hover:border-blue-500/50 transition-all h-full">
                     <div className="h-32 bg-dark-700 overflow-hidden">
-                      {a.coverImageUrl ? <img src={a.coverImageUrl} alt="" className="w-full h-full object-cover group-hover:scale-105 transition-transform" loading="lazy" /> : <div className="w-full h-full flex items-center justify-center text-3xl">📄</div>}
+                      {a.coverImageUrl ? <img src={a.coverImageUrl} alt={a.title || 'Blog article'} className="w-full h-full object-cover group-hover:scale-105 transition-transform" loading="lazy" /> : <div className="w-full h-full flex items-center justify-center text-3xl">📄</div>}
                     </div>
                     <div className="p-3">
                       <h5 className="text-white text-sm font-medium line-clamp-2 group-hover:text-blue-400 mb-2">{a.title}</h5>
@@ -166,7 +166,7 @@ const BlogPage = () => {
                   <div className="bg-dark-800 border border-dark-700 rounded-lg p-4 hover:border-blue-500/50 transition-all flex gap-4">
                     <div className="w-28 h-20 flex-shrink-0 rounded-lg overflow-hidden bg-dark-700">
                       {a.coverImageUrl ? (
-                        <img src={a.coverImageUrl} alt="" className="w-full h-full object-cover group-hover:scale-105 transition-transform" loading="lazy" />
+                        <img src={a.coverImageUrl} alt={a.title || 'Blog article'} className="w-full h-full object-cover group-hover:scale-105 transition-transform" loading="lazy" />
                       ) : (
                         <div className="w-full h-full flex items-center justify-center text-2xl">📄</div>
                       )}

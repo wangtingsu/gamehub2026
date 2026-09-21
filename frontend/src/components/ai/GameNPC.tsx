@@ -120,7 +120,7 @@ const GameNPC: React.FC = () => {
                       cover={
                         <div className="h-40 bg-dark-700 relative overflow-hidden group cursor-pointer">
                           {item.coverImageUrl ? (
-                            <img src={item.coverImageUrl} alt="" className="w-full h-full object-cover group-hover:scale-105 transition-transform" loading="lazy" />
+                            <img src={item.coverImageUrl} alt={item.title || 'Game video'} className="w-full h-full object-cover group-hover:scale-105 transition-transform" loading="lazy" />
                           ) : <div className="w-full h-full flex items-center justify-center text-4xl">🎬</div>}
                           <div className="absolute inset-0 bg-black/20 group-hover:bg-black/40 flex items-center justify-center transition-all">
                             <PlayCircleOutlined className="text-5xl text-white/80 group-hover:text-white group-hover:scale-110 transition-all" />

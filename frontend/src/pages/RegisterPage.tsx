@@ -86,6 +86,7 @@ const RegisterPage = () => {
 
   // 邮箱注册提交
   const handleEmailRegister = async (values: {
+    username: string;
     email: string;
     password: string;
     confirmPassword: string;

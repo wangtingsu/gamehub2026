@@ -139,6 +139,8 @@ const CommunityPage = () => {
           <Search placeholder="搜索..." prefix={<SearchOutlined />} value={searchText} onChange={e => setSearchText(e.target.value)} allowClear className="max-w-xs" />
         </div>
 
+        <h2 className="text-lg font-semibold !text-white mb-3">{t('community.feedTitle', '热门讨论')}</h2>
+
         <div className="flex gap-6">
           {/* Left: Followed Games */}
           <div className="w-52 flex-shrink-0 hidden lg:block">

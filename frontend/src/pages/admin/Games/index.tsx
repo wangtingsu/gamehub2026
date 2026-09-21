@@ -431,7 +431,7 @@ const Games: React.FC = () => {
       content: `Are you sure you want to delete ${selectedRowKeys.length} games?`,
       onOk: async () => {
         try {
-          await Promise.all(selectedRowKeys.map(id => apiService.deleteGame(id)));
+          await Promise.all(selectedRowKeys.map(id => apiService.deleteGame(String(id))));
           const updatedGames = games.filter(game => !selectedRowKeys.includes(game.id));
           setGames(updatedGames);
           setFilteredGames(updatedGames);

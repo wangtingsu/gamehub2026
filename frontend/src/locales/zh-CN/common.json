@@ -241,8 +241,8 @@
     "hoursAgo": "{{count}}小时前"
   },
   "seo": {
-    "defaultTitle": "GameHub - 您的终极游戏库管理平台",
-    "defaultDescription": "GameHub 是一个统一的游戏库管理平台，支持多平台游戏集成和管理。发现、整理和分享您的游戏收藏。",
+    "defaultTitle": "GameHub（好游聚）- 专业游戏评测与推荐平台",
+    "defaultDescription": "GameHub（好游聚）是专业的游戏评测与推荐社区平台，提供最新游戏评测、热门游戏推荐、深度游戏攻略和玩家社区讨论。",
     "defaultKeywords": "游戏库, 游戏管理, 游戏平台, 视频游戏, 游戏收藏, 游戏中心, 游戏社区",
     "gamesTitle": "游戏库 | GameHub",
     "gamesDescription": "浏览我们丰富的游戏库。发现新游戏，追踪您的收藏，探索游戏内容。",

@@ -47,6 +47,7 @@ const DiscoveryPage: React.FC = () => {
       />
 
       <Title level={1} className="mb-6 !text-white">{t('discovery.title')}</Title>
+      <Title level={2} className="mb-4 !text-white">{t('discovery.subtitle', '探索游戏趋势、排行榜与热门数据')}</Title>
 
       <Tabs activeKey={activeTab} onChange={setActiveTab} className="discovery-tabs">
         <TabPane tab={<span><RiseOutlined /> {t('discovery.tab.trends')}</span>} key="trends">

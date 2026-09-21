@@ -3,7 +3,7 @@
  *
  * 本模块为 AI 大语言模型（LLM）爬虫提供站点描述文本文件。
  * 遵循 llms.txt 标准规范，为 AI 助手提供结构化的网站上下文信息，
- * 便于 LLM 在辅助用户时准确理解 GoodGameHubs 平台的功能和内容。
+ * 便于 LLM 在辅助用户时准确理解 GameHub 平台的功能和内容。
  *
  * 提供两个端点：
  * - /llms.txt      — 精简版站点概述，包含核心页面、用户功能、内容类型和 API 概览
@@ -22,9 +22,9 @@ const router = Router();
 const SITE_URL = 'https://www.gghubs.com';
 const API_URL = `${SITE_URL}/api/v1`;
 
-const LLMS_TXT = `# GoodGameHubs
+const LLMS_TXT = `# GameHub
 
-> GoodGameHubs (好游聚) is a full-featured game community platform for discovering, reviewing, and discussing games. Users can browse game catalogs, read and write reviews, share strategy guides, participate in community discussions, and use AI-powered game recommendations.
+> GameHub (好游聚) is a full-featured game community platform for discovering, reviewing, and discussing games. Users can browse game catalogs, read and write reviews, share strategy guides, participate in community discussions, and use AI-powered game recommendations.
 
 ## Core Pages
 
@@ -84,7 +84,7 @@ The platform provides a comprehensive REST API. All API endpoints are prefixed w
 
 ## AI Integration
 
-GoodGameHubs features three AI-powered experiences:
+GameHub features three AI-powered experiences:
 1. **AI Assistant** (\`/ai\`): General-purpose chat for game recommendations, platform help, and content discovery
 2. **Game Companion** (\`/ai/companion\`): Context-aware AI companion that follows the user's current game page
 3. **Game NPC** (\`/ai/npc/:character\`): Interactive role-playing with game characters for entertainment
@@ -96,13 +96,13 @@ GoodGameHubs features three AI-powered experiences:
 - [Blog](https://www.gghubs.com/blog): Platform blog with updates and announcements
 - Tech Stack: React + TypeScript frontend, Express + TypeScript backend, SQLite database, JWT authentication, Socket.IO real-time messaging`;
 
-const LLMS_FULL_TXT = `# GoodGameHubs — Full Site Context
+const LLMS_FULL_TXT = `# GameHub — Full Site Context
 
-> This document contains the complete content overview of GoodGameHubs (好游聚), a game community platform at https://www.gghubs.com. It provides comprehensive context for AI assistants helping users with the platform.
+> This document contains the complete content overview of GameHub (好游聚), a game community platform at https://www.gghubs.com. It provides comprehensive context for AI assistants helping users with the platform.
 
 ## Platform Overview
 
-GoodGameHubs is a bilingual (Chinese/English) game community platform where users discover games, write reviews, share strategy guides, participate in forum discussions, and use AI-powered features. The platform serves both casual gamers looking for their next game and dedicated gamers wanting to share expertise.
+GameHub is a bilingual (Chinese/English) game community platform where users discover games, write reviews, share strategy guides, participate in forum discussions, and use AI-powered features. The platform serves both casual gamers looking for their next game and dedicated gamers wanting to share expertise.
 
 ### Key Differentiators
 - **AI Integration**: Three distinct AI modes (Assistant, Companion, NPC role-play)

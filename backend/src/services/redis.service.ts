@@ -35,6 +35,8 @@ export interface CacheMetadata {
   staleUntil?: number;
   /** 缓存版本标识 */
   version?: string;
+  /** 页面 HTTP 状态码（如软 404 返回 404，其余默认 200） */
+  statusCode?: number;
 }
 
 /**

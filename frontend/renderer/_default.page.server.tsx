@@ -20,7 +20,7 @@ import apiService from '../src/api/index'
 import i18n from '../src/i18n.server'
 import type { PageContextServer } from 'vike/types'
 import { renderToString } from 'react-dom/server'
-import type { Game, NewsArticle, Guide, BlogArticle, Review } from '../src/api/types'
+import type { Game, NewsArticle, Guide, BlogArticle, Review, CommunityPost } from '../src/api/types'
 import ServerContent from '../src/components/ServerContent'
 
 /**
@@ -83,6 +83,8 @@ const LOCALE_MAP: Record<string, string> = {
 const SITE_NAME = 'GameHub'
 const SITE_URL = 'https://www.gghubs.com'
 const OG_IMAGE = `${SITE_URL}/og-image.png`
+/** 方形 ≥512px 站点 Logo（Organization.logo 要求方形，og-image 是 343×361 非方形不可用） */
+const LOGO_IMAGE = `${SITE_URL}/pwa-512.png`
 const TWITTER_HANDLE = '@gghubsgame'
 const DEFAULT_AUTHOR = 'GameHub Team'
 const DEFAULT_KEYWORDS =
@@ -169,10 +171,78 @@ function buildFaqNode(faq: Array<{ question: string; answer: string }> | undefin
     '@type': 'FAQPage',
     mainEntity: items.map((f) => ({
       '@type': 'Question',
-      name: f.question,
+      // 清理正文 markdown 标题标记（如 "### 问题" → "问题"），避免泄漏进结构化数据
+      name: f.question.replace(/^\s*#{1,6}\s*/, '').trim(),
       acceptedAnswer: { '@type': 'Answer', text: f.answer },
     })),
   }
+}
+
+/**
+ * 生成 JSON-LD author 节点
+ *
+ * 占位/技术用户名（admin 等）并非真实作者实体，回退为组织名，
+ * 避免把 "admin" 之类污染 author 字段（Google 要求 author 为真实 Person/Organization）。
+ */
+function buildAuthorNode(name: string | undefined): Record<string, unknown> {
+  const a = (name || '').trim()
+  if (!a || /^(admin|administrator|gamehub team|gghubs team)$/i.test(a)) {
+    return { '@type': 'Organization', name: SITE_NAME }
+  }
+  return { '@type': 'Person', name: a }
+}
+
+/**
+ * 判断「去掉语言前缀后的路径」是否为已知路由（与 App.tsx 路由表对齐）。
+ *
+ * 用于软 404 检测：未匹配任何路由的路径（如 /en/nonexistent-page）当前会返回 200 +
+ * index,follow 的空壳页，导致搜索引擎大量收录垃圾页。此函数让 render() 能识别
+ * 这些路径并返回真 404 + noindex。
+ *
+ * @param path - 去掉语言前缀后的路径（含前导斜杠，如 /games/elden-ring、/about）
+ */
+function isKnownRoute(path: string): boolean {
+  const p = path.replace(/^\/+|\/+$/g, '')
+  if (p === '') return true // 首页
+
+  const staticRoutes = new Set([
+    'games', 'news', 'guides', 'blog', 'community', 'community-forum',
+    'search', 'discovery', 'trending', 'cozy-games', 'free-games', 'ai-gaming',
+    'leaderboard', 'ai', 'ai/soul', 'ai/npc', 'ai/companion',
+    'about', 'about/careers', 'about/press', 'about/contact',
+    'print', 'my', 'login', 'register', 'profile',
+    'forgot-password', 'reset-password', 'verify-email',
+    'notifications', 'messages', 'achievements',
+    'library', 'library/online', 'library/mine',
+    'legal/privacy', 'legal/terms', 'legal/cookies', 'legal/conduct',
+    'privacy', 'terms', 'cookies', 'conduct', 'reviews',
+  ])
+  if (staticRoutes.has(p)) return true
+
+  const dynamicPatterns = [
+    /^games\/category\/[^/]+$/,
+    /^games\/[^/]+$/,
+    /^games\/[^/]+\/forum$/,
+    /^game\/[^/]+$/,
+    /^news\/category\/[^/]+$/,
+    /^news\/[^/]+$/,
+    /^guides\/[^/]+$/,
+    /^blog\/[^/]+$/,
+    /^blog\/space\/[^/]+$/,
+    /^blog\/space\/[^/]+\/category\/[^/]+$/,
+    /^blog\/new$/,
+    /^blog\/edit\/[^/]+$/,
+    /^blog\/my$/,
+    /^community\/posts\/[^/]+$/,
+    /^community\/posts\/new$/,
+    /^community\/reviews\/new$/,
+    /^community\/reviews\/[^/]+$/,
+    /^reviews\/[^/]+$/,
+    /^library\/play\/[^/]+$/,
+    /^messages\/[^/]+$/,
+    /^achievements\/[^/]+$/,
+  ]
+  return dynamicPatterns.some((re) => re.test(p))
 }
 
 /**
@@ -228,11 +298,9 @@ function buildJsonLdGraph(opts: {
     '@type': 'Organization',
     name: SITE_NAME,
     url: SITE_URL,
-    logo: OG_IMAGE,
+    logo: LOGO_IMAGE,
     sameAs: [
-      'https://twitter.com/gamehub',
-      'https://facebook.com/gamehub',
-      'https://instagram.com/gamehub',
+      'https://x.com/gghubsgame',
     ],
   })
 
@@ -289,12 +357,15 @@ function buildJsonLdGraph(opts: {
       headline: newsDetail.title,
       description: newsDetail.summary || newsDetail.content || '',
       url: canonicalUrl,
+      mainEntityOfPage: { '@type': 'WebPage', '@id': canonicalUrl },
       datePublished: newsDetail.publishDate,
-      author: { '@type': 'Person', name: newsDetail.author || DEFAULT_AUTHOR },
+      dateModified: newsDetail.updatedAt || newsDetail.publishDate,
+      wordCount: (newsDetail.content || '').split(/\s+/).filter(Boolean).length,
+      author: buildAuthorNode(newsDetail.author),
       publisher: {
         '@type': 'Organization',
         name: SITE_NAME,
-        logo: { '@type': 'ImageObject', url: OG_IMAGE },
+        logo: { '@type': 'ImageObject', url: LOGO_IMAGE },
       },
     }
     if (newsDetail.imageUrl) node.image = absUrl(newsDetail.imageUrl)
@@ -311,12 +382,14 @@ function buildJsonLdGraph(opts: {
       headline: blogDetail.title,
       description: blogDetail.excerpt || blogDetail.content || '',
       url: canonicalUrl,
+      mainEntityOfPage: { '@type': 'WebPage', '@id': canonicalUrl },
       datePublished: blogDetail.publishDate,
-      author: { '@type': 'Person', name: blogDetail.author || DEFAULT_AUTHOR },
+      wordCount: (blogDetail.content || '').split(/\s+/).filter(Boolean).length,
+      author: buildAuthorNode(blogDetail.author),
       publisher: {
         '@type': 'Organization',
         name: SITE_NAME,
-        logo: { '@type': 'ImageObject', url: OG_IMAGE },
+        logo: { '@type': 'ImageObject', url: LOGO_IMAGE },
       },
     }
     if (blogDetail.coverImage) node.image = absUrl(blogDetail.coverImage)
@@ -332,8 +405,9 @@ function buildJsonLdGraph(opts: {
       name: reviewDetail.title,
       reviewBody: reviewDetail.content || '',
       url: canonicalUrl,
+      mainEntityOfPage: { '@type': 'WebPage', '@id': canonicalUrl },
       datePublished: reviewDetail.publishDate,
-      author: { '@type': 'Person', name: reviewDetail.author || DEFAULT_AUTHOR },
+      author: buildAuthorNode(reviewDetail.author),
       itemReviewed: { '@type': 'VideoGame', name: reviewDetail.gameTitle || '' },
     }
     if (typeof reviewDetail.rating === 'number') {
@@ -351,6 +425,7 @@ function buildJsonLdGraph(opts: {
       name: guideDetail.title,
       description: guideDetail.summary || guideDetail.content || '',
       url: canonicalUrl,
+      mainEntityOfPage: { '@type': 'WebPage', '@id': canonicalUrl },
     })
     const faqNode = buildFaqNode(guideDetail.faq)
     if (faqNode) graph.push(faqNode)
@@ -462,6 +537,29 @@ async function prefetchData(queryClient: QueryClient, urlPathname: string, lang:
       console.log('栏目页数据预取完成:', barePath)
     } catch (apiError) {
       console.warn('栏目页API预取失败:', apiError)
+    }
+  } else if (barePath === 'community') {
+    // 社区页预取（P1-3：/reviews 已 301 到 /community，评测列表+帖子列表都在此页渲染，
+    // 需预取帖子/评测/热门游戏三项，queryKey 与客户端 hook 严格一致才能 hydration 命中）
+    console.log('预取社区页数据:', barePath)
+    try {
+      await Promise.allSettled([
+        queryClient.prefetchQuery({
+          queryKey: queryKeys.community.list(undefined),
+          queryFn: () => apiService.getCommunityPosts(undefined),
+        }),
+        queryClient.prefetchQuery({
+          queryKey: queryKeys.reviews.list({ lang }),
+          queryFn: () => apiService.getReviews({ lang }),
+        }),
+        queryClient.prefetchQuery({
+          queryKey: queryKeys.games.list({ limit: 50 }),
+          queryFn: () => apiService.getGames({ limit: 50 }),
+        }),
+      ])
+      console.log('社区页数据预取完成')
+    } catch (apiError) {
+      console.warn('社区页API预取失败:', apiError)
     }
   } else if (urlPathname.includes('/games/')) {
     const match = urlPathname.match(/\/games\/([^\/]+)/)
@@ -614,6 +712,8 @@ async function render(pageContext: PageContextServer) {
   ).join('\n    ')
   // og:locale（与 SEO.tsx 的 LOCALE_MAP 保持一致）
   const ogLocale = LOCALE_MAP[i18nLang] || 'en_US'
+  // 多语言门禁：当页面正文实为中文回退（未翻译）时置 true，渲染 noindex
+  let shouldNoindex = false
 
   const clientScript = isProduction
     ? '<!-- SSR_CLIENT_SCRIPTS_PLACEHOLDER -->'
@@ -626,6 +726,8 @@ async function render(pageContext: PageContextServer) {
   const news = serverQueryClient.getQueryData<NewsArticle[]>(
     queryKeys.news.list({ page: 1, limit: 4, lang: i18nLang }),
   )
+  // 首页轮播 banner（P1-4：让 SSR HTML 输出 hero 大图，而非 0 图片）
+  const banners = serverQueryClient.getQueryData<any[]>(['banners', 'home'])
 
   let gameDetail: Game | null = null
   const gameIdMatch = urlPathname.match(/\/games\/([^/]+)/)
@@ -646,6 +748,26 @@ async function render(pageContext: PageContextServer) {
   const newsIdMatch = urlPathname.match(/\/news\/([^/]+)/)
   if (newsIdMatch) {
     newsDetail = serverQueryClient.getQueryData<NewsArticle>([...queryKeys.news.details(), newsIdMatch[1], i18nLang]) ?? null
+  }
+
+  // 新闻详情页 canonical/hreflang 归一为 slug（旧 /news/<id> 链接也指向 /news/<slug>，避免重复收录）
+  // 多语言门禁：base 列恒为中文，翻译列缺失的语言实为中文回退，声明伪 lang 会违反 hreflang。
+  // 未翻译语言 noindex，且 hreflang 只保留正文真实翻译过的语言。
+  if (newsDetail) {
+    const newsPath = `/news/${newsDetail.slug || newsDetail.id}`
+    if (newsDetail.slug) {
+      canonicalUrl = `${SITE_URL}/${langPrefix}${newsPath}`
+    }
+    const availableNewsLangs = new Set<string>(['cn'])
+    for (const l of ['en', 'ja', 'ko', 'es', 'fr'] as const) {
+      const tr = newsDetail.translations?.[l]
+      if (tr && (tr.content || tr.contentHtml)) availableNewsLangs.add(l)
+    }
+    if (!availableNewsLangs.has(langPrefix)) shouldNoindex = true
+    alternateLinks = HREFLANG_LANGS
+      .filter((l) => availableNewsLangs.has(l.prefix))
+      .map((l) => `<link rel="alternate" hreflang="${l.code}" href="${SITE_URL}/${l.prefix}${newsPath}" />`)
+      .join('\n    ')
   }
 
   let blogDetail: BlogArticle | null = null
@@ -669,20 +791,62 @@ async function render(pageContext: PageContextServer) {
   // 栏目/列表页数据（P0 #3）：读取预取数据，构造统一列表项传给 ServerContent 渲染
   const listBarePath = urlPathname.replace(/^\/(en|cn|ja|ko|es|fr)(?=\/|$)/, '').replace(/^\/+|\/+$/g, '')
   const LIST_LIMIT = 24
-  let listPage: { kind: string; items: Array<{ id: string | number; title: string; url: string }> } | null = null
+  // P1-4：列表项携带 image/description，让 SSR HTML 输出真实 <img> 与摘要（修复「列表页/首页 0 图片」）
+  let listPage: { kind: string; items: Array<{ id: string | number; title: string; url: string; image?: string; description?: string }> } | null = null
   if (listBarePath === 'games') {
     const list = serverQueryClient.getQueryData<Game[]>(queryKeys.games.list({ page: 1, limit: LIST_LIMIT }))
-    if (list) listPage = { kind: 'games', items: list.map((g) => ({ id: g.id, title: g.title, url: `/${langPrefix}/games/${g.slug || g.id}` })) }
+    if (list) listPage = { kind: 'games', items: list.map((g) => ({ id: g.id, title: g.title, url: `/${langPrefix}/games/${g.slug || g.id}`, image: g.imageUrl ? absUrl(g.imageUrl) : '', description: g.description })) }
   } else if (listBarePath === 'news') {
     const list = serverQueryClient.getQueryData<NewsArticle[]>(queryKeys.news.listAll(i18nLang))
-    if (list) listPage = { kind: 'news', items: list.map((n) => ({ id: n.id, title: n.title, url: `/${langPrefix}/news/${n.slug || n.id}` })) }
+    if (list) listPage = { kind: 'news', items: list.map((n) => ({ id: n.id, title: n.title, url: `/${langPrefix}/news/${n.slug || n.id}`, image: n.imageUrl ? absUrl(n.imageUrl) : '', description: n.summary })) }
   } else if (listBarePath === 'guides') {
     const list = serverQueryClient.getQueryData<Guide[]>(queryKeys.guides.list({ page: 1, limit: LIST_LIMIT, lang: i18nLang }))
-    if (list) listPage = { kind: 'guides', items: list.map((g) => ({ id: g.id, title: g.title, url: `/${langPrefix}/guides/${g.id}` })) }
+    if (list) listPage = { kind: 'guides', items: list.map((g) => ({ id: g.id, title: g.title, url: `/${langPrefix}/guides/${g.id}`, image: g.coverImageUrl ? absUrl(g.coverImageUrl) : '', description: g.summary })) }
   } else if (listBarePath === 'blog') {
     const list = serverQueryClient.getQueryData<BlogArticle[]>(queryKeys.blog.list({ page: 1, limit: LIST_LIMIT, lang: i18nLang }))
-    if (list) listPage = { kind: 'blog', items: list.map((b) => ({ id: b.id, title: b.title, url: `/${langPrefix}/blog/${b.slug}` })) }
+    if (list) listPage = { kind: 'blog', items: list.map((b) => ({ id: b.id, title: b.title, url: `/${langPrefix}/blog/${b.slug}`, image: b.coverImage ? absUrl(b.coverImage) : '', description: b.excerpt })) }
   }
+
+  // 社区页（P1-3：/reviews 已 301 到 /community，评测+帖子列表都在此页渲染，需 SSR 输出真实内容）
+  type ListItem = { id: string | number; title: string; url: string; image?: string; description?: string }
+  let communityPage: { posts: ListItem[]; reviews: ListItem[] } | null = null
+  if (listBarePath === 'community') {
+    const cposts = serverQueryClient.getQueryData<CommunityPost[]>(queryKeys.community.list(undefined))
+    const creviews = serverQueryClient.getQueryData<Review[]>(queryKeys.reviews.list({ lang: i18nLang }))
+    if (cposts || creviews) {
+      communityPage = {
+        posts: (cposts || []).map((p) => ({ id: p.id, title: p.title, url: `/${langPrefix}/community/posts/${p.id}`, description: p.content?.slice(0, 200) })),
+        reviews: (creviews || []).map((r) => ({ id: r.id, title: r.title, url: `/${langPrefix}/community/reviews/${r.id}`, description: r.content?.slice(0, 200) })),
+      }
+    }
+  }
+
+  // 文章页 og:image/twitter:image 用文章自有配图（缺省回退站点通用图）
+  let pageImage = OG_IMAGE
+  if (gameDetail?.imageUrl) pageImage = absUrl(gameDetail.imageUrl)
+  else if (newsDetail?.imageUrl) pageImage = absUrl(newsDetail.imageUrl)
+  else if (blogDetail?.coverImage) pageImage = absUrl(blogDetail.coverImage)
+  else if (guideDetail?.coverImageUrl) pageImage = absUrl(guideDetail.coverImageUrl)
+
+  // 软 404 检测：详情路由但内容不存在（API 404 → 详情为 null），或路径不是已知路由，
+  // 都返回真 404 + noindex，避免空壳/垃圾页被搜索引擎收录（P1-1）。
+  const detailKind = (() => {
+    const p = pathWithoutLang.replace(/^\/+|\/+$/g, '')
+    if (/^games\/[^/]+$/.test(p) && !/^games\/category\//.test(p)) return 'game'
+    if (/^news\/[^/]+$/.test(p) && !/^news\/category\//.test(p)) return 'news'
+    if (/^guides\/[^/]+$/.test(p)) return 'guide'
+    if (/^blog\/[^/]+$/.test(p) && !/^blog\/(space|new|edit|my)\b/.test(p)) return 'blog'
+    if (/^community\/reviews\/[^/]+$/.test(p) && !/^community\/reviews\/new$/.test(p)) return 'review'
+    return null
+  })()
+  let notFound = false
+  if (detailKind === 'game') notFound = !gameDetail
+  else if (detailKind === 'news') notFound = !newsDetail
+  else if (detailKind === 'guide') notFound = !guideDetail
+  else if (detailKind === 'blog') notFound = !blogDetail
+  else if (detailKind === 'review') notFound = !reviewDetail
+  else if (!isKnownRoute(pathWithoutLang)) notFound = true
+  if (notFound) shouldNoindex = true
 
   // 每页独立 title/description：详情页用真实内容标题，而非 slug 占位（SEO 收录基建）
   const truncate = (s: string, max = 160) => (s.length > max ? `${s.slice(0, max - 3)}...` : s)
@@ -761,12 +925,14 @@ async function render(pageContext: PageContextServer) {
       pageMeta={pageMeta}
       games={games}
       news={news}
+      banners={banners}
       gameDetail={gameDetail}
       newsDetail={newsDetail}
       blogDetail={blogDetail}
       reviewDetail={reviewDetail}
       guideDetail={guideDetail}
       listPage={listPage}
+      communityPage={communityPage}
     />,
   )
 
@@ -783,8 +949,8 @@ async function render(pageContext: PageContextServer) {
     <meta name="description" content="${pageMeta.description}" />
     <meta name="keywords" content="${DEFAULT_KEYWORDS}" />
     <meta name="author" content="${DEFAULT_AUTHOR}" />
-    <meta name="robots" content="index, follow" />
-    <meta name="googlebot" content="index, follow" />
+    <meta name="robots" content="${shouldNoindex ? 'noindex, nofollow' : 'index, follow'}" />
+    <meta name="googlebot" content="${shouldNoindex ? 'noindex, nofollow' : 'index, follow'}" />
     <link rel="canonical" href="${canonicalUrl}" />
     ${alternateLinks}
     <link rel="alternate" hreflang="x-default" href="${canonicalUrl}" />
@@ -792,9 +958,7 @@ async function render(pageContext: PageContextServer) {
     <meta property="og:description" content="${pageMeta.ogDescription}" />
     <meta property="og:type" content="website" />
     <meta property="og:url" content="${canonicalUrl}" />
-    <meta property="og:image" content="${OG_IMAGE}" />
-    <meta property="og:image:width" content="1200" />
-    <meta property="og:image:height" content="630" />
+    <meta property="og:image" content="${pageImage}" />
     <meta property="og:image:alt" content="${pageMeta.title}" />
     <meta property="og:site_name" content="${SITE_NAME}" />
     <meta property="og:locale" content="${ogLocale}" />
@@ -802,7 +966,7 @@ async function render(pageContext: PageContextServer) {
     <meta name="twitter:url" content="${canonicalUrl}" />
     <meta name="twitter:title" content="${pageMeta.title}" />
     <meta name="twitter:description" content="${pageMeta.description}" />
-    <meta name="twitter:image" content="${OG_IMAGE}" />
+    <meta name="twitter:image" content="${pageImage}" />
     <meta name="twitter:site" content="${TWITTER_HANDLE}" />
     <meta name="twitter:creator" content="${TWITTER_HANDLE}" />
     <script type="application/ld+json">${jsonLdScript}</script>
@@ -816,8 +980,16 @@ async function render(pageContext: PageContextServer) {
     <script>
       window.__DEHYDRATED_STATE__ = ${JSON.stringify(dehydratedState).replace(/</g, "\\u003c")}
     <\/script>
+    <noscript>
+      <div style="padding:24px;font-family:system-ui,-apple-system,sans-serif;text-align:center;color:#333">
+        <h1>${pageMeta.title}</h1>
+        <p>${pageMeta.description}</p>
+        <p>GameHub requires JavaScript to display interactive content. Please enable JavaScript in your browser.</p>
+      </div>
+    </noscript>
   </body>
-</html>`
+</html>`,
+    statusCode: notFound ? 404 : 200,
     }
   } catch (err) {
     console.error('[SSR-RENDER] render() failed:', err instanceof Error ? err.message : err)

@@ -69,7 +69,7 @@ const parseFaqFromJson = (input: string): { question: string; answer: string }[]
     } else {
       // 键值对对象 { 问题: 答案 }
       return Object.entries(data)
-        .map(([q, a]) => ({
+        .map(([q, a]: [string, any]) => ({
           question: String(q),
           answer: typeof a === 'string' ? a : (a && typeof a === 'object' ? (a.text || '') : ''),
         }))

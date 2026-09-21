@@ -76,8 +76,6 @@ const staticPages = [
   { path: '/legal/privacy', changefreq: 'monthly', priority: '0.3' },
   { path: '/legal/terms', changefreq: 'monthly', priority: '0.3' },
   { path: '/legal/cookies', changefreq: 'monthly', priority: '0.3' },
-  { path: '/login', changefreq: 'monthly', priority: '0.3' },
-  { path: '/register', changefreq: 'monthly', priority: '0.3' },
 ];
 
 /**
@@ -121,8 +119,10 @@ function formatDate(date: Date | string): string {
  * @param path - 页面路径（不含语言前缀）
  * @returns 所有语言替代链接的 XML 字符串，每行一个 <xhtml:link>
  */
-function buildAlternateLinks(siteUrl: string, path: string): string {
+function buildAlternateLinks(siteUrl: string, path: string, allowedPrefixes?: string[]): string {
+  const allowed = allowedPrefixes ? new Set(allowedPrefixes) : null;
   return URL_PREFIXES
+    .filter(prefix => !allowed || allowed.has(prefix))
     .map(prefix => `    <xhtml:link rel="alternate" hreflang="${PREFIX_TO_HREFLANG[prefix]}" href="${escapeXml(`${siteUrl}/${prefix}${path}`)}" />`)
     .join('\n');
 }
@@ -147,11 +147,22 @@ function buildAlternateLinks(siteUrl: string, path: string): string {
 function buildSitemapXml(
   siteUrl: string,
   games: { id: number; slug?: string; updatedAt: string }[],
-  news: { id: number; publishedAt: string }[],
+  news: { id: number; slug?: string; publishedAt: string; translatedLangs?: string[] }[],
   reviews: { id: number; publishedAt: string }[],
   guides: { id: number; publishedAt: string }[]
 ): string {
   const urls: string[] = [];
+
+  // 静态页面 lastmod：取全站内容最新更新时间，确保静态页不缺失 <lastmod>
+  const allContentDates = [
+    ...games.map(g => g.updatedAt),
+    ...news.map(n => n.publishedAt),
+    ...reviews.map(r => r.publishedAt),
+    ...guides.map(g => g.publishedAt),
+  ].filter((d): d is string => !!d);
+  const siteLastmod = allContentDates.length > 0
+    ? allContentDates.reduce((max, d) => (d > max ? d : max), allContentDates[0])
+    : new Date().toISOString();
 
   // 静态页面 — 每种语言为独立 URL，带 hreflang
   for (const page of staticPages) {
@@ -160,6 +171,7 @@ function buildSitemapXml(
     const alternates = buildAlternateLinks(siteUrl, page.path);
     urls.push(`  <url>
     <loc>${escapeXml(canonicalLoc)}</loc>
+    <lastmod>${formatDate(siteLastmod)}</lastmod>
     <changefreq>${page.changefreq}</changefreq>
     <priority>${page.priority}</priority>
 ${alternates}
@@ -180,11 +192,11 @@ ${alternates}
   </url>`);
   }
 
-  // 新闻详情页
+  // 新闻详情页（slug 为规范形态，与前端 canonical 对齐；hreflang 只保留正文真实翻译过的语言）
   for (const item of news) {
-    const path = `/news/${item.id}`;
+    const path = `/news/${item.slug || item.id}`;
     const canonicalLoc = `${siteUrl}/${URL_PREFIXES[0]}${path}`;
-    const alternates = buildAlternateLinks(siteUrl, path);
+    const alternates = buildAlternateLinks(siteUrl, path, item.translatedLangs);
     urls.push(`  <url>
     <loc>${escapeXml(canonicalLoc)}</loc>
     <lastmod>${formatDate(item.publishedAt)}</lastmod>

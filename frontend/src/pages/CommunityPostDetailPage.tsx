@@ -46,7 +46,7 @@ const CommunityPostDetailPage = () => {
               <div key={f.forum_id} onClick={() => navigate(`/${currentLang}/games/${game?.slug || f.forum_id}/forum`)}
                 className="cursor-pointer rounded-lg overflow-hidden border border-dark-600 hover:border-blue-500/50 transition-all">
                 <div className="h-14 bg-dark-700 overflow-hidden">
-                  {((game as any)?.imageUrl || (game as any)?.coverImageUrl) ? <img src={(game as any).imageUrl || (game as any).coverImageUrl} alt="" className="w-full h-full object-cover" /> :
+                  {((game as any)?.imageUrl || (game as any)?.coverImageUrl) ? <img src={(game as any).imageUrl || (game as any).coverImageUrl} alt={f.forum_name || 'Game forum'} className="w-full h-full object-cover" /> :
                     <div className="w-full h-full flex items-center justify-center text-gray-500 text-lg">{f.forum_name?.[0]}</div>}
                 </div>
                 <div className="px-1.5 py-1 bg-dark-800"><div className="text-white text-[10px] truncate">{f.forum_name}</div></div>

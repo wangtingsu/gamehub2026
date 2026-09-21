@@ -255,6 +255,8 @@ export interface Game {
   discount?: number;
   /** 封面图片 URL */
   imageUrl: string;
+  /** 封面图片 URL（后端字段名，normalizeGame 会透传） */
+  coverImageUrl?: string;
   /** 游戏截图列表 */
   screenshots: string[];
   /** 展示区域（推荐/热门/独立） */
@@ -356,6 +358,8 @@ export interface NewsArticle {
   contentHtml?: string;
   author: string;
   publishDate: string;
+  /** 最后更新时间（用于 JSON-LD dateModified） */
+  updatedAt?: string;
   category: string;
   tags: string[];
   imageUrl: string;

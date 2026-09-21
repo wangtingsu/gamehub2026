@@ -175,6 +175,7 @@ const GuidesPage = () => {
           {/* 攻略列表 */}
           {!isLoading && !isError && (
             <>
+              <Title level={2} className="text-white mb-4">全部攻略</Title>
               <Row gutter={[24, 24]}>
                 {paginatedGuides.map((guide) => (
                   <Col xs={24} sm={12} lg={6} key={guide.id}>

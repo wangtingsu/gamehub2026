@@ -35,6 +35,7 @@ const TrendingPage: React.FC = () => {
       </Title>
 
       <Card className="shadow-sm bg-dark-800 border-dark-700">
+        <h2 className="text-lg font-semibold !text-white mb-4">{t('trending.listTitle', '热门游戏排行')}</h2>
         {isLoading ? (
           <div className="py-20 text-center"><Spin size="large" /></div>
         ) : trending?.length ? (

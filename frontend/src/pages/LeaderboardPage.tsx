@@ -193,6 +193,7 @@ const LeaderboardPage: React.FC = () => {
       </Title>
 
       <Card className="shadow-sm bg-dark-800 border-dark-700">
+        <h2 className="text-lg font-semibold !text-white mb-4">{t('leaderboard.listTitle', '游戏排行榜')}</h2>
         <Tabs activeKey={activeTab} onChange={setActiveTab} className="leaderboard-tabs">
           <TabPane tab={<span><TrophyOutlined /> {t('leaderboard.gameRankings')}</span>} key="games">
             <Tabs activeKey={activeType} onChange={setActiveType} tabBarStyle={{ marginBottom: 16 }}>

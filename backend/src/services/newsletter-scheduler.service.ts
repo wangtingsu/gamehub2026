@@ -97,7 +97,7 @@ class NewsletterScheduler {
     try {
       // 获取最近的热门新闻作为内容（最多 10 篇）
       const recentNews = await newsModel.findAll({
-        orderBy: 'publish_date',
+        orderBy: 'published_at',
         orderDirection: 'DESC',
         limit: 10,
       });

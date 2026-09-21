@@ -37,7 +37,7 @@ interface SidebarProps {
   collapsed: boolean;
   onNavigate?: () => void;
   navMode: 'main' | 'games' | 'ai' | 'more' | 'recommend';
-  onNavModeChange: (mode: 'main' | 'games' | 'ai' | 'more') => void;
+  onNavModeChange: (mode: 'main' | 'games' | 'ai' | 'more' | 'recommend') => void;
   /** 点击分类（games/ai/more）时不跳转，只切换导航模式（移动端使用） */
   categoryClickOnly?: boolean;
 }
@@ -311,7 +311,7 @@ const Sidebar = ({ collapsed, onNavigate, navMode, onNavModeChange, categoryClic
      *    - 用户信息区域：登录后显示通知铃铛、头像、用户名、邮箱，点击弹出
      *      下拉菜单提供个人中心和退出登录选项
      */
-    <div className="flex flex-col h-full">
+    <nav className="flex flex-col h-full" aria-label="Main navigation">
       {/* Header: Logo + Language */}
       <div className="flex items-center h-16 px-4 border-b border-dark-700 gap-2">
         <div className="w-8 h-8 bg-gradient-to-r from-primary-500 to-secondary-500 rounded-lg flex items-center justify-center flex-shrink-0">
@@ -447,7 +447,7 @@ const Sidebar = ({ collapsed, onNavigate, navMode, onNavModeChange, categoryClic
         </div>
       </div>
 
-    </div>
+    </nav>
   );
 };
 

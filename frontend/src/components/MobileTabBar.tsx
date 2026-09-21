@@ -34,7 +34,7 @@ type DrawerType = null | 'recommend' | 'ai' | 'more';
  */
 interface TabItem {
   key: string;
-  icon: React.ComponentType<{ className?: string }>;
+  icon: React.ComponentType<{ className?: string; style?: React.CSSProperties }>;
   label: string;
   subtitle: string;
   path: string;

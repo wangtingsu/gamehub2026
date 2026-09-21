@@ -170,8 +170,8 @@ export function generatePageTags(path: string): string[] {
  */
 export async function getPageWithISR(
   req: Request,
-  renderFn: (url: string, req?: Request) => Promise<string> = renderPageToHtml
-): Promise<{ html: string; fromCache: 'fresh' | 'stale' | 'none'; revalidated: boolean }> {
+  renderFn: (url: string, req?: Request) => Promise<{ html: string; statusCode: number }> = renderPageToHtml
+): Promise<{ html: string; statusCode: number; fromCache: 'fresh' | 'stale' | 'none'; revalidated: boolean }> {
   const cacheKey = generateCacheKey(req)
   const pageType = getPageType(req.path)
   const ttlConfig = getTTLForPageType(pageType)
@@ -180,8 +180,8 @@ export async function getPageWithISR(
   // 如果不启用ISR，直接渲染
   if (!enableISR) {
     logger.debug('ISR未启用，直接渲染', { path: req.path })
-    const html = await renderFn(req.url, req)
-    return { html, fromCache: 'none', revalidated: false }
+    const { html, statusCode } = await renderFn(req.url, req)
+    return { html, statusCode, fromCache: 'none', revalidated: false }
   }
 
   try {
@@ -193,7 +193,7 @@ export async function getPageWithISR(
 
       if (age <= freshAge) {
         logger.debug('新鲜缓存命中', { path: req.path, age: Math.round(age / 1000) })
-        return { html: freshCache.value, fromCache: 'fresh', revalidated: false }
+        return { html: freshCache.value, statusCode: freshCache.metadata.statusCode || 200, fromCache: 'fresh', revalidated: false }
       }
 
       // 2. 检查是否启用陈旧即用
@@ -207,7 +207,7 @@ export async function getPageWithISR(
           })
         }
 
-        return { html: freshCache.value, fromCache: 'stale', revalidated: true }
+        return { html: freshCache.value, statusCode: freshCache.metadata.statusCode || 200, fromCache: 'stale', revalidated: true }
       }
     }
 
@@ -223,7 +223,7 @@ export async function getPageWithISR(
       const staleHtml = await getStaleCache<string>(cacheKey, ttlConfig.stale)
       if (staleHtml) {
         logger.debug('其他请求正在渲染，返回陈旧缓存', { path: req.path })
-        return { html: staleHtml, fromCache: 'stale', revalidated: false }
+        return { html: staleHtml, statusCode: 200, fromCache: 'stale', revalidated: false }
       }
 
       // 没有陈旧缓存，等待一小段时间后重试（简单实现）
@@ -233,7 +233,7 @@ export async function getPageWithISR(
 
     try {
       // 渲染页面
-      const html = await renderFn(req.url, req)
+      const { html, statusCode } = await renderFn(req.url, req)
 
       // 缓存结果
       const metadata = {
@@ -241,6 +241,7 @@ export async function getPageWithISR(
         ttl: ttlConfig.fresh,
         tags: generatePageTags(req.path),
         staleUntil: Date.now() + (ttlConfig.stale * 1000),
+        statusCode,
       }
 
       await setCacheWithMetadata(cacheKey, html, metadata)
@@ -253,8 +254,8 @@ export async function getPageWithISR(
       // 释放锁
       await releaseLock(lockKey, req.path)
 
-      logger.debug('页面渲染并缓存完成', { path: req.path, ttl: ttlConfig.fresh })
-      return { html, fromCache: 'none', revalidated: false }
+      logger.debug('页面渲染并缓存完成', { path: req.path, ttl: ttlConfig.fresh, statusCode })
+      return { html, statusCode, fromCache: 'none', revalidated: false }
     } catch (renderError) {
       // 渲染失败，释放锁
       await releaseLock(lockKey, req.path)
@@ -267,13 +268,13 @@ export async function getPageWithISR(
     const staleHtml = await getStaleCache<string>(cacheKey, ttlConfig.stale)
     if (staleHtml) {
       logger.debug('渲染失败，返回陈旧缓存降级', { path: req.path })
-      return { html: staleHtml, fromCache: 'stale', revalidated: false }
+      return { html: staleHtml, statusCode: 200, fromCache: 'stale', revalidated: false }
     }
 
     // 没有陈旧缓存，尝试直接渲染（不使用缓存）
     try {
-      const html = await renderFn(req.url, req)
-      return { html, fromCache: 'none', revalidated: false }
+      const { html, statusCode } = await renderFn(req.url, req)
+      return { html, statusCode, fromCache: 'none', revalidated: false }
     } catch (fallbackError) {
       logger.error('降级渲染也失败:', { path: req.path, error: fallbackError })
       throw error // 抛出原始错误
@@ -290,7 +291,7 @@ export async function getPageWithISR(
  */
 export async function revalidateInBackground(
   req: Request,
-  renderFn: (url: string, req?: Request) => Promise<string> = renderPageToHtml
+  renderFn: (url: string, req?: Request) => Promise<{ html: string; statusCode: number }> = renderPageToHtml
 ): Promise<void> {
   const cacheKey = generateCacheKey(req)
   const pageType = getPageType(req.path)
@@ -309,7 +310,7 @@ export async function revalidateInBackground(
     logger.debug('开始后台重新验证', { path: req.path })
 
     // 重新渲染页面
-    const html = await renderFn(req.url, req)
+    const { html, statusCode } = await renderFn(req.url, req)
 
     // 更新缓存
     const metadata = {
@@ -317,6 +318,7 @@ export async function revalidateInBackground(
       ttl: ttlConfig.fresh,
       tags: generatePageTags(req.path),
       staleUntil: Date.now() + (ttlConfig.stale * 1000),
+      statusCode,
     }
 
     await setCacheWithMetadata(cacheKey, html, metadata)

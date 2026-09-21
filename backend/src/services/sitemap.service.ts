@@ -29,7 +29,10 @@ export interface SitemapGameItem {
  */
 export interface SitemapNewsItem {
   id: number;
+  slug?: string;
   publishedAt: string;
+  /** 正文真实翻译过的语言前缀（含 'cn'），用于裁剪 sitemap 的 hreflang */
+  translatedLangs?: string[];
 }
 
 /**
@@ -71,13 +74,24 @@ export const getAllGamesForSitemap = async (): Promise<SitemapGameItem[]> => {
  */
 export const getAllPublishedNewsForSitemap = async (): Promise<SitemapNewsItem[]> => {
   const result = await query(
-    'SELECT id, published_at FROM news WHERE is_published = true ORDER BY published_at DESC',
+    `SELECT id, slug, published_at, content_en, content_ja, content_ko, content_es, content_fr
+     FROM news WHERE is_published = true ORDER BY published_at DESC`,
     []
   );
-  return (result.rows || result).map((row: any) => ({
-    id: row.id,
-    publishedAt: row.published_at,
-  }));
+  const suffixes = ['en', 'ja', 'ko', 'es', 'fr'];
+  return (result.rows || result).map((row: any) => {
+    // base 列恒为中文；翻译列非空才视为该语言真实可用（与前端多语言门禁一致）
+    const translatedLangs = ['cn'];
+    for (const s of suffixes) {
+      if (row[`content_${s}`]) translatedLangs.push(s);
+    }
+    return {
+      id: row.id,
+      slug: row.slug,
+      publishedAt: row.published_at,
+      translatedLangs,
+    };
+  });
 };
 
 /**

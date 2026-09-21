@@ -315,7 +315,7 @@ const BlogDetailPage = () => {
                       <div className="rounded-xl overflow-hidden border border-dark-700/50 hover:border-blue-500/50 transition-all hover:-translate-y-0.5">
                         <div className="h-32 bg-dark-800 overflow-hidden">
                           {(a.coverImageUrl || a.coverImage) ? (
-                            <img src={a.coverImageUrl || a.coverImage} alt="" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" loading="lazy" />
+                            <img src={a.coverImageUrl || a.coverImage} alt={a.title || 'Blog article'} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" loading="lazy" />
                           ) : <div className="w-full h-full flex items-center justify-center text-3xl">📄</div>}
                         </div>
                         <div className="p-3 bg-dark-800/50">

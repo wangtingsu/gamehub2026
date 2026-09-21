@@ -244,11 +244,19 @@ const Layout = () => {
         <html lang={i18n.language} />
       </Helmet>
 
+      {/* 无障碍：键盘导航「跳转到主内容」链接（首击 Tab 即显示，可跳过侧栏/导航） */}
+      <a
+        href="#main-content"
+        className="sr-only focus:not-sr-only focus:absolute focus:top-3 focus:left-3 focus:z-[1001] focus:bg-blue-600 focus:text-white focus:px-4 focus:py-2 focus:rounded-md focus:no-underline"
+      >
+        {t('a11y.skipToContent', 'Skip to main content')}
+      </a>
+
       {isMobile ? (
         /* ========== 手机布局：顶部导航 + 内容 + 底部Tab栏 ========== */
         <>
           <MobileHeader />
-          <div className="mobile-content pb-20" style={{ paddingBottom: 'calc(80px + env(safe-area-inset-bottom))' }}>
+          <div id="main-content" className="mobile-content pb-20" style={{ paddingBottom: 'calc(80px + env(safe-area-inset-bottom))' }}>
             <Outlet />
           </div>
           <MobileTabBar />
@@ -330,7 +338,7 @@ const Layout = () => {
 
           {/* Main Content + Footer — 点击内容区关闭子面板 */}
           <AntLayout className={`bg-dark-900 main-layout-inner${navMode !== 'main' ? ' has-subnav' : ''}`} onClick={() => { setNavMode('main'); }}>
-            <Content className="bg-dark-900 text-gray-100 main-content" style={{ flex: '1 1 auto' }}>
+            <Content id="main-content" className="bg-dark-900 text-gray-100 main-content" style={{ flex: '1 1 auto' }}>
               <div className="px-8 pb-2">
                 <Outlet />
               </div>

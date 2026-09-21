@@ -10,6 +10,7 @@ import { query, execute } from '../db';
 import logger from '../utils/logger';
 import { ReviewStatus } from '../types';
 import { createAuditLog } from './audit-log.service';
+import { notifyIndexNow } from './indexnow.service';
 
 /**
  * 审核队列项接口
@@ -179,11 +180,51 @@ export const approveContent = async (
     });
 
     logger.info(`内容审核通过: type=${type}, id=${id}, reviewer=${reviewerId}`);
+
+    // 推送 IndexNow，让支持该协议的搜索引擎即时抓取新发布页面（异步，不阻塞审核响应）
+    notifyContentPublished(type, table, id);
   } catch (error) {
     logger.error(`审核通过失败: type=${type}, id=${id}`, error);
     throw error;
   }
 };
+
+/**
+ * 内容审核通过后异步推送 IndexNow
+ *
+ * 根据内容类型解析其公开 URL 路径：
+ * - news  → /news/<slug>（slug 缺失时回退为 id）
+ * - blog  → /blog/<slug>
+ * - review → /reviews/<id>
+ * - guide → /guides/<id>
+ * community 帖子不入 sitemap，跳过推送。
+ *
+ * @param type  内容类型
+ * @param table 数据库表名
+ * @param id    内容 ID
+ */
+async function notifyContentPublished(type: string, table: string, id: string): Promise<void> {
+  try {
+    let path: string | null = null;
+    if (type === 'news') {
+      const rows = await query(`SELECT slug FROM ${table} WHERE id = ?`, [id]);
+      path = `/news/${rows[0]?.slug || id}`;
+    } else if (type === 'blog') {
+      const rows = await query(`SELECT slug FROM ${table} WHERE id = ?`, [id]);
+      path = `/blog/${rows[0]?.slug || id}`;
+    } else if (type === 'review') {
+      path = `/reviews/${id}`;
+    } else if (type === 'guide') {
+      path = `/guides/${id}`;
+    }
+
+    if (path) {
+      notifyIndexNow([path]).catch(() => {});
+    }
+  } catch (error) {
+    logger.error('IndexNow 推送路径解析失败:', { type, id, error });
+  }
+}
 
 /**
  * 审核拒绝内容

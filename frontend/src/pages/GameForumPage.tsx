@@ -107,7 +107,7 @@ const GameForumPage = () => {
               <div key={f.forum_id} onClick={() => navigate(`/${currentLang}/games/${game?.slug || f.forum_id}/forum`)}
                 className={`cursor-pointer rounded-lg overflow-hidden border transition-all ${f.forum_id === id ? 'border-blue-500 bg-blue-500/10' : 'border-dark-600 hover:border-blue-500/50'}`}>
                 <div className="h-14 bg-dark-700 overflow-hidden">
-                  {(game?.imageUrl || game?.coverImageUrl) ? <img src={game.imageUrl || game.coverImageUrl} alt="" className="w-full h-full object-cover" /> :
+                  {(game?.imageUrl || game?.coverImageUrl) ? <img src={game.imageUrl || game.coverImageUrl} alt={f.forum_name || 'Game forum'} className="w-full h-full object-cover" /> :
                     <div className="w-full h-full flex items-center justify-center text-gray-500 text-lg">{f.forum_name?.[0]}</div>}
                 </div>
                 <div className="px-1.5 py-1 bg-dark-800"><div className="text-white text-[10px] truncate">{f.forum_name}</div></div>

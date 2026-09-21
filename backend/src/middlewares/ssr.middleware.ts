@@ -17,6 +17,36 @@ import logger from '../utils/logger'
 import { getPageWithISR } from '../services/isr.service'
 
 /**
+ * 页面 URL 归一化：返回规范形态（若无需归一化则返回 null）。
+ *
+ * 处理两类重复收录问题：
+ * 1. 语言前缀大小写（/EN/…、/ZH-cn/… → /en/…、/zh-cn/…）
+ * 2. 尾斜杠（/en/ → /en、/en/games/ → /en/games）
+ *
+ * @param path - 解码后的请求路径（req.path）
+ * @returns 归一化后的路径；无变化时返回 null
+ */
+function normalizePageUrl(path: string): string | null {
+  if (!path || path === '/') return null
+
+  let normalized = path
+
+  // 语言前缀大小写归一
+  const langMatch = normalized.match(/^(\/[a-z]{2}(-[a-zA-Z]{2})?)(?=\/|$)/)
+  if (langMatch) {
+    const lower = langMatch[1].toLowerCase()
+    normalized = lower + normalized.slice(langMatch[1].length)
+  }
+
+  // 尾斜杠归一（保留根路径 /）
+  if (normalized.length > 1 && normalized.endsWith('/')) {
+    normalized = normalized.replace(/\/+$/, '')
+  }
+
+  return normalized === path ? null : normalized
+}
+
+/**
  * SSR 中间件处理函数
  *
  * 根据请求路径判断是否需要 SSR 渲染（跳过 /api/、/uploads/ 等前缀和静态文件），
@@ -41,18 +71,27 @@ export async function ssrMiddleware(req: Request, res: Response, next: NextFunct
     return next()
   }
 
+  // URL 归一化：语言前缀大小写 + 尾斜杠 → 301 到规范形态（避免重复收录）
+  const normalizedPath = normalizePageUrl(req.path)
+  if (normalizedPath) {
+    const query = (req.originalUrl || '').split('?')[1]
+    return res.redirect(301, normalizedPath + (query ? `?${query}` : ''))
+  }
+
   try {
     // 使用ISR服务获取页面（复用 isr.service.ts 中的缓存逻辑，消除重复）
-    const { html, fromCache, revalidated } = await getPageWithISR(req)
+    const { html, statusCode, fromCache, revalidated } = await getPageWithISR(req)
 
     // 检测语言
     const langMatch = req.path.match(/^\/([a-z]{2}(-[A-Z]{2})?)/)
     const lang = langMatch ? langMatch[1] : 'zh-CN'
 
+    // 软 404（不存在的内容页）返回 404 并告知搜索引擎不收录
+    const isNotFound = statusCode === 404
     const headers: Record<string, string> = {
       'Content-Type': 'text/html; charset=utf-8',
       'Content-Language': lang,
-      'X-Robots-Tag': 'index, follow',
+      'X-Robots-Tag': isNotFound ? 'noindex, nofollow' : 'index, follow',
     }
 
     // 设置缓存状态头部
@@ -88,7 +127,7 @@ export async function ssrMiddleware(req: Request, res: Response, next: NextFunct
       headers['Cache-Control'] = 'public, no-cache, must-revalidate'
     }
 
-    res.status(200).set(headers).end(html)
+    res.status(statusCode).set(headers).end(html)
   } catch (error) {
     logger.error('SSR middleware error:', error)
     next()
