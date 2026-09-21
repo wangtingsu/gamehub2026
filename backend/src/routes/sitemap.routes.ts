@@ -58,7 +58,6 @@ const staticPages = [
   { path: '/games', changefreq: 'daily', priority: '0.9' },
   { path: '/library/online', changefreq: 'daily', priority: '0.8' },
   { path: '/news', changefreq: 'daily', priority: '0.8' },
-  { path: '/reviews', changefreq: 'daily', priority: '0.8' },
   { path: '/guides', changefreq: 'daily', priority: '0.8' },
   { path: '/community', changefreq: 'daily', priority: '0.7' },
   { path: '/discovery', changefreq: 'daily', priority: '0.7' },
@@ -206,9 +205,9 @@ ${alternates}
   </url>`);
   }
 
-  // 评测详情页
+  // 评测详情页（规范路径为 /community/reviews/:id，与前端路由一致）
   for (const item of reviews) {
-    const path = `/reviews/${item.id}`;
+    const path = `/community/reviews/${item.id}`;
     const canonicalLoc = `${siteUrl}/${URL_PREFIXES[0]}${path}`;
     const alternates = buildAlternateLinks(siteUrl, path);
     urls.push(`  <url>

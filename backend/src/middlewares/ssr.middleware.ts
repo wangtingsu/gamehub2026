@@ -31,8 +31,8 @@ function normalizePageUrl(path: string): string | null {
 
   let normalized = path
 
-  // 语言前缀大小写归一
-  const langMatch = normalized.match(/^(\/[a-z]{2}(-[a-zA-Z]{2})?)(?=\/|$)/)
+  // 语言前缀大小写归一（[a-zA-Z] 同时匹配 /EN、/ZH-CN 等大写前缀）
+  const langMatch = normalized.match(/^(\/[a-zA-Z]{2}(-[a-zA-Z]{2})?)(?=\/|$)/)
   if (langMatch) {
     const lower = langMatch[1].toLowerCase()
     normalized = lower + normalized.slice(langMatch[1].length)
@@ -76,6 +76,15 @@ export async function ssrMiddleware(req: Request, res: Response, next: NextFunct
   if (normalizedPath) {
     const query = (req.originalUrl || '').split('?')[1]
     return res.redirect(301, normalizedPath + (query ? `?${query}` : ''))
+  }
+
+  // 旧 /reviews 路径 → /community（P1-3：薄页 301 到社区页，避免重复收录）
+  if (req.path === '/reviews') {
+    return res.redirect(301, '/community')
+  }
+  const reviewsMatch = req.path.match(/^\/([a-z]{2})\/reviews$/)
+  if (reviewsMatch) {
+    return res.redirect(301, `/${reviewsMatch[1]}/community`)
   }
 
   try {

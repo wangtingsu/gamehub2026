@@ -62,6 +62,22 @@ function getLangPrefix(urlPathname: string): string {
   return m ? m[1] : 'en'
 }
 
+/** 列表区块的本地化 h2 标题（P1-2：首页 h2≥3、4 个列表页各 h2≥1 的语义层级验收） */
+const SECTION_HEADINGS: Record<string, Record<string, string>> = {
+  en: { featured: 'Featured Games', news: 'Latest News', reviews: 'Game Reviews', posts: 'Community Posts', games: 'All Games', guides: 'Game Guides', blog: 'Blog Articles' },
+  cn: { featured: '精选游戏', news: '最新资讯', reviews: '游戏评测', posts: '社区帖子', games: '全部游戏', guides: '游戏攻略', blog: '博客文章' },
+  ja: { featured: '注目ゲーム', news: '最新ニュース', reviews: 'ゲームレビュー', posts: 'コミュニティ投稿', games: 'すべてのゲーム', guides: 'ゲームガイド', blog: 'ブログ記事' },
+  ko: { featured: '추천 게임', news: '최신 뉴스', reviews: '게임 리뷰', posts: '커뮤니티 글', games: '모든 게임', guides: '가이드', blog: '블로그 글' },
+  es: { featured: 'Juegos destacados', news: 'Últimas noticias', reviews: 'Reseñas de juegos', posts: 'Publicaciones', games: 'Todos los juegos', guides: 'Guías', blog: 'Artículos' },
+  fr: { featured: 'Jeux en vedette', news: 'Dernières actualités', reviews: 'Critiques de jeux', posts: 'Publications', games: 'Tous les jeux', guides: 'Guides', blog: 'Articles' },
+}
+
+/** 取某语言的区块标题（缺省回退英文） */
+function sectionHeading(lang: string, key: string): string {
+  const table = SECTION_HEADINGS[lang] || SECTION_HEADINGS.en
+  return table[key] || SECTION_HEADINGS.en[key] || ''
+}
+
 /** 带封面图的列表项渲染（P1-4：让 SSR HTML 输出真实 <img>，修复「列表页/首页 0 图片」） */
 function renderItem(it: ListItem) {
   return (
@@ -117,60 +133,78 @@ export default function ServerContent({
             </div>
           )}
           {gameList.length > 0 && (
-            <ul>
-              {gameList.map((g) => (
-                <li key={g.id}>
-                  <a href={`/${lang}/games/${g.slug || g.id}`}>
-                    {g.imageUrl ? <img src={absUrl(g.imageUrl)} alt={g.title} loading="lazy" decoding="async" /> : null}
-                    <span>{g.title}</span>
-                  </a>
-                  {g.description ? <p>{g.description}</p> : null}
-                </li>
-              ))}
-            </ul>
+            <section>
+              <h2>{sectionHeading(lang, 'featured')}</h2>
+              <ul>
+                {gameList.map((g) => (
+                  <li key={g.id}>
+                    <a href={`/${lang}/games/${g.slug || g.id}`}>
+                      {g.imageUrl ? <img src={absUrl(g.imageUrl)} alt={g.title} loading="lazy" decoding="async" /> : null}
+                      <span>{g.title}</span>
+                    </a>
+                    {g.description ? <p>{g.description}</p> : null}
+                  </li>
+                ))}
+              </ul>
+            </section>
           )}
           {newsList.length > 0 && (
-            <ul>
-              {newsList.map((n) => (
-                <li key={n.id}>
-                  <a href={`/${lang}/news/${n.slug || n.id}`}>
-                    {n.imageUrl ? <img src={absUrl(n.imageUrl)} alt={n.title} loading="lazy" decoding="async" /> : null}
-                    <span>{n.title}</span>
-                  </a>
-                  {n.summary ? <p>{n.summary}</p> : null}
-                </li>
-              ))}
-            </ul>
+            <section>
+              <h2>{sectionHeading(lang, 'news')}</h2>
+              <ul>
+                {newsList.map((n) => (
+                  <li key={n.id}>
+                    <a href={`/${lang}/news/${n.slug || n.id}`}>
+                      {n.imageUrl ? <img src={absUrl(n.imageUrl)} alt={n.title} loading="lazy" decoding="async" /> : null}
+                      <span>{n.title}</span>
+                    </a>
+                    {n.summary ? <p>{n.summary}</p> : null}
+                  </li>
+                ))}
+              </ul>
+            </section>
           )}
           {reviewList.length > 0 && (
-            <ul>
-              {reviewList.map((r) => (
-                <li key={r.id}>
-                  <a href={`/${lang}/community/reviews/${r.id}`}>{r.title}</a>
-                </li>
-              ))}
-            </ul>
+            <section>
+              <h2>{sectionHeading(lang, 'reviews')}</h2>
+              <ul>
+                {reviewList.map((r) => (
+                  <li key={r.id}>
+                    <a href={`/${lang}/community/reviews/${r.id}`}>{r.title}</a>
+                  </li>
+                ))}
+              </ul>
+            </section>
           )}
         </>
       )}
 
       {listPage && listPage.items.length > 0 && (
-        <ul>
-          {listPage.items.map((it) => renderItem(it))}
-        </ul>
+        <section>
+          <h2>{sectionHeading(lang, listPage.kind)}</h2>
+          <ul>
+            {listPage.items.map((it) => renderItem(it))}
+          </ul>
+        </section>
       )}
 
       {communityPage && (communityPage.posts.length > 0 || communityPage.reviews.length > 0) && (
         <>
           {communityPage.posts.length > 0 && (
-            <ul>
-              {communityPage.posts.map((it) => renderItem(it))}
-            </ul>
+            <section>
+              <h2>{sectionHeading(lang, 'posts')}</h2>
+              <ul>
+                {communityPage.posts.map((it) => renderItem(it))}
+              </ul>
+            </section>
           )}
           {communityPage.reviews.length > 0 && (
-            <ul>
-              {communityPage.reviews.map((it) => renderItem(it))}
-            </ul>
+            <section>
+              <h2>{sectionHeading(lang, 'reviews')}</h2>
+              <ul>
+                {communityPage.reviews.map((it) => renderItem(it))}
+              </ul>
+            </section>
           )}
         </>
       )}
