@@ -43,6 +43,7 @@ interface ServerContentProps {
   pageMeta: PageMeta
   games?: Game[]
   news?: NewsArticle[]
+  guides?: Guide[]
   banners?: Array<{ id?: number | string; title?: string; image_url?: string }>
   reviews?: Review[]
   gameDetail?: Game | null
@@ -96,6 +97,7 @@ export default function ServerContent({
   pageMeta,
   games,
   news,
+  guides,
   banners,
   reviews,
   gameDetail,
@@ -116,6 +118,7 @@ export default function ServerContent({
 
   const gameList = Array.isArray(games) ? games : []
   const newsList = Array.isArray(news) ? news : []
+  const guideList = Array.isArray(guides) ? guides : []
   const reviewList = Array.isArray(reviews) ? reviews : []
 
   return (
@@ -159,6 +162,22 @@ export default function ServerContent({
                       <span>{n.title}</span>
                     </a>
                     {n.summary ? <p>{n.summary}</p> : null}
+                  </li>
+                ))}
+              </ul>
+            </section>
+          )}
+          {guideList.length > 0 && (
+            <section>
+              <h2>{sectionHeading(lang, 'guides')}</h2>
+              <ul>
+                {guideList.map((g) => (
+                  <li key={g.id}>
+                    <a href={`/${lang}/guides/${g.id}`}>
+                      {g.coverImageUrl ? <img src={absUrl(g.coverImageUrl)} alt={g.title} loading="lazy" decoding="async" /> : null}
+                      <span>{g.title}</span>
+                    </a>
+                    {g.summary ? <p>{g.summary}</p> : null}
                   </li>
                 ))}
               </ul>

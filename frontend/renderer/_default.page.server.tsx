@@ -726,6 +726,10 @@ async function render(pageContext: PageContextServer) {
   const news = serverQueryClient.getQueryData<NewsArticle[]>(
     queryKeys.news.list({ page: 1, limit: 4, lang: i18nLang }),
   )
+  // 首页攻略列表（P1-2：作为首页第三个 h2 区块，与精选游戏/最新资讯并列）
+  const guides = serverQueryClient.getQueryData<Guide[]>(
+    queryKeys.guides.list({ page: 1, limit: 4, lang: i18nLang }),
+  )
   // 首页轮播 banner（P1-4：让 SSR HTML 输出 hero 大图，而非 0 图片）
   const banners = serverQueryClient.getQueryData<any[]>(['banners', 'home'])
 
@@ -925,6 +929,7 @@ async function render(pageContext: PageContextServer) {
       pageMeta={pageMeta}
       games={games}
       news={news}
+      guides={guides}
       banners={banners}
       gameDetail={gameDetail}
       newsDetail={newsDetail}
