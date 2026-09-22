@@ -46,6 +46,7 @@ const Footer = () => {
       { key: 'cozyGames', href: localize('/cozy-games') },
       { key: 'news', href: localize('/news') },
       { key: 'aiGaming', href: localize('/ai-gaming') },
+      { key: 'faq', href: localize('/faq/anime-gacha-games') },
     ],
     community: [
       { key: 'forums', href: localize('/community') },

@@ -15,6 +15,7 @@
  */
 import type { Game, NewsArticle, Review, Guide, BlogArticle } from '../api/types'
 import ReactMarkdown from 'react-markdown'
+import faqContent from '../data/faq/content.json'
 
 const SITE_URL = 'https://www.gghubs.com'
 
@@ -121,10 +122,20 @@ export default function ServerContent({
   const guideList = Array.isArray(guides) ? guides : []
   const reviewList = Array.isArray(reviews) ? reviews : []
 
+  // 二游 FAQ 落地页：正文直接输出部署包的 HTML 片段（含 h1/h2/h3 锚点 + 目录 nav）
+  const isFaq = /\/faq\/anime-gacha-games\/?$/.test(urlPathname)
+  const faqHtml = isFaq ? (lang === 'cn' ? faqContent.zh : faqContent.en).html : ''
+
   return (
     <div hidden>
-      <h1>{pageMeta.title}</h1>
-      <p>{pageMeta.description}</p>
+      {isFaq ? (
+        <div dangerouslySetInnerHTML={{ __html: faqHtml }} />
+      ) : (
+        <>
+          <h1>{pageMeta.title}</h1>
+          <p>{pageMeta.description}</p>
+        </>
+      )}
 
       {isHome && (
         <>

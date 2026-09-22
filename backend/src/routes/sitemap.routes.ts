@@ -66,6 +66,8 @@ const staticPages = [
   { path: '/cozy-games', changefreq: 'weekly', priority: '0.7' },
   { path: '/free-games', changefreq: 'weekly', priority: '0.7' },
   { path: '/ai-gaming', changefreq: 'weekly', priority: '0.6' },
+  // 二游 FAQ 落地页：仅 cn/en 有真实内容，hreflang 只保留这两种语言
+  { path: '/faq/anime-gacha-games', changefreq: 'weekly', priority: '0.6', langs: ['cn', 'en'] },
   { path: '/ai', changefreq: 'weekly', priority: '0.5' },
   { path: '/blog', changefreq: 'weekly', priority: '0.6' },
   { path: '/about', changefreq: 'monthly', priority: '0.5' },
@@ -167,7 +169,7 @@ function buildSitemapXml(
   for (const page of staticPages) {
     const canonicalLang = URL_PREFIXES[0];
     const canonicalLoc = `${siteUrl}/${canonicalLang}${page.path}`;
-    const alternates = buildAlternateLinks(siteUrl, page.path);
+    const alternates = buildAlternateLinks(siteUrl, page.path, (page as { langs?: string[] }).langs);
     urls.push(`  <url>
     <loc>${escapeXml(canonicalLoc)}</loc>
     <lastmod>${formatDate(siteLastmod)}</lastmod>

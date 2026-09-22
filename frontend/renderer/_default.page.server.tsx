@@ -22,6 +22,9 @@ import type { PageContextServer } from 'vike/types'
 import { renderToString } from 'react-dom/server'
 import type { Game, NewsArticle, Guide, BlogArticle, Review, CommunityPost } from '../src/api/types'
 import ServerContent from '../src/components/ServerContent'
+import faqContent from '../src/data/faq/content.json'
+import faqPageZh from '../src/data/faq/faqpage-zh.json'
+import faqPageEn from '../src/data/faq/faqpage-en.json'
 
 /**
  * 服务端渲染环境配置
@@ -146,6 +149,10 @@ function getPageMeta(urlPathname: string, lang: string) {
   if (path.startsWith('ai-gaming') || path.startsWith('ai')) {
     return build(t('seo.aiGaming.title'), t('seo.aiGaming.description'))
   }
+  if (path.startsWith('faq')) {
+    const c = lang === 'zh-CN' ? faqContent.zh : faqContent.en
+    return build(c.title, c.description)
+  }
   // 默认首页 SEO
   return build(t('seo.defaultTitle'), t('seo.defaultDescription'))
 }
@@ -208,6 +215,7 @@ function isKnownRoute(path: string): boolean {
   const staticRoutes = new Set([
     'games', 'news', 'guides', 'blog', 'community', 'community-forum',
     'search', 'discovery', 'trending', 'cozy-games', 'free-games', 'ai-gaming',
+    'faq/anime-gacha-games',
     'leaderboard', 'ai', 'ai/soul', 'ai/npc', 'ai/companion',
     'about', 'about/careers', 'about/press', 'about/contact',
     'print', 'my', 'login', 'register', 'profile',
@@ -303,6 +311,11 @@ function buildJsonLdGraph(opts: {
       'https://x.com/gghubsgame',
     ],
   })
+
+  // 2b. FAQPage —— 二游站点级落地页（99 条问答，GEO：供 ChatGPT/Perplexity/AI Overviews 引用）
+  if (/\/faq\/anime-gacha-games\/?$/.test(urlPathname)) {
+    graph.push((langPrefix === 'cn' ? faqPageZh : faqPageEn) as unknown as Record<string, unknown>)
+  }
 
   // 3. ItemList —— 首页/游戏库列出可抓取的游戏条目
   const gameList = Array.isArray(games) ? games : []
@@ -772,6 +785,16 @@ async function render(pageContext: PageContextServer) {
       .filter((l) => availableNewsLangs.has(l.prefix))
       .map((l) => `<link rel="alternate" hreflang="${l.code}" href="${SITE_URL}/${l.prefix}${newsPath}" />`)
       .join('\n    ')
+  }
+
+  // 二游 FAQ 落地页：仅 cn/en 有真实内容，hreflang 只保留这两种语言；
+  // ja/ko/es/fr 实为英文回退，置 noindex 避免伪 hreflang 违规
+  if (/\/faq\/anime-gacha-games\/?$/.test(pathWithoutLang)) {
+    alternateLinks = HREFLANG_LANGS
+      .filter((l) => l.prefix === 'cn' || l.prefix === 'en')
+      .map((l) => `<link rel="alternate" hreflang="${l.code}" href="${SITE_URL}/${l.prefix}${pathWithoutLang}" />`)
+      .join('\n    ')
+    if (langPrefix !== 'cn' && langPrefix !== 'en') shouldNoindex = true
   }
 
   let blogDetail: BlogArticle | null = null

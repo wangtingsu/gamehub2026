@@ -1,0 +1,807 @@
+{
+  "@type": "FAQPage",
+  "@id": "https://www.gghubs.com/en/faq/anime-gacha-games#faq",
+  "name": "Anime Gacha Games FAQ 2026",
+  "inLanguage": "en",
+  "datePublished": "2026-09-21",
+  "dateModified": "2026-09-21",
+  "isPartOf": {
+    "@type": "WebSite",
+    "name": "GameHub",
+    "url": "https://www.gghubs.com"
+  },
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "What is an anime gacha game?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "An anime gacha game is a mobile title built around anime-style art, character collection and a lottery-style summon system (gacha). Leading examples include Genshin Impact, Honkai: Star Rail, Arknights, Blue Archive and Fate/Grand Order."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How are gacha games different from normal mobile games?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Gacha games monetize through random character banners rather than ads or level packs. They almost always include a pity (guarantee) system, and they ship large story and event updates on a regular schedule — the character roster is the product."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Which gacha games are actually worth playing in 2026?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "By combined MAU and revenue: Genshin Impact (60M+ MAU), Honkai: Star Rail (30M+), Wuthering Waves (30M+), Zenless Zone Zero (15M+), Goddess of Victory: Nikke (15M+), Blue Archive (10M+), with newcomers Arknights: Endfield, Neverness to Everness and Infinity Nikki climbing fast."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How do pity systems work in gacha games?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Pity comes in two layers: a hard pity (guaranteed 5-star) and a soft pity (rate ramp before it). Genshin and Star Rail: 90-pull hard pity, soft pity from ~75. Wuthering Waves: 80-pull hard pity, soft from ~65. Arknights: 2% base 6-star rate, soft pity around 50. Nikke: 4% SSR with no hard pity. Knowing your game's pity is the single best budget control."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Can free-to-play players keep up?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes. Honkai: Star Rail is widely rated the most F2P-friendly (auto-battle, strong free characters, generous free pulls), Genshin is close behind (Xiangling, Xingqiu and Bennett remain meta-relevant), and Wuthering Waves regenerates stamina faster than most competitors."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Is rerolling worth the time in 2026?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Usually not for veterans. A full reroll takes roughly 30-90 minutes in Genshin, Star Rail or Wuthering Waves, and 2026 versions hand out enough free pulls that a reroll rarely changes long-term outcomes. If you do reroll, cap it at one or two attempts."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How much should I spend per month?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "The sweet spot is the monthly card plus battle pass (roughly USD $5-15/month), which covers steady pull income. Whaling only pays off if you are chasing a specific limited banner on its final day — the long-term experience gap between F2P and light spenders is much smaller than the gap between light and heavy spenders."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How much time does a gacha game take per day?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Most dailies run 10-25 minutes: Star Rail is fastest (15-20 minutes with auto-battle), Arknights around 15-20, Genshin around 20-30 including stamina and exploration. Expect extra hours during a new version's first week."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Should I play on the global server or the Chinese server?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Pick the Chinese server for native-language story, lower latency and local community; pick global for earlier access to some content, international friends and different pricing. Accounts, purchases and friend lists do not transfer between servers, so decide with your friend group before starting."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Which gacha games have PC or console versions?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Genshin Impact, Honkai: Star Rail, Zenless Zone Zero, Wuthering Waves, Infinity Nikki and Arknights: Endfield all have official PC clients, and Genshin, Star Rail, ZZZ and Wuthering Waves are also on PS5. Progress is shared across devices. ---"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Is Genshin Impact still worth starting in 2026?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes. Version 7.0 \"Everwinter Without Mercy\" launched on August 12, 2026, and Version 7.1 \"A Rekviem for the Underworld\" arrives September 23, 2026, so the Snezhnaya storyline is still unfolding. Mobile monthly players held at an estimated 10-16 million in August 2026 (source: ActivePlayer 2026-08). Sources: HoYoverse official announcements."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How does Genshin's pity system work?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Five-stars have a 0.6% base rate. Soft pity begins around wish 74, hard pity is 90 on character banners and 80 on the weapon banner (soft pity from ~63). Your first 5-star is a 50/50, and since Version 5.0 Capturing Radiance lifts the effective featured-character win rate to about 55%. Worst case: 180 wishes. Source: in-game probability disclosure."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Is Genshin Impact free-to-play friendly, and how much is the monthly card?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "F2P is fine. The Welkin Moon costs USD $4.99 for 30 days: 300 Genesis Crystals up front plus 90 Primogems daily, about 3,000 Primogems or 18.75 wishes. Free players earn roughly 50-60 wishes per version from dailies, Spiral Abyss and events, so a 180-wish guarantee takes about three versions. Source: official shop / 2026 pull-count trackers."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Should I reroll in Genshin Impact?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Usually no. Rerolling takes 20-40 minutes of tutorials just to reach Adventure Rank 5-7, and 2026 versions hand out plenty of free wishes through starter events, so saving Primogems for the current limited banner is the better play. If you do reroll, cap it at one or two accounts. Source: Pocket Gamer reroll guide."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Is Honkai: Star Rail worth getting into in 2026?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes. The live version is 4.5 \"To Roll the Stars in Astropolis\" (launched August 26, 2026), with 4.6 expected around September 27-28, 2026. Star Rail is widely called the most low-maintenance HoYoverse title thanks to auto-battle, strong story presentation and generous free pulls. Source: HoYoverse official announcements / version update notices."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How does Star Rail's pity and 50/50 work?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Character Warps use a 0.6% base 5-star rate, soft pity from roughly warp 74, and hard pity at 90; Light Cone Warps guarantee a 5-star at 80. Your first 5-star is a 50/50 for the featured unit, and losing it guarantees the featured character next time — a worst case of 180 warps. Source: in-game probability disclosure."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Is HSR free-to-play friendly, and how much should I spend?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Very. Auto-battle plus free characters clear most content. The Express Supply Pass costs USD $4.99 for 30 days and gives 300 Oneiric Shards plus 90 Stellar Jade per login, about 3,000 Jade or 18.75 warps — the cheapest pull in the game, roughly $0.27 each. F2P dailies and Simulated Universe keep income steady. Source: official shop / Game8 2026."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Should I reroll in Honkai: Star Rail?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Mostly no. Starter events in 2026 hand out plenty of free warps, Simulated Universe and the standard banner still deliver usable 5-stars, and a full reroll costs 30-60 minutes of story replay. Your time is better spent pushing the main story and unlocking endgame modes. Source: third-party reroll guides, 2026."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Is Zenless Zone Zero worth playing in 2026?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes. Version 3.2 \"Their Secret Histories\" launched September 9, 2026, adding the new Armorer specialty and two S-Rank Agents; ZZZ is also on Steam for PC with a roughly six-week patch cycle. Its combat feel and animation quality are the strongest among HoYoverse's three active titles. Sources: HoYoverse official announcement / Noisy Pixel 2026-09."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How does ZZZ's pity system work?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Limited-channel S-Rank Agents have a 0.6% base rate, soft pity starts at pull 75 (per-pull odds jump past 6.6%) and hard pity is 90; W-Engine banners guarantee an S-Rank at 80. It is a 50/50, so losing it guarantees the featured Agent next — worst case 180 pulls. 300 pulls on the standard channel lets you pick an S-Rank. Source: in-game probability disclosure / ONE Esports."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Is ZZZ free-to-play friendly, and how much is the monthly card?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes. The Inter-Knot Membership costs USD $4.99 for 30 days: 300 Monochrome up front plus 90 Polychrome per login, about 3,000 Polychrome or 18.75 pulls at roughly $0.26-0.28 each. F2P dailies give about 60 Polychrome a day (~1,800 monthly), and one patch yields roughly 9,000-13,000 Polychrome, about 56-81 pulls. Source: GameVika 2026 / official shop."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Is rerolling worth it in Zenless Zone Zero?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Usually not. ZZZ has no guest accounts, so each reroll needs a fresh email and 30-40 minutes of tutorials, and your early pulls only hit the standard channel's random S-Rank pool. Using the 300-pull standard selector and free version Polychrome is far more efficient. Source: GameVika Reroll Guide 2026."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Is Wuthering Waves worth starting in 2026?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes, and the release cadence has not slowed. Version 3.6 landed on 20 August 2026 with phase 2 running 10–29 September, and an Xbox Series X|S build arrived on 9 July 2026 alongside PC, PS5 and mobile. Steam sits near 88% positive from about 54,000 reviews, and two years of content is months of play. (Source: official patch notes, Steam data, Sept 2026)"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How does the pity system actually work?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "5-star base rate is 0.8%, or 1.8% including soft pity: odds ramp from pull 66 and hard pity is 80. Character banners use a 50/50, so the worst case is 160 pulls for the featured 5-star and the average is about 73. Weapon banners are single rate-up with no 50/50, also 80 pulls. One pull costs 160 Astrites. (Source: official banner rules, Kurobbs pull statistics)"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Is it F2P-friendly, and what does the monthly pass cost?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "A free player earns roughly 8,160 Astrites a month, about 51 pulls or one 5-star monthly; daily activity alone pays 60 Astrites a day. The $4.99 Lunite Subscription adds 300 Lunite plus 90 Astrites daily for 30 days, 3,000 Astrites total, roughly 18 pulls. F2P should spend on character banners only. (Source: GachaPity 2026, official store)"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Should I reroll for a better start?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Only mildly worth it. The Beginner Banner guarantees a 5-star within 50 discounted pulls, but it draws from the standard pool only, so limited 5-stars cannot be rerolled into it. Each attempt costs 25–35 minutes of unskippable tutorial. If you reroll anyway, aim for Verina (best support) or Encore (easiest DPS). (Source: wuwa.uk reroll guide, 17 May 2026)"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Is Arknights still worth starting in 2026?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes, and timing is decent. A PC version went live in August 2026, and the global sixth-anniversary event in January–February 2026 ran a limited banner with a 300-pull spark. With 15+ story chapters plus Integrated Strategies and Contingency Contract, strategy carries the game: low-rarity operators still clear most content. (Source: arknights.global notices, GachaWiki verified 9 July 2026)"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What are the 6-star rates and pity rules?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Base rates are 2% for 6-star and 8% for 5-star. After 50 pulls without a 6-star, each pull adds 2% (4% at pull 51, hitting 100% by pull 99), averaging about 34.6 pulls per 6-star. Every banner guarantees a 5-star or better in its first 10 pulls. On limited banners the first 6-star after 150 pulls is guaranteed rate-up. (Source: disclosed in-game rates, via GachaWiki)"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Is it F2P-friendly, and what does the monthly card cost?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "One pull costs 600 Orundum. Daily missions, Annihilation, events and limited-banner freebies — a one-time 10-pull plus 14 daily singles, 24 pulls total — added up to roughly 977 pulls across 2025, about 81 a month by community counts. The $4.99 monthly card gives 6 Originite Prime, 200 Orundum daily and a daily Sanity potion, about 10 pulls monthly. (Source: community statistics, official store)"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Should new players reroll for a 6-star?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Not really. The newbie banner costs just 3,800 Orundum for a 10-pull and guarantees a 6-star within the first 10 pulls, but accounts bind early and each reroll takes 10–30 minutes. Starting directly and saving for limited or celebration banners, borrowing support units for hard stages, is the smoother route. (Source: official newbie banner rules, GamePress reroll guide)"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Is Arknights: Endfield worth starting in 2026?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes. It launched on 22 January 2026 simultaneously on PC, PS5, iOS and Android, hitting about 30 million downloads in week one per Hypergryph, with an estimated $46m mobile revenue in month one (AppMagic, via PocketGamer.biz). 3D action combat sits alongside base automation, cross-save works everywhere, and version 1.5 shipped on 2 September 2026. (Source: Hypergryph, AppMagic/PocketGamer, official news)"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How does Endfield's gacha pity work, and does it carry over?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "6-star base rate is 0.8% and 5-star is 8%, with a 5-star or better guaranteed every 10 pulls. Soft pity starts at pull 65 with about +5% per pull and hard pity is 80. On Chartered banners the rate-up 6-star is guaranteed within 120 pulls — the 50/50 counter carries between banners, the 120-pull guarantee does not. A pull costs 500 Oroberyl; 30/60/90 pulls grant free 10-pulls. (Source: official banner notices, DayOneFix Aug 2026)"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Is it F2P-friendly, and what should light spenders budget?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Dailies alone give about 6,000 Oroberyl a month, roughly 12 pulls; weekly missions, Etchspace Salvage and events push that to about 20–25 pulls monthly. The ~$4.99 monthly pass lifts it to roughly 25 pulls a month and is the best-value purchase. Budget 120 pulls for any specific limited operator. (Source: official store, pitycalculator 2026 estimates)"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Should beginners reroll, and how should they start?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Rerolling is optional: an attempt takes 15–30 minutes and needs a fresh account. Launch rewards are generous — the beginner banner guarantees a 6-star within 40 pulls, pre-registration and sign-in hand out free 6-stars, and Chapter I gives the Endministrator. Best reroll targets are Laevatain or Yvonne. (Source: official launch rewards, Endfield wiki beginner guide)"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Is Blue Archive still worth starting in 2026?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes. Blue Archive pairs strong school-life storytelling with light dailies of 15-20 minutes, and the July 2025 Steam client added a PC entry point. Its gacha rules are transparent, free currency flows steadily, and 2026 still brings regular main-story and collab updates. *Sources: GachaWiki Blue Archive entry; official update notices*"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How does Blue Archive's gacha and spark work?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "One recruit costs 120 Pyroxene (1,200 for ten). The 3-star rate is 3%, doubled to 6% on Fes banners, with the featured student around 0.7%. Every pull grants one recruitment point, and 200 points buy the featured student outright, so 200 pulls (24,000 Pyroxene) is the ceiling. Points are per banner and never carry over. *Sources: GachaWiki Recruitment page (base rate raised from 2.5% to 3% in July 2022); in-game recruitment details*"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Is Blue Archive free-to-play friendly, and what should I spend monthly?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Very F2P-friendly. An active free player earns roughly 12,000 Pyroxene a month (about 80-100 pulls), so 2-3 months of saving secures one guaranteed limited student. Duplicates convert to Eligma, and many students can be starred up with farmable shards. Light spenders should stop at the monthly pass plus battle pass, about USD $5-10 a month. *Sources: community Pyroxene income tracking; GachaWiki Recruitment page*"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Should Blue Archive beginners reroll, and how should they start?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Reroll once or twice at most. Starter mail and login rewards give roughly 20-30 pulls, so aim for a top-tier DPS or buffer. Then push the main story to unlock the Cafe, Tactical Challenge and Total Assault, finish your dailies, and only commit to the current Fes banner afterwards. *Sources: community beginner guides; GachaWiki Recruitment page*"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Is Nikke still worth starting in 2026?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes. The idle-shooter loop stays casual yet deep, the story and character art hold up, and dailies take about 15-20 minutes with auto-play. Nikke remained among the top anime gacha titles by monthly active users in 2026, and its 4% SSR rate plus non-expiring mileage tickets treat newcomers well. *Sources: Nikke.gg; BitTopup \"NIKKE Banner Budget 2026\"*"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How does Nikke's gacha and pity work?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "A single pull costs 300 Gems at a flat 4% SSR rate (about 1-2% for the featured unit), with no soft pity inside 200 pulls. Every pull grants one Gold Mileage Ticket, and 200 tickets exchange for a chosen SSR in the Mileage shop, so the worst case is 200 pulls or 60,000 Gems. Tickets never expire and can be spread across banners. *Sources: GachaWiki; Nikke International Fandom Recruit page; BitTopup 2026 banner budget guide*"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Is Nikke free-to-play friendly, and what should I spend monthly?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes. An active free player earns roughly 8,000-12,000 Gems a month (about 80 Gems a day), which is 27-40 pulls, and the campaign plus regular events clear without spending. The best paid item is the $4.99 Monthly Pass: 3,300 Gems over 30 days at about $0.45 per pull. USD $5-20 a month is plenty. *Sources: BitTopup 2026 top-up value guide; Prydwen shop rankings; Nikke.gg*"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Should Nikke beginners reroll?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Reroll is worth it. The tutorial takes about 20-30 minutes, after which starter rewards cover roughly 20-30 pulls. Aim for a meta SSR damage dealer or a core support, then stop once you land one. Mileage tickets and event pulls fill out the roster far more efficiently than endless rerolling. *Sources: Nikke.gg beginner guide; community reroll threads*"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Is Fate/Grand Order still worth starting in 2026?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes, if you have patience. Its story and character writing remain the genre benchmark and the main story is still advancing in 2026, but dailies run 30-40 minutes with no auto-battle. New-player rewards are better than in past years, and clearing the story early banks a large Saint Quartz buffer plus a free 5-star Servant. *Sources: Fandom \"Rate-Up SSR Pity System\"; community 2026 beginner threads*"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How does FGO's gacha and pity work?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "One summon costs 3 Saint Quartz, with a flat 1% SSR Servant rate and the rate-up Servant usually at 0.7-0.8%. The Guaranteed Summon hands you the featured limited SSR on the 330th roll if it has not appeared, costing 990 Saint Quartz. Free and paid Quartz plus Summon Tickets all count, off-banner SSRs do not reset it, but the counter is per banner and expires with it. The permanent story banner is excluded. *Sources: Fandom \"Rate-Up SSR Pity System\"; GachaWiki Guaranteed Summon (330-roll pity); West Games pity calculator*"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Is FGO free-to-play friendly, and what should I spend monthly?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Moderately. A free player banks roughly 1,800-2,200 Saint Quartz plus 120-150 Summon Tickets a year, about 800-900 summons, enough to lock down a few targets. But the expected cost of a rate-up SSR is 116-129 pulls, and the 990-Quartz hard ceiling runs about USD $480, so plan yearly rather than monthly. *Sources: MMO Culture Saint Quartz saving guide; shattered.io FGO pity odds 2026*"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Should FGO beginners reroll?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "You can, but the payoff is modest. Finishing the tutorial and prologue gives roughly 10-20 pulls, and picking the right free 5-star support (Waver is the usual pick) matters more than the roll itself. Long term, saving Quartz a year ahead and concentrating on two or three banners beats rerolling. *Sources: r/FGO 2026 beginner discussion; Fandom free 5-star notes*"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Is Monster Strike still worth starting in 2026?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes. Per AppMagic, Monster Strike earned about $163M in Japan from January to August 2026, still the country's top-grossing mobile game (MIXI's FY2026 games segment: ¥83.8B). Thirteen years in, it keeps a dense collab and update schedule, and the traditional Chinese and global builds are localized. Drop-in risk is low."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How do Monster Strike's gacha rates and pity work?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "A single pull costs 5 Orbs and a ten-pull costs 50. Newly debuted characters sit at roughly 1.4% combined, a single targeted limited character around 0.6%, and all ★5–6 drops about 8.4% (GameWith and AppMedia rate disclosures). There is no per-pull pity track like Genshin's; instead MIXI periodically runs ten-pulls with a 50% ★5+ rate (once daily, up to three times)."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Is Monster Strike free-to-play friendly, and what does it cost monthly?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Very. MIXI gives out roughly 150–300 free Orbs a month (Game8 counted 158 for the current cycle) — around 3 to 6 ten-pulls — and descend quests drop strong \"max luck\" monsters, so most content clears without pulling. A monthly pass plus light top-ups runs about $5–10; whaling adds little."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Do I need Japanese, and which server should I pick?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "The Japanese server is Japanese-only, but the pinball gameplay needs no text — icons and numbers are enough. The global version, STRIKE WORLD, entered full operation in India on April 16, 2026 with an English UI, though its content lags behind. Pick JP for the newest collabs, global or traditional Chinese for the story."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Is Umamusume: Pretty Derby worth starting in 2026?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes. The English version launched June 26, 2025 and earned roughly $105.7M overseas in year one (Sensor Tower via PocketGamer, June 2026), plus The Game Awards 2025 Best Mobile Game. The loop is training then racing: one career run is about 20–40 minutes across 72 turns and three in-game years, with excellent writing."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What are Umamusume's gacha rates and pity system?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Rates are a flat 3% for ★3/SSR, with the featured character or support card at 0.75% each; no soft pity ramps the odds up. Instead you bank Exchange Points and claim the featured pull at 200 pulls (30,000 jewels, roughly $240–408). Points never carry between banners, so players normally pull only on dual rate-up banners."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Is Umamusume free-to-play friendly, and what does it cost monthly?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes, if you play smart. You can borrow friends' fully limit-broken support cards, and story and event jewels cover the free-pull campaigns Cygames runs at least every four months. A monthly pass plus light spending (~$15–45) keeps an account competitive; whaling mainly buys extra support-card copies rather than anything mandatory."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Should new players reroll, and do I need Japanese?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Reroll, it's fast — a career run takes 10–20 minutes. The r/UmamusumeGame primer suggests chasing a max limit break (5 copies) SSR support card such as Matikanefukukitaru. Global is fully English; the Japan server is Japanese-only but runs roughly two years ahead (GameTora: Global only got JP's 2nd-anniversary changes in July 2026)."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Is Girls' Frontline 2: Exilium worth starting in 2026?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes. Global launched in December 2024, the game is now on version 2.15 (August 2026), and its turn-based tactics combat, writing and art have held up — it is widely described as a launch disaster that became an overseas hit. If you like XCOM-style tactics with heavy story, it is one of the stronger picks."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What are the gacha rates and pity in Exilium?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "The Limited Procurement banner lists a 0.6% base rate for the featured Elite Doll, against 0.3% per character on standard. Soft pity starts near pull 58 and hard pity lands at 80 (70 on the weapon banner), on a 50/50. At 150 Collapse Pieces a pull, hard pity costs about 12,000 Pieces (~$198); losing the 50/50 makes the worst case 160 pulls (~$396)."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Is Exilium free-to-play friendly, and what does it cost monthly?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Very. Community consensus is that it is the most generous of the Genshin-style gachas: free currency is enough for the V0 copy of every new Doll, and the beginner banner guarantees an Elite within 50 discounted pulls. If you do spend, buy the battle pass first; monthly pass plus pass runs about $10–25."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Should new players reroll, and what differs on the Chinese server?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Rerolling is largely unnecessary: finish the 50-pull beginner banner (guaranteed Elite), then use Rewind to fix mistakes and Sweep to farm. The CN server launched December 2023 and global December 2024; they stay roughly one year apart with separate accounts. Play CN for the newest content, global for English UI."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Is Reverse: 1999 worth starting in 2026?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes. Version 3.6 launched on July 2, 2026 with new story and Arcanists, and the game runs on mobile (about 13-15 GB) and PC (about 20-23 GB) with shared progress. It suits players who enjoy turn-based story campaigns and long-term building; a 15-minute daily routine keeps you current. Source: Official Version 3.6 notes; LootBar Version 3.2 guide."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How does Reverse: 1999's pity system work?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Hard pity is 70 pulls. The base 6-star rate is 1.5%; soft pity begins after pull 60, jumping to 4% and climbing 2.5% per pull to roughly 24% by pull 69. Limited banners use a 50/50, and losing it guarantees the featured 6-star next. One pull costs 1 Unilog, or 180 Clear Drops. Source: HostedGG pity system guide; PityCalculator 2026."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How free-to-play friendly is Reverse: 1999?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Quite generous. Each roughly six-week version hands out about 60-70 free pulls through logins, events and a random 6-star selector. The roughly $5 monthly pass adds steady Clear Drops and stamina. Crucially, a unit's real power comes from Psychubes and the Resonance grid, and neither requires duplicate copies of the character. Source: LootBar free-pull breakdown; Hako 2026 beginner guide."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Should new players reroll, and how do Insight and Psychubes work?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Rerolling is optional: a reset takes about 10 minutes, but login gifts are plentiful and the payoff is small, so one or two attempts is plenty. Progression has three layers: Insight (Insight I-III raises the level cap and unlocks the Ultimate and passives; Insight III is the real target), Resonance nodes, and Psychubes, the gear slot supplying most raw stats. Source: HostedGG Psychube and Resonance guide; 2026 beginner guides. ---"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Is Love and Deepspace worth playing in 2026?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes, with caveats. It topped the June 2026 gacha chart with roughly $38.4M in mobile revenue (May: $49.0M), then dropped to about $10.3M in July after the cancelled sixth love interest Valko triggered global boycotts. Any single 5-star Memory clears the main story, so the plot is not paywalled. Source: GachaRevenue monthly reports, June/July 2026; This Week in Video Games."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How does Love and Deepspace's pity system work?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "The 5-star base rate is 1% with hard pity at 70 pulls. Limited Deepspace Wish banners run a 50/50; losing it activates Precise Wish, guaranteeing the featured card next. Without an existing guarantee, a specific event card can cost 140 pulls, averaging about 71. 4-stars are guaranteed every 10 pulls on a separate counter, and pity carries over within the same pool. Source: Love and Deepspace Wiki (Wish); Shattered.io 2026 odds breakdown."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How much does Love and Deepspace cost per month for F2P players?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Main content is clearable for free. F2P income is roughly 2,200-3,500 Diamonds a month (50/day dailies, 150/week weeklies, check-ins) - about 14-22 pulls at 150 Diamonds each. The roughly $5 Aurum Pass Premium adds 100 Diamonds daily, about 3,000 a month, lifting that to roughly 33-41 pulls. Source: PityCalculator Love and Deepspace monthly Diamonds (2026); r/LoveAndDeepspace earnings guide."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Is Love and Deepspace only for women? Can men play it?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Men can play it, but the framing is otome: the protagonist is a female Deepspace Hunter and the five love interests - Zayne, Xavier, Rafayel, Sylus and Caleb - are men. Combat, team building and progression stand on their own as action gameplay, and any 5-star Memory clears the main story, so it works as an action RPG too. Source: GameVika love interests and beginner guide; official FAQ. ---"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Is Infinity Nikki worth playing in 2026?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes. It is a free-to-play UE5 open world with cross-save across PC, iOS/Android and PS5, plus a macOS release on April 23, 2026. All 15 story chapters and the full open world are free, Metacritic scores the PC version at 80/100, and it won Best Art Direction and Open World at the 2026 NYX Game Awards. Source: Wikipedia Infinity Nikki; Infold Games official announcements; NYX Game Awards 2026."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What is Infinity Nikki's pity system?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Pity is counted per clothing piece: every 10 Resonances guarantees a 4-star or higher, and every 20 guarantees a 5-star, whose consolidated rate is 6.06%. A full 5-star outfit contains 9-10 pieces, so completing a set takes roughly 180-200 pulls. One pull costs one Revelation or Resonite Crystal, or 120 Diamonds. Source: Game8 pity system guide; official Version 2.8 \"Golden Dust\" Resonance rules."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Do you have to spend money on Infinity Nikki?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No. All 15 story chapters, side quests, open-world exploration and two-player co-op are open to free players, and the Version 2.8 Heart of Infinity system hands out the free 5-star Miracle Outfit Hymn to Dusk. The roughly $5 Monthly Gift gives 90 Diamonds daily - about 2,700 a month, or roughly 22 pulls - and is the best-value purchase. Source: Infinity Nikki Hub 2026 F2P guide; PityCalculator Infinity Nikki monthly Diamonds."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Is Infinity Nikki only for girls? Can men enjoy it?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Anyone can play. Dress-up is only the surface: the core loop is exploration, puzzles, photography and ability outfits that drive action traversal and combat, such as Gigantification, the Sticky Claw and Archery. It also added two-player co-op and gives away free ability outfits each version, so a new account progresses comfortably either way. Source: Wikipedia Infinity Nikki (co-op and free content); official Version 2.8 patch notes."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Is Neverness to Everness worth playing in 2026?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes. NTE launched on April 23, 2026 in China and April 29 globally, and passed RMB 2 billion (~$298M) in cumulative worldwide revenue by August 18, 2026, the strongest new title in Perfect World's 2026 interim report. It is a free urban open-world action RPG with cross-progression on PC, Mac, PS5, iOS and Android. (Source: Perfect World H1 2026 interim report, Aug 19, 2026)"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How does the NTE gacha pity system work?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Limited character banners have no 50/50: any S-Rank pull is guaranteed to be the featured unit. Hard pity is 90 pulls, soft pity starts around 70, and pity progress carries over between limited banners. The standard pool discounts its first five 10-pulls by 20% and lets you pick one S-Rank after 50 pulls; the weapon banner guarantees an S in six 10-pulls and the limited weapon in eight. (Source: official banner rules; NTE gacha guides)"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Is NTE free-to-play friendly, and how much does it cost per month?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "F2P is viable: daily activity tasks take about ten minutes, and version events hand out a steady supply of pulls. The standard light-spender setup is the RMB 30 monthly card (daily discounted pull) plus the RMB 68 battle pass, comfortably under RMB 100 a month for one featured character. Pure F2P players should pull only on banners they want and lean on the cross-banner pity. (Source: NTE launch gacha guides)"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "When did Neverness to Everness release, and can my PC run it?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "It released April 23, 2026 in China and April 29 worldwide, with shared progress across PC, Mac, PS5, iOS and Android. Minimum PC specs are an i7-10700, GTX 1660 or RX 5600, 16 GB RAM and roughly 65 GB on an SSD; recommended is an i7-12700 with an RTX 3060 or RX 6700 and 32 GB RAM. (Source: Steam store page system requirements)"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Is Limbus Company worth starting in 2026?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes. Season 8, STÚDĪUM PUNCTUM, opened on September 17, 2026 with Canto X and a new Mirror Dungeon. The game is free, has no PvP, and holds roughly 92% positive Steam reviews across 49,000+ ratings with updates about every two weeks. The caveats are a clumsy interface and repetitive Mirror Dungeon grinding. (Source: Steam review data; official patch notices)"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What are the Extraction rates and pity system in Limbus Company?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "One Extraction costs 130 Lunacy, a 10-pull costs 1,300, and each banner offers one daily pull for 13 Paid Lunacy. Base rates are about 2.9% for 3-star (000) Identities and 1.3% for E.G.O, and the final pull of a Decaextraction guarantees at least a 00-grade Identity. Accumulating 200 pulls on a banner grants Ideality, which redeems the featured Identity or E.G.O outright. (Source: Limbus Company Extraction Wiki)"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Is Limbus Company F2P friendly, and how much is the monthly pass?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Very. Identities and E.G.O can be bought directly from the Dispenser with Egoshards farmed in the Mirror Dungeon, so no pulls are required. App Store tiers: Monthly Lunacy Batch $2.99 and Monthly Lunacy Supply $6.99 (including 650 Paid Lunacy); the Limbus Pass costs 1,300 Paid Lunacy (~$10-11) and lasts a four-to-five-month season, about $2 per month. (Source: App Store IAP list; pack value analyses)"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Should new Limbus Company players reroll?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Not necessary, and the community generally advises against it. New accounts get a discounted New Manager's Welcome banner, but the twelve Sinners are fixed, there is no PvP, and the starting roster clears the main story and Mirror Dungeon while the 200-pull pity and Dispenser shards fill gaps over time. If you do reroll, log in as guest first and only link Steam once you are satisfied. (Source: Limbus beginner guides; official Extraction rules)"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Is Azur Lane still worth playing in 2026?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes. Eight years in, the game still ships major content: the Eagle Union event Depths of the Astrarium ran August 13-26, 2026, alongside the JP 9th anniversary. It is also one of the most F2P-friendly gachas — builds cost coins and freely farmed Wisdom Cubes, and spending goes mainly to skins and dock space, which suits long-term idle collection play. (Source: r/AzurLane event announcements; official anniversary channels)"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How do Azur Lane build rates and the UR pity system work?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Ultra Rare (UR) ships have a 1.2% build rate, split evenly among available URs; standard event slots run 2.0% for Super Rare and 2.5% for Elite. In pools without a limited UR, each Wisdom Cube spent grants 1 UR Exchange point, and 400 points let you pick any permanent UR. Limited UR events guarantee the featured UR every 200 builds, up to four times. (Source: azurlane.koumakan.jp/wiki/Building; event pages)"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How F2P friendly is Azur Lane, and how many cubes do you earn monthly?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "F2P players earn roughly 168-185 Wisdom Cubes a month: 3-4 from daily missions, 12 weekly, 30 from monthly login rewards, plus random commissions and 20 from the free Cruise Pass every two months. A Heavy or Special build costs only 1,500 coins and 2 cubes, so F2P accounts progress fine. Paid spending is mostly skins, dock slots and monthly-card style packs. (Source: r/AzurLane F2P cube farming breakdowns)"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Should new Azur Lane players reroll, and how should they start?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Rerolling is not recommended — early gains are minimal, all four starter destroyers (Laffey, Javelin, Z23, Ayanami) stay useful, and UR ships eventually enter the permanent pools. Instead, push the campaign to unlock systems, finish the rookie missions, save Wisdom Cubes for limited UR events, and concentrate resources on two solid fleets with gear prioritized over rarity. (Source: r/AzurLane new-player threads; MMO Culture 2026 beginner guide)"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Is Honkai Impact 3rd still worth starting in 2026?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes. It launched in October 2016 and is still shipping content — the official site listed a new version for August 2026, and Part 2 opened a fresh storyline and cast in February 2024. Its combat feel and cutscene production remain top-tier among action gachas. The catch: newcomers must catch up on nearly ten years of story, so follow the current version instead of the backlog."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How many pulls is pity in Honkai Impact 3rd?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Two separate counters. Characters: Expansion Supply guarantees an A-rank or above every 10 pulls and the featured S-rank Valkyrie within 100 pulls; the counter resets on any S-rank and the progress carries into the next banner. Gear: Focused Supply guarantees 4★ gear every 10 pulls and one unowned UP item every 50 pulls, so all featured gear within 200 (official supply notices)."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Can free-to-play players keep up in Honkai Impact 3rd?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Partly. Expansion Supply cards cost 280 Crystals each, so a 100-pull guarantee equals 28,000 Crystals; free Crystals come from dailies, Abyss, Memorial Arena and events. The 30-RMB monthly card is the most efficient purchase and, with event rewards, usually funds one guaranteed S-rank Valkyrie per version. Budget for one or two main Valkyries rather than full gear sets."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Does Honkai Impact 3rd have a PC version, and which server should I pick?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes. It runs on PC through the official miHoYo launcher and Steam, with progress shared across mobile and PC; Part 2 arrived in February 2024. The Chinese server updates fastest and keeps the original Chinese voice acting, while the global HoYoverse server runs slightly behind but offers English and Japanese audio. Accounts, purchases and friend lists never transfer, so pick your friends' server first."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What kind of game is Path to Nowhere?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Path to Nowhere is a real-time tactical tower-defense gacha from AISNO Games. You play the Chief of the MBCC, deploying up to six Sinners per stage and breaking enemy cores to put them into a vulnerable state. Classes span Endura, Umbra, Reticle, Fury, Arcane and Catalyst. It launched in China on 11 August 2022; the 4th-anniversary version, Final Echo, arrived on 6 August 2026."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How does Path to Nowhere's pity system work?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "S-rank Sinners have a 2% base rate, rising to 2%–2.84% on rate-up banners, and every 80 arrests guarantees an S-rank; the counter resets on any S-rank and carries into the next limited banner. Every 10 pulls also guarantees an A-rank. There is no gear gacha at all — pulls only produce characters, and 250 gold tickets buy a specific S-rank in the shop."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Can I play Path to Nowhere free-to-play?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes. Stages reward team building and positioning over raw stats, and the main story is clearable with freely obtainable and shop Sinners. The 4th-anniversary version handed out roughly 50 free pulls — 10 on login, 14 from a 7-day check-in, plus a free 30-day monthly card — so free players should pour everything into the limited banner and let standard Sinners come naturally."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What is the difference between Path to Nowhere and Arknights?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Both are tower-defense style, but Arknights is 2D grid defence with a 2% six-star rate, no hard pity outside the 300-pull limited spark, while Path to Nowhere uses real-time deployment with repositionable units and an 80-pull hard pity. Path to Nowhere leans darker — interrogation, crime and horror — and is easier to pick up; Arknights suits players who want pure strategy and long-term planning. ---"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Open-world gacha: Genshin Impact vs Wuthering Waves vs Neverness to Everness?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "By 2026 numbers: Genshin Impact earned about USD 38.39M worldwide in August (Sensor Tower/AppMagic) and has the deepest content library; Wuthering Waves passed USD 600M lifetime by end-June, spiking above USD 3.6M on a single collab launch day, with sharper combat and PC performance; Neverness to Everness launched 23 April and passed RMB 1.4B by 30 June. Pick Genshin for content, WuWa for combat, NTE for urban novelty."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Turn-based gacha: Honkai: Star Rail vs FGO vs Blue Archive?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Star Rail guarantees a 5★ by 90 pulls (0.6% base, soft pity around pull 74) and earned roughly USD 29.72M worldwide in August — and it auto-battles, costing the least time. FGO only guarantees the rate-up SSR at 330 pulls, or 900 Saint Quartz, with a 1% SSR rate, favouring story fans. Blue Archive offers a 2.5% 3★ rate and a 200-pull spark with the lightest dailies."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Tower-defense and strategy gacha: Arknights vs Endfield vs Girls' Frontline 2?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Arknights is pure 2D tower defence: 2% six-star rate, soft pity from pull 50, a 300-pull spark on limited banners — the safest free-to-play pick. Arknights: Endfield launched 22 January 2026, earning USD 49.1M on mobile in month one and USD 96.3M in three months, with Japan contributing 41%. Girls' Frontline 2 is turn-based tactics: 0.6% rate, 60-pull pity, 120 pulls worst case."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Which gacha games are the most free-to-play friendly?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Star Rail (90-pull guarantee, generous per-version free pulls, auto-battle), Path to Nowhere (inheritable 80-pull pity, roughly 50 free pulls at its 2026 anniversary, 250 gold tickets per S-rank) and Arknights (2% six-stars, free Recruitment, 300-pull spark) top most lists, with NIKKE's 4% SSR rate close behind. By contrast, FGO (1% SSR, 330-pull spark) and Honkai Impact 3rd (100-pull Expansion guarantee) reward long-term spending instead."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Which gacha games earned the most worldwide in 2026?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "August 2026 worldwide gacha revenue: Genshin Impact about USD 38.39M, Honkai: Star Rail about USD 29.72M and Zenless Zone Zero about USD 25.32M (Sensor Tower/AppMagic). The June chart was led by Love and Deepspace at USD 38.38M and Wuthering Waves at USD 34.0M (ixbt roundup). Lifetime, Love and Deepspace passed USD 1.1B by May 2026 and Wuthering Waves crossed USD 600M by June. ---"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What is the most popular gacha game in 2026?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Genshin Impact, Honkai: Star Rail, Zenless Zone Zero, Wuthering Waves, Love and Deepspace and Arknights: Endfield lead on revenue and reach. August 2026 worldwide gacha income was about USD 38.39M for Genshin, USD 29.72M for Star Rail and USD 25.32M for ZZZ (Sensor Tower/AppMagic). Among newcomers, Endfield earned RMB 1.2B in its first two weeks and NTE passed RMB 1.4B by 30 June."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Which gacha game has the fairest gacha?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Fairest usually means low pity, plenty of free pulls and no weapon banner. Star Rail: 90-pull hard pity at 0.6%. Wuthering Waves: 80-pull hard pity. Path to Nowhere: an inheritable 80-pull pity with no gear gacha, plus 250 gold tickets for a direct S-rank. NIKKE has the highest SSR rate at 4%. FGO (1% SSR, 330-pull spark) and Girls' Frontline 2 (0.6%, 60-pull pity) are the harshest."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Which gacha games can you play without spending money?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Star Rail, Path to Nowhere, Arknights, Blue Archive and Wuthering Waves all let free players clear the main story and most endgame content. Star Rail's per-version free pulls cover a full pity cycle; Path to Nowhere gave roughly 50 free pulls at its 2026 anniversary and sells S-ranks for 250 gold tickets; Arknights' 2% six-star rate plus Recruitment produces free six-stars. The rule: only pull on limited banners."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What does \"pity\" mean in gacha games?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Pity is the safety net that guarantees a high-rarity unit within a set number of pulls. Hard pity examples: 90 pulls in Genshin Impact and Star Rail, 80 in Wuthering Waves and Path to Nowhere, 100 on Honkai Impact 3rd's Expansion Supply, 200 in Blue Archive's spark, 330 in FGO. Soft pity ramps the rate earlier — Star Rail from about pull 74, Arknights from pull 50. Most banners also carry a 50/50 guarantee. ---"
+      }
+    }
+  ]
+}

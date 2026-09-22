@@ -144,6 +144,7 @@ const AiAssistantPage = lazy(() => import('./pages/AiAssistantPage'));
 const CozyGamesPage = lazy(() => import('./pages/CozyGamesPage'));
 const FreeGamesPage = lazy(() => import('./pages/FreeGamesPage'));
 const AIGamingPage = lazy(() => import('./pages/AIGamingPage'));
+const FaqPage = lazy(() => import('./pages/FaqPage'));
 const SoulStation = lazy(() => import('./components/ai/SoulStation'));
 const GameNPC = lazy(() => import('./components/ai/GameNPC'));
 const GameCompanion = lazy(() => import('./components/ai/GameCompanion'));
@@ -558,6 +559,11 @@ function App() {
                   <Route path="ai-gaming" element={
                     <PageSuspense>
                       <AIGamingPage />
+                    </PageSuspense>
+                  } />
+                  <Route path="faq/anime-gacha-games" element={
+                    <PageSuspense>
+                      <FaqPage />
                     </PageSuspense>
                   } />
                   <Route path="leaderboard" element={
