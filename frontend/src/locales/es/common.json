@@ -1281,6 +1281,9 @@
       "searchPlaceholder": "Buscar...",
       "searchResults": "Resultados de búsqueda",
       "searchEmpty": "No se encontraron artículos",
+      "all": "Todos",
+      "lastUpdated": "Última actualización",
+      "featured": "Destacado",
       "exploreMore": "Explorar más",
       "noOtherSpaces": "Sin otros espacios",
       "tabLabels": {

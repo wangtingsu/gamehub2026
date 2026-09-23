@@ -1277,6 +1277,9 @@
       "searchPlaceholder": "Search articles...",
       "searchResults": "Search Results",
       "searchEmpty": "No matching articles",
+      "all": "All",
+      "lastUpdated": "Last updated",
+      "featured": "Featured",
       "exploreMore": "Explore More Spaces",
       "noOtherSpaces": "No other spaces",
       "tabLabels": {

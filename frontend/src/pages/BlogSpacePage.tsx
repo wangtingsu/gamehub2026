@@ -1,351 +1,279 @@
-import { useState, useEffect, useCallback, useRef } from 'react';
-import { useParams, useNavigate, Link } from 'react-router-dom';
-import { Typography, Skeleton, Alert, Empty, Tag, Button, Avatar, Input } from 'antd';
-import { SearchOutlined } from '@ant-design/icons';
+import { useState, useEffect } from 'react';
+import { useParams, Link } from 'react-router-dom';
+import { Typography, Skeleton, Alert, Empty, Tag, Avatar, Input, Pagination } from 'antd';
+import { SearchOutlined, EyeOutlined, LikeOutlined, CalendarOutlined, UserOutlined } from '@ant-design/icons';
 import { useTranslation } from 'react-i18next';
-import {
-  ArrowLeftOutlined, EyeOutlined, LikeOutlined, MessageOutlined,
-  RightOutlined, CalendarOutlined, UserOutlined, ClockCircleOutlined,
-} from '@ant-design/icons';
 import apiService from '../api';
 import { useDebounce } from '../hooks/useDebounce';
 import SEO from '../components/SEO';
-import BlogRenderContent from '../components/blog/BlogRenderContent';
-import BlogSidebar from '../components/blog/BlogSidebar';
+import SEOBreadcrumb from '../components/SEOBreadcrumb';
 
-const { Title, Text, Paragraph } = Typography;
+const { Title } = Typography;
+
+const PAGE_SIZE = 10;
+
+const TYPE_TAG_COLOR: Record<string, string> = {
+  blog: 'blue',
+  guide: 'purple',
+  review: 'green',
+};
 
 const BlogSpacePage = () => {
   const { slug, lang } = useParams<{ slug: string; lang: string }>();
-  const navigate = useNavigate();
   const { t } = useTranslation();
   const currentLang = lang || 'cn';
-  const CATEGORIES = [
-    { key: 'blog', label: t('blog.space.tabLabels.blog', '博客'), icon: '📝', color: '#3b82f6' },
-    { key: 'guide', label: t('blog.space.tabLabels.guide', '攻略'), icon: '📖', color: '#8b5cf6' },
-    { key: 'review', label: t('blog.space.tabLabels.review', '评测'), icon: '⭐', color: '#10b981' },
-  ];
 
   const [space, setSpace] = useState<any>(null);
-  const [activeArticle, setActiveArticle] = useState<any>(null); // 当前展示的文章
-  const [articleLoading, setArticleLoading] = useState(false);
-  const [relatedSpaces, setRelatedSpaces] = useState<any[]>([]);
-  const [categoryData, setCategoryData] = useState<Record<string, any[]>>({});
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-  const [rightHeight, setRightHeight] = useState<number>(0);
+  const [featured, setFeatured] = useState<any[]>([]);
+  const [articles, setArticles] = useState<any[]>([]);
+  const [total, setTotal] = useState(0);
+  const [page, setPage] = useState(1);
+  const [postType, setPostType] = useState<string>('all');
   const [searchText, setSearchText] = useState('');
-  const [searchResults, setSearchResults] = useState<any[]>([]);
-  const [searchLoading, setSearchLoading] = useState(false);
-  const [searchedKw, setSearchedKw] = useState('');
+  const [loading, setLoading] = useState(true);
+  const [listLoading, setListLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
   const debouncedSearchText = useDebounce(searchText, 300);
-  const leftRef = useRef<HTMLDivElement>(null);
 
-  // 加载文章完整内容
-  const loadArticle = useCallback(async (articleId: string) => {
-    setArticleLoading(true);
-    try {
-      const detail = await apiService.getBlogPost(articleId);
-      setActiveArticle(detail);
-    } catch { /* ignore */ }
-    finally { setArticleLoading(false); }
-  }, []);
-
+  // 加载空间详情 + 精选（最新 4 篇）
   useEffect(() => {
     let cancelled = false;
-    const load = async () => {
-      setLoading(true); setError(null); setSearchText('');
+    (async () => {
+      setLoading(true); setError(null);
       try {
-        const [detail, spaces] = await Promise.all([
-          apiService.getSpaceDetail(slug || ''),
-          apiService.getBlogSpaces(),
-        ]);
+        const detail = await apiService.getSpaceDetail(slug || '');
         if (cancelled) return;
         if (!detail) { setError(t('blog.space.notFound', '空间不存在')); setLoading(false); return; }
         setSpace(detail);
-        const related = (spaces || []).filter((s: any) => s.slug !== slug);
-        setRelatedSpaces(related);
-
-        // 加载默认热门文章 + 各分类文章
         if (detail.id) {
-          const pop = await apiService.getSpacePopularArticle(detail.id);
-          if (!cancelled && pop) {
-            setActiveArticle(pop);
-            loadArticle(pop.id);
-          }
-
-          const catResults: Record<string, any[]> = {};
-          const popId = pop?.id;
-          await Promise.all(CATEGORIES.map(async (cat) => {
-            const res = await apiService.getSpaceArticlesByCategory(detail.id, cat.key, { limit: 6 });
-            let list = res.articles || [];
-            if (popId) list = list.filter((a: any) => a.id !== popId);
-            if (!cancelled) catResults[cat.key] = list.slice(0, 5);
-          }));
-          if (!cancelled) setCategoryData(catResults);
+          const res = await apiService.getSpaceContent(detail.id, { limit: 4 });
+          if (!cancelled) setFeatured(res?.articles || []);
         }
       } catch (e: any) {
         if (!cancelled) setError(e?.message || t('blog.space.loadFailed', '加载失败'));
       } finally {
         if (!cancelled) setLoading(false);
       }
-    };
-    load();
+    })();
     return () => { cancelled = true; };
   }, [slug]);
 
-  // 同步右侧高度到左侧
+  // 加载列表（分页 / 分类 / 搜索）
   useEffect(() => {
-    if (!leftRef.current) return;
-    const obs = new ResizeObserver(() => {
-      if (leftRef.current) setRightHeight(leftRef.current.offsetHeight);
-    });
-    obs.observe(leftRef.current);
-    return () => obs.disconnect();
-  }, [activeArticle, articleLoading]);
-
-  const handleArticleClick = async (article: any) => {
-    setActiveArticle(article);
-    loadArticle(article.id);
-    // 重新拉取分类列表（排除当前选中文章）
-    if (space?.id) {
-      const catResults: Record<string, any[]> = {};
-      await Promise.all(CATEGORIES.map(async (cat) => {
-        const res = await apiService.getSpaceArticlesByCategory(space.id, cat.key, { limit: 6 });
-        catResults[cat.key] = (res.articles || []).filter((a: any) => a.id !== article.id).slice(0, 5);
-      }));
-      setCategoryData(catResults);
-    }
-    document.getElementById('article-content')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-  };
-
-  // 打开搜索结果中的文章
-  const openSearchResult = (article: any) => {
-    setSearchText('');
-    setActiveArticle(article);
-    loadArticle(article.id);
-    document.getElementById('article-content')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-  };
-
-  // 搜索：输入关键词后从后端全量搜索空间内文章（标题/正文）
-  useEffect(() => {
-    const kw = debouncedSearchText.trim();
-    if (!kw || !space?.id) { setSearchResults([]); setSearchLoading(false); setSearchedKw(''); return; }
+    if (!space?.id) return;
     let cancelled = false;
-    setSearchLoading(true);
-    apiService.getSpaceContent(space.id, { search: kw, limit: 50 })
-      .then((res: any) => { if (!cancelled) { setSearchResults(res?.articles || []); setSearchedKw(kw); } })
-      .catch(() => { if (!cancelled) { setSearchResults([]); setSearchedKw(kw); } })
-      .finally(() => { if (!cancelled) setSearchLoading(false); });
+    setListLoading(true);
+    apiService.getSpaceContent(space.id, {
+      page,
+      limit: PAGE_SIZE,
+      postType: postType === 'all' ? undefined : postType,
+      search: debouncedSearchText.trim() || undefined,
+    }).then((res: any) => {
+      if (!cancelled) { setArticles(res?.articles || []); setTotal(res?.total || 0); }
+    }).catch(() => {
+      if (!cancelled) { setArticles([]); setTotal(0); }
+    }).finally(() => {
+      if (!cancelled) setListLoading(false);
+    });
     return () => { cancelled = true; };
-  }, [debouncedSearchText, space?.id]);
+  }, [space?.id, page, postType, debouncedSearchText]);
 
-  const formatDate = (d: string) => {
-    try { return new Date(d).toLocaleDateString('zh-CN', { year: 'numeric', month: 'long', day: 'numeric' }); }
-    catch { return d || ''; };
+  // 切换分类/搜索时回到第一页
+  useEffect(() => { setPage(1); }, [postType, debouncedSearchText]);
+
+  const fmt = (d: string) => {
+    try { return new Date(d).toLocaleDateString(currentLang === 'cn' ? 'zh-CN' : 'en-US', { year: 'numeric', month: 'long', day: 'numeric' }); }
+    catch { return d || ''; }
   };
 
-  // ---- 分类横向列表 ----
-  const renderCategorySection = (cat: typeof CATEGORIES[0]) => {
-    const articles = (categoryData[cat.key] || [])
-      .filter((a: any) => a.id !== activeArticle?.id)
-      .filter((a: any) => !searchText || a.title?.toLowerCase().includes(searchText.toLowerCase()));
-    const hasContent = !loading && articles.length > 0;
-    const isEmpty = !loading && articles.length === 0;
+  const typeLabel = (type: string) =>
+    type === 'review' ? t('blog.space.tabLabels.review', '评测')
+      : type === 'guide' ? t('blog.space.tabLabels.guide', '攻略')
+      : t('blog.space.tabLabels.blog', '博客');
 
+  const tabs = [
+    { key: 'all', label: t('blog.space.all', '全部') },
+    { key: 'blog', label: t('blog.space.tabLabels.blog', '博客') },
+    { key: 'guide', label: t('blog.space.tabLabels.guide', '攻略') },
+    { key: 'review', label: t('blog.space.tabLabels.review', '评测') },
+  ];
+
+  const mainFeatured = featured[0];
+  const sideFeatured = featured.slice(1, 4);
+
+  if (loading) {
+    return <div className="bg-dark-900 pb-2"><div className="max-w-[1600px] mx-auto px-4 py-16"><Skeleton active paragraph={{ rows: 10 }} /></div></div>;
+  }
+
+  if (error && !space) {
     return (
-      <div key={cat.key} className="mb-8">
-        <div className="flex items-center justify-between mb-4">
-          <Title level={3} className="!text-white !mb-0 !text-lg">
-            <span className="mr-2">{cat.icon}</span>{cat.label}
-            {space?.typeCounts?.[cat.key] ? <Text className="!text-gray-500 !text-sm ml-2">({space.typeCounts[cat.key]})</Text> : null}
-          </Title>
-          {(hasContent || loading) && (
-            <Link to={`/${currentLang}/blog/space/${slug}/category/${cat.key}`}
-              className="text-sm text-blue-400 hover:text-blue-300 flex items-center gap-1">
-              查看全部 <RightOutlined />
-            </Link>
-          )}
-        </div>
-        {loading ? (
-          <div className="grid grid-cols-5 gap-4">
-            {[1, 2, 3, 4, 5].map(i => (
-              <div key={i}><Skeleton active paragraph={{ rows: 3 }} /></div>
-            ))}
-          </div>
-        ) : isEmpty ? (
-          <Empty description={t('blog.space.noArticles', '暂无文章')} image={Empty.PRESENTED_IMAGE_SIMPLE} />
-        ) : (
-          <div className="grid grid-cols-5 gap-4">
-            {articles.map((article: any) => {
-              const isActive = activeArticle?.id === article.id;
-              return (
-                <div
-                  key={article.id}
-                  onClick={() => handleArticleClick(article)}
-                  className={`rounded-xl p-4 cursor-pointer transition-all hover:-translate-y-1 border-2 ${
-                    isActive
-                      ? 'border-blue-500 bg-blue-500/10'
-                      : 'border-dark-700 bg-dark-800 hover:border-blue-500/50'
-                  }`}
-                >
-                  {(article.coverImageUrl || article.coverImage) && (
-                    <div className="w-full h-28 rounded-lg overflow-hidden mb-2">
-                      <img src={article.coverImageUrl || article.coverImage} alt={article.title}
-                        className="w-full h-full object-cover" loading="lazy" />
-                    </div>
-                  )}
-                  <h4 className="text-white font-semibold text-sm line-clamp-2 mb-2 hover:text-blue-400">{article.title}</h4>
-                  <p className="text-gray-400 text-xs line-clamp-2 mb-3">{article.excerpt || ''}</p>
-                  <div className="flex items-center gap-3 text-xs text-gray-500">
-                    <span><EyeOutlined className="mr-1" />{article.views || 0}</span>
-                    <span><LikeOutlined className="mr-1" />{article.likes || 0}</span>
-                  </div>
-                </div>
-              );
-            })}
-          </div>
-        )}
-      </div>
+      <div className="bg-dark-900 pb-2"><div className="max-w-[1600px] mx-auto px-4 py-16">
+        <Alert type="error" message={t('blog.space.loadFailed', '加载失败')} description={error} showIcon
+          action={<Link to={`/${currentLang}/blog`}>{t('blog.space.retry', '返回博客')}</Link>} />
+      </div></div>
     );
-  };
+  }
 
-  // ====== 渲染 ======
   return (
     <div className="bg-dark-900 pb-2">
-      <SEO title={`${space?.name || slug} | GameHub 博客空间`} description={space?.description || ''} canonical={`/${currentLang}/blog/space/${slug}`} />
+      <SEO title={`${space?.name || slug} | GameHub ${t('blog.title', '博客空间')}`} description={space?.description || ''} canonical={`/${currentLang}/blog/space/${slug}`} />
+      <SEOBreadcrumb items={[
+        { name: t('breadcrumb.home', '首页'), url: `/${currentLang}` },
+        { name: t('breadcrumb.blog', '博客'), url: `/${currentLang}/blog` },
+        { name: space?.name || slug, url: `/${currentLang}/blog/space/${slug}` },
+      ]} />
 
-      <div className="py-2">
-        <Button type="text" className="!text-gray-400 hover:!text-white !pl-0 mb-4" icon={<ArrowLeftOutlined />}
-          onClick={() => navigate(`/${currentLang}/blog`)}>返回博客首页</Button>
+      {/* ====== Hero ====== */}
+      <div className="relative w-full overflow-hidden min-h-[280px]">
+        {space?.coverImageUrl ? (
+          <img src={space.coverImageUrl} alt={space?.name} className="absolute inset-0 w-full h-full object-cover" />
+        ) : (
+          <div className="absolute inset-0 bg-gradient-to-br from-dark-800 via-dark-900 to-primary-900/40" />
+        )}
+        <div className="absolute inset-0 bg-gradient-to-t from-dark-900 via-dark-900/70 to-dark-900/30" />
+        <div className="relative max-w-[1600px] mx-auto px-4 sm:px-6 py-16 md:py-20 flex flex-col items-center text-center">
+          <h1 className="text-white text-3xl sm:text-4xl md:text-5xl font-bold mb-4" style={{ textShadow: '0 2px 8px rgba(0,0,0,0.7)' }}>{space?.name || slug}</h1>
+          {space?.description && <p className="text-gray-200 max-w-2xl mb-8">{space.description}</p>}
+          <div className="w-full max-w-md">
+            <Input
+              size="large"
+              prefix={<SearchOutlined className="text-gray-400" />}
+              placeholder={t('blog.space.searchPlaceholder', '搜索文章标题...')}
+              value={searchText}
+              onChange={e => setSearchText(e.target.value)}
+              allowClear
+              className="bg-white/95 rounded-lg"
+            />
+          </div>
+        </div>
+      </div>
 
-        <div className="mb-6">
-          <Title level={1} className="!text-white !mb-2">{space?.name || slug}</Title>
-          {space?.description && <Paragraph className="!text-gray-400">{space.description}</Paragraph>}
-          {space?.totalArticles !== undefined && (
-            <Text className="!text-gray-500">共 {space.totalArticles} 篇文章</Text>
-          )}
+      <div className="max-w-[1600px] mx-auto px-4 sm:px-6 pt-8">
+        {/* 可见面包屑 */}
+        <div className="flex items-center gap-2 text-sm text-gray-400 mb-6">
+          <Link to={`/${currentLang}`} className="hover:text-white">{t('breadcrumb.home', '首页')}</Link>
+          <span>/</span>
+          <Link to={`/${currentLang}/blog`} className="hover:text-white">{t('breadcrumb.blog', '博客')}</Link>
+          <span>/</span>
+          <span className="text-white">{space?.name || slug}</span>
         </div>
 
-        {/* 搜索框 */}
-        <div className="mb-6">
-          <Input
-            size="large"
-            placeholder={t('blog.space.searchPlaceholder', '搜索文章标题...')}
-            prefix={<SearchOutlined className="text-gray-400" />}
-            value={searchText}
-            onChange={e => setSearchText(e.target.value)}
-            allowClear
-            className="max-w-md"
-          />
-        </div>
-
-        {/* 搜索结果 */}
-        {debouncedSearchText.trim() ? (
-          <div className="mb-6">
-            <Title level={2} className="!text-white !text-lg !mb-4">
-              {t('blog.space.searchResults', '搜索结果')}
-              {!searchLoading && searchedKw === debouncedSearchText.trim() && (
-                <Text className="!text-gray-500 !text-sm !ml-2">（{searchResults.length} 篇）</Text>
-              )}
-            </Title>
-            {searchLoading || searchedKw !== debouncedSearchText.trim() ? (
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-                {[1, 2, 3, 4].map(i => <div key={i}><Skeleton active paragraph={{ rows: 3 }} /></div>)}
-              </div>
-            ) : searchResults.length === 0 ? (
-              <Empty description={t('blog.space.searchEmpty', '未找到相关文章')} />
-            ) : (
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-                {searchResults.map((article: any) => (
-                  <div key={`${article.blogArticleType}-${article.id}`} onClick={() => openSearchResult(article)}
-                    className="rounded-xl p-4 cursor-pointer transition-all hover:-translate-y-1 border-2 border-dark-700 bg-dark-800 hover:border-blue-500/50">
-                    {article.coverImageUrl && (
-                      <div className="w-full h-28 rounded-lg overflow-hidden mb-2">
-                        <img src={article.coverImageUrl} alt={article.title} className="w-full h-full object-cover" loading="lazy" />
-                      </div>
+        {/* ====== 精选区（1 主 + 3 侧） ====== */}
+        {mainFeatured && (
+          <section className="mb-10">
+            <Title level={2} className="!text-white !text-xl !mb-6">{t('blog.space.featured', '精选')}</Title>
+            <div className="flex flex-col lg:flex-row gap-4">
+              {/* 主卡 */}
+              <Link to={`/${currentLang}/blog/${mainFeatured.slug || mainFeatured.id}`} className={`${sideFeatured.length ? 'lg:w-1/2' : 'lg:w-full'} no-underline group block`}>
+                <div className="bg-dark-800 border border-dark-700 rounded-xl overflow-hidden hover:border-blue-500/50 transition-all h-full">
+                  <div className="h-72 overflow-hidden relative">
+                    {mainFeatured.coverImageUrl ? (
+                      <img src={mainFeatured.coverImageUrl} alt={mainFeatured.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" loading="lazy" />
+                    ) : (
+                      <div className="w-full h-full bg-gradient-to-br from-blue-900 to-purple-900 flex items-center justify-center text-6xl">📰</div>
                     )}
-                    <div className="flex items-center gap-2 mb-2">
-                      <Tag color={article.blogArticleType === 'review' ? 'green' : article.blogArticleType === 'guide' ? 'purple' : 'blue'}>
-                        {article.blogArticleType === 'review' ? t('blog.space.tabLabels.review', '评测') : article.blogArticleType === 'guide' ? t('blog.space.tabLabels.guide', '攻略') : t('blog.space.tabLabels.blog', '博客')}
-                      </Tag>
-                    </div>
-                    <h4 className="text-white font-semibold text-sm line-clamp-2 mb-2 hover:text-blue-400">{article.title}</h4>
-                    <div className="flex items-center gap-3 text-xs text-gray-500">
-                      <span><EyeOutlined className="mr-1" />{article.views || 0}</span>
-                      <span><LikeOutlined className="mr-1" />{article.likes || 0}</span>
+                    <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/85 to-transparent p-4 flex items-end justify-between">
+                      <div className="flex items-center gap-2">
+                        <Avatar size={28} icon={<UserOutlined />} className="bg-blue-600" />
+                        <span className="text-white text-sm">{mainFeatured.authorDisplayName || mainFeatured.authorName || t('blog.anonymous', '匿名')}</span>
+                      </div>
+                      <Tag color={TYPE_TAG_COLOR[mainFeatured.blogArticleType] || 'blue'}>{typeLabel(mainFeatured.blogArticleType)}</Tag>
                     </div>
                   </div>
+                  <div className="p-5">
+                    <h3 className="text-white text-lg font-semibold group-hover:text-blue-400 transition-colors line-clamp-2 mb-2">{mainFeatured.title}</h3>
+                    <p className="text-gray-400 text-sm line-clamp-2 mb-3">{mainFeatured.excerpt || ''}</p>
+                    <div className="text-xs text-gray-500">{t('blog.space.lastUpdated', '更新时间')} {fmt(mainFeatured.publishDate || mainFeatured.createdAt)}</div>
+                  </div>
+                </div>
+              </Link>
+
+              {/* 侧卡 x3 */}
+              {sideFeatured.length > 0 && (
+              <div className="lg:w-1/2 grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-1 gap-4">
+                {sideFeatured.map((a: any) => (
+                  <Link key={a.id} to={`/${currentLang}/blog/${a.slug || a.id}`} className="no-underline group block">
+                    <div className="bg-dark-800 border border-dark-700 rounded-xl overflow-hidden hover:border-blue-500/50 transition-all hover:-translate-y-0.5 h-full flex sm:flex-col">
+                      <div className="w-32 sm:w-full h-full sm:h-32 flex-shrink-0 bg-dark-700 overflow-hidden">
+                        {a.coverImageUrl ? <img src={a.coverImageUrl} alt={a.title || 'Blog article'} className="w-full h-full object-cover group-hover:scale-105 transition-transform" loading="lazy" /> : <div className="w-full h-full flex items-center justify-center text-2xl">📄</div>}
+                      </div>
+                      <div className="flex-1 p-3 min-w-0">
+                        <div className="flex items-center gap-2 mb-1">
+                          <Avatar size={18} icon={<UserOutlined />} className="bg-blue-600" />
+                          <span className="text-gray-400 text-xs truncate">{a.authorDisplayName || a.authorName || t('blog.anonymous', '匿名')}</span>
+                        </div>
+                        <h4 className="text-white text-sm font-medium line-clamp-2 group-hover:text-blue-400">{a.title}</h4>
+                        <div className="text-gray-600 text-xs mt-1">{t('blog.space.lastUpdated', '更新时间')} {fmt(a.publishDate || a.createdAt)}</div>
+                      </div>
+                    </div>
+                  </Link>
                 ))}
               </div>
-            )}
-          </div>
-        ) : null}
-
-        {error && (
-          <Alert type="error" message={t('blog.space.loadFailed', '加载失败')} description={error} showIcon className="mb-6"
-            action={<Button onClick={() => window.location.reload()}>{t('blog.space.retry', '重试')}</Button>} />
+              )}
+            </div>
+          </section>
         )}
 
-        {/* 分类文章列表（各类型文章横向展示，点击可内嵌阅读） */}
-        {!debouncedSearchText.trim() && CATEGORIES.filter(c => (space?.typeCounts?.[c.key] || 0) > 0).map(renderCategorySection)}
-
-        {/* 文章内容 + 相关空间（等高） */}
-        {!debouncedSearchText.trim() && (
-        <div className="flex flex-col lg:flex-row gap-6 mb-4 lg:items-start">
-          {/* 左：完整文章内容 */}
-          <div ref={leftRef} className="lg:w-5/6 bg-dark-800 border border-dark-700 rounded-xl p-6" id="article-content">
-            {loading || articleLoading ? (
-              <Skeleton active avatar paragraph={{ rows: 8 }} />
-            ) : !activeArticle ? (
-              <Empty description={t('blog.space.noArticles', '暂无文章')} />
-            ) : (
-              <>
-                {/* 文章元信息 */}
-                <div className="flex flex-wrap gap-2 mb-4">
-                  <Tag color="blue">{activeArticle.blogArticleType === 'review' ? t('blog.space.tabLabels.review', '评测') : activeArticle.blogArticleType === 'guide' ? t('blog.space.tabLabels.guide', '攻略') : t('blog.space.tabLabels.blog', '博客')}</Tag>
-                  {activeArticle.category && <Tag>{activeArticle.category}</Tag>}
-                  {activeArticle.rating != null && <Tag color="gold">⭐ {activeArticle.rating}</Tag>}
-                </div>
-                <Title level={2} className="!text-white !mb-4">{activeArticle.title}</Title>
-                <div className="flex flex-wrap items-center gap-4 text-sm text-gray-400 mb-6 pb-6 border-b border-dark-700">
-                  <div className="flex items-center gap-2">
-                    <Avatar size="small" icon={<UserOutlined />} className="bg-blue-600" />
-                    <Text className="!text-gray-300">{activeArticle.authorName || activeArticle.author}</Text>
-                  </div>
-                  <span><CalendarOutlined /> {formatDate(activeArticle.publishedAt || activeArticle.publishDate)}</span>
-                  <span><ClockCircleOutlined /> {activeArticle.readingTime || Math.max(1, Math.ceil((activeArticle.content?.length || 0) / 500))} 分钟阅读</span>
-                </div>
-                <div className="flex items-center gap-4 px-4 py-3 bg-dark-750 rounded-lg mb-6">
-                  <span><EyeOutlined className="text-blue-400 mr-1" />{activeArticle.views || 0} 浏览</span>
-                  <span><LikeOutlined className="text-red-400 mr-1" />{activeArticle.likes || 0} 赞</span>
-                  <span><MessageOutlined className="text-green-400 mr-1" />{activeArticle.comments || 0} 评论</span>
-                </div>
-                {/* 封面图 */}
-                {(activeArticle.coverImageUrl || activeArticle.coverImage) && (
-                  <div className="mb-6 rounded-xl overflow-hidden">
-                    <img src={activeArticle.coverImageUrl || activeArticle.coverImage} alt={activeArticle.title}
-                      className="w-full max-h-96 object-cover" />
-                  </div>
-                )}
-                {/* 完整文章内容 */}
-                <article className="blog-content">
-                  <BlogRenderContent content={activeArticle.content} contentHtml={activeArticle.contentHtml} />
-                </article>
-                {/* 标签 */}
-                {activeArticle.tags && activeArticle.tags.length > 0 && (
-                  <div className="flex flex-wrap gap-2 mt-8 pt-6 border-t border-dark-700">
-                    {activeArticle.tags.map((tag: string) => <Tag key={tag} className="bg-dark-700 text-gray-300 border-0">{tag}</Tag>)}
-                  </div>
-                )}
-              </>
-            )}
-          </div>
-          {/* 右：相关空间 */}
-          <BlogSidebar spaces={relatedSpaces} currentSlug={slug} lang={currentLang} />
+        {/* ====== 分类 Tab ====== */}
+        <div className="flex flex-wrap items-center gap-2 mb-6">
+          {tabs.map(tab => (
+            <button
+              key={tab.key}
+              onClick={() => setPostType(tab.key)}
+              className={`px-4 py-2 rounded-full text-sm font-medium transition-all border ${postType === tab.key ? 'bg-blue-600 text-white border-blue-600' : 'bg-dark-800 text-gray-300 border-dark-700 hover:border-blue-500/50'}`}
+            >
+              {tab.label}
+              {tab.key !== 'all' && space?.typeCounts?.[tab.key] !== undefined && (
+                <span className="ml-1.5 text-xs opacity-70">({space.typeCounts[tab.key]})</span>
+              )}
+            </button>
+          ))}
         </div>
+
+        {/* ====== 文章列表 ====== */}
+        {listLoading ? (
+          <div className="space-y-3">
+            <Skeleton active paragraph={{ rows: 3 }} />
+            <Skeleton active paragraph={{ rows: 3 }} />
+          </div>
+        ) : articles.length === 0 ? (
+          <Empty description={debouncedSearchText.trim() ? t('blog.space.searchEmpty', '未找到相关文章') : t('blog.space.noArticles', '暂无文章')} image={Empty.PRESENTED_IMAGE_SIMPLE} />
+        ) : (
+          <div className="space-y-3 mb-8">
+            {articles.map((a: any) => (
+              <Link key={a.id} to={`/${currentLang}/blog/${a.slug || a.id}`} className="no-underline group block">
+                <div className="bg-dark-800 border border-dark-700 rounded-xl p-4 hover:border-blue-500/50 transition-all flex gap-4 items-center">
+                  <div className="w-24 h-16 sm:w-32 sm:h-20 flex-shrink-0 rounded-lg overflow-hidden bg-dark-700">
+                    {a.coverImageUrl ? (
+                      <img src={a.coverImageUrl} alt={a.title || 'Blog article'} className="w-full h-full object-cover group-hover:scale-105 transition-transform" loading="lazy" />
+                    ) : (
+                      <div className="w-full h-full flex items-center justify-center text-2xl">📄</div>
+                    )}
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-center gap-2 mb-1">
+                      <Tag color={TYPE_TAG_COLOR[a.blogArticleType] || 'blue'} className="text-[10px]">{typeLabel(a.blogArticleType)}</Tag>
+                      <span className="text-gray-500 text-xs flex items-center gap-1"><UserOutlined />{a.authorDisplayName || a.authorName || t('blog.anonymous', '匿名')}</span>
+                    </div>
+                    <h3 className="text-white text-base font-medium line-clamp-1 group-hover:text-blue-400 mb-1">{a.title}</h3>
+                    <div className="flex items-center gap-3 text-xs text-gray-600">
+                      <span className="flex items-center gap-1"><EyeOutlined />{a.views || 0}</span>
+                      <span className="flex items-center gap-1"><LikeOutlined />{a.likes || 0}</span>
+                      <span className="flex items-center gap-1"><CalendarOutlined />{fmt(a.publishDate || a.createdAt)}</span>
+                    </div>
+                  </div>
+                </div>
+              </Link>
+            ))}
+          </div>
         )}
 
+        {/* ====== 分页 ====== */}
+        {total > PAGE_SIZE && (
+          <div className="flex justify-center pb-10">
+            <Pagination current={page} pageSize={PAGE_SIZE} total={total} onChange={setPage} showSizeChanger={false} />
+          </div>
+        )}
       </div>
     </div>
   );

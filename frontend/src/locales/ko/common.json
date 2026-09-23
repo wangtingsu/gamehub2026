@@ -1281,6 +1281,9 @@
       "searchPlaceholder": "글 검색...",
       "searchResults": "검색 결과",
       "searchEmpty": "일치하는 글이 없습니다",
+      "all": "전체",
+      "lastUpdated": "업데이트",
+      "featured": "추천",
       "exploreMore": "더 보기",
       "noOtherSpaces": "다른 공간 없음",
       "tabLabels": {

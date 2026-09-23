@@ -287,14 +287,14 @@ export const getSpaceContent = async (params: { spaceId: string; postType?: stri
   const typeFilter = postType && postType !== 'all' ? 'AND blog_article_type=?' : '';
   const typeVals = postType && postType !== 'all' ? [postType] : [];
 
-  const where = `WHERE space_id=? ${typeFilter} ${searchFilter}`;
+  const where = `WHERE space_id=? AND is_published=true ${typeFilter} ${searchFilter}`;
   const vals: any[] = [spaceId, ...typeVals, ...searchVals];
 
   // Count
   const [{ total }] = await query(`SELECT COUNT(*) as total FROM blog_articles ${where}`, vals) as any[];
 
   // Paginated query with author join（difficulty 字符串映射为数值，与旧 UNION 行为一致）
-  const dataSQL = `SELECT a.id, a.title, a.content, a.excerpt, a.cover_image_url, a.author_id, a.space_id, a.blog_article_type, a.rating, a.likes, a.comments, a.created_at, a.published_at as publish_date, a.views,
+  const dataSQL = `SELECT a.id, a.slug, a.title, a.content, a.excerpt, a.cover_image_url, a.author_id, a.space_id, a.blog_article_type, a.rating, a.likes, a.comments, a.created_at, a.published_at as publish_date, a.views,
        CASE WHEN a.difficulty='hard' THEN 3 WHEN a.difficulty='medium' THEN 2 ELSE 1 END as difficulty_val,
        u.username as author_name, u.display_name as author_display_name
      FROM blog_articles a LEFT JOIN users u ON a.author_id=u.id ${where} ORDER BY a.created_at DESC LIMIT ? OFFSET ?`;
@@ -302,7 +302,7 @@ export const getSpaceContent = async (params: { spaceId: string; postType?: stri
 
   return {
     articles: (articles || []).map((row: any) => ({
-      id: String(row.id), title: row.title, content: row.content,
+      id: String(row.id), slug: row.slug, title: row.title, content: row.content,
       excerpt: row.excerpt || '', coverImageUrl: row.cover_image_url || '',
       authorId: String(row.author_id), authorName: row.author_name, authorDisplayName: row.author_display_name,
       spaceId: String(row.space_id), blogArticleType: row.blog_article_type,

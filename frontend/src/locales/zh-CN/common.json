@@ -1277,6 +1277,9 @@
       "searchPlaceholder": "搜索文章标题...",
       "searchResults": "搜索结果",
       "searchEmpty": "未找到相关文章",
+      "all": "全部",
+      "lastUpdated": "更新时间",
+      "featured": "精选",
       "exploreMore": "探索更多空间",
       "noOtherSpaces": "暂无其他空间",
       "tabLabels": {
