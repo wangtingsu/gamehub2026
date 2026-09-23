@@ -287,6 +287,9 @@ const BlogSpacePage = () => {
             action={<Button onClick={() => window.location.reload()}>{t('blog.space.retry', '重试')}</Button>} />
         )}
 
+        {/* 分类文章列表（各类型文章横向展示，点击可内嵌阅读） */}
+        {!debouncedSearchText.trim() && CATEGORIES.filter(c => (space?.typeCounts?.[c.key] || 0) > 0).map(renderCategorySection)}
+
         {/* 文章内容 + 相关空间（等高） */}
         {!debouncedSearchText.trim() && (
         <div className="flex flex-col lg:flex-row gap-6 mb-4 lg:items-start">
