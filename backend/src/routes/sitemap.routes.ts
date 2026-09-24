@@ -165,74 +165,63 @@ function buildSitemapXml(
     ? allContentDates.reduce((max, d) => (d > max ? d : max), allContentDates[0])
     : new Date().toISOString();
 
-  // 静态页面 — 每种语言为独立 URL，带 hreflang
-  for (const page of staticPages) {
-    const canonicalLang = URL_PREFIXES[0];
-    const canonicalLoc = `${siteUrl}/${canonicalLang}${page.path}`;
-    const alternates = buildAlternateLinks(siteUrl, page.path, (page as { langs?: string[] }).langs);
-    urls.push(`  <url>
-    <loc>${escapeXml(canonicalLoc)}</loc>
-    <lastmod>${formatDate(siteLastmod)}</lastmod>
-    <changefreq>${page.changefreq}</changefreq>
-    <priority>${page.priority}</priority>
+  /**
+   * 为一个页面路径生成各语言版本的 <url> 条目（P0-1 修复）
+   *
+   * 此前每个页面只在 <loc> 中提交 canonical 语言（/en/*），其余语言仅以
+   * <xhtml:link> hreflang 替代链接存在，导致 /cn、/ja、/ko、/es、/fr 的页面
+   * 从未通过 sitemap 主动告知 Google。现在为每种允许的语言各生成一条 <url>，
+   * 使其 <loc> 直接指向该语言版本 URL。
+   *
+   * @param path - 页面路径（不含语言前缀，如 /games/elden-ring）
+   * @param allowedPrefixes - 该页面允许收录的语言前缀（静态页默认全语言，FAQ 仅 cn/en，新闻按真实翻译语言裁剪）
+   * @param lastmod - 最后修改时间
+   * @param changefreq - 更新频率
+   * @param priority - 优先级
+   */
+  const pushLanguageUrls = (
+    path: string,
+    allowedPrefixes: string[],
+    lastmod: string,
+    changefreq: string,
+    priority: string
+  ) => {
+    const prefixes = allowedPrefixes && allowedPrefixes.length > 0 ? allowedPrefixes : URL_PREFIXES;
+    const alternates = buildAlternateLinks(siteUrl, path, prefixes);
+    for (const prefix of prefixes) {
+      urls.push(`  <url>
+    <loc>${escapeXml(`${siteUrl}/${prefix}${path}`)}</loc>
+    <lastmod>${formatDate(lastmod)}</lastmod>
+    <changefreq>${changefreq}</changefreq>
+    <priority>${priority}</priority>
 ${alternates}
   </url>`);
+    }
+  };
+
+  // 静态页面 — 每种语言各一条 <url>
+  for (const page of staticPages) {
+    pushLanguageUrls(page.path, (page as { langs?: string[] }).langs || URL_PREFIXES, siteLastmod, page.changefreq, page.priority);
   }
 
   // 游戏详情页
   for (const game of games) {
-    const path = `/games/${game.slug || game.id}`;
-    const canonicalLoc = `${siteUrl}/${URL_PREFIXES[0]}${path}`;
-    const alternates = buildAlternateLinks(siteUrl, path);
-    urls.push(`  <url>
-    <loc>${escapeXml(canonicalLoc)}</loc>
-    <lastmod>${formatDate(game.updatedAt)}</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.8</priority>
-${alternates}
-  </url>`);
+    pushLanguageUrls(`/games/${game.slug || game.id}`, URL_PREFIXES, game.updatedAt, 'daily', '0.8');
   }
 
-  // 新闻详情页（slug 为规范形态，与前端 canonical 对齐；hreflang 只保留正文真实翻译过的语言）
+  // 新闻详情页（slug 为规范形态，与前端 canonical 对齐；只收录正文真实翻译过的语言）
   for (const item of news) {
-    const path = `/news/${item.slug || item.id}`;
-    const canonicalLoc = `${siteUrl}/${URL_PREFIXES[0]}${path}`;
-    const alternates = buildAlternateLinks(siteUrl, path, item.translatedLangs);
-    urls.push(`  <url>
-    <loc>${escapeXml(canonicalLoc)}</loc>
-    <lastmod>${formatDate(item.publishedAt)}</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.6</priority>
-${alternates}
-  </url>`);
+    pushLanguageUrls(`/news/${item.slug || item.id}`, item.translatedLangs || URL_PREFIXES, item.publishedAt, 'daily', '0.6');
   }
 
   // 评测详情页（规范路径为 /community/reviews/:id，与前端路由一致）
   for (const item of reviews) {
-    const path = `/community/reviews/${item.id}`;
-    const canonicalLoc = `${siteUrl}/${URL_PREFIXES[0]}${path}`;
-    const alternates = buildAlternateLinks(siteUrl, path);
-    urls.push(`  <url>
-    <loc>${escapeXml(canonicalLoc)}</loc>
-    <lastmod>${formatDate(item.publishedAt)}</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.6</priority>
-${alternates}
-  </url>`);
+    pushLanguageUrls(`/community/reviews/${item.id}`, URL_PREFIXES, item.publishedAt, 'daily', '0.6');
   }
 
   // 攻略详情页
   for (const item of guides) {
-    const path = `/guides/${item.id}`;
-    const canonicalLoc = `${siteUrl}/${URL_PREFIXES[0]}${path}`;
-    const alternates = buildAlternateLinks(siteUrl, path);
-    urls.push(`  <url>
-    <loc>${escapeXml(canonicalLoc)}</loc>
-    <lastmod>${formatDate(item.publishedAt)}</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.6</priority>
-${alternates}
-  </url>`);
+    pushLanguageUrls(`/guides/${item.id}`, URL_PREFIXES, item.publishedAt, 'daily', '0.6');
   }
 
   return `<?xml version="1.0" encoding="UTF-8"?>

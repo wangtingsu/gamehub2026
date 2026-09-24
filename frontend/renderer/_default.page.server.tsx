@@ -336,7 +336,8 @@ function buildJsonLdGraph(opts: {
   // 4. VideoGame —— 游戏详情富结果
   if (gameDetail) {
     const node: Record<string, unknown> = {
-      '@type': 'VideoGame',
+      // P1-2：仅 VideoGame 单一类型拿不到富结果，须并列 SoftwareApplication 家族类型
+      '@type': ['VideoGame', 'SoftwareApplication'],
       name: gameDetail.title,
       description: gameDetail.description,
       url: canonicalUrl,
@@ -1010,7 +1011,7 @@ async function render(pageContext: PageContextServer) {
     <\/script>
     <noscript>
       <div style="padding:24px;font-family:system-ui,-apple-system,sans-serif;text-align:center;color:#333">
-        <h1>${pageMeta.title}</h1>
+        <p style="font-size:1.5rem;font-weight:700;margin:0 0 8px">${pageMeta.title}</p>
         <p>${pageMeta.description}</p>
         <p>GameHub requires JavaScript to display interactive content. Please enable JavaScript in your browser.</p>
       </div>

@@ -186,10 +186,10 @@ const GameDetailPage = () => {
   const formattedPrice = Number(discountPrice).toFixed(2);
   const originalPrice = Number(game.price).toFixed(2);
 
-  // 结构化数据 for VideoGame
+  // 结构化数据 for VideoGame（P1-2：并列 SoftwareApplication 家族类型，避免单一 VideoGame 拿不到富结果）
   const structuredData = {
     '@context': 'https://schema.org',
-    '@type': 'VideoGame',
+    '@type': ['VideoGame', 'SoftwareApplication'],
     'name': game.title,
     'description': game.description,
     'image': game.imageUrl,
