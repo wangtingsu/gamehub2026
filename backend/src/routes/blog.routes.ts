@@ -10,18 +10,19 @@ const router = Router();
 router.get('/space/detail', optionalAuthenticate, asyncHandler(async (req: Request, res: Response) => {
   const slug = req.query.slug as string;
   if (!slug) return res.status(400).json({ success: false, error: '缺少slug参数' });
-  const detail = await blogService.getSpaceDetail(slug);
+  const detail = await blogService.getSpaceDetail(slug, req.query.lang as string | undefined);
   if (!detail) return res.status(404).json({ success: false, error: '空间不存在' });
   res.json({ success: true, data: detail });
 }));
 
 // 博客空间内容联合查询（blog_articles + reviews + guides）
 router.get('/space/:spaceId/content', optionalAuthenticate, asyncHandler(async (req: Request, res: Response) => {
-  const { page, limit, postType, search } = req.query;
+  const { page, limit, postType, search, lang } = req.query;
   const result = await blogService.getSpaceContent({
     spaceId: req.params.spaceId,
     page: Number(page) || 1, limit: Number(limit) || 20,
     postType: postType as string, search: search as string,
+    lang: lang as string | undefined,
   });
   res.json({ success: true, data: result, message: '空间内容获取成功' });
 }));
@@ -104,10 +105,11 @@ router.get('/space/:spaceId/popular', optionalAuthenticate, asyncHandler(async (
 }));
 
 router.get('/space/:spaceId/category/:postType', optionalAuthenticate, asyncHandler(async (req: Request, res: Response) => {
-  const { page, limit } = req.query;
+  const { page, limit, lang } = req.query;
   const result = await blogService.getArticlesByPostType(
     req.params.spaceId, req.params.postType,
-    Number(page) || 1, Number(limit) || 12
+    Number(page) || 1, Number(limit) || 12,
+    lang as string | undefined
   );
   res.json({ success: true, data: result });
 }));

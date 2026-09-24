@@ -41,12 +41,12 @@ const BlogSpacePage = () => {
     (async () => {
       setLoading(true); setError(null);
       try {
-        const detail = await apiService.getSpaceDetail(slug || '');
+        const detail = await apiService.getSpaceDetail(slug || '', currentLang);
         if (cancelled) return;
         if (!detail) { setError(t('blog.space.notFound', '空间不存在')); setLoading(false); return; }
         setSpace(detail);
         if (detail.id) {
-          const res = await apiService.getSpaceContent(detail.id, { limit: 4 });
+          const res = await apiService.getSpaceContent(detail.id, { limit: 4, lang: currentLang });
           if (!cancelled) setFeatured(res?.articles || []);
         }
       } catch (e: any) {
@@ -68,6 +68,7 @@ const BlogSpacePage = () => {
       limit: PAGE_SIZE,
       postType: postType === 'all' ? undefined : postType,
       search: debouncedSearchText.trim() || undefined,
+      lang: currentLang,
     }).then((res: any) => {
       if (!cancelled) { setArticles(res?.articles || []); setTotal(res?.total || 0); }
     }).catch(() => {

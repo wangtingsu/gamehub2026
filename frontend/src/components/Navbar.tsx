@@ -84,7 +84,8 @@ const Navbar = ({ collapsed, isMobile, onToggleSidebar }: NavbarProps) => {
   const handleLanguageChange = async (languageCode: string) => {
     await i18n.changeLanguage(urlToI18n[languageCode] || languageCode);
     const currentPath = location.pathname.replace(/^\/[^\/]+/, '') || '/';
-    navigate(`/${languageCode}${currentPath}`);
+    // 切换语言后强制整页刷新，确保 SSR 以新语言重新拉取页面数据
+    window.location.href = `/${languageCode}${currentPath}`;
   };
 
   return (

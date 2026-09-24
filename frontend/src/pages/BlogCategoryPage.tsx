@@ -34,12 +34,12 @@ const BlogCategoryPage = () => {
     const load = async () => {
       setLoading(true); setError(null);
       try {
-        const detail = await apiService.getSpaceDetail(slug || '');
+        const detail = await apiService.getSpaceDetail(slug || '', currentLang);
         if (cancelled) return;
         if (!detail) { setError(t('blog.space.notFound', '空间不存在')); setLoading(false); return; }
         setSpace(detail);
 
-        const res = await apiService.getSpaceArticlesByCategory(detail.id, postType || 'blog', { page, limit: pageSize });
+        const res = await apiService.getSpaceArticlesByCategory(detail.id, postType || 'blog', { page, limit: pageSize, lang: currentLang });
         if (!cancelled) {
           setArticles(res.articles || []);
           setTotal(res.total || 0);

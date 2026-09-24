@@ -409,7 +409,7 @@ abstract class BaseApiService {
 
   // ==================== 博客空间内容 ====================
   abstract getSpaceContent(spaceId: string, params?: any): Promise<any>;
-  abstract getSpaceDetail(slug: string): Promise<any>;
+  abstract getSpaceDetail(slug: string, lang?: string): Promise<any>;
   abstract getSpacePopularArticle(spaceId: string): Promise<any>;
   abstract getSpaceArticlesByCategory(spaceId: string, postType: string, params?: any): Promise<{ articles: any[]; total: number }>;
 
@@ -708,7 +708,7 @@ class RealApiService extends BaseApiService {
   }
 
   async getSpaceContent(spaceId: string, params?: any) { return this.client.get<any>(`/blogs/space/${spaceId}/content`, params); }
-  async getSpaceDetail(slug: string) { return this.client.get<any>('/blogs/space/detail', { slug }); }
+  async getSpaceDetail(slug: string, lang?: string) { return this.client.get<any>('/blogs/space/detail', { slug, lang }); }
   async getSpacePopularArticle(spaceId: string) { return this.client.get<any>(`/blogs/space/${spaceId}/popular`); }
   async getSpaceArticlesByCategory(spaceId: string, postType: string, params?: any) {
     return this.client.get<{ articles: any[]; total: number }>(`/blogs/space/${spaceId}/category/${postType}`, params);
@@ -4441,7 +4441,7 @@ class MockApiService extends BaseApiService {
     return { articles: [] };
   }
 
-  async getSpaceDetail(slug: string): Promise<any> {
+  async getSpaceDetail(slug: string, lang?: string): Promise<any> {
     console.log('Mock: 获取空间详情', slug);
     return { id: '1', name: 'Mock Space', slug, description: 'Mock space', totalArticles: 0, typeCounts: {} };
   }

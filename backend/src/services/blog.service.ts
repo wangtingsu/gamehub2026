@@ -278,23 +278,35 @@ const mapArticle = (row: any) => {
 };
 
 // ====== 博客空间内容（三表已合并到 blog_articles） ======
-export const getSpaceContent = async (params: { spaceId: string; postType?: string; page?: number; limit?: number; search?: string }) => {
-  const { spaceId, postType, page = 1, limit = 20, search } = params;
+export const getSpaceContent = async (params: { spaceId: string; postType?: string; page?: number; limit?: number; search?: string; lang?: string }) => {
+  const { spaceId, postType, page = 1, limit = 20, search, lang } = params;
   const offset = (page - 1) * limit;
 
-  const searchFilter = search ? 'AND (title LIKE ? OR content LIKE ?)' : '';
+  // 语言本地化：非中文时仅保留有该语言翻译的文章（无对应语言则整篇不显示），
+  // 标题/正文/摘要优先取翻译列，翻译为空时回退中文基础列。
+  const suffix = langToSuffix(lang);
+  const titleCol = suffix ? `COALESCE(NULLIF(a.title_${suffix}, ''), a.title)` : 'a.title';
+  const contentCol = suffix ? `COALESCE(NULLIF(a.content_${suffix}, ''), a.content)` : 'a.content';
+  const excerptCol = suffix ? `COALESCE(NULLIF(a.excerpt_${suffix}, ''), a.excerpt)` : 'a.excerpt';
+  const langFilter = suffix
+    ? `AND (title_${suffix} IS NOT NULL AND title_${suffix} != '' OR content_${suffix} IS NOT NULL AND content_${suffix} != '')`
+    : '';
+
+  const searchTitleCol = suffix ? `title_${suffix}` : 'title';
+  const searchContentCol = suffix ? `content_${suffix}` : 'content';
+  const searchFilter = search ? `AND (${searchTitleCol} LIKE ? OR ${searchContentCol} LIKE ?)` : '';
   const searchVals = search ? [`%${search}%`, `%${search}%`] : [];
   const typeFilter = postType && postType !== 'all' ? 'AND blog_article_type=?' : '';
   const typeVals = postType && postType !== 'all' ? [postType] : [];
 
-  const where = `WHERE space_id=? AND is_published=true ${typeFilter} ${searchFilter}`;
+  const where = `WHERE space_id=? AND is_published=true ${typeFilter} ${langFilter} ${searchFilter}`;
   const vals: any[] = [spaceId, ...typeVals, ...searchVals];
 
   // Count
   const [{ total }] = await query(`SELECT COUNT(*) as total FROM blog_articles ${where}`, vals) as any[];
 
   // Paginated query with author join（difficulty 字符串映射为数值，与旧 UNION 行为一致）
-  const dataSQL = `SELECT a.id, a.slug, a.title, a.content, a.excerpt, a.cover_image_url, a.author_id, a.space_id, a.blog_article_type, a.rating, a.likes, a.comments, a.created_at, a.published_at as publish_date, a.views,
+  const dataSQL = `SELECT a.id, a.slug, ${titleCol} as title, ${contentCol} as content, ${excerptCol} as excerpt, a.cover_image_url, a.author_id, a.space_id, a.blog_article_type, a.rating, a.likes, a.comments, a.created_at, a.published_at as publish_date, a.views,
        CASE WHEN a.difficulty='hard' THEN 3 WHEN a.difficulty='medium' THEN 2 ELSE 1 END as difficulty_val,
        u.username as author_name, u.display_name as author_display_name
      FROM blog_articles a LEFT JOIN users u ON a.author_id=u.id ${where} ORDER BY a.created_at DESC LIMIT ? OFFSET ?`;
@@ -326,33 +338,43 @@ export const getPopularArticle = async (spaceId: string) => {
 };
 
 // ====== 按 blog_article_type 分类查询 ======
-export const getArticlesByPostType = async (spaceId: string, postType: string, page = 1, limit = 12) => {
+export const getArticlesByPostType = async (spaceId: string, postType: string, page = 1, limit = 12, lang?: string) => {
   const offset = (page - 1) * limit;
+  // 语言过滤：非中文时仅保留有该语言翻译的文章（无对应语言则整篇不显示）
+  const suffix = langToSuffix(lang);
+  const langFilter = suffix
+    ? `AND (title_${suffix} IS NOT NULL AND title_${suffix} != '' OR content_${suffix} IS NOT NULL AND content_${suffix} != '')`
+    : '';
   const [{ total }] = await query(
-    `SELECT COUNT(*) as total FROM blog_articles WHERE space_id=$1 AND blog_article_type=$2 AND is_published=true`, [spaceId, postType]
+    `SELECT COUNT(*) as total FROM blog_articles WHERE space_id=$1 AND blog_article_type=$2 AND is_published=true ${langFilter}`, [spaceId, postType]
   ) as any[];
   const articles = await query(
     `SELECT a.*, u.username as author_name, u.display_name as author_display_name
      FROM blog_articles a LEFT JOIN users u ON a.author_id=u.id
-     WHERE a.space_id=$1 AND a.blog_article_type=$2 AND a.is_published=true
+     WHERE a.space_id=$1 AND a.blog_article_type=$2 AND a.is_published=true ${langFilter}
      ORDER BY a.likes DESC, a.views DESC LIMIT $3 OFFSET $4`,
     [spaceId, postType, limit, offset]
   );
-  return { articles: (articles || []).map(mapArticle), total: Number(total), page, limit };
+  return { articles: (articles || []).map((row) => localizeArticle(mapArticle(row), lang)), total: Number(total), page, limit };
 };
 
 // ====== 空间详情（含各类型文章数量） ======
-export const getSpaceDetail = async (slug: string) => {
+export const getSpaceDetail = async (slug: string, lang?: string) => {
   const spaces = await query('SELECT * FROM blog_spaces WHERE slug=$1', [slug]) as any[];
   if (!spaces.length) return null;
   const space = spaces[0];
+  // 语言过滤（与 getSpaceContent 一致）：tab 计数只统计当前语言可见的文章
+  const suffix = langToSuffix(lang);
+  const langFilter = suffix
+    ? `AND (title_${suffix} IS NOT NULL AND title_${suffix} != '' OR content_${suffix} IS NOT NULL AND content_${suffix} != '')`
+    : '';
   const counts = await query(
-    `SELECT blog_article_type, COUNT(*) as cnt FROM blog_articles WHERE space_id=$1 AND is_published=true GROUP BY blog_article_type`,
+    `SELECT blog_article_type, COUNT(*) as cnt FROM blog_articles WHERE space_id=$1 AND is_published=true ${langFilter} GROUP BY blog_article_type`,
     [space.id]
   ) as any[];
   const typeCounts: Record<string, number> = {};
   counts.forEach((r: any) => { typeCounts[r.blog_article_type] = r.cnt; });
-  const [{ total }] = await query('SELECT COUNT(*) as total FROM blog_articles WHERE space_id=$1 AND is_published=true', [space.id]) as any[];
+  const [{ total }] = await query(`SELECT COUNT(*) as total FROM blog_articles WHERE space_id=$1 AND is_published=true ${langFilter}`, [space.id]) as any[];
   return {
     id: String(space.id), name: space.name, slug: space.slug, coverImageUrl: space.cover_image_url,
     description: space.description, sortOrder: space.sort_order, isActive: !!space.is_active,
